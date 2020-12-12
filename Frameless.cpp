@@ -6,6 +6,7 @@
 #include <QHoverEvent>
 #include <QDebug>
 
+namespace Zsj {
 
 Frameless::Frameless(QObject *parent) : QObject(parent)
 {
@@ -102,6 +103,7 @@ bool Frameless::eventFilter(QObject *watched, QEvent *event)
             if(moveEnable){
                 if(pressed){
                     widget->move(widget->x() + offsetX,widget->y() + offsetY);
+                    qDebug() << "["<<offsetX <<":" <<offsetY <<"]";
                 }
             }
             if(resizeEnable){
@@ -245,5 +247,5 @@ void Frameless::setWidget(QWidget *value)
     }
 }
 
-
+}
 

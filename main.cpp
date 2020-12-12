@@ -1,6 +1,7 @@
 #include "LoginWidget.h"
 #include "Util.h"
 #include "Log.h"
+#include "Test.h"
 
 #include <QApplication>
 #include <QMutex>
@@ -14,18 +15,16 @@ void outputMessage(QtMsgType type, const QMessageLogContext &context, const QStr
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+
+    //安装日志处理钩子函数
+    qInstallMessageHandler(outputMessage);
     LoginWidget w;
     w.show();
 
-
-    qSetMessagePattern("%{appname} %{category} %{file} %{function} %{line} %{pid} %{threadid} %{type} %{time boot} %{time [yyyy-MM-dd hh:mm:ss ddd]} %{message}");
-    qInstallMessageHandler(outputMessage);
-    QString debug = "debug";
-    QString format;
-    format.sprintf("[%10s]",qPrintable(debug));
-    qDebug() << format;
-    qInfo() << format;
+    Zsj::Test().test();
     return a.exec();
+
+
 }
 
 void outputMessage(QtMsgType type, const QMessageLogContext &context, const QString &msg)
@@ -55,13 +54,12 @@ void outputMessage(QtMsgType type, const QMessageLogContext &context, const QStr
     int pid = Zsj::getCurrentProcessId();
     QString date = Zsj::GetCurrentDateTime("yyyy-MM-dd hh:mm:ss");
 
-    //format : category pid tid func file line date message
-    QString content = QString("%2 [%3:%4] [%5]  [%6:%7] %8%1%9")
+    //format : category pid tid file line date message
+    QString content = QString("%2 [%3:%4] [%6:%7] %8%1%9")
             .arg(tab)
             .arg(category)
             .arg(pid)
             .arg(threadId)
-            .arg(context.function)
             .arg(context.file)
             .arg(context.line)
             .arg(date)

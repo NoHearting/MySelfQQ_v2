@@ -1,8 +1,10 @@
 #include "Util.h"
 
-#include <windows.h>
-#include <tlhelp32.h>
+#include <QApplication>
+#include <QWidget>
+#include <QDesktopWidget>
 #include <QDebug>
+#include <QPainter>
 
 namespace Zsj{
 
@@ -12,37 +14,36 @@ Util::Util()
 }
 
 
-int getCurrentProcessId(const QString & processName)
+int getCurrentProcessId()
 {
-    HANDLE hProcess =  CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS,NULL);
-    if(!hProcess){
-        qCritical() << "CreateToolhelp32Snapshot failed";
-        return -1;
-    }
-    PROCESSENTRY32 info;
-    info.dwSize = sizeof(PROCESSENTRY32);
-    if(!Process32First(hProcess, &info)){
+    return qApp->applicationPid();
+}
 
-        qCritical() << "Process32First null";
-        return -1;
-    }
+QSize getDesktopSize()
+{
+    QWidget * screen = qApp->desktop()->screen();
+    return QSize(screen->width(),screen->height());
+}
 
-    bool haveNext = true;
-    while(haveNext){
 
-        haveNext = Process32Next(hProcess, &info);
-        if(haveNext){
-
-            HANDLE hProcess = OpenProcess(PROCESS_ALL_ACCESS, TRUE, info.th32ProcessID);
-
-            QString pName = QString::fromWCharArray(info.szExeFile);
-//            qDebug() << pName << " | " <<pName.split(".")[0];
-            if(processName == pName.split(".")[0]){
-                return info.th32ProcessID;
-            }
+QPixmap pixmapToRound(QPixmap &src, int radius)
+{
+    if (src.isNull()) {
+            return QPixmap();
         }
-    }
-    return -1;
+
+    QSize size(2*radius, 2*radius);
+    QBitmap mask(size);
+    QPainter painter(&mask);
+    painter.setRenderHint(QPainter::Antialiasing);
+    painter.setRenderHint(QPainter::SmoothPixmapTransform);
+    painter.fillRect(0, 0, size.width(), size.height(), Qt::white);
+    painter.setBrush(QColor(0, 0, 0));
+    painter.drawRoundedRect(0, 0, size.width(), size.height(), 99, 99);
+
+    QPixmap image = src.scaled(size);
+    image.setMask(mask);
+    return image;
 }
 
 

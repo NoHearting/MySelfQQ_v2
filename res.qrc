@@ -1,0 +1,20 @@
+<RCC>
+    <qresource prefix="/">
+        <file>res/login/logo1.png</file>
+        <file>res/login/logo2.png</file>
+        <file>res/login/locker1.png</file>
+        <file>res/login/locker2.png</file>
+        <file>res/login/arrow.png</file>
+        <file>res/login/arrow-hover.png</file>
+        <file>res/login/arrow-on.png</file>
+        <file>res/login/close.png</file>
+        <file>res/login/min.png</file>
+        <file>res/login/setting.png</file>
+        <file>res/login/default-head.png</file>
+        <file>res/login/bg-movie.gif</file>
+        <file>Z:/default/Pictures/Image/126.jpg</file>
+        <file>res/login/checkbox-on.png</file>
+        <file>res/login/checkbox-hover.png</file>
+        <file>res/login/checkbox.png</file>
+    </qresource>
+</RCC>

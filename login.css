@@ -1,5 +1,162 @@
 /* --------------- debug ------------------*/
+
 #widgetLogin{
-	border: 1px solid red;
+    background-color: #fff;
+}
+
+#labelHeadImage{
+    background-color: aqua;
+}
+
+
+
+
+/* ---------------- env --------------- */
+
+
+#widgetLogin{
+    border-radius: 5px;
+}
+
+#widgetLoginTop,#labelBgMovie{
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+#widgetLoginBottom{
+    background-color:#fff;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+
+
+/*账号输入框*/
+#comboBoxAccount{
+    background-color: white;
+    padding:0px 16px 6px;
+    font-family: "微软雅黑";
+    font-size: 16px;
+    border:none;
+    border-bottom:1px solid rgb(229,229,229);
+    background:left top no-repeat url("://res/login/logo1.png");
+}
+
+#comboBoxAccount::drop-down{
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 20px;
+    background: white;
+}
+
+#comboBoxAccount::down-arrow{
+    image:url("://res/login/arrow.png");
+}
+
+#comboBoxAccount::down-arrow:hover{
+    image:url("://res/login/arrow-hover.png");
+}
+
+#comboBoxAccount::down-arrow:on{
+    image:url("://res/login/arrow-on.png");
+}
+
+#comboBoxAccount:focus{
+    border-bottom:1px solid rgb(18,183,245);
+    background:left top no-repeat url("://res/login/logo2.png");
+}
+
+/*密码输入框*/
+#lineEditPwd{
+    background-color: white;
+    padding:0px 16px 6px;
+    font-size: 16px;
+    border:none;
+    border-bottom:1px solid rgb(229,229,229);
+    background:left top no-repeat url("://res/login/locker1.png");
+}
+
+#lineEditPwd:hover,#comboBoxAccount:hover{
+    border-bottom:1px solid rgb(193,193,193);
+}
+
+#lineEditPwd:focus{
+    border-bottom:1px solid rgb(18,183,245);
+    background:left top no-repeat url("://res/login/locker2.png");
+}
+
+
+/*登录按钮*/
+#pushButtonLogin{
+    border-radius: 3px;
+    background:qlineargradient(x1:0,y1:0,x2:0,y2:1,
+        stop:0 rgb(11,194,255),stop:1 rgb(2,184,250));
+    color:white;
+}
+
+#pushButtonLogin:hover{
+    background:qlineargradient(x1:0,y1:0,x2:0,y2:1,
+        stop:0 rgb(34,203,255),stop:1 rgb(26,194,251));
+}
+
+/*右上角三个功能按钮*/
+#toolButtonClose{
+    padding: 6px 0px;
+}
+
+#toolButtonClose:hover{
+    background-color: rgb(254,84,57);
+}
+
+#toolButtonMin,#toolButtonSetting{
+    padding: 6px 0px;
+}
+
+#toolButtonMin:hover,#toolButtonSetting:hover{
+    background-color: rgba(255,255,255,0.3);
+}
+
+/*头像*/
+#labelHeadImage{
+    /*image:url("://res/login/default-head.png");*/
+    border-radius: 32px;
+    background-color: #fff;
+    border:2px solid white;
+}
+
+/*登录界面下面的四个按钮*/
+#checkBoxAutoLogin,#checkBoxRememberPwd{
+    color: rgb(166,166,166);
+}
+
+#checkBoxAutoLogin::indicator:unchecked,
+#checkBoxRememberPwd::indicator:unchecked{
+    width: 13px;
+    height: 13px;
+    image:url("://res/login/checkbox.png");
+}
+
+#checkBoxAutoLogin::indicator:unchecked:hover,
+#checkBoxRememberPwd::indicator:unchecked:hover{
+    color: rgb(148,148,148);
+    image:url("://res/login/checkbox-hover.png");
+}
+
+#checkBoxAutoLogin::indicator:checked,
+#checkBoxRememberPwd::indicator:checked{
+    image:url("://res/login/checkbox-on.png");
+}
+
+#toolButtonFindPwd,#pushButtonRegister{
+    color: rgb(166,166,166);
+    background:transparent;
+}
+
+#checkBoxAutoLogin:hover,#checkBoxRememberPwd:hover{
+    color: rgb(148,148,148);
+}
+
+#toolButtonFindPwd:hover,#pushButtonRegister:hover{
+    color: rgb(148,148,148);
 }
 

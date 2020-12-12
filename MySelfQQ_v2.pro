@@ -18,15 +18,20 @@ SOURCES += main.cpp\
     Frameless.cpp \
     ReadQStyleSheet.cpp \
     Util.cpp \
-    Log.cpp
+    Log.cpp \
+    Test.cpp \
+    HeadShadowWidget.cpp
 
 HEADERS  += LoginWidget.h \
     Frameless.h \
     ReadQStyleSheet.h \
     Util.h \
-    Log.h
+    Log.h \
+    Test.h \
+    HeadShadowWidget.h
 
 FORMS    += LoginWidget.ui
 
 RESOURCES += \
-    qss.qrc
+    qss.qrc \
+    res.qrc
