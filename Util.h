@@ -27,8 +27,17 @@ QSize getDesktopSize();
 ///
 /// @param[in] src 将要转换的pixmap
 /// @param[in] radius 转换后圆形的半径
+/// @param QPixmap
 QPixmap pixmapToRound(QPixmap & src,int radius);
 
+
+/// @brief 等比缩放图片
+///
+/// @param[in] src 将要处理的图片
+/// @param[in] width 目标图片的宽
+/// @param[in] height 目标图片的高
+/// @return QPixmap
+QPixmap scaledPixmap(QPixmap & src,int width,int height);
 
 /// @brief 获取当前的时间
 ///

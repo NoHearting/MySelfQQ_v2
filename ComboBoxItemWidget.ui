@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ComboBoxItemWidget</class>
+ <widget class="QWidget" name="ComboBoxItemWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>235</width>
+    <height>50</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>235</width>
+    <height>50</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>235</width>
+    <height>50</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QToolButton" name="toolButtonDelete">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>15</y>
+     <width>20</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:transparent;</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/res/login/close-item-hover.png</normaloff>:/res/login/close-item-hover.png</iconset>
+   </property>
+   <property name="autoRaise">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelNickname">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>5</y>
+     <width>110</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>微软雅黑</family>
+    </font>
+   </property>
+   <property name="text">
+    <string>nickname</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelHead">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>5</y>
+     <width>40</width>
+     <height>40</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border:2px solid white;
+border-radius:20px;</string>
+   </property>
+   <property name="text">
+    <string>head</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelAccount">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>26</y>
+     <width>110</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>微软雅黑</family>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color:rgb(130,130,130);</string>
+   </property>
+   <property name="text">
+    <string>Account</string>
+   </property>
+  </widget>
+ </widget>
+ <resources>
+  <include location="res.qrc"/>
+ </resources>
+ <connections/>
+</ui>

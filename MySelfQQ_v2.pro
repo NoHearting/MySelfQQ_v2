@@ -20,7 +20,9 @@ SOURCES += main.cpp\
     Util.cpp \
     Log.cpp \
     Test.cpp \
-    HeadShadowWidget.cpp
+    HeadShadowWidget.cpp \
+    ComboBoxItemWidget.cpp \
+    MyComboBox.cpp
 
 HEADERS  += LoginWidget.h \
     Frameless.h \
@@ -28,10 +30,15 @@ HEADERS  += LoginWidget.h \
     Util.h \
     Log.h \
     Test.h \
-    HeadShadowWidget.h
+    HeadShadowWidget.h \
+    ComboBoxItemWidget.h \
+    MyComboBox.h
 
-FORMS    += LoginWidget.ui
+FORMS    += LoginWidget.ui \
+    ComboBoxItemWidget.ui
 
 RESOURCES += \
     qss.qrc \
     res.qrc
+
+RC_ICONS = logo.ico

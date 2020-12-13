@@ -16,5 +16,14 @@
         <file>res/login/checkbox-on.png</file>
         <file>res/login/checkbox-hover.png</file>
         <file>res/login/checkbox.png</file>
+        <file>res/login/close-item-hover.png</file>
+        <file>res/login/close-item.png</file>
+    </qresource>
+    <qresource prefix="/test">
+        <file>Z:/default/Pictures/head/head1.jpg</file>
+        <file>Z:/default/Pictures/head/head2.jpg</file>
+        <file>Z:/default/Pictures/head/head3.jpg</file>
+        <file>Z:/default/Pictures/head/head4.jpg</file>
+        <file>Z:/default/Pictures/head/head0.jpg</file>
     </qresource>
 </RCC>

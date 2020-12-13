@@ -4,6 +4,9 @@
 #include <QWidget>
 #include <QPoint>
 #include <QMouseEvent>
+#include <QListWidget>
+
+#include "ComboBoxItemWidget.h"
 
 namespace Ui {
 class LoginWidget;
@@ -33,6 +36,9 @@ protected:
     /// @brief 重写mouseReleaseEvent函数
     void mouseReleaseEvent(QMouseEvent *);
 
+
+
+    void changeEvent(QEvent *);
 private:
     /// @brief 初始化窗口资源和窗口布局
     void initResourceAndForm();
@@ -40,13 +46,35 @@ private:
     /// @brief 初始化信号和槽
     void initSignalsAndSlots();
 
+    /// @brief 初始化成员堆对象
+    void initObjects();
+
 private:
     Ui::LoginWidget *ui;
 
     QPoint offset;       ///鼠标点击位置和窗口左上角的差值
 
+    QListWidget * comboBoxListWidget;       ///下拉组合框
+
+
 private slots:
+    /// @brief 关闭窗口
     void closeWindow();
+
+    /// @brief 最小化窗口
+    void minWindow();
+
+    /// @brief 根据下拉框选择的值设置账号和密码
+    ///
+    /// @param[in] head 头像
+    /// @param[in] accountNum 账号
+    /// @param[in] password 密码
+    void setAccountAndPassword(const QPixmap & head,
+                               const QString & accountNum,const QString & password);
+
+
+    /// @brief 显示下拉框
+    void showComboBoxPopus();
 };
 
 #endif // LOGINWIDGET_H

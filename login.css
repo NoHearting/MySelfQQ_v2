@@ -30,16 +30,44 @@
 }
 
 
+#lineEditOuterInput{
+    border:none;
+    font-family: "微软雅黑";
+    font-size: 16px;
+    padding:0px 16px 6px;
+    border-bottom:1px solid rgb(229,229,229);
+    background:left top no-repeat url("://res/login/logo1.png");
+    /*background:right top no-repeat url("://res/login/logo1.png");*/
+}
+
+#lineEditOuterInput:hover{
+    border-bottom:1px solid rgb(193,193,193);
+}
+
+#lineEditOuterInput:focus{
+    border-bottom:1px solid rgb(18,183,245);
+    background:left top no-repeat url("://res/login/logo2.png");
+}
+
+#pushButtonDropDown{
+    border:none;
+    background-color: white;
+    background:url("://res/login/arrow.png");
+}
+
+#pushButtonDropDown:hover{
+    background:url("://res/login/arrow-hover.png");
+}
 
 /*账号输入框*/
-#comboBoxAccount{
-    background-color: white;
+#comboBoxAccount:editable{
+    background: white;
     padding:0px 16px 6px;
     font-family: "微软雅黑";
     font-size: 16px;
     border:none;
-    border-bottom:1px solid rgb(229,229,229);
-    background:left top no-repeat url("://res/login/logo1.png");
+    /*border-bottom:1px solid rgb(229,229,229);*/
+    background:left top no-repeat url("://res/login/logo1.png") !important;
 }
 
 #comboBoxAccount::drop-down{
@@ -61,10 +89,30 @@
     image:url("://res/login/arrow-on.png");
 }
 
-#comboBoxAccount:focus{
-    border-bottom:1px solid rgb(18,183,245);
+#comboBoxAccount:editable:focus,
+#comboBoxAccount:editable:on{
+    /*border-bottom:1px solid rgb(18,183,245);*/
     background:left top no-repeat url("://res/login/logo2.png");
 }
+
+#comboBoxAccount QAbstractItemView {
+    outline:0px;
+    height: 60px;
+    background-color: rgba(255,255,255,0.9);
+    border:none;
+    selection-background-color: rgb(237,237,237);
+}
+
+QListView::item{
+    /*background-color: white;*/
+    border:none;
+}
+
+QListView::item:hover{
+    background-color: rgb(237,237,237);
+}
+
+
 
 /*密码输入框*/
 #lineEditPwd{
@@ -76,7 +124,7 @@
     background:left top no-repeat url("://res/login/locker1.png");
 }
 
-#lineEditPwd:hover,#comboBoxAccount:hover{
+#lineEditPwd:hover/*,#comboBoxAccount:hover*/{
     border-bottom:1px solid rgb(193,193,193);
 }
 
@@ -160,3 +208,34 @@
     color: rgb(148,148,148);
 }
 
+
+/*垂直滚动条*/
+QScrollBar:vertical{
+    background:transparent;
+    width:9px;
+    margin:0 0 0 2px 0;
+}
+
+QScrollBar::handle:vertical{
+    background:rgb(195,195,195);
+    min-height:20px;
+    border-radius:3px;
+}
+
+QScrollBar::handle:vertiacl:hover{
+    background:rgba(0,0,0,30%);
+}
+
+QScrollBar::add-line:vertical{
+    height:0px;
+    subcontrol-position:bottom;
+    subcontrol-origin:margin;
+
+}
+
+QScrollBar::sub-line:vertical{
+    height:0px;
+    subcontrol-position:top;
+    subcontrol-origin:margin;
+
+}
