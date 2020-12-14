@@ -290,6 +290,15 @@
          <height>24</height>
         </rect>
        </property>
+       <property name="toolTip">
+        <string>请输入账号</string>
+       </property>
+       <property name="inputMask">
+        <string/>
+       </property>
+       <property name="placeholderText">
+        <string>MQ号码</string>
+       </property>
       </widget>
       <widget class="QPushButton" name="pushButtonDropDown">
        <property name="geometry">

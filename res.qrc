@@ -26,4 +26,8 @@
         <file>Z:/default/Pictures/head/head4.jpg</file>
         <file>Z:/default/Pictures/head/head0.jpg</file>
     </qresource>
+    <qresource prefix="/global">
+        <file>res/global/water-tray.png</file>
+        <file>res/global/water-gray.png</file>
+    </qresource>
 </RCC>

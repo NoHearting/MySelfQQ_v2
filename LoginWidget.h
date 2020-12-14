@@ -5,8 +5,13 @@
 #include <QPoint>
 #include <QMouseEvent>
 #include <QListWidget>
+#include <QMenu>
+#include <QSystemTrayIcon>
+#include <QAction>
 
 #include "ComboBoxItemWidget.h"
+#include "SystemTray.h"
+#include "ToolTipWidget.h"
 
 namespace Ui {
 class LoginWidget;
@@ -37,8 +42,6 @@ protected:
     void mouseReleaseEvent(QMouseEvent *);
 
 
-
-    void changeEvent(QEvent *);
 private:
     /// @brief 初始化窗口资源和窗口布局
     void initResourceAndForm();
@@ -55,6 +58,14 @@ private:
     QPoint offset;       ///鼠标点击位置和窗口左上角的差值
 
     QListWidget * comboBoxListWidget;       ///下拉组合框
+
+
+    // ------ 显示到托盘 -------------
+    Zsj::SystemTray * systemTray;
+
+
+    // 提示窗口
+    ToolTipWidget * toolTip;
 
 
 private slots:
@@ -75,6 +86,9 @@ private slots:
 
     /// @brief 显示下拉框
     void showComboBoxPopus();
+
+    /// @brief 登录
+    void login();
 };
 
 #endif // LOGINWIDGET_H

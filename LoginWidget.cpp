@@ -14,6 +14,7 @@
 #include <QAbstractItemView>
 #include <QtMath>
 #include <QScrollBar>
+#include <QRect>
 
 
 LoginWidget::LoginWidget(QWidget *parent) :
@@ -31,6 +32,9 @@ LoginWidget::~LoginWidget()
     delete ui;
 }
 
+// 含有一个移动bug
+// 当打开比如下拉框、菜单的东西时，点击桌面（不点击下拉框和菜单），此时移动鼠标到窗口，
+// 窗口会突然非法移动
 void LoginWidget::mouseMoveEvent(QMouseEvent * e)
 {
     QPoint afterMovePos = e->globalPos();
@@ -39,11 +43,6 @@ void LoginWidget::mouseMoveEvent(QMouseEvent * e)
 
         QPoint moveDis = afterMovePos-offset;
         move(moveDis);
-        if(qAbs(moveDis.x()) >= 300 || qAbs(moveDis.y()) >= 300){
-            qDebug() <<"invalid move";
-            qDebug() << afterMovePos << "-" << moveDis
-                     << " - " << offset;
-        }
     }
 }
 
@@ -69,26 +68,30 @@ void LoginWidget::mouseReleaseEvent(QMouseEvent *)
     offset = QPoint(0,0);
 }
 
-void LoginWidget::changeEvent(QEvent * e)
-{
-    if ((e->type() == QEvent::WindowStateChange) && isMinimized())
-    {
-        hide();
-        e->ignore();
-    }
-}
 
 void LoginWidget::initObjects()
 {
+    // 组合框
     comboBoxListWidget = new QListWidget(this);
+
+    // 初始化系统托盘
+    systemTray = new Zsj::SystemTray(this);
+    systemTray->showSystemTray();  //显示
+
+    toolTip = new ToolTipWidget(this);
 }
 
 void LoginWidget::initResourceAndForm()
 {
     //设置CSS样式
     this->setStyleSheet(ReadQStyleSheet::readQss("://login.css"));
-    //设置窗口无标题、窗口在最顶层
-    this->setWindowFlags(/*Qt::WindowStaysOnTopHint |*/ Qt::FramelessWindowHint);
+    // 窗口的属性
+    // Qt::Tool 窗口不再任务栏显示
+    // Qt::WindowStaysOnTopHint 窗口在最顶层
+    // Qt::FramelessWindowHint  窗口无标题栏
+    // Qt::WindowSystemMenuHint 允许任务栏按钮右键菜单
+    // Qt::WindowMinimizeButtonHint 允许最小化和还原
+    this->setWindowFlags(Qt::Tool | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::WindowSystemMenuHint | Qt::WindowMinimizeButtonHint);
     //设置窗口背景透明
     this->setAttribute(Qt::WA_TranslucentBackground);
     //设置外层窗口大小为桌面大小
@@ -114,8 +117,6 @@ void LoginWidget::initResourceAndForm()
     QPixmap round = Zsj::pixmapToRound(pixmap,32);
     ui->labelHeadImage->setPixmap(round);
 
-    ui->comboBoxAccount->setCurrentText("test");
-    ui->comboBoxAccount->setEditText("test");
 
     comboBoxListWidget->setFixedHeight(180);
     comboBoxListWidget->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
@@ -123,9 +124,10 @@ void LoginWidget::initResourceAndForm()
     ui->comboBoxAccount->setView(comboBoxListWidget);
     ui->comboBoxAccount->setMaxVisibleItems(3);         //配合CSS显示下拉框正确高度
 
-    // 将视图的父窗口设置为透明的，目的是让QComboBox的下拉框透明
+    // 将视图的父窗口设置为透明的，目的是让QComboBox的下拉框透明  需要配合css
     ui->comboBoxAccount->view()->parentWidget()->setWindowFlags(Qt::Popup|Qt::FramelessWindowHint);
     ui->comboBoxAccount->view()->parentWidget()->setAttribute(Qt::WA_TranslucentBackground);
+
 
     for(int i = 0;i<5;i++){
         QString head = QString(":/test/Z:/default/Pictures/head/head%1.jpg").arg(i);
@@ -153,13 +155,6 @@ void LoginWidget::initSignalsAndSlots()
     connect(ui->toolButtonClose,&QToolButton::clicked,this,&LoginWidget::closeWindow);
     qInfo() << "connect toolButtonClose clicked to LoginWidget::closeWindow";
 
-    connect(ui->toolButtonMin,&QToolButton::clicked,this,[this](){
-        QPixmap pixmap = QPixmap("://Z:/default/Pictures/Image/126.jpg");
-        QPixmap round = Zsj::pixmapToRound(pixmap,32);
-        ui->labelHeadImage->setPixmap(round);
-    });
-    qInfo() << "connect toolButtonMin clicked to lambda test";
-
     connect(ui->pushButtonDropDown,&QPushButton::clicked,this,&LoginWidget::showComboBoxPopus);
     qInfo() << "connect QPushButton cliecked to LoginWidget::showComboBoxPopus";
 
@@ -185,18 +180,29 @@ void LoginWidget::initSignalsAndSlots()
 
     connect(ui->toolButtonMin,&QToolButton::clicked,this,&LoginWidget::minWindow);
     qInfo() << "connect QToolButton::clicked to LoginWidget::minWindow";
+
+    connect(ui->pushButtonLogin,&QPushButton::clicked,this,&LoginWidget::login);
+    qInfo() << "connect QPushButton::clicked to LoginWidget::login";
+
+    // 系统托盘
+    connect(systemTray,&Zsj::SystemTray::sigDefaultOpen,this,&LoginWidget::show);
+    qInfo() << "connect Zsj::SystemTray::sigDefaultOpen to LoginWidget::show";
+    connect(systemTray,&Zsj::SystemTray::sigDefaultQuit,qApp,&QApplication::quit);
+    qInfo() << "connect Zsj::SystemTray::sigDefaultQuit to QApplication::quit";
+    connect(systemTray,&Zsj::SystemTray::sigOpenWindow,this,&LoginWidget::show);
+    qInfo() << "connect Zsj::SystemTray::sigOpenWindow to LoginWidget::show";
 }
 
 
 
 void LoginWidget::closeWindow()
 {
-    this->close();
+    qApp->quit();
 }
 
 void LoginWidget::minWindow()
 {
-    qDebug() << "最小化窗口(未实现）";
+    this->hide();
 }
 
 void LoginWidget::setAccountAndPassword(const QPixmap &head, const QString & accountNum, const QString &password)
@@ -210,4 +216,23 @@ void LoginWidget::setAccountAndPassword(const QPixmap &head, const QString & acc
 void LoginWidget::showComboBoxPopus()
 {
     ui->comboBoxAccount->showPopup();
+}
+
+void LoginWidget::login()
+{
+    QString account = ui->lineEditOuterInput->text();
+    QString password = ui->lineEditPwd->text();
+    if(account.isEmpty() || account.isNull()){
+        QPoint point = ui->lineEditOuterInput->mapToGlobal(ui->lineEditOuterInput->pos()) - QPoint(90,25);
+        qDebug() << point;
+        toolTip->showToolTip("请你输入账号后再登录",point.x(),point.y());
+        return;
+    }
+
+    if(password.isEmpty() || password.isNull()){
+        QPoint point = ui->lineEditPwd->mapToGlobal(ui->lineEditPwd->pos()) - QPoint(90,67);
+        qDebug() << point;
+        toolTip->showToolTip("请你输入密码后再登录",point.x(),point.y());
+        return;
+    }
 }

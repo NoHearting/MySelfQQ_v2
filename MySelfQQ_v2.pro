@@ -22,7 +22,9 @@ SOURCES += main.cpp\
     Test.cpp \
     HeadShadowWidget.cpp \
     ComboBoxItemWidget.cpp \
-    MyComboBox.cpp
+    MyComboBox.cpp \
+    SystemTray.cpp \
+    ToolTipWidget.cpp
 
 HEADERS  += LoginWidget.h \
     Frameless.h \
@@ -32,10 +34,13 @@ HEADERS  += LoginWidget.h \
     Test.h \
     HeadShadowWidget.h \
     ComboBoxItemWidget.h \
-    MyComboBox.h
+    MyComboBox.h \
+    SystemTray.h \
+    ToolTipWidget.h
 
 FORMS    += LoginWidget.ui \
-    ComboBoxItemWidget.ui
+    ComboBoxItemWidget.ui \
+    ToolTipWidget.ui
 
 RESOURCES += \
     qss.qrc \

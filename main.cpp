@@ -11,6 +11,7 @@
 #include <QDebug>
 
 void outputMessage(QtMsgType type, const QMessageLogContext &context, const QString &msg);
+void printAppInfo();
 
 int main(int argc, char *argv[])
 {
@@ -18,6 +19,9 @@ int main(int argc, char *argv[])
 
     //安装日志处理钩子函数
     qInstallMessageHandler(outputMessage);
+
+    printAppInfo();
+
     LoginWidget w;
     w.show();
 
@@ -66,4 +70,11 @@ void outputMessage(QtMsgType type, const QMessageLogContext &context, const QStr
             .arg(msg);
 
     Zsj::Logger::Instance()->log(type,content);
+}
+
+void printAppInfo()
+{
+    qInfo() << "< appName:       " << qApp->applicationName() << ">";
+    qInfo() << "< process id:    " << qApp->applicationPid() << ">";
+    qInfo() << "< process path:  " << qApp->applicationFilePath() << ">";
 }
