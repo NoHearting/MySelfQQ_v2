@@ -43,21 +43,37 @@ void LoginWidget::mouseMoveEvent(QMouseEvent * e)
 
         QPoint moveDis = afterMovePos-offset;
         move(moveDis);
+        if(qAbs(moveDis.x()) > 300 || qAbs(moveDis.y()) > 300){
+            qDebug() << offset << " - " << afterMovePos;
+        }
     }
 }
 
 /*
     鼠标按下事件，按下就获取当前鼠标坐标并计算出当前坐标和窗口左上角的偏移量offset
 
+    含有一个移动bug
+    当打开比如下拉框、菜单的东西时，点击桌面（不点击下拉框和菜单），此时移动鼠标到窗口，
+    窗口会突然非法移动
+
+    原因：
+    由于该移动算法是基于窗口的geometry左上角pos和全局鼠标pos的差值offset来实现移动窗口
+    当出现下拉框、菜单时，单击桌面也会被mousePressEvent所捕获，所以记录了一个错误的offset
+    当鼠标再次碰到窗口时，就会非法移动
+
+    解决办法：
+    先计算出当前主窗口的位置大小QRect，当捕获到点击事件时，判断鼠标的位置是否在主窗口的矩形内，
+    如果在则记录offset，不在则不做任何操作
 */
 void LoginWidget::mousePressEvent(QMouseEvent * e)
 {
-
-    ui->comboBoxAccount->hidePopup();
-
-    QPoint currGlobalPos = e->globalPos();              //当前鼠标的全局位置
-    QPoint currLocPos = this->geometry().topLeft();    //当前鼠标点击窗口的左上角坐标
-    offset = currGlobalPos-currLocPos;
+    QPoint topLeft = ui->widgetLoginTop->mapToGlobal(ui->widgetLoginTop->pos());
+    QRect realGeometry(topLeft,QSize(ui->widgetLogin->size()));  // 当前窗口的真实位置大小
+    QPoint cursorPos = e->globalPos();              //当前鼠标的全局位置
+    if(realGeometry.contains(cursorPos)){
+        QPoint geometryTopLeft = this->geometry().topLeft();    //当前鼠标点击窗口的左上角坐标
+        offset = cursorPos-geometryTopLeft;
+    }
 }
 
 /*
