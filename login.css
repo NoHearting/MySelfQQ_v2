@@ -247,3 +247,15 @@ QScrollBar::sub-line:vertical{
     subcontrol-origin:margin;
 
 }
+
+
+#pushButtonLoginCancel{
+    background:transparent;
+    border:2px solid white;
+    color: white;
+    border-radius: 5px;
+}
+
+#pushButtonLoginCancel:hover{
+    background:rgba(255,255,255,0.2);
+}

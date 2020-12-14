@@ -15,6 +15,7 @@
 #include <QtMath>
 #include <QScrollBar>
 #include <QRect>
+#include <QTimer>
 
 
 LoginWidget::LoginWidget(QWidget *parent) :
@@ -43,9 +44,6 @@ void LoginWidget::mouseMoveEvent(QMouseEvent * e)
 
         QPoint moveDis = afterMovePos-offset;
         move(moveDis);
-        if(qAbs(moveDis.x()) > 300 || qAbs(moveDis.y()) > 300){
-            qDebug() << offset << " - " << afterMovePos;
-        }
     }
 }
 
@@ -67,7 +65,7 @@ void LoginWidget::mouseMoveEvent(QMouseEvent * e)
 */
 void LoginWidget::mousePressEvent(QMouseEvent * e)
 {
-    QPoint topLeft = ui->widgetLoginTop->mapToGlobal(ui->widgetLoginTop->pos());
+    QPoint topLeft = ui->widgetLoginTop->mapToGlobal(ui->widgetLoginTop->pos()) - QPoint(0,130);
     QRect realGeometry(topLeft,QSize(ui->widgetLogin->size()));  // 当前窗口的真实位置大小
     QPoint cursorPos = e->globalPos();              //当前鼠标的全局位置
     if(realGeometry.contains(cursorPos)){
@@ -125,13 +123,15 @@ void LoginWidget::initResourceAndForm()
 
     QMovie * movie = new QMovie("://res/login/bg-movie.gif");
     ui->labelBgMovie->setMovie(movie);
+    ui->labelBgMovieLogin->setMovie(movie);
     movie->start();
     movie->setParent(this);
 
     // 设置默认头像
     QPixmap pixmap("://res/login/default-head.png");
-    QPixmap round = Zsj::pixmapToRound(pixmap,32);
-    ui->labelHeadImage->setPixmap(round);
+    head = Zsj::pixmapToRound(pixmap,32);
+    ui->labelHeadImage->setPixmap(head);
+    ui->labelHeadImageLogin->setPixmap(head);
 
 
     comboBoxListWidget->setFixedHeight(180);
@@ -207,6 +207,12 @@ void LoginWidget::initSignalsAndSlots()
     qInfo() << "connect Zsj::SystemTray::sigDefaultQuit to QApplication::quit";
     connect(systemTray,&Zsj::SystemTray::sigOpenWindow,this,&LoginWidget::show);
     qInfo() << "connect Zsj::SystemTray::sigOpenWindow to LoginWidget::show";
+
+
+    connect(ui->toolButtonSetting,&QToolButton::clicked,this,[=](){
+        qDebug() << "set widget login bottom not visible";
+        ui->widgetLoginBottom->setVisible(false);
+    });
 }
 
 
@@ -251,4 +257,11 @@ void LoginWidget::login()
         toolTip->showToolTip("请你输入密码后再登录",point.x(),point.y());
         return;
     }
+
+    ui->stackedWidget->setCurrentIndex(1);
+
+//    QTimer * timer = new QTimer(this);
+    QTimer::singleShot(3000,this,[=](){
+        ui->stackedWidget->setCurrentIndex(0);
+    });
 }

@@ -59,6 +59,8 @@ private:
 
     QListWidget * comboBoxListWidget;       ///下拉组合框
 
+    QPixmap head;       /// 头像
+
 
     // ------ 显示到托盘 -------------
     Zsj::SystemTray * systemTray;
