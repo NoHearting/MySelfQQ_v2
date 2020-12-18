@@ -4,7 +4,6 @@
 #include <QObject>
 #include <QRect>
 #include <QPoint>
-#include <memory>
 
 namespace Zsj {
 
@@ -12,7 +11,6 @@ class Frameless : public QObject
 {
     Q_OBJECT
 public:
-    typedef std::shared_ptr<Frameless> ptr;
     explicit Frameless(QObject *parent = 0);
 
     void setPadding(int value);

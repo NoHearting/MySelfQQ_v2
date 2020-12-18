@@ -98,7 +98,7 @@ void LoginWidget::initObjects()
 void LoginWidget::initResourceAndForm()
 {
     //设置CSS样式
-    this->setStyleSheet(ReadQStyleSheet::readQss("://login.css"));
+    this->setStyleSheet(Zsj::ReadQStyleSheet::readQss("://css/login.css"));
     // 窗口的属性
     // Qt::Tool 窗口不再任务栏显示
     // Qt::WindowStaysOnTopHint 窗口在最顶层

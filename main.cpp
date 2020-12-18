@@ -2,6 +2,7 @@
 #include "Util.h"
 #include "Log.h"
 #include "Test.h"
+#include "MainWidget.h"
 
 #include <QApplication>
 #include <QMutex>
@@ -22,8 +23,11 @@ int main(int argc, char *argv[])
 
     printAppInfo();
 
-    LoginWidget w;
-    w.show();
+//    LoginWidget w;
+//    w.show();
+
+    MainWidget mainWidget;
+    mainWidget.show();
 
     Zsj::Test().test();
     return a.exec();

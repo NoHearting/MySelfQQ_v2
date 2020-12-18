@@ -1,0 +1,27 @@
+/*#widgetMain{
+	background:rgb(0,183,195);
+}*/
+
+
+QWidget{
+	background: white;
+}
+
+#widgetTopMain,#widgetLineEdit,#widgetTopBar,
+#toolButtonClose,#toolButtonMin,
+#labelHead,#labelNickname,#labelSignature,#lineEditSearch{
+	background: transparent;
+}
+
+
+#widgetTop{
+	background: rgba(255,0,0,0.3);
+}
+
+#widgetMiddle{
+	background: rgba(0,255,0,0.3);
+}
+
+#widgetBottom{
+	background: rgba(0,0,255,0.3);
+}

@@ -12,6 +12,8 @@
 #include <QString>
 #include <QFile>
 
+namespace Zsj{
+
 class ReadQStyleSheet
 {
 public:
@@ -22,5 +24,7 @@ public:
     /// @return QString Qss样式
     static QString readQss(QString filePath);
 };
+
+}
 
 #endif // READQSTYLESHEET_H

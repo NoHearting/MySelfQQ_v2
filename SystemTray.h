@@ -15,7 +15,7 @@ class SystemTray : public QObject
 public:
     explicit SystemTray(QObject *parent = 0);
     SystemTray(QMenu * trayMenu,QPixmap * trayIcon,QObject *parent = 0);
-
+    ~SystemTray();
 
 
     void setSystemTrayMenu(QMenu *value);

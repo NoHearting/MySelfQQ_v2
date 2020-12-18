@@ -67,8 +67,8 @@ public:
     void clearAppenders(){appenders.clear();}
 private:
     Logger(QtMsgType level = QtDebugMsg);
-    Logger(const Logger & rhs);
-    Logger & operator=(const Logger & rhs);
+    Logger(const Logger &);
+    Logger & operator=(const Logger &);
 
 private:
     QtMsgType level;        //日志级别

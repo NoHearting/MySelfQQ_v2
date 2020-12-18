@@ -6,7 +6,7 @@
 #include <QHoverEvent>
 #include <QDebug>
 
-namespace Zsj {
+namespace Zsj{
 
 Frameless::Frameless(QObject *parent) : QObject(parent)
 {
@@ -33,10 +33,8 @@ Frameless::Frameless(QObject *parent) : QObject(parent)
 
 bool Frameless::eventFilter(QObject *watched, QEvent *event)
 {
-//    qDebug() << "eventFilter";
     if(nullptr != widget && watched == widget){
         if(event->type() == QEvent::Resize){
-            qDebug() << "Resize";
             //重新计算八个描点的区域，描点区域的作用还有就是计算鼠标坐标是否在某一个区域内
             int width = widget->width();
             int height = widget->height();
@@ -60,11 +58,9 @@ bool Frameless::eventFilter(QObject *watched, QEvent *event)
             rectRightBottom = QRect(width - padding,height - padding,padding,padding);
         }
         else if(event->type() == QEvent::HoverMove){
-//            qDebug() << "---------- HoverMove";
             //设置对应鼠标形状，这个必须放在这里而不是下面，因为可以在鼠标没有按下时识别
             QHoverEvent * hoverEvent = (QHoverEvent*)event;
             QPoint point = hoverEvent->pos();
-//            qDebug() << resizeEnable;
             if(resizeEnable){
                 if(rectLeft.contains(point)){
                     widget->setCursor(Qt::SizeHorCursor);
@@ -103,7 +99,6 @@ bool Frameless::eventFilter(QObject *watched, QEvent *event)
             if(moveEnable){
                 if(pressed){
                     widget->move(widget->x() + offsetX,widget->y() + offsetY);
-                    qDebug() << "["<<offsetX <<":" <<offsetY <<"]";
                 }
             }
             if(resizeEnable){
@@ -247,5 +242,6 @@ void Frameless::setWidget(QWidget *value)
     }
 }
 
-}
 
+
+}

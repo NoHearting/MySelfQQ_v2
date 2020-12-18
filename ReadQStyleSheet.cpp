@@ -1,5 +1,9 @@
 #include "ReadQStyleSheet.h"
 
+
+namespace Zsj {
+
+
 ReadQStyleSheet::ReadQStyleSheet()
 {
 
@@ -17,3 +21,4 @@ QString ReadQStyleSheet::readQss(QString filePath)
     return QString("");
 }
 
+}

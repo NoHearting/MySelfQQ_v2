@@ -72,9 +72,20 @@ SystemTray::SystemTray(QMenu *trayMenu, QPixmap *trayIcon, QObject *parent) :QOb
     tray->setContextMenu(systemTrayMenu);
 }
 
+SystemTray::~SystemTray()
+{
+    if(systemTrayIcon){
+        delete systemTrayIcon;
+    }
+    if(systemTrayMenu){
+        delete systemTrayMenu;
+    }
+}
+
 void SystemTray::setSystemTrayMenu(QMenu *value)
 {
     if(nullptr != value && !value->isEmpty()){
+        delete systemTrayMenu;
         systemTrayMenu = value;
         tray->setContextMenu(systemTrayMenu);
     }
@@ -86,6 +97,7 @@ void SystemTray::setSystemTrayMenu(QMenu *value)
 void SystemTray::setSystemTrayIcon(QPixmap *value)
 {
     if(nullptr != value && !value->isNull()){
+        delete systemTrayIcon;
         systemTrayIcon = value;
         tray->setIcon(QIcon(*systemTrayIcon));      //这里的QPixmap不应该设置父对象
     }

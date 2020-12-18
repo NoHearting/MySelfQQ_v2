@@ -55,12 +55,12 @@ Logger::Logger(QtMsgType level)
     appenders.append(std::shared_ptr<FileLogAppender>(new FileLogAppender(level)));
 }
 
-Logger::Logger(const Logger &rhs)
+Logger::Logger(const Logger &)
 {
 
 }
 
-Logger &Logger::operator=(const Logger &rhs)
+Logger &Logger::operator=(const Logger &)
 {
     return *this;
 }
