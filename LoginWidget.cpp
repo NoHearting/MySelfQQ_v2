@@ -169,6 +169,8 @@ void LoginWidget::initResourceAndForm()
 void LoginWidget::initSignalsAndSlots()
 {
     connect(ui->toolButtonClose,&QToolButton::clicked,this,&LoginWidget::closeWindow);
+    connect(ui->toolButtonCloseLogin,&QToolButton::clicked,this,&LoginWidget::closeWindow);
+    connect(ui->toolButtonCloseLoginError,&QToolButton::clicked,this,&LoginWidget::closeWindow);
     qInfo() << "connect toolButtonClose clicked to LoginWidget::closeWindow";
 
     connect(ui->pushButtonDropDown,&QPushButton::clicked,this,&LoginWidget::showComboBoxPopus);
@@ -195,6 +197,8 @@ void LoginWidget::initSignalsAndSlots()
 
 
     connect(ui->toolButtonMin,&QToolButton::clicked,this,&LoginWidget::minWindow);
+    connect(ui->toolButtonMinLogin,&QToolButton::clicked,this,&LoginWidget::minWindow);
+    connect(ui->toolButtonMinLoginError,&QToolButton::clicked,this,&LoginWidget::minWindow);
     qInfo() << "connect QToolButton::clicked to LoginWidget::minWindow";
 
     connect(ui->pushButtonLogin,&QPushButton::clicked,this,&LoginWidget::login);
@@ -208,11 +212,16 @@ void LoginWidget::initSignalsAndSlots()
     connect(systemTray,&Zsj::SystemTray::sigOpenWindow,this,&LoginWidget::show);
     qInfo() << "connect Zsj::SystemTray::sigOpenWindow to LoginWidget::show";
 
+    connect(ui->pushButtonLoginCancel,&QPushButton::clicked,this,&LoginWidget::cancelLogin);
+    connect(ui->pushButtonCancelLogin,&QPushButton::clicked,this,&LoginWidget::cancelLogin);
+    qInfo() << "connect QPushButton::clicked to LoginWidget::cancelLogin";
 
-    connect(ui->toolButtonSetting,&QToolButton::clicked,this,[=](){
-        qDebug() << "set widget login bottom not visible";
-        ui->widgetLoginBottom->setVisible(false);
-    });
+
+    connect(ui->toolButtonFindPwd,&QToolButton::clicked,this,&LoginWidget::findPassword);
+    connect(ui->pushButtonFindPwd2,&QPushButton::clicked,this,&LoginWidget::findPassword);
+    connect(ui->pushButtonFindPwd,&QPushButton::clicked,this,&LoginWidget::findPassword);
+    qInfo() << "connect QPushButton::clicked to LoginWidget::findPassword";
+
 }
 
 
@@ -262,6 +271,26 @@ void LoginWidget::login()
 
 //    QTimer * timer = new QTimer(this);
     QTimer::singleShot(3000,this,[=](){
-        ui->stackedWidget->setCurrentIndex(0);
+        if(ui->stackedWidget->currentIndex() != 0){
+            ui->stackedWidget->setCurrentIndex(0);
+            if(account == "123"){
+                qDebug() << "登录成功";
+            }
+            else{
+                ui->stackedWidget->setCurrentIndex(2);
+            }
+        }
     });
+}
+
+void LoginWidget::cancelLogin()
+{
+    if(ui->stackedWidget->currentIndex() != 0){
+        ui->stackedWidget->setCurrentIndex(0);
+    }
+}
+
+void LoginWidget::findPassword()
+{
+    Zsj::openUrl();
 }

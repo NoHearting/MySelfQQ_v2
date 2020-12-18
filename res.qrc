@@ -18,6 +18,7 @@
         <file>res/login/checkbox.png</file>
         <file>res/login/close-item-hover.png</file>
         <file>res/login/close-item.png</file>
+        <file>res/login/waring-fill.png</file>
     </qresource>
     <qresource prefix="/test">
         <file>Z:/default/Pictures/head/head1.jpg</file>

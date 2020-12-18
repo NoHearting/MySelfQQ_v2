@@ -60,12 +60,12 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>430</width>
-        <height>330</height>
+        <width>431</width>
+        <height>331</height>
        </rect>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="pageMain">
        <widget class="QWidget" name="widgetLoginTop" native="true">
@@ -81,9 +81,9 @@
          <property name="geometry">
           <rect>
            <x>398</x>
-           <y>0</y>
+           <y>1</y>
            <width>32</width>
-           <height>32</height>
+           <height>31</height>
           </rect>
          </property>
          <property name="text">
@@ -459,7 +459,205 @@
        <zorder>widgetHeadShadowLogin</zorder>
        <zorder>pushButtonLoginCancel</zorder>
       </widget>
-      <widget class="QWidget" name="pageLoginError"/>
+      <widget class="QWidget" name="pageLoginError">
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QWidget" name="widgetLoginErrorTop" native="true">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>50</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>50</height>
+           </size>
+          </property>
+          <widget class="QToolButton" name="toolButtonCloseLoginError">
+           <property name="geometry">
+            <rect>
+             <x>398</x>
+             <y>0</y>
+             <width>32</width>
+             <height>32</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="res.qrc">
+             <normaloff>:/res/login/close.png</normaloff>:/res/login/close.png</iconset>
+           </property>
+           <property name="autoRaise">
+            <bool>true</bool>
+           </property>
+          </widget>
+          <widget class="QToolButton" name="toolButtonMinLoginError">
+           <property name="geometry">
+            <rect>
+             <x>366</x>
+             <y>0</y>
+             <width>32</width>
+             <height>32</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="res.qrc">
+             <normaloff>:/res/login/min.png</normaloff>:/res/login/min.png</iconset>
+           </property>
+           <property name="autoRaise">
+            <bool>true</bool>
+           </property>
+          </widget>
+          <widget class="QToolButton" name="toolButtonSettingLoginError">
+           <property name="geometry">
+            <rect>
+             <x>334</x>
+             <y>0</y>
+             <width>32</width>
+             <height>32</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="res.qrc">
+             <normaloff>:/res/login/setting.png</normaloff>:/res/login/setting.png</iconset>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
+           <property name="autoRaise">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </widget>
+        </item>
+        <item>
+         <widget class="QWidget" name="widgetLoginError" native="true">
+          <widget class="QLabel" name="label">
+           <property name="geometry">
+            <rect>
+             <x>40</x>
+             <y>30</y>
+             <width>40</width>
+             <height>40</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="pixmap">
+            <pixmap resource="res.qrc">:/res/login/waring-fill.png</pixmap>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_2">
+           <property name="geometry">
+            <rect>
+             <x>100</x>
+             <y>30</y>
+             <width>291</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>你输入的账户名或密码不正确，你要找回密码嘛？</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_3">
+           <property name="geometry">
+            <rect>
+             <x>100</x>
+             <y>70</y>
+             <width>221</width>
+             <height>16</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>如果你的密码丢失或遗忘，可访问MQ中心</string>
+           </property>
+          </widget>
+          <widget class="QPushButton" name="pushButtonFindPwd2">
+           <property name="geometry">
+            <rect>
+             <x>320</x>
+             <y>68</y>
+             <width>61</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>找回密码</string>
+           </property>
+          </widget>
+         </widget>
+        </item>
+        <item>
+         <widget class="QWidget" name="widgetLoginErrorBottom" native="true">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>32</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>32</height>
+           </size>
+          </property>
+          <widget class="QPushButton" name="pushButtonFindPwd">
+           <property name="geometry">
+            <rect>
+             <x>255</x>
+             <y>4</y>
+             <width>80</width>
+             <height>25</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>找回密码</string>
+           </property>
+          </widget>
+          <widget class="QPushButton" name="pushButtonCancelLogin">
+           <property name="geometry">
+            <rect>
+             <x>340</x>
+             <y>4</y>
+             <width>75</width>
+             <height>25</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>取消</string>
+           </property>
+          </widget>
+         </widget>
+        </item>
+       </layout>
+      </widget>
       <widget class="QWidget" name="pageSettings"/>
      </widget>
     </widget>

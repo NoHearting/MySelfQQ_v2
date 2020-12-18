@@ -91,6 +91,12 @@ private slots:
 
     /// @brief 登录
     void login();
+
+    /// @brief 取消登录
+    void cancelLogin();
+
+    /// @brief 找回密码，打开一个网页，执行找回密码
+    void findPassword();
 };
 
 #endif // LOGINWIDGET_H

@@ -6,6 +6,8 @@
 #include <QSize>
 #include <QPixmap>
 #include <QBitmap>
+#include <QDesktopServices>
+#include <QUrl>
 
 namespace Zsj {
 
@@ -46,6 +48,12 @@ QPixmap scaledPixmap(QPixmap & src,int width,int height);
 inline QString GetCurrentDateTime(const QString & format = "yyyy-MM-dd"){
     return qPrintable(QDateTime::currentDateTime().toString(format));
 }
+
+
+/// @brief 打开url
+///
+/// @param QString url
+void openUrl(const QString & url = "http://www.xl-zsj.top");
 
 
 }
