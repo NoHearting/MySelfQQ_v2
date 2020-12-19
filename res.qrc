@@ -31,4 +31,9 @@
         <file>res/global/water-tray.png</file>
         <file>res/global/water-gray.png</file>
     </qresource>
+    <qresource prefix="/main">
+        <file>res/main/bg1.jpg</file>
+        <file>res/main/arrow-down.png</file>
+        <file>res/main/arrow-right.png</file>
+    </qresource>
 </RCC>

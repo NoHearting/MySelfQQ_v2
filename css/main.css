@@ -1,27 +1,111 @@
-/*#widgetMain{
-	background:rgb(0,183,195);
-}*/
-
-
-QWidget{
-	background: white;
-}
-
 #widgetTopMain,#widgetLineEdit,#widgetTopBar,
 #toolButtonClose,#toolButtonMin,
-#labelHead,#labelNickname,#labelSignature,#lineEditSearch{
+#labelHead,#labelNickname,#lineEditSignature{
 	background: transparent;
 }
 
 
 #widgetTop{
-	background: rgba(255,0,0,0.3);
+	background: left top no-repeat url("://Z:/default/Pictures/Image/126.jpg");
 }
 
+#labelHead{
+	border-radius: 25px;
+}
+
+#lineEditSignature{
+	border:none;
+}
+
+#lineEditSignature:hover{
+	border:1px solid black;
+}
+
+#lineEditSignature:focus{
+	border:1px solid black;
+	background: white;
+}
+
+#lineEditSearch{
+	background: rgba(255,255,255,0.2);
+	border:none;
+}
+
+#lineEditSearch:focus{
+	background: white;
+}
+
+
 #widgetMiddle{
-	background: rgba(0,255,0,0.3);
+	background: white;
 }
 
 #widgetBottom{
-	background: rgba(0,0,255,0.3);
+	background: white;
+}
+
+
+#widgetMiddleTop{
+	background: white;
+	border-bottom: 1px solid rgb(240,240,240);
+}
+
+#pushButtonMessage,
+#pushButtonLinkman,
+#pushButtonSpace{
+	background: transparent;
+	border:none;
+	color: rgb(130,130,130);
+}
+
+#pushButtonMessage:checked,
+#pushButtonLinkman:checked,
+#pushButtonSpace:checked{
+	color: rgb(66,46,165);
+	border-bottom: 2px solid rgb(66,46,165);
+}
+
+#treeWidgetFriend,#listWidgetMessage,
+#treeWidgetGroup,#tabWidgetLinkman{
+	border:none;
+}
+
+QTreeView{
+	outline: 0px;
+}
+
+QTreeView::item:hover{
+	background: rgb(242,242,242);
+}
+
+QTreeView::item:selected{
+	background: rgb(235,235,235);
+}
+
+#tabWidgetLinkman::pane{
+
+}
+
+#tabWidgetLinkman::tab-bar{
+	left:5px;
+}
+
+QTabBar::tab{
+	margin: 5px;
+	color: rgb(130,130,130);
+	width: 60px;
+	height: 25px;
+	background: white;
+	border:none;
+	border-radius: 3px;
+}
+
+QTabBar::tab:hover{
+	color:black;
+}
+
+QTabBar::tab:selected{
+	background: rgb(249,249,253);
+	color: rgb(66,46,165);
+	
 }
