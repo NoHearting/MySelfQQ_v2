@@ -56,6 +56,12 @@ void openUrl(const QString &url)
     QDesktopServices::openUrl(QUrl(url));
 }
 
+QPixmap adjustToHead(QPixmap &src, int diameter)
+{
+    QPixmap scaled = scaledPixmap(src,diameter,diameter);
+    return pixmapToRound(scaled,diameter / 2);
+}
+
 
 
 }

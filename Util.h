@@ -9,6 +9,8 @@
 #include <QDesktopServices>
 #include <QUrl>
 
+# define DEBUG 1
+
 namespace Zsj {
 
 
@@ -16,6 +18,24 @@ class Util
 {
 public:
     Util();
+};
+
+struct HeadSize{
+    /// 主页面头像
+    static const quint8 mainWidth = 54;
+    static const quint8 mainHeight = 54;
+
+    /// 联系人列表中好友头像
+    static const quint8 linkmanItemWidth = 40;
+    static const quint8 linkmanItemHeight = 40;
+
+    /// 联系人列表中群组头像
+    static const quint8 linkmanGroupWidth = 30;
+    static const quint8 linkmanGroupHeight = 30;
+
+    /// 消息列表中头像
+    static const quint8 messageItemWidth = 40;
+    static const quint8 messageItemHeight = 40;
 };
 
 /// @brief 获取当前进程id
@@ -40,6 +60,13 @@ QPixmap pixmapToRound(QPixmap & src,int radius);
 /// @param[in] height 目标图片的高
 /// @return QPixmap
 QPixmap scaledPixmap(QPixmap & src,int width,int height);
+
+/// @brief 直接缩放为适应头像大小
+///     主要是先缩放，在变为圆形
+///     scaledPixmap + pixmapToRound
+/// @param[in] src 将要处理的图片
+/// @param[in] diameter 目标图片直径
+QPixmap adjustToHead(QPixmap & src,int diameter);
 
 /// @brief 获取当前的时间
 ///

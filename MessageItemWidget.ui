@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>LinkmanItemWidget</class>
- <widget class="QWidget" name="LinkmanItemWidget">
+ <class>MessageItemWidget</class>
+ <widget class="QWidget" name="MessageItemWidget">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -34,11 +34,17 @@
   <widget class="QLabel" name="labelHead">
    <property name="geometry">
     <rect>
-     <x>16</x>
+     <x>9</x>
      <y>10</y>
      <width>40</width>
      <height>40</height>
     </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
    </property>
    <property name="minimumSize">
     <size>
@@ -52,11 +58,6 @@
      <height>40</height>
     </size>
    </property>
-   <property name="font">
-    <font>
-     <family>微软雅黑</family>
-    </font>
-   </property>
    <property name="styleSheet">
     <string notr="true">border-radius:20px;</string>
    </property>
@@ -67,80 +68,114 @@
   <widget class="QLabel" name="labelNickname">
    <property name="geometry">
     <rect>
-     <x>63</x>
-     <y>10</y>
+     <x>55</x>
+     <y>9</y>
      <width>24</width>
      <height>17</height>
     </rect>
    </property>
-   <property name="sizePolicy">
-    <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
-     <horstretch>0</horstretch>
-     <verstretch>0</verstretch>
-    </sizepolicy>
-   </property>
    <property name="font">
     <font>
      <family>微软雅黑</family>
+     <pointsize>10</pointsize>
     </font>
    </property>
-   <property name="styleSheet">
-    <string notr="true"/>
-   </property>
    <property name="text">
-    <string>昵称</string>
-   </property>
-   <property name="textFormat">
-    <enum>Qt::PlainText</enum>
-   </property>
-   <property name="scaledContents">
-    <bool>false</bool>
-   </property>
-   <property name="openExternalLinks">
-    <bool>false</bool>
+    <string/>
    </property>
   </widget>
-  <widget class="QLabel" name="labelSignature">
+  <widget class="QLabel" name="labelDate">
    <property name="geometry">
     <rect>
-     <x>62</x>
-     <y>34</y>
-     <width>22</width>
+     <x>283</x>
+     <y>9</y>
+     <width>24</width>
      <height>16</height>
     </rect>
    </property>
    <property name="font">
     <font>
      <family>微软雅黑</family>
-     <pointsize>8</pointsize>
+     <pointsize>9</pointsize>
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">color:rgb(121,121,121);</string>
+    <string notr="true">color:rgb(208,207,209);
+</string>
    </property>
    <property name="text">
-    <string>签名</string>
+    <string/>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
    </property>
   </widget>
-  <widget class="QLabel" name="labelRemark">
+  <widget class="QLabel" name="labelSymbol">
    <property name="geometry">
     <rect>
-     <x>290</x>
-     <y>10</y>
-     <width>32</width>
-     <height>17</height>
+     <x>283</x>
+     <y>33</y>
+     <width>24</width>
+     <height>18</height>
     </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>18</width>
+     <height>18</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>16777215</width>
+     <height>18</height>
+    </size>
    </property>
    <property name="font">
     <font>
      <family>微软雅黑</family>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelHint">
+   <property name="geometry">
+    <rect>
+     <x>55</x>
+     <y>33</y>
+     <width>24</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">color:rgb(121,121,121);</string>
+    <string notr="true">color:#f47921;</string>
    </property>
    <property name="text">
-    <string>(备注)</string>
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelMessage">
+   <property name="geometry">
+    <rect>
+     <x>169</x>
+     <y>33</y>
+     <width>24</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
    </property>
   </widget>
  </widget>

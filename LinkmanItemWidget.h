@@ -16,7 +16,7 @@ class LinkmanItemWidget : public QWidget
 public:
     explicit LinkmanItemWidget(QWidget *parent = 0);
 
-    LinkmanItemWidget(const QPixmap & head,const QString & nickname,const QString & remark,const QString & signature,QWidget *parent = 0);
+    LinkmanItemWidget(QPixmap & head,const QString & nickname,const QString & remark,const QString & signature,QWidget *parent = 0);
     ~LinkmanItemWidget();
 
     void setHead(const QPixmap & head);

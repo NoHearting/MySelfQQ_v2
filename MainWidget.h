@@ -7,8 +7,7 @@
 
 #include "Frameless.h"
 #include "SystemTray.h"
-#include "LinkmanGroupWidget.h"
-#include "LinkmanItemWidget.h"
+#include "Linkman.h"
 
 namespace Ui {
 class MainWidget;
@@ -39,6 +38,9 @@ private:
     /// @brief 初始化联系人群聊列表
     void initManlinkGroup();
 
+    /// @brief 初始化消息列表
+    void initMessageList();
+
 private:
     /// @brief 添加好友列表的根节点
     ///
@@ -56,6 +58,13 @@ private:
     QTreeWidgetItem* addTreeWidgetChildNode(QTreeWidget * treeWidget,QTreeWidgetItem * rootNode,
                                 const QPixmap & head,const QString & nickname,const QString & remark,
                                 const QString & signature);
+    QTreeWidgetItem* addTreeWidgetChildNode(QTreeWidget * treeWidget,QTreeWidgetItem * rootNode,
+                                const QPixmap & head,const QString & nickname,const QString & date);
+
+
+    /// 设置头像
+    void setHead(QPixmap & pixmap);
+    void setHead(const QString & pixmapPath);
 
 private:
     Ui::MainWidget *ui;
@@ -68,11 +77,16 @@ private:
     Zsj::SystemTray * systemTray;
 
 private slots:
+
+    // ------- 最顶部功能按钮 ---------
     /// @brief 关闭窗口
     void closeWindow();
 
     /// @brief 最小化窗口
     void minWindow();
+
+    /// @brief 界面管理器
+    void interfaceManager();
 
 
     /// @brief 切换到消息界面

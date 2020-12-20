@@ -1,11 +1,14 @@
 #include "MainWidget.h"
 #include "ui_MainWidget.h"
 #include "ReadQStyleSheet.h"
+#include "Util.h"
+#include "MessageItemWidget.h"
 
 
 #include <QDebug>
 #include <QPixmap>
 #include <QGraphicsDropShadowEffect>
+#include <QScrollBar>
 
 
 MainWidget::MainWidget(QWidget *parent) :
@@ -16,6 +19,10 @@ MainWidget::MainWidget(QWidget *parent) :
     initObjects();
     initResourceAndForm();
     initSignalsAndSlots();
+
+#ifdef DEBUG
+    setHead(":/test/Z:/default/Pictures/head/head2.jpg");
+#endif
 }
 
 MainWidget::~MainWidget()
@@ -37,6 +44,7 @@ void MainWidget::initResourceAndForm()
     this->setWindowFlags(Qt::Tool | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
     this->setAttribute(Qt::WA_TranslucentBackground);
     frameless = new Zsj::Frameless(this);
+    frameless->setPadding(2);
     frameless->setWidget(this);      //设置窗口可移动，可扩展
 
     systemTray = new Zsj::SystemTray(this);
@@ -59,19 +67,35 @@ void MainWidget::initResourceAndForm()
     switchToLinkmanWidget();
 
     // 初始化好友列表
-    ui->treeWidgetFriend->setIndentation(0);
+
+//    ui->treeWidgetFriend->verticalScrollBar()->set
+    ui->treeWidgetFriend->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
     initManlinkFriend();
     initManlinkGroup();
+
+    // 初始化消息列表
+    initMessageList();
+
+    // 初始化搜索框的搜索图标
+    QAction * action = new QAction(ui->lineEditSearch);
+    action->setIcon(QIcon(":/main/res/main/search.png"));
+    ui->lineEditSearch->addAction(action,QLineEdit::LeadingPosition);
+
+    ui->labelNickname->adjustSize();
 
 }
 
 void MainWidget::initSignalsAndSlots()
 {
+    // ---------- 顶部功能按钮 -----------------
     connect(ui->toolButtonClose,&QToolButton::clicked,this,&MainWidget::closeWindow);
     qInfo() << "connect QToolButton::clicked to MainWidget::closeWindow";
 
     connect(ui->toolButtonMin,&QToolButton::clicked,this,&MainWidget::minWindow);
     qInfo() << "connect toolButtonMin::clicked to MainWidget::minWindow";
+
+    connect(ui->toolButtonAdd,&QToolButton::clicked,this,&MainWidget::interfaceManager);
+    qInfo() << "connect ui->toolButtonAdd::clicked to MainWidget::interfaceManager";
 
     connect(systemTray,&Zsj::SystemTray::sigOpenWindow,this,&MainWidget::show);
     qInfo() << "connect systemTray::sigOpenWindow to MainWidget::show";
@@ -86,14 +110,23 @@ void MainWidget::initSignalsAndSlots()
     qInfo() << "connect ui->pushButtonSpace::clicked to MainWidget::switchToSpaceWidget";
 
     connect(ui->treeWidgetFriend,&QTreeWidget::itemClicked,this,&MainWidget::treeWidgetItemClick);
-    qInfo() << "connect ui->treeWidgetFriend::itemClicked to MainWidget::treeWidgetItemClick";
+    connect(ui->treeWidgetGroup,&QTreeWidget::itemClicked,this,&MainWidget::treeWidgetItemClick);
+    qInfo() << "connect ui->treeWidgetGroup,ui->treeWidgetFriend::itemClicked to MainWidget::treeWidgetItemClick";
 
     connect(ui->treeWidgetFriend,&QTreeWidget::itemExpanded,this,&MainWidget::expanded);
+    connect(ui->treeWidgetGroup,&QTreeWidget::itemExpanded,this,&MainWidget::expanded);
+    qInfo() << "connect treeWidgetFriend,treeWidgetGroup::itemExpanded to MainWidget::expanded";
     connect(ui->treeWidgetFriend,&QTreeWidget::itemCollapsed,this,&MainWidget::collasped);
+    connect(ui->treeWidgetGroup,&QTreeWidget::itemCollapsed,this,&MainWidget::collasped);
+    qInfo() << "connect treeWidgetFriend,treeWidgetGroup::itemExpanded to MainWidget::collasped`";
 }
 
 void MainWidget::initManlinkFriend()
 {
+    // 设置为没有缩进
+    ui->treeWidgetFriend->setIndentation(0);
+
+
     QTreeWidgetItem * rootFriends = this->addTreeWidgetRootNode(ui->treeWidgetFriend,"我的好友",3,12);
     QTreeWidgetItem * rootStangers = this->addTreeWidgetRootNode(ui->treeWidgetFriend,"陌生人",4,6);
     QPixmap head(":/test/Z:/default/Pictures/head/head2.jpg");
@@ -103,14 +136,52 @@ void MainWidget::initManlinkFriend()
     QPixmap head2(":/test/Z:/default/Pictures/head/head3.jpg");
     this->addTreeWidgetChildNode(ui->treeWidgetFriend,rootStangers,head2,"陌生人1","备注1","签名1");
     this->addTreeWidgetChildNode(ui->treeWidgetFriend,rootStangers,head2,"陌生人3","备注2","签名2");
-    if(rootFriends == rootStangers){
-        qDebug() << "rootFriends == rootStangers";
+
+    for(int i = 0;i<15;i++){
+        QPixmap head3(QString(":/test/Z:/default/Pictures/head/head%1.jpg").arg(i % 5));
+        this->addTreeWidgetChildNode(ui->treeWidgetFriend,rootFriends,head,QString("狗头%1").arg(i),QString("备注%1").arg(i),QString("签名%1").arg(i));
     }
 }
 
 void MainWidget::initManlinkGroup()
 {
+    // 设置为没有缩进
+    ui->treeWidgetGroup->setIndentation(0);
 
+    QTreeWidgetItem * rootTop = this->addTreeWidgetRootNode(ui->treeWidgetGroup,"置顶群聊",3,3);
+    QTreeWidgetItem * rootMy = this->addTreeWidgetRootNode(ui->treeWidgetGroup,"我的群聊",10,59);
+    QTreeWidgetItem * rootMultile = this->addTreeWidgetRootNode(ui->treeWidgetGroup,"我的多人聊天",4,4);
+    QTreeWidgetItem * rootNull = this->addTreeWidgetRootNode(ui->treeWidgetGroup,"",0,0);
+
+    qDebug() << "init root";
+    QPixmap head1(":/test/Z:/default/Pictures/head/head4.jpg");
+    this->addTreeWidgetChildNode(ui->treeWidgetGroup,rootTop,head1,"富婆交流会所","昨天");
+    this->addTreeWidgetChildNode(ui->treeWidgetGroup,rootTop,head1,"2017级计科专业","7:30");
+    this->addTreeWidgetChildNode(ui->treeWidgetGroup,rootTop,head1,"星耀2020，信服起航！","12-15");
+
+    QPixmap head2(":/test/Z:/default/Pictures/head/head4.jpg");
+    this->addTreeWidgetChildNode(ui->treeWidgetGroup,rootMy,head2,"老污群","11-28");
+    this->addTreeWidgetChildNode(ui->treeWidgetGroup,rootMy,head2,"2017级计科专业","7:30");
+    this->addTreeWidgetChildNode(ui->treeWidgetGroup,rootMy,head2,"sylar技术群","16:17");
+
+    QPixmap head3(":/test/Z:/default/Pictures/head/head4.jpg");
+    this->addTreeWidgetChildNode(ui->treeWidgetGroup,rootMultile,head3,"项管-鲁嘉嘉、无心","2017-12-1");
+    this->addTreeWidgetChildNode(ui->treeWidgetGroup,rootMultile,head3,"张家豪、中秋、无心","2017-11-11");
+    this->addTreeWidgetChildNode(ui->treeWidgetGroup,rootMultile,head3,"无心","2017-6-3");
+}
+
+void MainWidget::initMessageList()
+{
+    for(int i = 0;i<15;i++){
+        QListWidgetItem * item = new QListWidgetItem(ui->listWidgetMessage);
+        ui->listWidgetMessage->addItem(item);
+        qDebug() << ui->widgetMiddle->width();
+        item->setSizeHint(QSize(ui->widgetMiddle->width(),60));
+        QPixmap head(":/test/Z:/default/Pictures/head/head2.jpg");
+        MessageItemWidget * messageItem = new MessageItemWidget(head,QString("昵称%1").arg(i),QString("消息%1").arg(i),
+                                                                QString("7-%1").arg(i),i % 2,i%2,ui->listWidgetMessage);
+        ui->listWidgetMessage->setItemWidget(item,messageItem);
+    }
 }
 
 QTreeWidgetItem* MainWidget::addTreeWidgetRootNode(QTreeWidget *treeWidget, LinkmanGroupWidget *group)
@@ -174,7 +245,7 @@ QTreeWidgetItem* MainWidget::addTreeWidgetChildNode(QTreeWidget *treeWidget, QTr
         QTreeWidgetItem * child = new QTreeWidgetItem(rootNode);
         child->setData(0,Qt::UserRole,1);
         QString remarkReal = QString("(%1)").arg(remark);
-        LinkmanItemWidget * item = new LinkmanItemWidget(head,nickname,remarkReal,signature,treeWidget);
+        LinkmanItemWidget * item = new LinkmanItemWidget(const_cast<QPixmap &>(head),nickname,remarkReal,signature,treeWidget);
         rootNode->addChild(child);
         treeWidget->setItemWidget(child,0,item);
         return child;
@@ -185,6 +256,35 @@ QTreeWidgetItem* MainWidget::addTreeWidgetChildNode(QTreeWidget *treeWidget, QTr
     }
 }
 
+QTreeWidgetItem *MainWidget::addTreeWidgetChildNode(QTreeWidget *treeWidget, QTreeWidgetItem *rootNode, const QPixmap &head, const QString &nickname, const QString &date)
+{
+    if(nullptr != treeWidget && nullptr != rootNode){
+        QTreeWidgetItem * child = new QTreeWidgetItem(rootNode);
+        child->setData(0,Qt::UserRole,1);
+        LinkmanGroupItemWidget * item = new LinkmanGroupItemWidget(const_cast<QPixmap&>(head),nickname,date,treeWidget);
+        rootNode->addChild(child);
+        treeWidget->setItemWidget(child,0,item);
+        return child;
+    }
+    else{
+        qCritical() << "QTreeWidget,QTreeWidgetItem- Object is nullptr!";
+        return nullptr;
+    }
+}
+
+void MainWidget::setHead(QPixmap &pixmap)
+{
+    QPixmap scaled = Zsj::scaledPixmap(pixmap,Zsj::HeadSize::mainWidth,Zsj::HeadSize::mainHeight);
+    QPixmap result = Zsj::pixmapToRound(scaled,Zsj::HeadSize::mainHeight / 2);
+    ui->labelHead->setPixmap(result);
+}
+
+void MainWidget::setHead(const QString &pixmapPath)
+{
+    QPixmap origin(pixmapPath);
+    setHead(origin);
+}
+
 void MainWidget::closeWindow()
 {
     qApp->quit();
@@ -193,6 +293,13 @@ void MainWidget::closeWindow()
 void MainWidget::minWindow()
 {
     this->hide();
+}
+
+void MainWidget::interfaceManager()
+{
+//    ui->toolButtonEmail->hide();
+    bool isShow = ui->toolButtonEmail->isHidden();
+    ui->toolButtonEmail->setHidden(!isShow);
 }
 
 void MainWidget::switchToMessageWidget()

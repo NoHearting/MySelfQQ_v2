@@ -4,13 +4,38 @@
 	background: transparent;
 }
 
+#toolButtonMin:hover,
+#toolButtonEmail:hover,
+#toolButtonSkin:hover,
+#toolButtonAdd:hover,
+#toolButtonMore:hover{
+	background: rgba(0,0,0,0.1);
+}
+
+#widgetBottom{
+	border-top:1px solid rgb(240,240,240);
+}
+
+#toolButtonMenu:hover,
+#toolButtonAddFriend:hover,
+#toolButtonMusic:hover,
+#toolButtonApply:hover{
+	background: rgb(242,242,242);
+	border:none;
+}
+
+#toolButtonClose:hover{
+	background: rgb(255,84,57);
+	border:none;
+}
+
 
 #widgetTop{
 	background: left top no-repeat url("://Z:/default/Pictures/Image/126.jpg");
 }
 
 #labelHead{
-	border-radius: 25px;
+	border-radius: 27px;
 }
 
 #lineEditSignature{
@@ -29,6 +54,8 @@
 #lineEditSearch{
 	background: rgba(255,255,255,0.2);
 	border:none;
+	/*padding: 5px 10px;
+	background: left 10px top 5px no-repeat url(":/main/res/main/search.png");*/
 }
 
 #lineEditSearch:focus{
@@ -108,4 +135,48 @@ QTabBar::tab:selected{
 	background: rgb(249,249,253);
 	color: rgb(66,46,165);
 	
+}
+
+
+/*垂直滚动条*/
+QScrollBar:vertical{
+    background:transparent;
+    width:6px;
+    margin:0 0 0 2px;
+}
+
+QScrollBar::handle:vertical{
+    min-height:20px;
+    border-radius:2px;
+}
+
+QScrollBar::handle:vertiacl:hover{
+    background:rgb(215,215,215);
+}
+
+QScrollBar::add-line:vertical{
+    height:0px;
+    subcontrol-position:bottom;
+    subcontrol-origin:margin;
+
+}
+
+QScrollBar::sub-line:vertical{
+    height:0px;
+    subcontrol-position:top;
+    subcontrol-origin:margin;
+
+}
+
+QListView{
+	margin-top: 5px;
+	outline: 0px;
+}
+
+QListView::item:hover{
+	background: rgb(241,240,243);
+}
+
+QListView::item:selected{
+	background: rgb(235,234,237);
 }

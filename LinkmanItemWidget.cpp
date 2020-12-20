@@ -1,5 +1,7 @@
 #include "LinkmanItemWidget.h"
 #include "ui_LinkmanItemWidget.h"
+#include "Util.h"
+
 #include <QDebug>
 #include <QPoint>
 
@@ -10,14 +12,15 @@ LinkmanItemWidget::LinkmanItemWidget(QWidget *parent) :
     ui->setupUi(this);
 }
 
-LinkmanItemWidget::LinkmanItemWidget(const QPixmap &head, const QString &nickname,
+LinkmanItemWidget::LinkmanItemWidget(QPixmap &head, const QString &nickname,
                                      const QString &remark, const QString &signature,
                                      QWidget *parent) :
     QWidget(parent),
     ui(new Ui::LinkmanItemWidget)
 {
     ui->setupUi(this);
-    ui->labelHead->setPixmap(head);
+    QPixmap round = Zsj::adjustToHead(head,Zsj::HeadSize::linkmanItemWidth);
+    ui->labelHead->setPixmap(round);
     ui->labelNickname->setText(nickname);
     ui->labelRemark->setText(remark);
     ui->labelSignature->setText(signature);

@@ -35,5 +35,16 @@
         <file>res/main/bg1.jpg</file>
         <file>res/main/arrow-down.png</file>
         <file>res/main/arrow-right.png</file>
+        <file>res/main/search.png</file>
+        <file>res/main/email.png</file>
+        <file>res/main/main-close.png</file>
+        <file>res/main/main-min.png</file>
+        <file>res/main/main-add.png</file>
+        <file>res/main/skin.png</file>
+        <file>res/main/main-more.png</file>
+        <file>res/main/apply.png</file>
+        <file>res/main/menu.png</file>
+        <file>res/main/music.png</file>
+        <file>res/main/add-friend.png</file>
     </qresource>
 </RCC>

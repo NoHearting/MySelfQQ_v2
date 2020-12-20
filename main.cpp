@@ -11,6 +11,9 @@
 #include <QThread>
 #include <QDebug>
 
+#include <QtGlobal>
+#include <QTime>
+
 void outputMessage(QtMsgType type, const QMessageLogContext &context, const QString &msg);
 void printAppInfo();
 
@@ -18,6 +21,9 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
+#ifdef DEBUG
+    qsrand(QTime(0,0,0).secsTo(QTime::currentTime()));
+#endif
     //安装日志处理钩子函数
     qInstallMessageHandler(outputMessage);
 

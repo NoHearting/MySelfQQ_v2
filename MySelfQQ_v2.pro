@@ -27,7 +27,9 @@ SOURCES += main.cpp\
     ToolTipWidget.cpp \
     MainWidget.cpp \
     LinkmanItemWidget.cpp \
-    LinkmanGroupWidget.cpp
+    LinkmanGroupWidget.cpp \
+    LinkmanGroupItemWidget.cpp \
+    MessageItemWidget.cpp
 
 HEADERS  += LoginWidget.h \
     Frameless.h \
@@ -42,14 +44,19 @@ HEADERS  += LoginWidget.h \
     ToolTipWidget.h \
     MainWidget.h \
     LinkmanItemWidget.h \
-    LinkmanGroupWidget.h
+    LinkmanGroupWidget.h \
+    LinkmanGroupItemWidget.h \
+    Linkman.h \
+    MessageItemWidget.h
 
 FORMS    += LoginWidget.ui \
     ComboBoxItemWidget.ui \
     ToolTipWidget.ui \
     MainWidget.ui \
     LinkmanItemWidget.ui \
-    LinkmanGroupWidget.ui
+    LinkmanGroupWidget.ui \
+    LinkmanGroupItemWidget.ui \
+    MessageItemWidget.ui
 
 RESOURCES += \
     qss.qrc \
