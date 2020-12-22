@@ -12,7 +12,7 @@
 #include <QString>
 #include <QFile>
 
-namespace Zsj{
+namespace zsj{
 
 class ReadQStyleSheet
 {

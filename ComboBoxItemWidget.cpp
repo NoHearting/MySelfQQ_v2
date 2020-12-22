@@ -101,14 +101,9 @@ void ComboBoxItemWidget::setPassword(const QString &value)
     password = value;
 }
 
-void ComboBoxItemWidget::mousePressEvent(QMouseEvent * e)
-{
-
-}
-
 void ComboBoxItemWidget::mouseReleaseEvent(QMouseEvent *e)
 {
-    QPixmap origin = Zsj::scaledPixmap(head,64,64);
+    QPixmap origin = zsj::scaledPixmap(head,64,64);
     emit click(origin,accountNum,password);
     QWidget::mouseReleaseEvent(e);
 }

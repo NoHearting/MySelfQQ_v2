@@ -6,7 +6,7 @@
 #include <QDesktopWidget>
 #include <QWidget>
 
-namespace Zsj {
+namespace zsj {
 
 Test::Test()
 {

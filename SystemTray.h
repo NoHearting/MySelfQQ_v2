@@ -7,7 +7,7 @@
 #include <QAction>
 #include <QMenu>
 
-namespace Zsj{
+namespace zsj{
 
 class SystemTray : public QObject
 {

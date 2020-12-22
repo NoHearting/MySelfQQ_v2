@@ -9,7 +9,7 @@
 #include <QFile>
 #include <QTextStream>
 
-namespace Zsj {
+namespace zsj {
 
 class LogAppender{
 public:

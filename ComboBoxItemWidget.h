@@ -40,8 +40,6 @@ public:
     void setPassword(const QString &value);
 
 protected:
-    void mousePressEvent(QMouseEvent *);
-
     /// @brief 鼠标松开时发送点击信号
     void mouseReleaseEvent(QMouseEvent *);
 

@@ -1,7 +1,7 @@
 #ifndef TEST_H
 #define TEST_H
 
-namespace Zsj{
+namespace zsj{
 
 class Test
 {

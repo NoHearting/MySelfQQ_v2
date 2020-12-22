@@ -5,7 +5,8 @@
 #include <QRect>
 #include <QPoint>
 
-namespace Zsj {
+namespace zsj
+{
 
 class Frameless : public QObject
 {
@@ -27,7 +28,7 @@ private:
     int padding;                    //边距
     bool moveEnable;               //可移动
     bool resizeEnable;              //可拉伸
-    QWidget * widget;               //无边框窗体
+    QWidget *widget;                //无边框窗体
 
     bool pressed;                   //鼠标按下
     bool pressedLeft;               //鼠标按下左侧
@@ -39,7 +40,7 @@ private:
     bool pressedRightTop;           //右上
     bool pressedRightBottom;        //右下
 
-    int rectX,rectY,rectW,rectH;    //窗体坐标+宽高
+    int rectX, rectY, rectW, rectH; //窗体坐标+宽高
     QPoint lastPos;                 //鼠标按下处坐标
 
     QRect rectLeft;                 //左侧区域
@@ -52,7 +53,6 @@ private:
     QRect rectRightBottom;          //右下侧区域
 
 signals:
-
 public slots:
 };
 

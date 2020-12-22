@@ -89,7 +89,7 @@ void LoginWidget::initObjects()
     comboBoxListWidget = new QListWidget(this);
 
     // 初始化系统托盘
-    systemTray = new Zsj::SystemTray(this);
+    systemTray = new zsj::SystemTray(this);
     systemTray->showSystemTray();  //显示
 
     toolTip = new ToolTipWidget(this);
@@ -98,7 +98,7 @@ void LoginWidget::initObjects()
 void LoginWidget::initResourceAndForm()
 {
     //设置CSS样式
-    this->setStyleSheet(Zsj::ReadQStyleSheet::readQss("://css/login.css"));
+    this->setStyleSheet(zsj::ReadQStyleSheet::readQss("://css/login.css"));
     // 窗口的属性
     // Qt::Tool 窗口不再任务栏显示
     // Qt::WindowStaysOnTopHint 窗口在最顶层
@@ -109,7 +109,7 @@ void LoginWidget::initResourceAndForm()
     //设置窗口背景透明
     this->setAttribute(Qt::WA_TranslucentBackground);
     //设置外层窗口大小为桌面大小
-    QSize desktop = Zsj::getDesktopSize();
+    QSize desktop = zsj::getDesktopSize();
     this->setGeometry(0,0,desktop.width(),desktop.height());
 
     //设置窗口阴影
@@ -129,7 +129,7 @@ void LoginWidget::initResourceAndForm()
 
     // 设置默认头像
     QPixmap pixmap("://res/login/default-head.png");
-    head = Zsj::pixmapToRound(pixmap,32);
+    head = zsj::pixmapToRound(pixmap,32);
     ui->labelHeadImage->setPixmap(head);
     ui->labelHeadImageLogin->setPixmap(head);
 
@@ -148,8 +148,8 @@ void LoginWidget::initResourceAndForm()
     for(int i = 0;i<5;i++){
         QString head = QString(":/test/Z:/default/Pictures/head/head%1.jpg").arg(i);
         QPixmap origin(head);
-        QPixmap scaled = Zsj::scaledPixmap(origin,40,40);
-        QPixmap round = Zsj::pixmapToRound(scaled,20);
+        QPixmap scaled = zsj::scaledPixmap(origin,40,40);
+        QPixmap round = zsj::pixmapToRound(scaled,20);
         ComboBoxItemWidget * item = new ComboBoxItemWidget(round,
                                                            QString("无心-%1").arg(i),
                                                            "123512341",
@@ -205,12 +205,12 @@ void LoginWidget::initSignalsAndSlots()
     qInfo() << "connect QPushButton::clicked to LoginWidget::login";
 
     // 系统托盘
-    connect(systemTray,&Zsj::SystemTray::sigDefaultOpen,this,&LoginWidget::show);
-    qInfo() << "connect Zsj::SystemTray::sigDefaultOpen to LoginWidget::show";
-    connect(systemTray,&Zsj::SystemTray::sigDefaultQuit,qApp,&QApplication::quit);
-    qInfo() << "connect Zsj::SystemTray::sigDefaultQuit to QApplication::quit";
-    connect(systemTray,&Zsj::SystemTray::sigOpenWindow,this,&LoginWidget::show);
-    qInfo() << "connect Zsj::SystemTray::sigOpenWindow to LoginWidget::show";
+    connect(systemTray,&zsj::SystemTray::sigDefaultOpen,this,&LoginWidget::show);
+    qInfo() << "connect zsj::SystemTray::sigDefaultOpen to LoginWidget::show";
+    connect(systemTray,&zsj::SystemTray::sigDefaultQuit,qApp,&QApplication::quit);
+    qInfo() << "connect zsj::SystemTray::sigDefaultQuit to QApplication::quit";
+    connect(systemTray,&zsj::SystemTray::sigOpenWindow,this,&LoginWidget::show);
+    qInfo() << "connect zsj::SystemTray::sigOpenWindow to LoginWidget::show";
 
     connect(ui->pushButtonLoginCancel,&QPushButton::clicked,this,&LoginWidget::cancelLogin);
     connect(ui->pushButtonCancelLogin,&QPushButton::clicked,this,&LoginWidget::cancelLogin);
@@ -292,5 +292,5 @@ void LoginWidget::cancelLogin()
 
 void LoginWidget::findPassword()
 {
-    Zsj::openUrl();
+    zsj::openUrl();
 }

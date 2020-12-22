@@ -4,26 +4,30 @@
 
 #include <QDebug>
 #include <QPoint>
+#include <memory>
 
 LinkmanItemWidget::LinkmanItemWidget(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::LinkmanItemWidget)
+    ui(new Ui::LinkmanItemWidget),
+    userData(zsj::UserData::ptr(new zsj::UserData))
 {
     ui->setupUi(this);
+
 }
 
-LinkmanItemWidget::LinkmanItemWidget(QPixmap &head, const QString &nickname,
-                                     const QString &remark, const QString &signature,
+LinkmanItemWidget::LinkmanItemWidget(zsj::UserData::ptr userData,
                                      QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::LinkmanItemWidget)
+    ui(new Ui::LinkmanItemWidget),
+    userData(userData)
 {
     ui->setupUi(this);
-    QPixmap round = Zsj::adjustToHead(head,Zsj::HeadSize::linkmanItemWidth);
-    ui->labelHead->setPixmap(round);
-    ui->labelNickname->setText(nickname);
-    ui->labelRemark->setText(remark);
-    ui->labelSignature->setText(signature);
+
+    setHead();
+
+    ui->labelNickname->setText(this->userData->getNickname());
+    ui->labelRemark->setText(this->userData->getRemark());
+    ui->labelSignature->setText(this->userData->getSignature());
 
     ui->labelNickname->adjustSize();
     QPoint begin = ui->labelNickname->pos() + QPoint(ui->labelNickname->size().width() + 5,0);
@@ -38,28 +42,18 @@ LinkmanItemWidget::~LinkmanItemWidget()
     delete ui;
 }
 
-void LinkmanItemWidget::setHead(const QPixmap &head)
-{
-    ui->labelHead->setPixmap(head);
+void LinkmanItemWidget::setHead(){
+    QPixmap head = userData->getHead();
+    QPixmap result = zsj::adjustToHead(head,zsj::HeadSize::linkmanItemHeight);
+    ui->labelHead->setPixmap(result);
 }
 
-void LinkmanItemWidget::setHead(const QString &headPath)
+zsj::UserData::ptr LinkmanItemWidget::getUserData() const
 {
-    QPixmap head(headPath);
-    ui->labelHead->setPixmap(head);
+    return userData;
 }
 
-void LinkmanItemWidget::setNickname(const QString &nickname)
+void LinkmanItemWidget::setUserData(const zsj::UserData::ptr value)
 {
-    ui->labelNickname->setText(nickname);
-}
-
-void LinkmanItemWidget::setRemark(const QString &remark)
-{
-    ui->labelRemark->setText(remark);
-}
-
-void LinkmanItemWidget::setSignature(const QString &signature)
-{
-    ui->labelSignature->setText(signature);
+    userData = value;
 }

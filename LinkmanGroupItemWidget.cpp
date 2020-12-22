@@ -4,21 +4,22 @@
 
 LinkmanGroupItemWidget::LinkmanGroupItemWidget(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::LinkmanGroupItemWidget)
+    ui(new Ui::LinkmanGroupItemWidget),
+    groupData(zsj::GroupData::ptr(new zsj::GroupData))
 {
     ui->setupUi(this);
 }
 
-LinkmanGroupItemWidget::LinkmanGroupItemWidget(QPixmap &head, const QString &name,
-                                               const QString &date, QWidget *parent) :
+LinkmanGroupItemWidget::LinkmanGroupItemWidget(zsj::GroupData::ptr groupData,
+        const QString &date, QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::LinkmanGroupItemWidget)
+    ui(new Ui::LinkmanGroupItemWidget),
+    groupData(groupData)
 {
     ui->setupUi(this);
 
-    QPixmap round = Zsj::adjustToHead(head,Zsj::HeadSize::linkmanGroupWidth);
-    ui->labelHead->setPixmap(round);
-    ui->labelNickname->setText(name);
+    setHead();
+    ui->labelNickname->setText(groupData->getName());
     ui->labelDate->setText(date);
 
     ui->labelNickname->adjustSize();
@@ -28,4 +29,11 @@ LinkmanGroupItemWidget::LinkmanGroupItemWidget(QPixmap &head, const QString &nam
 LinkmanGroupItemWidget::~LinkmanGroupItemWidget()
 {
     delete ui;
+}
+
+void LinkmanGroupItemWidget::setHead()
+{
+    QPixmap head = groupData->getHead();
+    QPixmap result = zsj::adjustToHead(head, zsj::HeadSize::linkmanGroupWidth);
+    ui->labelHead->setPixmap(result);
 }

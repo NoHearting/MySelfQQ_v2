@@ -8,7 +8,7 @@
 #include <QDateTime>
 #include <QApplication>
 
-namespace Zsj{
+namespace zsj{
 
 Logger::ptr Logger::logger;
 Logger::ptr Logger::Instance()
@@ -69,8 +69,8 @@ Logger &Logger::operator=(const Logger &)
 
 
 
-Zsj::FileLogAppender::FileLogAppender(QtMsgType level,const QString & filename)
-    :Zsj::LogAppender(level)
+zsj::FileLogAppender::FileLogAppender(QtMsgType level,const QString & filename)
+    :zsj::LogAppender(level)
 {
     if(!filename.isEmpty()){
         //默认取应用程序可在执行文件名称
@@ -86,14 +86,14 @@ Zsj::FileLogAppender::FileLogAppender(QtMsgType level,const QString & filename)
     file = new QFile();
 }
 
-Zsj::FileLogAppender::~FileLogAppender()
+zsj::FileLogAppender::~FileLogAppender()
 {
     if(file->isOpen()){
         file->close();
     }
 }
 
-void Zsj::FileLogAppender::log(QtMsgType level, const QString &content)
+void zsj::FileLogAppender::log(QtMsgType level, const QString &content)
 {
     if(level >= this->level)
     {
@@ -112,7 +112,7 @@ void Zsj::FileLogAppender::log(QtMsgType level, const QString &content)
     }
 }
 
-void Zsj::StdoutLogAppender::log(QtMsgType level, const QString &content)
+void zsj::StdoutLogAppender::log(QtMsgType level, const QString &content)
 {
     if(level >= this->level){
         *stream << content << "\n";

@@ -22,16 +22,18 @@ MessageItemWidget::MessageItemWidget(QPixmap &head, const QString &nickname,
     ui->setupUi(this);
 
 
-    QPixmap round = Zsj::adjustToHead(head,Zsj::HeadSize::messageItemHeight);
+    QPixmap round = zsj::adjustToHead(head, zsj::HeadSize::messageItemHeight);
     ui->labelHead->setPixmap(round);
     ui->labelDate->setText(date);
     ui->labelMessage->setText(message);
     ui->labelNickname->setText(nickname);
-    if(globalInform){
+    if(globalInform)
+    {
         ui->labelHint->setText("[有全体消息]");
     }
 
-    if(symbol){
+    if(symbol)
+    {
         ui->labelSymbol->setStyleSheet("background:rgb(208,207,209);"
                                        "border-radius:9px;"
                                        "color:white;"
@@ -62,29 +64,29 @@ void MessageItemWidget::resizeEvent(QResizeEvent *)
 void MessageItemWidget::initPosition()
 {
     //设置日期label的位置
-    ui->labelDate->setGeometry(this->width() - ui->labelDate->width() - 9,ui->labelNickname->pos().y(),
-                               ui->labelDate->width(),ui->labelDate->height());
+    ui->labelDate->setGeometry(this->width() - ui->labelDate->width() - 9, ui->labelNickname->pos().y(),
+                               ui->labelDate->width(), ui->labelDate->height());
 
     //设置消息label的位置
-    ui->labelMessage->setGeometry(ui->labelHint->pos().x() + ui->labelHint->width(),ui->labelHint->pos().y(),
-                                  ui->labelMessage->width(),ui->labelMessage->height());
+    ui->labelMessage->setGeometry(ui->labelHint->pos().x() + ui->labelHint->width(), ui->labelHint->pos().y(),
+                                  ui->labelMessage->width(), ui->labelMessage->height());
 
     //设置标签label的位置
-    ui->labelSymbol->setGeometry(this->width() - ui->labelSymbol->width() - 9,ui->labelHint->pos().y(),
-                                 ui->labelSymbol->width(),ui->labelSymbol->height());
+    ui->labelSymbol->setGeometry(this->width() - ui->labelSymbol->width() - 9, ui->labelHint->pos().y(),
+                                 ui->labelSymbol->width(), ui->labelSymbol->height());
 }
 
 void MessageItemWidget::updatePosition()
 {
     //设置日期label的位置
-    ui->labelDate->setGeometry(this->width() - ui->labelDate->width() - 9,ui->labelNickname->pos().y(),
-                               ui->labelDate->width(),ui->labelDate->height());
+    ui->labelDate->setGeometry(this->width() - ui->labelDate->width() - 9, ui->labelNickname->pos().y(),
+                               ui->labelDate->width(), ui->labelDate->height());
 
     //设置消息label的位置
-    ui->labelMessage->setGeometry(ui->labelHint->pos().x() + ui->labelHint->width(),ui->labelHint->pos().y(),
-                                  ui->labelMessage->width(),ui->labelMessage->height());
+    ui->labelMessage->setGeometry(ui->labelHint->pos().x() + ui->labelHint->width(), ui->labelHint->pos().y(),
+                                  ui->labelMessage->width(), ui->labelMessage->height());
 
     //设置标签label的位置
-    ui->labelSymbol->setGeometry(this->width() - ui->labelSymbol->width() - 9,ui->labelHint->pos().y(),
-                                 ui->labelSymbol->width(),ui->labelSymbol->height());
+    ui->labelSymbol->setGeometry(this->width() - ui->labelSymbol->width() - 9, ui->labelHint->pos().y(),
+                                 ui->labelSymbol->width(), ui->labelSymbol->height());
 }

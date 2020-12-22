@@ -11,7 +11,7 @@
 
 # define DEBUG 1
 
-namespace Zsj {
+namespace zsj {
 
 
 class Util
@@ -37,6 +37,9 @@ struct HeadSize{
     static const quint8 messageItemWidth = 40;
     static const quint8 messageItemHeight = 40;
 };
+
+const QString defaultHead = ":/global/res/global/default-head.png";
+
 
 /// @brief 获取当前进程id
 int getCurrentProcessId();
@@ -81,6 +84,13 @@ inline QString GetCurrentDateTime(const QString & format = "yyyy-MM-dd"){
 ///
 /// @param QString url
 void openUrl(const QString & url = "http://www.xl-zsj.top");
+
+/// @brief 检查QPixmap是否为空，如果为空则设置一个默认QPixmap
+///
+/// @param[in/out] 需要检查的QPixmap
+/// @param[in] 默认的QPixmap
+bool checkAndSetPixmap(QPixmap & src,const QString defaultPixmapPath);
+bool checkAndSetPixmap(QPixmap & src, const QPixmap & defaultPixmap);
 
 
 }

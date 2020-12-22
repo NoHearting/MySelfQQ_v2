@@ -1,7 +1,8 @@
 #include "ReadQStyleSheet.h"
 
 
-namespace Zsj {
+namespace zsj
+{
 
 
 ReadQStyleSheet::ReadQStyleSheet()

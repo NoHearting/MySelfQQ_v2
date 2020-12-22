@@ -30,6 +30,7 @@
     <qresource prefix="/global">
         <file>res/global/water-tray.png</file>
         <file>res/global/water-gray.png</file>
+        <file>res/global/default-head.png</file>
     </qresource>
     <qresource prefix="/main">
         <file>res/main/bg1.jpg</file>

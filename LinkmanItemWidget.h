@@ -4,6 +4,9 @@
 #include <QWidget>
 #include <QPixmap>
 #include <QString>
+#include <memory>
+
+#include "UserData.h"
 
 namespace Ui {
 class LinkmanItemWidget;
@@ -16,17 +19,19 @@ class LinkmanItemWidget : public QWidget
 public:
     explicit LinkmanItemWidget(QWidget *parent = 0);
 
-    LinkmanItemWidget(QPixmap & head,const QString & nickname,const QString & remark,const QString & signature,QWidget *parent = 0);
+    LinkmanItemWidget(zsj::UserData::ptr userData,QWidget *parent = 0);
     ~LinkmanItemWidget();
 
-    void setHead(const QPixmap & head);
-    void setHead(const QString & headPath);
-    void setNickname(const QString & nickname);
-    void setRemark(const QString & remark);
-    void setSignature(const QString & signature);
+    zsj::UserData::ptr getUserData() const;
+    void setUserData(const zsj::UserData::ptr value);
+
+private:
+    void setHead();
 
 private:
     Ui::LinkmanItemWidget *ui;
+
+    zsj::UserData::ptr userData;
 };
 
 #endif // LINKMANITEMWIDGET_H

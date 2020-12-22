@@ -63,7 +63,7 @@ private:
 
 
     // ------ 显示到托盘 -------------
-    Zsj::SystemTray * systemTray;
+    zsj::SystemTray * systemTray;
 
 
     // 提示窗口

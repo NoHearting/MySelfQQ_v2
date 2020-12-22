@@ -5,6 +5,8 @@
 #include <QPixmap>
 #include <QString>
 
+#include "GroupData.h"
+
 namespace Ui {
 class LinkmanGroupItemWidget;
 }
@@ -15,11 +17,15 @@ class LinkmanGroupItemWidget : public QWidget
 
 public:
     explicit LinkmanGroupItemWidget(QWidget *parent = 0);
-    LinkmanGroupItemWidget(QPixmap & head,const QString & name,const QString & date,QWidget *parent = 0);
+    LinkmanGroupItemWidget(zsj::GroupData::ptr groupData,const QString & date,QWidget *parent = 0);
     ~LinkmanGroupItemWidget();
 
 private:
+    void setHead();
+private:
     Ui::LinkmanGroupItemWidget *ui;
+
+    zsj::GroupData::ptr groupData;
 };
 
 #endif // LINKMANGROUPITEMWIDGET_H

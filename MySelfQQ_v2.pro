@@ -29,7 +29,9 @@ SOURCES += main.cpp\
     LinkmanItemWidget.cpp \
     LinkmanGroupWidget.cpp \
     LinkmanGroupItemWidget.cpp \
-    MessageItemWidget.cpp
+    MessageItemWidget.cpp \
+    UserData.cpp \
+    GroupData.cpp
 
 HEADERS  += LoginWidget.h \
     Frameless.h \
@@ -47,7 +49,9 @@ HEADERS  += LoginWidget.h \
     LinkmanGroupWidget.h \
     LinkmanGroupItemWidget.h \
     Linkman.h \
-    MessageItemWidget.h
+    MessageItemWidget.h \
+    UserData.h \
+    GroupData.h
 
 FORMS    += LoginWidget.ui \
     ComboBoxItemWidget.ui \

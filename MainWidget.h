@@ -56,10 +56,9 @@ private:
     /// @param[in] 子节点
     QTreeWidgetItem* addTreeWidgetChildNode(QTreeWidget * treeWidget,QTreeWidgetItem * rootNode,LinkmanItemWidget * item);
     QTreeWidgetItem* addTreeWidgetChildNode(QTreeWidget * treeWidget,QTreeWidgetItem * rootNode,
-                                const QPixmap & head,const QString & nickname,const QString & remark,
-                                const QString & signature);
+                                zsj::UserData::ptr userData);
     QTreeWidgetItem* addTreeWidgetChildNode(QTreeWidget * treeWidget,QTreeWidgetItem * rootNode,
-                                const QPixmap & head,const QString & nickname,const QString & date);
+                                zsj::GroupData::ptr groupData,const QString & date);
 
 
     /// 设置头像
@@ -71,10 +70,10 @@ private:
 
 
     /// 设置窗口可拉伸和移动
-    Zsj::Frameless * frameless;
+    zsj::Frameless * frameless;
 
     /// 系统托盘
-    Zsj::SystemTray * systemTray;
+    zsj::SystemTray * systemTray;
 
 private slots:
 
@@ -100,7 +99,7 @@ private slots:
 
     /// @brief 子项目点击，
     /// 如果为根节点则不变化背景颜色,并且展开内容
-    void treeWidgetItemClick(QTreeWidgetItem * item, int column);
+    void treeWidgetItemClick(QTreeWidgetItem * item, int );
 
     /// @brief 子项目收缩时
     void collasped(QTreeWidgetItem * item);

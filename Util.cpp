@@ -6,7 +6,7 @@
 #include <QDebug>
 #include <QPainter>
 
-namespace Zsj{
+namespace zsj{
 
 Util::Util()
 {
@@ -30,7 +30,7 @@ QPixmap pixmapToRound(QPixmap &src, int radius)
 {
     if (src.isNull()) {
             return QPixmap();
-        }
+    }
 
     QSize size(2*radius, 2*radius);
     QBitmap mask(size);
@@ -60,6 +60,28 @@ QPixmap adjustToHead(QPixmap &src, int diameter)
 {
     QPixmap scaled = scaledPixmap(src,diameter,diameter);
     return pixmapToRound(scaled,diameter / 2);
+}
+
+bool checkAndSetPixmap(QPixmap &src, const QString defaultPixmapPath)
+{
+    if(src.isNull()){
+        src.load(defaultPixmapPath);
+        return false;
+    }
+    else{
+        return true;
+    }
+}
+
+bool checkAndSetPixmap(QPixmap &src, const QPixmap &defaultPixmap)
+{
+    if(src.isNull()){
+        src = defaultPixmap;
+        return false;
+    }
+    else{
+        return true;
+    }
 }
 
 
