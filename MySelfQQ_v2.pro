@@ -32,7 +32,10 @@ SOURCES += main.cpp\
     MessageItemWidget.cpp \
     UserData.cpp \
     GroupData.cpp \
-    AnimationStackedWidget.cpp
+    AnimationStackedWidget.cpp \
+    FloatScrollBar.cpp \
+    MyListWidget.cpp \
+    MyTreeWidget.cpp
 
 HEADERS  += LoginWidget.h \
     Frameless.h \
@@ -53,7 +56,10 @@ HEADERS  += LoginWidget.h \
     MessageItemWidget.h \
     UserData.h \
     GroupData.h \
-    AnimationStackedWidget.h
+    AnimationStackedWidget.h \
+    FloatScrollBar.h \
+    MyListWidget.h \
+    MyTreeWidget.h
 
 FORMS    += LoginWidget.ui \
     ComboBoxItemWidget.ui \

@@ -7,7 +7,7 @@ AnimationStackedWidget::AnimationStackedWidget(QWidget *parent ) : QStackedWidge
 {
     isAnimation = false;
     isLeft = true;
-    duration = 1000;
+    duration = 200;
     animation = new QPropertyAnimation(this, QByteArray());
     connect(animation, &QPropertyAnimation::valueChanged, this, AnimationStackedWidget::valueChanged);
     connect(animation, &QPropertyAnimation::finished, this, &AnimationStackedWidget::animationFinished);

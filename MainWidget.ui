@@ -668,7 +668,7 @@
                  <number>0</number>
                 </property>
                 <item row="0" column="0">
-                 <widget class="QListWidget" name="listWidgetMessage"/>
+                 <widget class="MyListWidget" name="listWidgetMessage"/>
                 </item>
                </layout>
               </widget>
@@ -698,7 +698,7 @@
                    </font>
                   </property>
                   <property name="currentIndex">
-                   <number>0</number>
+                   <number>1</number>
                   </property>
                   <widget class="QWidget" name="tabFriend">
                    <attribute name="title">
@@ -721,7 +721,7 @@
                      <number>0</number>
                     </property>
                     <item row="0" column="0">
-                     <widget class="QTreeWidget" name="treeWidgetFriend">
+                     <widget class="MyTreeWidget" name="treeWidgetFriend">
                       <attribute name="headerVisible">
                        <bool>false</bool>
                       </attribute>
@@ -755,7 +755,7 @@
                      <number>0</number>
                     </property>
                     <item row="0" column="0">
-                     <widget class="QTreeWidget" name="treeWidgetGroup">
+                     <widget class="MyTreeWidget" name="treeWidgetGroup">
                       <attribute name="headerVisible">
                        <bool>false</bool>
                       </attribute>
@@ -978,6 +978,16 @@
    <extends>QStackedWidget</extends>
    <header>AnimationStackedWidget.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>MyListWidget</class>
+   <extends>QListWidget</extends>
+   <header>MyListWidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>MyTreeWidget</class>
+   <extends>QTreeWidget</extends>
+   <header>MyTreeWidget.h</header>
   </customwidget>
  </customwidgets>
  <resources>

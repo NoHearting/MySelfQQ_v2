@@ -2,5 +2,6 @@
     <qresource prefix="/">
         <file>css/login.css</file>
         <file>css/main.css</file>
+        <file>css/scrollBar.css</file>
     </qresource>
 </RCC>

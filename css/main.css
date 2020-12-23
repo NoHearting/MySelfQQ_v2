@@ -137,37 +137,6 @@ QTabBar::tab:selected{
 	
 }
 
-
-/*垂直滚动条*/
-QScrollBar:vertical{
-    background:transparent;
-    width:6px;
-    margin:0 0 0 2px;
-}
-
-QScrollBar::handle:vertical{
-    min-height:20px;
-    border-radius:2px;
-}
-
-QScrollBar::handle:vertiacl:hover{
-    background:rgb(215,215,215);
-}
-
-QScrollBar::add-line:vertical{
-    height:0px;
-    subcontrol-position:bottom;
-    subcontrol-origin:margin;
-
-}
-
-QScrollBar::sub-line:vertical{
-    height:0px;
-    subcontrol-position:top;
-    subcontrol-origin:margin;
-
-}
-
 QListView{
 	margin-top: 5px;
 	outline: 0px;

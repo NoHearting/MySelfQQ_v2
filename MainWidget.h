@@ -102,9 +102,11 @@ private slots:
     void treeWidgetItemClick(QTreeWidgetItem * item, int );
 
     /// @brief 子项目收缩时
+    /// 设置分组的图标
     void collasped(QTreeWidgetItem * item);
 
     /// @brief 子项目展开时
+    /// 设置分组的图标
     void expanded(QTreeWidgetItem * item);
 
 

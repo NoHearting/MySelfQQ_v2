@@ -65,8 +65,8 @@ void MainWidget::initResourceAndForm()
     ui->widgetMain->setGraphicsEffect(shadow);
 
     //选中第一个消息页面
-//    switchToMessageWidget();
-    switchToLinkmanWidget();
+    switchToMessageWidget();
+//    switchToLinkmanWidget();
 
     // 初始化好友列表
 
@@ -436,7 +436,7 @@ void MainWidget::expanded(QTreeWidgetItem *item)
         {
             qCritical() << "tree widget is null";
         }
-
     }
+
 }
 
