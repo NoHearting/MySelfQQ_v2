@@ -180,3 +180,7 @@ QListView::item:hover{
 QListView::item:selected{
 	background: rgb(235,234,237);
 }
+
+#pageLinkman,#pageMessage{
+	background: white;
+}

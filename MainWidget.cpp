@@ -332,18 +332,24 @@ void MainWidget::interfaceManager()
 
 void MainWidget::switchToMessageWidget()
 {
-    ui->pushButtonMessage->setChecked(true);
-    ui->pushButtonLinkman->setChecked(false);
-    ui->pushButtonSpace->setChecked(false);
-    ui->stackedWidget->setCurrentIndex(0);
+    if(ui->stackedWidget->currentIndex() != 0)
+    {
+        ui->pushButtonMessage->setChecked(true);
+        ui->pushButtonLinkman->setChecked(false);
+        ui->pushButtonSpace->setChecked(false);
+        ui->stackedWidget->forwordWidget();
+    }
 }
 
 void MainWidget::switchToLinkmanWidget()
 {
-    ui->pushButtonMessage->setChecked(false);
-    ui->pushButtonLinkman->setChecked(true);
-    ui->pushButtonSpace->setChecked(false);
-    ui->stackedWidget->setCurrentIndex(1);
+    if(ui->stackedWidget->currentIndex() != 1)
+    {
+        ui->pushButtonMessage->setChecked(false);
+        ui->pushButtonLinkman->setChecked(true);
+        ui->pushButtonSpace->setChecked(false);
+        ui->stackedWidget->nextWidget();
+    }
 }
 
 void MainWidget::switchToSpaceWidget()

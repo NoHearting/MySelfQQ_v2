@@ -31,7 +31,8 @@ SOURCES += main.cpp\
     LinkmanGroupItemWidget.cpp \
     MessageItemWidget.cpp \
     UserData.cpp \
-    GroupData.cpp
+    GroupData.cpp \
+    AnimationStackedWidget.cpp
 
 HEADERS  += LoginWidget.h \
     Frameless.h \
@@ -51,7 +52,8 @@ HEADERS  += LoginWidget.h \
     Linkman.h \
     MessageItemWidget.h \
     UserData.h \
-    GroupData.h
+    GroupData.h \
+    AnimationStackedWidget.h
 
 FORMS    += LoginWidget.ui \
     ComboBoxItemWidget.ui \
