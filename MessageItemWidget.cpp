@@ -22,7 +22,7 @@ MessageItemWidget::MessageItemWidget(QPixmap &head, const QString &nickname,
     ui->setupUi(this);
 
 
-    QPixmap round = zsj::adjustToHead(head, zsj::HeadSize::messageItemHeight);
+    QPixmap round = zsj::adjustToHead(head, zsj::HeadSize::messageItemDiameter);
     ui->labelHead->setPixmap(round);
     ui->labelDate->setText(date);
     ui->labelMessage->setText(message);
@@ -68,7 +68,11 @@ void MessageItemWidget::initPosition()
                                ui->labelDate->width(), ui->labelDate->height());
 
     //设置消息label的位置
-    ui->labelMessage->setGeometry(ui->labelHint->pos().x() + ui->labelHint->width(), ui->labelHint->pos().y(),
+    int offset = 0;
+    if(ui->labelHint->text().isEmpty()){
+        offset = ui->labelHint->width();
+    }
+    ui->labelMessage->setGeometry(ui->labelHint->pos().x() + ui->labelHint->width() - offset, ui->labelHint->pos().y(),
                                   ui->labelMessage->width(), ui->labelMessage->height());
 
     //设置标签label的位置
@@ -83,7 +87,11 @@ void MessageItemWidget::updatePosition()
                                ui->labelDate->width(), ui->labelDate->height());
 
     //设置消息label的位置
-    ui->labelMessage->setGeometry(ui->labelHint->pos().x() + ui->labelHint->width(), ui->labelHint->pos().y(),
+    int offset = 0;
+    if(ui->labelHint->text().isEmpty()){
+        offset = ui->labelHint->width();
+    }
+    ui->labelMessage->setGeometry(ui->labelHint->pos().x() + ui->labelHint->width() - offset, ui->labelHint->pos().y(),
                                   ui->labelMessage->width(), ui->labelMessage->height());
 
     //设置标签label的位置

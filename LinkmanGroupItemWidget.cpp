@@ -34,6 +34,6 @@ LinkmanGroupItemWidget::~LinkmanGroupItemWidget()
 void LinkmanGroupItemWidget::setHead()
 {
     QPixmap head = groupData->getHead();
-    QPixmap result = zsj::adjustToHead(head, zsj::HeadSize::linkmanGroupWidth);
+    QPixmap result = zsj::adjustToHead(head, zsj::HeadSize::linkmanGroupDiameter);
     ui->labelHead->setPixmap(result);
 }

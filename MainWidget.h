@@ -9,6 +9,7 @@
 
 #include <QWidget>
 #include <QTreeWidget>
+#include <QMenu>
 
 
 #include "Frameless.h"
@@ -47,6 +48,9 @@ private:
     /// @brief 初始化消息列表
     void initMessageList();
 
+    /// @brief 初始化用户菜单
+    void initUserMenu();
+
 private:
     /// @brief 添加好友列表的根节点
     ///
@@ -81,6 +85,10 @@ private:
     /// 系统托盘
     zsj::SystemTray * systemTray;
 
+    // --------- 菜单 -----------
+    QMenu * userMenu;       /// 用户菜单
+
+
 private slots:
 
     // ------- 最顶部功能按钮 ---------
@@ -114,6 +122,48 @@ private slots:
     /// @brief 子项目展开时
     /// 设置分组的图标
     void expanded(QTreeWidgetItem * item);
+
+    // ------------- 菜单槽函数 -------------
+    /// @brief 显示菜单
+    void showContextMenuFriend(const QPoint &);
+    void showContextMenuGroup(const QPoint &);
+
+    /// @brief 发送即时消息
+    void userMenuSendMessage();
+
+    /// @brief 发送电子邮件
+    void userMenuSendEmail();
+
+    /// @brief 消息免打扰
+    void userMenuMessageAvoid();
+
+    /// @brief 消息记录
+    void userMenuMessageRecord();
+
+    /// @brief 设置权限
+    void userMenuSetPrivilege();
+
+    /// @brief 删除好友
+    void userMenuDeleteFriend();
+
+    /// @brief 更新好友备注
+    void userMenuUpdateRemark();
+
+    /// @brief 移动好友
+    void userMenuMoveFriend();
+
+    /// @brief 举报此用户
+    void userMenuReportFriend();
+
+    /// @brief 好友管理
+    void userMenuFriendManager();
+
+    /// @brief 会员快捷功能
+    void userMenuVipFunction();
+
+    /// @brief 进入空间
+    void userMenuIntoSpace();
+
 
 
 };

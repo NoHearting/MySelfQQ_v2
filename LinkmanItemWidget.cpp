@@ -44,7 +44,7 @@ LinkmanItemWidget::~LinkmanItemWidget()
 
 void LinkmanItemWidget::setHead(){
     QPixmap head = userData->getHead();
-    QPixmap result = zsj::adjustToHead(head,zsj::HeadSize::linkmanItemHeight);
+    QPixmap result = zsj::adjustToHead(head,zsj::HeadSize::linkmanItemDiameter);
     ui->labelHead->setPixmap(result);
 }
 

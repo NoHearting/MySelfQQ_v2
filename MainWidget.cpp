@@ -36,7 +36,7 @@ MainWidget::~MainWidget()
 
 void MainWidget::initObjects()
 {
-
+    initUserMenu();
 }
 
 
@@ -72,6 +72,9 @@ void MainWidget::initResourceAndForm()
 
 //    ui->treeWidgetFriend->verticalScrollBar()->set
     ui->treeWidgetFriend->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
+    ui->treeWidgetGroup->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
+    ui->treeWidgetFriend->setContextMenuPolicy(Qt::CustomContextMenu);
+    ui->treeWidgetGroup->setContextMenuPolicy(Qt::CustomContextMenu);
     initManlinkFriend();
     initManlinkGroup();
 
@@ -121,6 +124,10 @@ void MainWidget::initSignalsAndSlots()
     connect(ui->treeWidgetFriend, &QTreeWidget::itemCollapsed, this, &MainWidget::collasped);
     connect(ui->treeWidgetGroup, &QTreeWidget::itemCollapsed, this, &MainWidget::collasped);
     qInfo() << "connect treeWidgetFriend,treeWidgetGroup::itemExpanded to MainWidget::collasped`";
+
+    connect(ui->treeWidgetFriend,&MyTreeWidget::customContextMenuRequested,this,&MainWidget::showContextMenuFriend);
+    connect(ui->treeWidgetGroup,&MyTreeWidget::customContextMenuRequested,this,&MainWidget::showContextMenuGroup);
+    qInfo() << "connect treeWidgetFriend,treeWidgetGroup::customContextMenuRequested to MainWidget::showContextMenuFriend,showContextMenuGroup";
 }
 
 void MainWidget::initManlinkFriend()
@@ -201,6 +208,16 @@ void MainWidget::initMessageList()
                 QString("7-%1").arg(i), i % 2, i % 2, ui->listWidgetMessage);
         ui->listWidgetMessage->setItemWidget(item, messageItem);
     }
+}
+
+void MainWidget::initUserMenu()
+{
+    userMenu = new QMenu(this);
+    userMenu->addAction("发送即时消息",this,SLOT(userMenuSendMessage()));
+    userMenu->addAction("发送电子邮件",this,SLOT(userMenuSendEmail()));
+    userMenu->addAction("查看资料");
+    userMenu->addAction("消息免打扰",this,SLOT(userMenuMessageAvoid()));
+    userMenu->addAction("分享他的名片");
 }
 
 QTreeWidgetItem *MainWidget::addTreeWidgetRootNode(QTreeWidget *treeWidget, LinkmanGroupWidget *group)
@@ -302,8 +319,8 @@ QTreeWidgetItem *MainWidget::addTreeWidgetChildNode(QTreeWidget *treeWidget, QTr
 
 void MainWidget::setHead(QPixmap &pixmap)
 {
-    QPixmap scaled = zsj::scaledPixmap(pixmap, zsj::HeadSize::mainWidth, zsj::HeadSize::mainHeight);
-    QPixmap result = zsj::pixmapToRound(scaled, zsj::HeadSize::mainHeight / 2);
+    QPixmap scaled = zsj::scaledPixmap(pixmap, zsj::HeadSize::mainDiamter, zsj::HeadSize::mainDiamter);
+    QPixmap result = zsj::pixmapToRound(scaled, zsj::HeadSize::mainDiamter / 2);
     ui->labelHead->setPixmap(result);
 }
 
@@ -437,6 +454,101 @@ void MainWidget::expanded(QTreeWidgetItem *item)
             qCritical() << "tree widget is null";
         }
     }
+
+}
+
+void MainWidget::showContextMenuFriend(const QPoint & point)
+{
+    QTreeWidgetItem * item = ui->treeWidgetFriend->itemAt(point);
+    if(nullptr != item){
+        bool isChild = item->data(0, Qt::UserRole).toBool();
+        if(isChild){
+            userMenu->exec(this->cursor().pos());
+        }
+        else{
+            qDebug() << "show group menu";
+        }
+    }
+    else{
+        qCritical() << "invalid QTreeWidgetItem";
+    }
+
+}
+
+void MainWidget::showContextMenuGroup(const QPoint & point)
+{
+    QTreeWidgetItem * item = ui->treeWidgetGroup->itemAt(point);
+    if(nullptr != item){
+        bool isChild = item->data(0, Qt::UserRole).toBool();
+        if(isChild){
+            qDebug() << "show sperate group menu";
+        }
+        else{
+            qDebug() << "show group menu";
+        }
+    }
+    else{
+        qCritical() << "invalid QTreeWidgetItem";
+    }
+}
+
+void MainWidget::userMenuSendMessage()
+{
+
+}
+
+void MainWidget::userMenuSendEmail()
+{
+
+}
+
+void MainWidget::userMenuMessageAvoid()
+{
+
+}
+
+void MainWidget::userMenuMessageRecord()
+{
+
+}
+
+void MainWidget::userMenuSetPrivilege()
+{
+
+}
+
+void MainWidget::userMenuDeleteFriend()
+{
+
+}
+
+void MainWidget::userMenuUpdateRemark()
+{
+
+}
+
+void MainWidget::userMenuMoveFriend()
+{
+
+}
+
+void MainWidget::userMenuReportFriend()
+{
+
+}
+
+void MainWidget::userMenuFriendManager()
+{
+
+}
+
+void MainWidget::userMenuVipFunction()
+{
+
+}
+
+void MainWidget::userMenuIntoSpace()
+{
 
 }
 

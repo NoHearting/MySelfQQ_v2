@@ -35,7 +35,6 @@ void MyTreeWidget::enterEvent(QEvent *e)
 {
     if(this->floatScrollBar->maximum() > 0)
     {
-        qDebug() << "true " << this->floatScrollBar->maximum();
         this->floatScrollBar->show();
     }
     return QTreeWidget::enterEvent(e);
