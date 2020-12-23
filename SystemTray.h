@@ -1,3 +1,9 @@
+/**
+  * @brief 系统托盘类
+  *     封装系统托盘，该系统托盘含有默认的菜单和图标。可以更改托盘图标和菜单
+  * @author zsj
+  * @date 2020年12月23日20:24:54
+  */
 #ifndef SYSTEMTRAY_H
 #define SYSTEMTRAY_H
 
@@ -17,11 +23,15 @@ public:
     SystemTray(QMenu * trayMenu,QPixmap * trayIcon,QObject *parent = 0);
     ~SystemTray();
 
-
+    /// @brief 设置系统托盘菜单
+    /// @param[in] value 菜单
     void setSystemTrayMenu(QMenu *value);
 
+    /// @brief 设置系统托盘图标
+    /// @param[in] value 图标
     void setSystemTrayIcon(QPixmap *value);
 
+    /// @brief 显示系统托盘
     void showSystemTray();
 private:
     QSystemTrayIcon * tray;     //系统托盘

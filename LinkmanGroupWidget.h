@@ -1,3 +1,9 @@
+/**
+  * @brief 联系人界面下的群列表、好友列表的分组项
+  *
+  * @author zsj
+  * @date 2020年12月23日20:04:17
+  */
 #ifndef LINKMANGROUPWIDGET_H
 #define LINKMANGROUPWIDGET_H
 
@@ -18,7 +24,12 @@ public:
     ~LinkmanGroupWidget();
 
 
+    /// @brief 设置分组项的前置图标
+    /// @param[in] icon 图标
     void setIcon(const QPixmap & icon);
+
+    /// @brief 设置分组项的前置图标
+    /// @param[in] iconPath 图标路径
     void setIcon(const QString & iconPath);
 
 private:

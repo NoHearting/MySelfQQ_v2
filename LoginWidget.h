@@ -1,3 +1,9 @@
+/**
+  * @brief 登录界面类
+  *
+  * @author zsj
+  * @date 2020年12月23日20:12:07
+  */
 #ifndef LOGINWIDGET_H
 #define LOGINWIDGET_H
 

@@ -23,14 +23,6 @@ void MyTreeWidget::setScrollBarQss(const QString &qss)
     floatScrollBar->setQss(qss);
 }
 
-void MyTreeWidget::checkAndShowScrollBar()
-{
-    qDebug() << "into " << this->verticalScrollBar()->maximum();
-    if(this->verticalScrollBar()->maximum() > 0)
-    {
-        this->floatScrollBar->show();
-    }
-}
 
 void MyTreeWidget::resizeEvent(QResizeEvent *e)
 {

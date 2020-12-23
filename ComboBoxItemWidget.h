@@ -1,3 +1,9 @@
+/**
+  * @brief 组合框（QComboBox）的下拉框的子项
+  *
+  * @author zsj
+  * @date 2020年12月23日18:59:01
+  */
 #ifndef COMBOBOXITEMWIDGET_H
 #define COMBOBOXITEMWIDGET_H
 

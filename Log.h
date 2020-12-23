@@ -1,3 +1,9 @@
+/**
+  * @brief 日志封装，配合Qt的日志系统
+  *
+  * @author zsj
+  * @date 2020年12月23日20:07:44
+  */
 #ifndef LOG_H
 #define LOG_H
 
@@ -11,6 +17,7 @@
 
 namespace zsj {
 
+/// @brief 日志输出器，通过此类将日志输出到指定位置
 class LogAppender{
 public:
     typedef std::shared_ptr<LogAppender> ptr;
@@ -21,7 +28,7 @@ protected:
     QtMsgType level;            //日志级别
 };
 
-
+/// @brief 标准输出流输出器，用于将日志输出到控制台
 class StdoutLogAppender : public LogAppender{
 public:
     typedef std::shared_ptr<StdoutLogAppender> ptr;
@@ -37,6 +44,7 @@ private:
     QTextStream * stream;       //标准输出流
 };
 
+/// @brief 文件流输出器，用于将体制输出到指定文件
 class FileLogAppender : public LogAppender{
 public:
     typedef std::shared_ptr<FileLogAppender> ptr;
@@ -52,6 +60,7 @@ private:
 };
 
 
+/// @brief 日志输出类，可以添加输出器，设置默认日志级别
 class Logger
 {
 public:

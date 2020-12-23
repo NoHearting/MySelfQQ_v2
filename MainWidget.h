@@ -1,3 +1,9 @@
+/**
+  * @brief 主界面类
+  *
+  * @author zsj
+  * @date 2020年12月23日20:12:48
+  */
 #ifndef MAINWIDGET_H
 #define MAINWIDGET_H
 

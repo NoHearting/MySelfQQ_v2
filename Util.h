@@ -21,21 +21,24 @@ public:
 };
 
 struct HeadSize{
+
+    /// 登录界面主头像
+    static const quint8 loginMainDiameter = 64;
+
+    /// 登了界面下拉框候选项头像
+    static const quint8 loginItemDiameter = 40;
+
     /// 主页面头像
-    static const quint8 mainWidth = 54;
-    static const quint8 mainHeight = 54;
+    static const quint8 mainDiamter = 54;
 
     /// 联系人列表中好友头像
-    static const quint8 linkmanItemWidth = 40;
-    static const quint8 linkmanItemHeight = 40;
+    static const quint8 linkmanItemDiameter = 40;
 
     /// 联系人列表中群组头像
-    static const quint8 linkmanGroupWidth = 30;
-    static const quint8 linkmanGroupHeight = 30;
+    static const quint8 linkmanGroupDiameter = 30;
 
     /// 消息列表中头像
-    static const quint8 messageItemWidth = 40;
-    static const quint8 messageItemHeight = 40;
+    static const quint8 messageItemDiameter = 40;
 };
 
 const QString defaultHead = ":/global/res/global/default-head.png";

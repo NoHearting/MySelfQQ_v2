@@ -1,3 +1,9 @@
+/**
+  * @brief 有翻页动画的StackedWidget，在翻页的时候为滑动特效
+  *
+  * @author zsj
+  * @date 2020年12月23日18:57:19
+  */
 #ifndef ANIMATIONSTACKEDWIDGET_H
 #define ANIMATIONSTACKEDWIDGET_H
 
@@ -39,6 +45,7 @@ private:
     /// @brief 画下一个界面
     void paintNext(QPainter & painter,int index);
 
+    /// @brief 开始动画
     void startAnimation(int index);
 private:
     QPropertyAnimation * animation;     ///过渡框架

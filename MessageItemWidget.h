@@ -1,3 +1,9 @@
+/**
+  * @brief 消息界面的消息列表的消息子项
+  *
+  * @author zsj
+  * @date 2020年12月23日20:13:43
+  */
 #ifndef MESSAGEITEMWIDGET_H
 #define MESSAGEITEMWIDGET_H
 

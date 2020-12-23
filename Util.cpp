@@ -58,6 +58,10 @@ void openUrl(const QString &url)
 
 QPixmap adjustToHead(QPixmap &src, int diameter)
 {
+    bool ret = zsj::checkAndSetPixmap(src,":/global/res/global/error.png");
+    if(!ret){
+        qCritical() << "pixmap is null!";
+    }
     QPixmap scaled = scaledPixmap(src,diameter,diameter);
     return pixmapToRound(scaled,diameter / 2);
 }

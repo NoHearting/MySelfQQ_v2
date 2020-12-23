@@ -18,21 +18,20 @@ ComboBoxItemWidget::ComboBoxItemWidget(QWidget *parent) :
 
 ComboBoxItemWidget::ComboBoxItemWidget(const QPixmap &head, const QString &nickname,
                                        const QString &accountNum, const QString &password, QWidget *parent)
-    :QWidget(parent),
-    ui(new Ui::ComboBoxItemWidget),
-    head(head),nickname(nickname),accountNum(accountNum),password(password)
+    : QWidget(parent),
+      ui(new Ui::ComboBoxItemWidget),
+      head(head), nickname(nickname), accountNum(accountNum), password(password)
 {
     ui->setupUi(this);
     initResourceAndForm();
-
-
 
 }
 
 
 void ComboBoxItemWidget::initResourceAndForm()
 {
-    ui->labelHead->setPixmap(head);
+    QPixmap result = zsj::adjustToHead(head, zsj::HeadSize::loginItemDiameter);
+    ui->labelHead->setPixmap(result);
     ui->labelNickname->setText(nickname);
     ui->labelAccount->setText(accountNum);
 }
@@ -57,8 +56,8 @@ QDebug &ComboBoxItemWidget::operator <<(QDebug &debug)
 QString ComboBoxItemWidget::toString() const
 {
     return QString("ComboBoxItemWidget{head:[%1px:%2px],nickname:%3,accountNum:%4,password:%5}")
-            .arg(head.width()).arg(head.height()).arg(nickname)
-            .arg(accountNum).arg(password);
+           .arg(head.width()).arg(head.height()).arg(nickname)
+           .arg(accountNum).arg(password);
 }
 
 QPixmap ComboBoxItemWidget::getHead() const
@@ -103,8 +102,9 @@ void ComboBoxItemWidget::setPassword(const QString &value)
 
 void ComboBoxItemWidget::mouseReleaseEvent(QMouseEvent *e)
 {
-    QPixmap origin = zsj::scaledPixmap(head,64,64);
-    emit click(origin,accountNum,password);
+    QPixmap origin = zsj::scaledPixmap(head, zsj::HeadSize::loginMainDiameter,
+                                       zsj::HeadSize::loginMainDiameter);
+    emit click(origin, accountNum, password);
     QWidget::mouseReleaseEvent(e);
 }
 

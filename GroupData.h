@@ -1,3 +1,10 @@
+/**
+  * @brief 群组数据类
+  *
+  * @author zsj
+  * @date 2020年12月23日19:40:17
+  */
+
 #ifndef GROUPDATA_H
 #define GROUPDATA_H
 

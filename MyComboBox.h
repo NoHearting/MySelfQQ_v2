@@ -1,3 +1,10 @@
+/**
+  * @brief 自定义QComboBox，配合QLineEdit完成下拉框的美化和逻辑正确
+  * 可以查看项目下problemAndSolution.md中第二个问题详细了解
+  *
+  * @author zsj
+  * @date 2020年12月23日20:17:09
+  */
 #ifndef MYCOMBOBOX_H
 #define MYCOMBOBOX_H
 
