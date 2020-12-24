@@ -1,4 +1,5 @@
 #include "SystemTray.h"
+#include "ReadQStyleSheet.h"
 
 #include <QDebug>
 
@@ -30,19 +31,7 @@ SystemTray::SystemTray(QObject *parent) : QObject(parent)
     systemTrayMenu->setWindowFlags(systemTrayMenu->windowFlags() |  Qt::FramelessWindowHint);
     systemTrayMenu->setAttribute(Qt::WA_TranslucentBackground);
     // 给系统托盘菜单添加css
-    systemTrayMenu->setStyleSheet("QMenu{background:rgba(255,255,255,0.7);"
-                                  "border-radius:5px;"
-                                  "height:80px;width:135px;}"
-                                  "QMenu::item{"
-                                  "height:30px;"
-                                  "margin:5px 0px;"
-                                  "padding:0px 10px;"
-                                  "}"
-                                  "QMenu::item:selected:enabled{"
-                                  "background:rgb(238,238,238);}"
-                                  "QMenu::separator{"
-                                  "height:1px;"
-                                  "color:gray;}");
+    systemTrayMenu->setStyleSheet(zsj::ReadQStyleSheet::readQss("://css/systemTrayMenu.css"));
 }
 
 SystemTray::SystemTray(QMenu *trayMenu, QPixmap *trayIcon, QObject *parent) : QObject(parent)

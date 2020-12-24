@@ -48,6 +48,7 @@ protected:
     void mouseReleaseEvent(QMouseEvent *);
 
 
+
 private:
     /// @brief 初始化窗口资源和窗口布局
     void initResourceAndForm();

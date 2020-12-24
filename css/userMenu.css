@@ -1,0 +1,26 @@
+QMenu {
+    background-color: white;
+    border-radius:5px;
+    height: 453px;
+    width:155px;
+    padding: 5px 0;
+}
+
+QMenu::item {
+    height: 30px;
+    padding: 0px 34px;
+    border: 1px solid transparent;
+}
+
+QMenu::item:selected {
+    background:rgb(238,238,238);
+}
+
+QMenu::icon { 
+    margin: 0px 10px;
+}
+
+QMenu::separator {
+    height: 1px;
+    background: rgb(237,237,237);
+}

@@ -3,5 +3,7 @@
         <file>css/login.css</file>
         <file>css/main.css</file>
         <file>css/scrollBar.css</file>
+        <file>css/systemTrayMenu.css</file>
+        <file>css/userMenu.css</file>
     </qresource>
 </RCC>

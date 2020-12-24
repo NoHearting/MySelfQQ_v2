@@ -1,5 +1,6 @@
 #include "ReadQStyleSheet.h"
 
+#include <QDebug>
 
 namespace zsj
 {
@@ -18,6 +19,10 @@ QString ReadQStyleSheet::readQss(QString filePath)
         QString StyleSheet(file.readAll());
         file.close();
         return StyleSheet;
+    }
+    else{
+        qCritical() << "style file:" << filePath << "not exist";
+
     }
     return QString("");
 }

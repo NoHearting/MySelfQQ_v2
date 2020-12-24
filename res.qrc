@@ -48,5 +48,12 @@
         <file>res/main/menu.png</file>
         <file>res/main/music.png</file>
         <file>res/main/add-friend.png</file>
+        <file>res/main/space.png</file>
+        <file>res/main/friend-manager.png</file>
+        <file>res/main/delete-friend.png</file>
+        <file>res/main/move-friends.png</file>
+        <file>res/main/update-remark.png</file>
+        <file>res/main/message-record.png</file>
+        <file>res/main/message.png</file>
     </qresource>
 </RCC>

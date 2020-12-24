@@ -212,12 +212,31 @@ void MainWidget::initMessageList()
 
 void MainWidget::initUserMenu()
 {
-    userMenu = new QMenu(this);
-    userMenu->addAction("发送即时消息",this,SLOT(userMenuSendMessage()));
+    userMenu = new QMenu();
+    QAction * message = new QAction(QIcon(":/main/res/main/message.png"),"发送即时消息",userMenu);
+//    userMenu->addAction(this,SLOT(userMenuSendMessage()));
+    userMenu->addAction(message);
     userMenu->addAction("发送电子邮件",this,SLOT(userMenuSendEmail()));
+    userMenu->addSeparator();
     userMenu->addAction("查看资料");
     userMenu->addAction("消息免打扰",this,SLOT(userMenuMessageAvoid()));
     userMenu->addAction("分享他的名片");
+    userMenu->addAction(QIcon(":/main/res/main/message-record.png"),"消息记录",this,SLOT(userMenuMessageRecord()));
+    userMenu->addSeparator();
+    userMenu->addAction("设置权限",this,SLOT(userMenuSetPrivilege()));
+    userMenu->addAction(QIcon(":/main/res/main/update-remark.png"),"修改好友备注",this,SLOT(userMenuUpdateRemark()));
+    userMenu->addAction(QIcon(":/main/res/main/move-friends.png"),"移动联系人至",this,SLOT(userMenuMoveFriend()));
+    userMenu->addAction(QIcon(":/main/res/main/delete-friend.png"),"删除好友",this,SLOT(userMenuDeleteFriend()));
+    userMenu->addAction("举报此用户",this,SLOT(userMenuReportFriend()));
+    userMenu->addAction(QIcon(":/main/res/main/friend-manager.png"),"好友管理",this,SLOT(userMenuFriendManager()));
+    userMenu->addSeparator();
+    userMenu->addAction("会员快捷功能",this,SLOT(userMenuVipFunction()));
+    userMenu->addAction(QIcon(":/main/res/main/space.png"),"进入MQ空间",this,SLOT(userMenuIntoSpace()));
+
+
+    userMenu->setWindowFlags(userMenu->windowFlags() | Qt::FramelessWindowHint | Qt::NoDropShadowWindowHint);
+//    userMenu->setAttribute(Qt::WA_TranslucentBackground);
+    userMenu->setStyleSheet(zsj::ReadQStyleSheet::readQss("://css/userMenu.css"));
 }
 
 QTreeWidgetItem *MainWidget::addTreeWidgetRootNode(QTreeWidget *treeWidget, LinkmanGroupWidget *group)
