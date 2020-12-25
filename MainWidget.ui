@@ -548,6 +548,12 @@
                 <pointsize>12</pointsize>
                </font>
               </property>
+              <property name="toolTip">
+               <string>消息</string>
+              </property>
+              <property name="toolTipDuration">
+               <number>1</number>
+              </property>
               <property name="text">
                <string>消息</string>
               </property>
@@ -582,6 +588,12 @@
                 <pointsize>12</pointsize>
                </font>
               </property>
+              <property name="toolTip">
+               <string>联系人</string>
+              </property>
+              <property name="toolTipDuration">
+               <number>1</number>
+              </property>
               <property name="text">
                <string>联系人</string>
               </property>
@@ -615,6 +627,12 @@
                 <family>微软雅黑</family>
                 <pointsize>12</pointsize>
                </font>
+              </property>
+              <property name="toolTip">
+               <string>空间</string>
+              </property>
+              <property name="toolTipDuration">
+               <number>1</number>
               </property>
               <property name="text">
                <string>空间</string>
@@ -697,8 +715,14 @@
                     <pointsize>10</pointsize>
                    </font>
                   </property>
-                  <property name="currentIndex">
+                  <property name="toolTip">
+                   <string/>
+                  </property>
+                  <property name="toolTipDuration">
                    <number>1</number>
+                  </property>
+                  <property name="currentIndex">
+                   <number>0</number>
                   </property>
                   <widget class="QWidget" name="tabFriend">
                    <attribute name="title">

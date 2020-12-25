@@ -97,6 +97,7 @@
 
 QTreeView{
 	outline: 0px;
+	background: rgb(252,253,255);
 }
 
 QTreeView::item:hover{

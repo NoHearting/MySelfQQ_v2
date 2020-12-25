@@ -14,13 +14,14 @@ MessageItemWidget::MessageItemWidget(QWidget *parent) :
 
 MessageItemWidget::MessageItemWidget(QPixmap &head, const QString &nickname,
                                      const QString &message, const QString &date,
-                                     bool symbol, bool globalInform, QWidget *parent):
+                                     bool symbol, bool globalInform,
+                                     DataType type,QWidget *parent):
     QWidget(parent),
     ui(new Ui::MessageItemWidget)
 {
 
     ui->setupUi(this);
-
+    this->type = type;
 
     QPixmap round = zsj::adjustToHead(head, zsj::HeadSize::messageItemDiameter);
     ui->labelHead->setPixmap(round);
@@ -97,4 +98,14 @@ void MessageItemWidget::updatePosition()
     //设置标签label的位置
     ui->labelSymbol->setGeometry(this->width() - ui->labelSymbol->width() - 9, ui->labelHint->pos().y(),
                                  ui->labelSymbol->width(), ui->labelSymbol->height());
+}
+
+DataType MessageItemWidget::getType() const
+{
+    return type;
+}
+
+void MessageItemWidget::setType(const DataType &value)
+{
+    type = value;
 }

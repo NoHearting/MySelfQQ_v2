@@ -35,7 +35,8 @@ SOURCES += main.cpp\
     AnimationStackedWidget.cpp \
     FloatScrollBar.cpp \
     MyListWidget.cpp \
-    MyTreeWidget.cpp
+    MyTreeWidget.cpp \
+    StaticIniator.cpp
 
 HEADERS  += LoginWidget.h \
     Frameless.h \
@@ -59,7 +60,9 @@ HEADERS  += LoginWidget.h \
     AnimationStackedWidget.h \
     FloatScrollBar.h \
     MyListWidget.h \
-    MyTreeWidget.h
+    MyTreeWidget.h \
+    StaticIniator.h \
+    NonCopyable.h
 
 FORMS    += LoginWidget.ui \
     ComboBoxItemWidget.ui \

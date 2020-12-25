@@ -15,6 +15,13 @@ namespace Ui {
 class MessageItemWidget;
 }
 
+
+enum class DataType{
+    USER_DATA = 0,
+    GROUP_DATA = 1,
+    SYSTEM_DATA = 2
+};
+
 class MessageItemWidget : public QWidget
 {
     Q_OBJECT
@@ -23,9 +30,12 @@ public:
     explicit MessageItemWidget(QWidget *parent = 0);
     MessageItemWidget(QPixmap & head,const QString & nickname,const QString & message,
                       const QString & date,bool symbol = false,bool globalInform = false,
-                      QWidget *parent = 0);
+                      DataType type = DataType::USER_DATA,QWidget *parent = 0);
 
     ~MessageItemWidget();
+
+    DataType getType() const;
+    void setType(const DataType &value);
 
 protected:
     void resizeEvent(QResizeEvent *);
@@ -36,6 +46,8 @@ private:
 
 private:
     Ui::MessageItemWidget *ui;
+
+    DataType type;      /// 数据类型
 };
 
 #endif // MESSAGEITEMWIDGET_H

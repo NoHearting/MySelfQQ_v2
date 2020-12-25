@@ -1,9 +1,25 @@
-QMenu {
-    background-color: white;
+
+QMenu{
+    background-color: rgba(255,255,255,0.9);
     border-radius:5px;
-    height: 453px;
     width:155px;
     padding: 5px 0;
+}
+
+#userMenu {
+    height: 453px;
+}
+#sectionMenu {
+    height: 265px;
+}
+
+#groupMenu{
+    height:;
+}
+
+#groupSectionMenu::item{
+    padding: 0px 16px;
+    width: 140px;
 }
 
 QMenu::item {
