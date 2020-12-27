@@ -6,17 +6,6 @@ QMenu{
     padding: 5px 0;
 }
 
-#userMenu {
-    height: 453px;
-}
-#sectionMenu {
-    height: 265px;
-}
-
-#groupMenu{
-    height:;
-}
-
 #groupSectionMenu::item{
     padding: 0px 16px;
     width: 140px;

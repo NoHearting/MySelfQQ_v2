@@ -37,6 +37,7 @@ public:
     DataType getType() const;
     void setType(const DataType &value);
 
+    QString getNickname()const;
 protected:
     void resizeEvent(QResizeEvent *);
 

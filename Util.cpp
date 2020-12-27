@@ -5,6 +5,7 @@
 #include <QDesktopWidget>
 #include <QDebug>
 #include <QPainter>
+#include <QGraphicsDropShadowEffect>
 
 namespace zsj{
 
@@ -86,6 +87,15 @@ bool checkAndSetPixmap(QPixmap &src, const QPixmap &defaultPixmap)
     else{
         return true;
     }
+}
+
+void WidgetUtil::setWidgetBoxShadow(QWidget *widget, int offsetX, int offsetY, const QColor &color, int radius)
+{
+    QGraphicsDropShadowEffect *shadow = new QGraphicsDropShadowEffect(widget);
+    shadow->setOffset(offsetX,offsetY);  //阴影偏移量
+    shadow->setColor(color);  //阴影颜色
+    shadow->setBlurRadius(radius);     //阴影的模糊半径
+    widget->setGraphicsEffect(shadow);
 }
 
 

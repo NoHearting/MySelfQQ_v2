@@ -57,5 +57,7 @@
         <file>res/main/delete-section.png</file>
         <file>res/main/delete-friend.png</file>
         <file>res/main/group-data.png</file>
+        <file>res/main/dialog-close.png</file>
+        <file>res/main/warn.png</file>
     </qresource>
 </RCC>

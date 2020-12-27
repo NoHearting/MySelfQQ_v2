@@ -11,11 +11,14 @@
 #include <QTreeWidget>
 #include <QListWidget>
 #include <QMenu>
+#include <map>
+#include <list>
 
 
 #include "Frameless.h"
 #include "SystemTray.h"
 #include "Linkman.h"
+#include "WarnDialog.h"
 
 namespace Ui
 {
@@ -79,32 +82,71 @@ private:
     void setHead(QPixmap &pixmap);
     void setHead(const QString &pixmapPath);
 
+
+    /// @brief 删除联系人列表元素
+    ///
+    /// @param item 删除的项目
+    void deleteTreeWidgetItem(QTreeWidgetItem * item,
+                              std::map<QTreeWidgetItem*,std::list<QTreeWidgetItem*>> & data);
+
+    // 设置菜单的显示。不同的位置显示的菜单不一样。
+    /// @brief 好友列表点击菜单
+    void showFriendMenu();
+
+    /// @brief 消息列表点击好友菜单
+    void showMessageListFriendMenu();
+
+    /// @brief 好友分组点击菜单
+    void showFriendSectionMenu();
+
+    /// @brief 默认好友分组点击菜单
+    void showDefaultFriendSectionMenu();
+
+    /// @brief 群组列表点击群组
+    void showGroupMenu();
+
+    /// @brief 消息列表点击群组
+    void showMessageListGroupMenu();
+
+    /// @brief 群组列表点击群分组
+    void showGroupSectionMenu();
+
+    /// @brief 群组列表点击默认群分组
+    void showDefaultGroupSectionMenu();
+
+
 private:
     Ui::MainWidget *ui;
 
 
     /// 设置窗口可拉伸和移动
-    zsj::Frameless *frameless;
+    zsj::Frameless *frameless = nullptr;
 
     /// 系统托盘
-    zsj::SystemTray *systemTray;
+    zsj::SystemTray *systemTray = nullptr;
+
+    /// 提示消息框
+    WarnDialog * friendDialog = nullptr;
+    WarnDialog * groupDialog = nullptr;
 
     // --------- 菜单 -----------
-    QMenu *userMenu;        /// 用户菜单
-    QMenu *sectionMenu;     /// 分组菜单
-    QMenu *groupMenu;       /// 群组菜单
-    QMenu *groupSectionMenu;    /// 群分组菜单
-
-    QMenu * listUserMenu;   /// 消息列表弹出的用户菜单
-    QMenu * listGroupMenu;  /// 消息列表弹出的群组菜单
+    QMenu *userMenu = nullptr;        /// 用户菜单
+    QMenu *sectionMenu = nullptr;     /// 分组菜单
+    QMenu *groupMenu = nullptr;       /// 群组菜单
+    QMenu *groupSectionMenu = nullptr;    /// 群分组菜单
 
     /// 当弹出菜单时，保存触发菜单的item
-    QTreeWidgetItem * itemUser;
-    QTreeWidgetItem * itemGroup;
+    QTreeWidgetItem * itemUser = nullptr;
+    QTreeWidgetItem * itemGroup = nullptr;
 
     /// 当弹出菜单时，保存触发菜单的item
-    QListWidgetItem * itemMessage;
+    QListWidgetItem * itemMessage = nullptr;
 
+    // --------- 数据 --------------
+//    QMap<QString,QTreeWidgetItem*> rootNodeFriend;
+//    QMap<QTreeWidgetItem*,QList<QTreeWidgetItem*>> childNodeFriend;
+    std::map<QTreeWidgetItem*,std::list<QTreeWidgetItem*>> dataFriend;
+    std::map<QTreeWidgetItem*,std::list<QTreeWidgetItem*>> dataGroup;
 
 private slots:
 
@@ -146,6 +188,7 @@ private slots:
     void showContextMenuGroup(const QPoint &);
     void showContextMenuMessage(const QPoint &);
 
+public slots:
     /// @brief 好友管理
     void friendManager() {}
 
@@ -156,17 +199,8 @@ private slots:
     /// @brief 发送即时消息
     void sendMessage() {}
 
-    /// @brief 发送电子邮件
-    void sendEmail() {}
-
-    /// @brief 消息免打扰
-    void messageAvoid() {}
-
-    /// @brief 设置权限
-    void setPrivilege() {}
-
     /// @brief 删除好友
-    void deleteFriend() {}
+    void deleteFriend();
 
     /// @brief 更新好友备注
     void updateRemark() {}
@@ -174,28 +208,7 @@ private slots:
     /// @brief 移动好友
     void moveFriend() {}
 
-    /// @brief 举报此用户
-    void reportFriend() {}
-
-    /// @brief 会员快捷功能
-    void vipFunction() {}
-
-    /// @brief 进入空间
-    void intoSpace() {}
-
     // ========== sectionMenu槽函数 =============
-    /// @brief 刷新好友列表
-    void updateFriendList() {}
-
-    /// @brief 显示在线联系人
-    void showOnlineFriends() {}
-
-    /// @brief 隐身对该分组可见
-    void hideToShowTheSection() {}
-
-    /// @brief 在线对该分组隐身
-    void onlineToHideTheSection() {}
-
     /// @brief 添加分组
     void addSection() {}
 
@@ -203,46 +216,20 @@ private slots:
     void renameSection() {}
 
     /// @brief 删除分组
-    void deleteSection() {}
+    void deleteFriendSection();
 
     // ========== groupMenu槽函数 =================
     /// @brief 发送群消息
     void sendGroupMessage() {}
 
-    /// @brief 查看群资料
-    void showGroupInfo() {}
-
-    /// @brief 群消息设置
-    void groupMessageSetting() {}
-
     /// @brief 修改群备注
     void updateGroupRemark() {}
 
-    /// @brief 生成左面快捷方式
-    void createDesktopShortcut() {}
+    /// @brief 移动群聊
+    void moveGroupTo(){}
 
-    /// @brief 取消置顶
-    void cancelIsTop() {}
-
-    /// @brief 如何升级
-    void howToUpgrade() {}
-
-    /// @brief 退出该群
-    void exitTheGroup() {}
-
-    /// @brief 举报群聊
-    void reportGroup() {}
 
     // ============= groupSectionMenu =============
-    /// @brief 图标显示
-    void iconShow() {}
-
-    /// @brief 列表显示
-    void listShow() {}
-
-    /// @brief 访问MQ群官网
-    void visitMQOfficialWebsite() {}
-
     /// @brief 查找添加群
     void findAndAddGroup() {}
 
@@ -256,11 +243,11 @@ private slots:
     void renameGroupSection() {}
 
     /// @brief 删除群分组
-    void deleteGroupSection() {}
+    void deleteGroupSection();
 
     // ============= list**Menu ==============
     /// @brief 从会话列表移除
-    void deleteItemFromMessageList(){}
+    void deleteItemFromMessageList();
 
 };
 

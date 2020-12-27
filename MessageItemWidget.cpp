@@ -109,3 +109,8 @@ void MessageItemWidget::setType(const DataType &value)
 {
     type = value;
 }
+
+QString MessageItemWidget::getNickname() const
+{
+    return ui->labelNickname->text();
+}

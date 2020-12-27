@@ -18,6 +18,8 @@ LinkmanGroupWidget::LinkmanGroupWidget(const QPixmap &icon, const QString &group
     ui->labelIcon->setPixmap(icon);
     QString group = QString("%1 [%2/%3]").arg(groupName).arg(active).arg(total);
     ui->labelGroupName->setText(group);
+
+    this->groupName = groupName;
 }
 
 LinkmanGroupWidget::~LinkmanGroupWidget()
@@ -34,4 +36,9 @@ void LinkmanGroupWidget::setIcon(const QString &iconPath)
 {
     QPixmap icon(iconPath);
     ui->labelIcon->setPixmap(icon);
+}
+
+QString LinkmanGroupWidget::getGrouoName() const
+{
+    return groupName;
 }

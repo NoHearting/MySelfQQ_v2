@@ -1,0 +1,38 @@
+#widget{
+	background: white;
+}
+
+#widgetTitle{
+	background: rgb(173,155,230);
+}
+
+#toolButton,#toolButtonClose{
+	border:none;
+	background: transparent;
+}
+
+#toolButtonClose:hover{
+	background: rgb(212,64,39);
+}
+
+#widgetContent{
+	background: white;
+}
+
+#widgetBottom{
+	background: rgb(247,245,255);
+}
+
+#pushButtonSure,#pushButtonCancel{
+	background: rgb(244,244,244);
+	border-radius: 5px;
+	border:1px solid rgb(160,162,164);
+}
+
+#pushButtonSure:hover,#pushButtonCancel:hover{
+	background: rgb(190,231,253);
+}
+
+#pushButtonSure:focus{
+	border:1px solid rgb(79,173,216);
+}

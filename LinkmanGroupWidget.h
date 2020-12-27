@@ -32,8 +32,13 @@ public:
     /// @param[in] iconPath 图标路径
     void setIcon(const QString & iconPath);
 
+
+    QString getGrouoName()const;
 private:
     Ui::LinkmanGroupWidget *ui;
+
+
+    QString groupName;
 };
 
 #endif // LINKMANGROUPWIDGET_H

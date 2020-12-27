@@ -11,11 +11,13 @@
 #include <QScopedPointer>
 #include <QMenu>
 #include <QWidget>
+#include <QObject>
 
 namespace zsj{
 
-class StaticIniator
+class StaticIniator : public QObject
 {
+    Q_OBJECT
 public:
     static StaticIniator * Instatcne();
 public:
@@ -24,8 +26,6 @@ public:
     void initFirendSectionMenu(QMenu * menu,QWidget * owner);
     void initGroupMenu(QMenu * menu,QWidget * owner);
     void initGroupSectionMenu(QMenu * menu,QWidget * owner);
-    void initMessageListFirendMenu(QMenu * menu,QWidget * owner);
-    void initMessageListGroupMenu(QMenu * menu,QWidget * owner);
 
     void initMenusStyle(QMenu * menu);
 

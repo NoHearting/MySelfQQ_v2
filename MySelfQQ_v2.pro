@@ -36,7 +36,8 @@ SOURCES += main.cpp\
     FloatScrollBar.cpp \
     MyListWidget.cpp \
     MyTreeWidget.cpp \
-    StaticIniator.cpp
+    StaticIniator.cpp \
+    WarnDialog.cpp
 
 HEADERS  += LoginWidget.h \
     Frameless.h \
@@ -62,7 +63,8 @@ HEADERS  += LoginWidget.h \
     MyListWidget.h \
     MyTreeWidget.h \
     StaticIniator.h \
-    NonCopyable.h
+    NonCopyable.h \
+    WarnDialog.h
 
 FORMS    += LoginWidget.ui \
     ComboBoxItemWidget.ui \
@@ -71,7 +73,8 @@ FORMS    += LoginWidget.ui \
     LinkmanItemWidget.ui \
     LinkmanGroupWidget.ui \
     LinkmanGroupItemWidget.ui \
-    MessageItemWidget.ui
+    MessageItemWidget.ui \
+    WarnDialog.ui
 
 RESOURCES += \
     qss.qrc \

@@ -8,6 +8,9 @@
 #include <QBitmap>
 #include <QDesktopServices>
 #include <QUrl>
+#include <QColor>
+#include <QWidget>
+#include <utility>
 
 # define DEBUG 1
 
@@ -42,6 +45,20 @@ struct HeadSize{
 };
 
 const QString defaultHead = ":/global/res/global/default-head.png";
+
+class WidgetUtil{
+public:
+    static void setWidgetBoxShadow(QWidget * widget,int offsetX = 0,int offsetY = 0,
+                                   const QColor & color = Qt::black,int radius = 5);
+};
+
+
+
+template<typename K,typename V>
+std::pair<K,V> my_make_pair(K key,V value){
+    return std::pair<K,V>(key,value);
+}
+
 
 
 /// @brief 获取当前进程id
@@ -94,6 +111,8 @@ void openUrl(const QString & url = "http://www.xl-zsj.top");
 /// @param[in] 默认的QPixmap
 bool checkAndSetPixmap(QPixmap & src,const QString defaultPixmapPath);
 bool checkAndSetPixmap(QPixmap & src, const QPixmap & defaultPixmap);
+
+
 
 
 }
