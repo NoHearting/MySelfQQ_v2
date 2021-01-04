@@ -30,6 +30,7 @@ class MainWidget : public QWidget
     Q_OBJECT
 
 public:
+    typedef std::map<QTreeWidgetItem *, std::list<QTreeWidgetItem *>> mapTreeItem;
     explicit MainWidget(QWidget *parent = 0);
     ~MainWidget();
 
@@ -86,8 +87,8 @@ private:
     /// @brief 删除联系人列表元素
     ///
     /// @param item 删除的项目
-    void deleteTreeWidgetItem(QTreeWidgetItem * item,
-                              std::map<QTreeWidgetItem*,std::list<QTreeWidgetItem*>> & data);
+    void deleteTreeWidgetItem(QTreeWidgetItem *item,
+                              std::map<QTreeWidgetItem *, std::list<QTreeWidgetItem *>> &data);
 
     // 设置菜单的显示。不同的位置显示的菜单不一样。
     /// @brief 好友列表点击菜单
@@ -114,6 +115,17 @@ private:
     /// @brief 群组列表点击默认群分组
     void showDefaultGroupSectionMenu();
 
+    /// @brief 添加好友菜单子菜单
+    void addFriendSubMenu(QMenu &menu,
+                          std::map<QTreeWidgetItem *, std::list<QTreeWidgetItem *>> &data);
+
+    /// @brief 添加群组菜单子菜单
+    void addGroupSubMenu(QMenu &menu,
+                         std::map<QTreeWidgetItem *, std::list<QTreeWidgetItem *>> &data);
+
+    /// @brief 添加子菜单
+    void updateSubMenu(QMenu * menu,QTreeWidget * treeWidget,
+                    std::map<QTreeWidgetItem *, std::list<QTreeWidgetItem *>> &data);
 
 private:
     Ui::MainWidget *ui;
@@ -126,27 +138,28 @@ private:
     zsj::SystemTray *systemTray = nullptr;
 
     /// 提示消息框
-    WarnDialog * friendDialog = nullptr;
-    WarnDialog * groupDialog = nullptr;
+    WarnDialog *friendDialog = nullptr;
+    WarnDialog *groupDialog = nullptr;
 
     // --------- 菜单 -----------
     QMenu *userMenu = nullptr;        /// 用户菜单
+    QMenu *moveSubMenu;           /// “移动用户至/移动群组至”子菜单
     QMenu *sectionMenu = nullptr;     /// 分组菜单
     QMenu *groupMenu = nullptr;       /// 群组菜单
     QMenu *groupSectionMenu = nullptr;    /// 群分组菜单
 
     /// 当弹出菜单时，保存触发菜单的item
-    QTreeWidgetItem * itemUser = nullptr;
-    QTreeWidgetItem * itemGroup = nullptr;
+    QTreeWidgetItem *itemUser = nullptr;
+    QTreeWidgetItem *itemGroup = nullptr;
 
     /// 当弹出菜单时，保存触发菜单的item
-    QListWidgetItem * itemMessage = nullptr;
+    QListWidgetItem *itemMessage = nullptr;
 
     // --------- 数据 --------------
 //    QMap<QString,QTreeWidgetItem*> rootNodeFriend;
 //    QMap<QTreeWidgetItem*,QList<QTreeWidgetItem*>> childNodeFriend;
-    std::map<QTreeWidgetItem*,std::list<QTreeWidgetItem*>> dataFriend;
-    std::map<QTreeWidgetItem*,std::list<QTreeWidgetItem*>> dataGroup;
+    mapTreeItem dataFriend;
+    mapTreeItem dataGroup;
 
 private slots:
 
@@ -195,6 +208,9 @@ public slots:
     /// @brief 消息记录
     void messageRecord() {}
 
+    /// @brief 移动联系人和群组
+    void moveItem(QAction * action);
+
     // ========= userMenu槽函数 ==============
     /// @brief 发送即时消息
     void sendMessage() {}
@@ -226,7 +242,7 @@ public slots:
     void updateGroupRemark() {}
 
     /// @brief 移动群聊
-    void moveGroupTo(){}
+    void moveGroupTo() {}
 
 
     // ============= groupSectionMenu =============

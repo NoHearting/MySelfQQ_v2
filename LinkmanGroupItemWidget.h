@@ -25,6 +25,14 @@ public:
     LinkmanGroupItemWidget(zsj::GroupData::ptr groupData,const QString & date,QWidget *parent = 0);
     ~LinkmanGroupItemWidget();
 
+
+
+    zsj::GroupData::ptr getGroupData() const;
+    void setGroupData(const zsj::GroupData::ptr &value);
+
+    QString getDate() const;
+    void setDate(const QString &value);
+
 private:
     /// @brief 设置头像
     void setHead();
@@ -33,6 +41,9 @@ private:
 
     /// 群数据
     zsj::GroupData::ptr groupData;
+
+    /// @brief 日期
+    QString date;
 };
 
 #endif // LINKMANGROUPITEMWIDGET_H

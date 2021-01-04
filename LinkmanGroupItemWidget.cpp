@@ -21,6 +21,7 @@ LinkmanGroupItemWidget::LinkmanGroupItemWidget(zsj::GroupData::ptr groupData,
     setHead();
     ui->labelNickname->setText(groupData->getName());
     ui->labelDate->setText(date);
+    this->date = date;
 
     ui->labelNickname->adjustSize();
     ui->labelDate->setText(date);
@@ -36,4 +37,24 @@ void LinkmanGroupItemWidget::setHead()
     QPixmap head = groupData->getHead();
     QPixmap result = zsj::adjustToHead(head, zsj::HeadSize::linkmanGroupDiameter);
     ui->labelHead->setPixmap(result);
+}
+
+QString LinkmanGroupItemWidget::getDate() const
+{
+    return date;
+}
+
+void LinkmanGroupItemWidget::setDate(const QString &value)
+{
+    date = value;
+}
+
+zsj::GroupData::ptr LinkmanGroupItemWidget::getGroupData() const
+{
+    return groupData;
+}
+
+void LinkmanGroupItemWidget::setGroupData(const zsj::GroupData::ptr &value)
+{
+    groupData = value;
 }

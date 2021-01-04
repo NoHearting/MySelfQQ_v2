@@ -7,7 +7,11 @@ QMenu{
 }
 
 #groupSectionMenu::item{
-    padding: 0px 16px;
+    /*padding: 0px 16px;*/
+    width: 140px;
+}
+
+#moveSubMenu::item{
     width: 140px;
 }
 
