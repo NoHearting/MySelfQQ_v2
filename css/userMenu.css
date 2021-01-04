@@ -1,35 +1,36 @@
-
-QMenu{
-    background-color: rgba(255,255,255,0.9);
-    border-radius:5px;
-    width:155px;
+QMenu {
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 5px;
+    width: 155px;
     padding: 5px 0;
+    border: 1px solid gray;
 }
 
-#groupSectionMenu::item{
+#groupSectionMenu::item {
     /*padding: 0px 16px;*/
     width: 140px;
 }
 
-#moveSubMenu::item{
+#moveSubMenu::item {
     width: 140px;
 }
 
 QMenu::item {
     height: 30px;
-    padding: 0px 34px;
+    padding: 0px 34px 0 10px;
     border: 1px solid transparent;
 }
 
 QMenu::item:selected {
-    background:rgb(238,238,238);
+    background: rgb(238, 238, 238);
+    border-right: 1px solid gray;
 }
 
-QMenu::icon { 
-    margin: 0px 10px;
+QMenu::icon {
+    margin: 0 0 0 10px;
 }
 
 QMenu::separator {
     height: 1px;
-    background: rgb(237,237,237);
+    background: rgb(237, 237, 237);
 }

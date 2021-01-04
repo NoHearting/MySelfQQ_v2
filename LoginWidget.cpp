@@ -3,6 +3,7 @@
 #include "Util.h"
 
 #include "ReadQStyleSheet.h"
+#include "Frameless.h"
 
 
 #include <QDebug>
@@ -41,7 +42,6 @@ void LoginWidget::mouseMoveEvent(QMouseEvent * e)
     QPoint afterMovePos = e->globalPos();
     if(offset.x()!=0&&offset.y()!=0)
     {
-
         QPoint moveDis = afterMovePos-offset;
         move(moveDis);
     }
@@ -108,9 +108,6 @@ void LoginWidget::initResourceAndForm()
     this->setWindowFlags(Qt::Tool | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::WindowSystemMenuHint | Qt::WindowMinimizeButtonHint);
     //设置窗口背景透明
     this->setAttribute(Qt::WA_TranslucentBackground);
-    //设置外层窗口大小为桌面大小
-    QSize desktop = zsj::getDesktopSize();
-    this->setGeometry(0,0,desktop.width(),desktop.height());
 
     //设置窗口阴影
     QGraphicsDropShadowEffect * shadow = new QGraphicsDropShadowEffect(this);

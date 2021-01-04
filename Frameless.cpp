@@ -12,7 +12,9 @@ namespace zsj
 Frameless::Frameless(QObject *parent) : QObject(parent)
 {
     padding = 8;
+#ifdef Q_OS_WIN
     moveEnable = true;
+#endif
     resizeEnable = true;
     widget = nullptr;
 
@@ -54,8 +56,9 @@ bool Frameless::eventFilter(QObject *watched, QEvent *event)
             int offsetY = point.y() - lastPos.y();
 
             //根据按下处的位置判断是否移动空间还是拉伸控件
-
+#ifdef Q_OS_WIN
             moveWindow(offsetX,offsetY);
+#endif
             resizeWindow(offsetX,offsetY);
         }
         else if(event->type() == QEvent::MouseButtonPress)
@@ -163,6 +166,7 @@ void Frameless::setResizeCursor(QPoint point)
 
 }
 
+#ifdef Q_OS_WIN
 void Frameless::moveWindow(int offsetX, int offsetY)
 {
     if(moveEnable)
@@ -173,6 +177,7 @@ void Frameless::moveWindow(int offsetX, int offsetY)
         }
     }
 }
+#endif
 
 void Frameless::judgeMousePos()
 {
@@ -293,10 +298,12 @@ void Frameless::setPadding(int value)
     padding = value;
 }
 
+#ifdef Q_OS_WIN
 void Frameless::setMoveEnable(bool value)
 {
     moveEnable = value;
 }
+#endif
 
 void Frameless::setResizeEnable(bool value)
 {

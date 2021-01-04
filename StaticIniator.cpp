@@ -1,5 +1,6 @@
 #include "StaticIniator.h"
 #include "MainWidget.h"
+#include "Util.h"
 #include "ReadQStyleSheet.h"
 
 #include <QMutex>
@@ -165,6 +166,7 @@ void StaticIniator::initGroupMenu(QMenu *menu,QWidget * owner)
     menu->addAction(reportGroup);
 
     initMenusStyle(menu);
+
 
     connect(sendGroupMessage,&QAction::triggered,ownerChild,&MainWidget::sendGroupMessage);
     connect(updateRemark,&QAction::triggered,ownerChild,&MainWidget::updateGroupRemark);

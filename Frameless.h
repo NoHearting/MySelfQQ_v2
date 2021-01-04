@@ -56,16 +56,19 @@ private:
     /// @param[in] offsetY y轴偏移量
     void resizeWindow(int offsetX,int offsetY);
 
+#ifdef Q_OS_WIN
     /// @brief 移动窗口
     /// @param[in] offsetX x轴偏移量
     /// @param[in] offsetY y轴偏移量
     void moveWindow(int offsetX,int offsetY);
-
+#endif
     /// @brief 判断鼠标位置是否落在8个矩形之内
     void judgeMousePos();
 private:
     int padding;                    //边距
+#ifdef Q_OS_WIN
     bool moveEnable;               //可移动
+#endif
     bool resizeEnable;              //可拉伸
     QWidget *widget;                //无边框窗体
 
