@@ -64,8 +64,8 @@ void outputMessage(QtMsgType type, const QMessageLogContext &context, const QStr
             break;
     }
     QString tab = "\t";
-    int * threadId = (int *)QThread::currentThreadId();
-    int pid = zsj::getCurrentProcessId();
+    QString threadId = zsj::SystemUtil::getCurrentThreadId();
+    int pid = zsj::SystemUtil::getCurrentProcessId();
     QString date = zsj::GetCurrentDateTime("yyyy-MM-dd hh:mm:ss");
 
     //format : category pid tid file line date message
@@ -73,7 +73,7 @@ void outputMessage(QtMsgType type, const QMessageLogContext &context, const QStr
                       .arg(tab)
                       .arg(category)
                       .arg(pid)
-                      .arg(*threadId)
+                      .arg(threadId)
                       .arg(context.file)
                       .arg(context.line)
                       .arg(date)

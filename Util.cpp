@@ -6,6 +6,7 @@
 #include <QDebug>
 #include <QPainter>
 #include <QGraphicsDropShadowEffect>
+#include <QThread>
 
 namespace zsj{
 
@@ -15,16 +16,6 @@ Util::Util()
 }
 
 
-int getCurrentProcessId()
-{
-    return qApp->applicationPid();
-}
-
-QSize getDesktopSize()
-{
-    QWidget * screen = qApp->desktop()->screen();
-    return QSize(screen->width(),screen->height());
-}
 
 
 QPixmap pixmapToRound(QPixmap &src, int radius)
@@ -96,6 +87,24 @@ void WidgetUtil::setWidgetBoxShadow(QWidget *widget, int offsetX, int offsetY, c
     shadow->setColor(color);  //阴影颜色
     shadow->setBlurRadius(radius);     //阴影的模糊半径
     widget->setGraphicsEffect(shadow);
+}
+
+QString SystemUtil::getCurrentThreadId()
+{
+    QString threadText = QString("%1").arg(quintptr(QThread::currentThreadId()));
+    return threadText;
+}
+
+
+int SystemUtil::getCurrentProcessId()
+{
+    return qApp->applicationPid();
+}
+
+QSize SystemUtil::getDesktopSize()
+{
+    QWidget * screen = qApp->desktop()->screen();
+    return QSize(screen->width(),screen->height());
 }
 
 

@@ -144,6 +144,12 @@ private:
     void updateSubMenu(QMenu * menu,QTreeWidget * treeWidget,
                     std::map<QTreeWidgetItem *, std::list<QTreeWidgetItem *>> &data);
 
+
+    /// @brief 切换页面，在更换TreeWidget的页面的时候
+    /// @param[in] currentIndex 当前页面坐标
+    /// @param[in] targetIndex 将要切换的页面的坐标
+    void changePage(int currentIndex,int targetIndex);
+
 private:
     Ui::MainWidget *ui;
 
@@ -164,17 +170,27 @@ private:
 
     // --------- 菜单 -----------
     QMenu *userMenu = nullptr;        /// 用户菜单
-    QMenu *moveSubMenu;           /// “移动用户至/移动群组至”子菜单
+
+    QMenu *moveSubMenuFriend = nullptr;           /// “移动用户至（好友列表)”子菜单
+    QMenu * moveSubMenuGroup = nullptr;           /// “移动群组至（群组列表）子菜单”
+
+
     QMenu *sectionMenu = nullptr;     /// 分组菜单
     QMenu *groupMenu = nullptr;       /// 群组菜单
     QMenu *groupSectionMenu = nullptr;    /// 群分组菜单
 
+    // ------------ Global Data ------------
+    // 当前类的全局数据，一个方法修改之后另一个方法会使用
     /// 当弹出菜单时，保存触发菜单的item
     QTreeWidgetItem *itemUser = nullptr;
     QTreeWidgetItem *itemGroup = nullptr;
 
     /// 当弹出菜单时，保存触发菜单的item
     QListWidgetItem *itemMessage = nullptr;
+
+    /// 是否点击消息列表
+    bool isMsgList;
+
 
     // --------- 数据 --------------
 //    QMap<QString,QTreeWidgetItem*> rootNodeFriend;
@@ -203,6 +219,7 @@ private slots:
 
     /// @brief 切换到空间界面
     void switchToSpaceWidget();
+
 
     /// @brief 子项目点击，
     /// 如果为根节点则不变化背景颜色,并且展开内容

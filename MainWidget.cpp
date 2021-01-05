@@ -41,12 +41,12 @@ MainWidget::~MainWidget()
 // 含有一个移动bug
 // 当打开比如下拉框、菜单的东西时，点击桌面（不点击下拉框和菜单），此时移动鼠标到窗口，
 // 窗口会突然非法移动
-void MainWidget::mouseMoveEvent(QMouseEvent * e)
+void MainWidget::mouseMoveEvent(QMouseEvent *e)
 {
     QPoint afterMovePos = e->globalPos();
-    if(offset.x()!=0&&offset.y()!=0)
+    if(offset.x() != 0 && offset.y() != 0)
     {
-        QPoint moveDis = afterMovePos-offset;
+        QPoint moveDis = afterMovePos - offset;
         move(moveDis);
     }
 }
@@ -54,14 +54,15 @@ void MainWidget::mouseMoveEvent(QMouseEvent * e)
 /*
     鼠标按下事件，按下就获取当前鼠标坐标并计算出当前坐标和窗口左上角的偏移量offset
 */
-void MainWidget::mousePressEvent(QMouseEvent * e)
+void MainWidget::mousePressEvent(QMouseEvent *e)
 {
-    QPoint topLeft = ui->widgetTop->mapToGlobal(ui->widgetTop->pos()) - QPoint(0,130);
-    QRect realGeometry(topLeft,QSize(ui->widgetMain->size()));  // 当前窗口的真实位置大小
+    QPoint topLeft = ui->widgetTop->mapToGlobal(ui->widgetTop->pos()) - QPoint(0, 130);
+    QRect realGeometry(topLeft, QSize(ui->widgetMain->size())); // 当前窗口的真实位置大小
     QPoint cursorPos = e->globalPos();              //当前鼠标的全局位置
-    if(realGeometry.contains(cursorPos)){
+    if(realGeometry.contains(cursorPos))
+    {
         QPoint geometryTopLeft = this->geometry().topLeft();    //当前鼠标点击窗口的左上角坐标
-        offset = cursorPos-geometryTopLeft;
+        offset = cursorPos - geometryTopLeft;
     }
 }
 
@@ -70,7 +71,7 @@ void MainWidget::mousePressEvent(QMouseEvent * e)
 */
 void MainWidget::mouseReleaseEvent(QMouseEvent *)
 {
-    offset = QPoint(0,0);
+    offset = QPoint(0, 0);
 }
 #endif
 
@@ -283,10 +284,18 @@ void MainWidget::initMenus()
     groupSectionMenu = new QMenu();
     zsj::StaticIniator::Instatcne()->initGroupSectionMenu(groupSectionMenu, this);
 
-    moveSubMenu = new QMenu();
-    moveSubMenu->setObjectName("moveSubMenu");
-    connect(moveSubMenu, &QMenu::triggered, this, &MainWidget::moveItem);
-    zsj::StaticIniator::Instatcne()->initMenusStyle(moveSubMenu);
+    moveSubMenuFriend = new QMenu();
+    moveSubMenuFriend->setObjectName("moveSubMenuFriend");
+    connect(moveSubMenuFriend, &QMenu::triggered, this, &MainWidget::moveItem);
+    zsj::StaticIniator::Instatcne()->initMenusStyle(moveSubMenuFriend);
+
+
+    moveSubMenuGroup = new QMenu();
+    moveSubMenuGroup->setObjectName("moveSubMenuGroup");
+    connect(moveSubMenuGroup, &QMenu::triggered, this, &MainWidget::moveItem);
+    zsj::StaticIniator::Instatcne()->initMenusStyle(moveSubMenuGroup);
+
+
 }
 
 QTreeWidgetItem *MainWidget::addTreeWidgetRootNode(QTreeWidget *treeWidget, LinkmanGroupWidget *group)
@@ -460,14 +469,14 @@ void MainWidget::showFriendMenu()
             if(item->menu() == nullptr)
             {
                 qDebug() << "添加子菜单";
-                updateSubMenu(moveSubMenu, ui->treeWidgetFriend, dataFriend);
-                item->setMenu(moveSubMenu);
-                userMenu->addMenu(moveSubMenu);
+                updateSubMenu(moveSubMenuFriend, ui->treeWidgetFriend, dataFriend);
+                item->setMenu(moveSubMenuFriend);
+                userMenu->addMenu(moveSubMenuFriend);
             }
             else  // 刷新子菜单
             {
                 qDebug() << "刷新子菜单";
-                updateSubMenu(moveSubMenu, ui->treeWidgetFriend, dataFriend);
+                updateSubMenu(moveSubMenuFriend, ui->treeWidgetFriend, dataFriend);
             }
         }
     }
@@ -477,7 +486,7 @@ void MainWidget::showFriendMenu()
 void MainWidget::showMessageListFriendMenu()
 {
     auto actions = userMenu->actions();
-    qDebug() << actions.size();
+    qDebug() << actions.size() << "消息列表";
     for(auto &item : actions)
     {
         if(item->text() == "从会话列表中移除")
@@ -491,14 +500,14 @@ void MainWidget::showMessageListFriendMenu()
             if(item->menu() == nullptr)
             {
                 qDebug() << "添加子菜单";
-                updateSubMenu(moveSubMenu, ui->treeWidgetFriend, dataFriend);
-                item->setMenu(moveSubMenu);
-                userMenu->addMenu(moveSubMenu);
+                updateSubMenu(moveSubMenuFriend, ui->treeWidgetFriend, dataFriend);
+                item->setMenu(moveSubMenuFriend);
+                userMenu->addMenu(moveSubMenuFriend);
             }
             else  // 刷新子菜单
             {
                 qDebug() << "刷新子菜单";
-                updateSubMenu(moveSubMenu, ui->treeWidgetFriend, dataFriend);
+                updateSubMenu(moveSubMenuFriend, ui->treeWidgetFriend, dataFriend);
             }
         }
     }
@@ -544,7 +553,22 @@ void MainWidget::showGroupMenu()
         if(item->text() == "从会话列表移除")
         {
             item->setVisible(false);
-            break;
+        }
+        else if(item->text() == "移动群至"){
+            // 添加子菜单
+            qDebug() << item->text();
+            if(item->menu() == nullptr)
+            {
+                qDebug() << "添加子菜单";
+                updateSubMenu(moveSubMenuGroup, ui->treeWidgetGroup, dataGroup);
+                item->setMenu(moveSubMenuGroup);
+                groupMenu->addMenu(moveSubMenuGroup);
+            }
+            else  // 刷新子菜单
+            {
+                qDebug() << "刷新子菜单";
+                updateSubMenu(moveSubMenuGroup, ui->treeWidgetGroup, dataGroup);
+            }
         }
     }
     groupMenu->exec(this->cursor().pos());
@@ -559,7 +583,22 @@ void MainWidget::showMessageListGroupMenu()
         if(item->text() == "从会话列表移除")
         {
             item->setVisible(true);
-            break;
+        }
+        else if(item->text() == "移动群至"){
+            // 添加子菜单
+            qDebug() << item->text();
+            if(item->menu() == nullptr)
+            {
+                qDebug() << "添加子菜单";
+                updateSubMenu(moveSubMenuGroup, ui->treeWidgetGroup, dataGroup);
+                item->setMenu(moveSubMenuGroup);
+                groupMenu->addMenu(moveSubMenuGroup);
+            }
+            else  // 刷新子菜单
+            {
+                qDebug() << "刷新子菜单";
+                updateSubMenu(moveSubMenuGroup, ui->treeWidgetGroup, dataGroup);
+            }
         }
     }
     groupMenu->exec(this->cursor().pos());
@@ -607,6 +646,38 @@ void MainWidget::updateSubMenu(QMenu *menu, QTreeWidget *treeWidget, std::map<QT
     }
 }
 
+void MainWidget::changePage(int currentIndex, int targetIndex)
+{
+    if(currentIndex == targetIndex)
+    {
+        return;
+    }
+    // 0 1 2
+    int value = targetIndex - currentIndex;
+    if(qAbs(value) == 1)
+    {
+        if(value > 0)
+        {
+            ui->stackedWidget->nextWidget();
+        }
+        else
+        {
+            ui->stackedWidget->forwordWidget();
+        }
+    }
+    else
+    {
+        if(value > 0)
+        {
+            ui->stackedWidget->forwordWidget();
+        }
+        else
+        {
+            ui->stackedWidget->nextWidget();
+        }
+    }
+}
+
 void MainWidget::closeWindow()
 {
     qApp->quit();
@@ -619,31 +690,24 @@ void MainWidget::minWindow()
 
 void MainWidget::interfaceManager()
 {
-//    ui->toolButtonEmail->hide();
     bool isShow = ui->toolButtonEmail->isHidden();
     ui->toolButtonEmail->setHidden(!isShow);
 }
 
 void MainWidget::switchToMessageWidget()
 {
-    if(ui->stackedWidget->currentIndex() != 0)
-    {
-        ui->pushButtonMessage->setChecked(true);
-        ui->pushButtonLinkman->setChecked(false);
-        ui->pushButtonSpace->setChecked(false);
-        ui->stackedWidget->forwordWidget();
-    }
+    ui->pushButtonMessage->setChecked(true);
+    ui->pushButtonLinkman->setChecked(false);
+    ui->pushButtonSpace->setChecked(false);
+    changePage(ui->stackedWidget->currentIndex(), 0);
 }
 
 void MainWidget::switchToLinkmanWidget()
 {
-    if(ui->stackedWidget->currentIndex() != 1)
-    {
-        ui->pushButtonMessage->setChecked(false);
-        ui->pushButtonLinkman->setChecked(true);
-        ui->pushButtonSpace->setChecked(false);
-        ui->stackedWidget->nextWidget();
-    }
+    ui->pushButtonMessage->setChecked(false);
+    ui->pushButtonLinkman->setChecked(true);
+    ui->pushButtonSpace->setChecked(false);
+    changePage(ui->stackedWidget->currentIndex(), 1);
 }
 
 void MainWidget::switchToSpaceWidget()
@@ -651,7 +715,7 @@ void MainWidget::switchToSpaceWidget()
     ui->pushButtonMessage->setChecked(false);
     ui->pushButtonLinkman->setChecked(false);
     ui->pushButtonSpace->setChecked(true);
-    ui->stackedWidget->setCurrentIndex(2);
+    changePage(ui->stackedWidget->currentIndex(), 2);
 }
 
 void MainWidget::treeWidgetItemClick(QTreeWidgetItem *item, int)
@@ -742,6 +806,7 @@ void MainWidget::showContextMenuFriend(const QPoint &point)
         itemUser = item;
         itemGroup = nullptr;
         itemMessage = nullptr;
+        isMsgList = false;
 
         qDebug() << "record itemUser";
         bool isChild = item->data(0, Qt::UserRole).toBool();
@@ -784,6 +849,7 @@ void MainWidget::showContextMenuGroup(const QPoint &point)
         itemGroup = item;
         itemUser = nullptr;
         itemMessage = nullptr;
+        isMsgList = false;
 
         qDebug() << "record itemGroup";
         bool isChild = item->data(0, Qt::UserRole).toBool();
@@ -827,6 +893,7 @@ void MainWidget::showContextMenuMessage(const QPoint &point)
             itemMessage = item;
             itemGroup = nullptr;
             itemUser = nullptr;
+            isMsgList = true;
 
             qDebug() << "record itemMessage  - " << messageItem->getNickname();
             auto type = messageItem->getType();
@@ -858,6 +925,12 @@ void MainWidget::showContextMenuMessage(const QPoint &point)
 
 void MainWidget::moveItem(QAction *action)
 {
+    if(isMsgList){
+        qDebug() << "Message list move logic to do";
+        return;
+    }
+
+    qDebug() << "moveItem";
     QString targetSectionName = action->text();
     // 当前需要操作的项
     QTreeWidgetItem *source = nullptr;
@@ -904,7 +977,8 @@ void MainWidget::moveItem(QAction *action)
     QWidget *widget = treeWidget->itemWidget(source, 0);
     if(widget != nullptr)
     {
-        if(itemUser){
+        if(itemUser)
+        {
             LinkmanItemWidget *itemWidget = dynamic_cast<LinkmanItemWidget *>(widget);
             if(itemWidget == nullptr)
             {
@@ -914,15 +988,16 @@ void MainWidget::moveItem(QAction *action)
             zsj::UserData::ptr userData = itemWidget->getUserData();
             newItem = addTreeWidgetChildNode(treeWidget, targetSection, userData);
         }
-        else{
-            LinkmanItemWidget *itemWidget = dynamic_cast<LinkmanItemWidget *>(widget);
+        else
+        {
+            LinkmanGroupItemWidget *itemWidget = dynamic_cast<LinkmanGroupItemWidget *>(widget);
             if(itemWidget == nullptr)
             {
-                qDebug() << "QWidget* to LinkmanItemWidget* faild";
+                qDebug() << "QWidget* to LinkmanGroupItemWidget* faild";
                 return;
             }
-            zsj::UserData::ptr userData = itemWidget->getUserData();
-            newItem = addTreeWidgetChildNode(treeWidget, targetSection, userData);
+            zsj::GroupData::ptr groupData = itemWidget->getGroupData();
+            newItem = addTreeWidgetChildNode(treeWidget, targetSection, groupData,QDateTime::currentDateTime().toString("yyyy-MM-dd"));
         }
     }
     else

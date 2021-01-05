@@ -1,23 +1,18 @@
 QMenu {
     background-color: rgba(255, 255, 255, 0.9);
     border-radius: 5px;
-    width: 155px;
     padding: 5px 0;
     border: 1px solid gray;
 }
 
 #groupSectionMenu::item {
-    /*padding: 0px 16px;*/
-    width: 140px;
+    padding:0px 16px;
 }
 
-#moveSubMenu::item {
-    width: 140px;
-}
 
 QMenu::item {
     height: 30px;
-    padding: 0px 34px 0 10px;
+    padding: 0 34px;
     border: 1px solid transparent;
 }
 
@@ -33,4 +28,9 @@ QMenu::icon {
 QMenu::separator {
     height: 1px;
     background: rgb(237, 237, 237);
+}
+
+QMenu::right-arrow{
+    image:url(":/main/res/main/arrow-right.png");
+    padding-right: 10px;
 }

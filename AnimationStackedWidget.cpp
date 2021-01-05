@@ -2,6 +2,7 @@
 #include <QByteArray>
 #include <QRect>
 #include <QPixmap>
+#include <QDebug>
 
 AnimationStackedWidget::AnimationStackedWidget(QWidget *parent ) : QStackedWidget(parent)
 {
@@ -15,6 +16,7 @@ AnimationStackedWidget::AnimationStackedWidget(QWidget *parent ) : QStackedWidge
 
 void AnimationStackedWidget::valueChangedAnimation(QVariant value)
 {
+    qDebug() << "valueChanged";
     currentValue = value;
     update();
 }

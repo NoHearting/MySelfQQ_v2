@@ -96,3 +96,20 @@
 
 ### 5、在Ubuntu18.04系统下移动窗口会出现抖动
 
+### 6、显示二级菜单有问题。二级菜单无法正确显示
+
+* 在消息列表下显示的二级菜单会出现无法点击的问题。
+
+  <img src="C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20210105210633691.png" alt="image-20210105210633691" style="zoom:50%;" />
+
+  主菜单和子菜单之间会有一部分空白，导致鼠标不能移动到上方。显示二级菜单失败
+
+* 但是在联系人的好友界面则会显示成功
+
+  ![image-20210105210801509](C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20210105210801509.png)
+
+* 其他菜单也会显示相同的问题，不知道为什么，很奇怪
+
+* <font color=red>解决方法：</font>
+
+  * CSS样式设置不正确，更改CSS样式就能准确显示

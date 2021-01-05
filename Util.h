@@ -14,7 +14,8 @@
 
 # define DEBUG 1
 
-namespace zsj {
+namespace zsj
+{
 
 
 class Util
@@ -23,7 +24,8 @@ public:
     Util();
 };
 
-struct HeadSize{
+struct HeadSize
+{
 
     /// 登录界面主头像
     static const quint8 loginMainDiameter = 64;
@@ -46,34 +48,38 @@ struct HeadSize{
 
 const QString defaultHead = ":/global/res/global/default-head.png";
 
-class WidgetUtil{
+class WidgetUtil
+{
 public:
-    static void setWidgetBoxShadow(QWidget * widget,int offsetX = 0,int offsetY = 0,
-                                   const QColor & color = Qt::black,int radius = 5);
+    static void setWidgetBoxShadow(QWidget *widget, int offsetX = 0, int offsetY = 0,
+                                   const QColor &color = Qt::black, int radius = 5);
+};
+
+class SystemUtil
+{
+public:
+    /// @brief 获取当前进程id
+    static int getCurrentProcessId();
+
+    /// @brief 获取当前桌面大小
+    /// @return QSize
+    static QSize getDesktopSize();
+
+
+    /// @brief 获取当前线程id
+    /// @return QString
+    static QString getCurrentThreadId();
 };
 
 
 
-template<typename K,typename V>
-std::pair<K,V> my_make_pair(K key,V value){
-    return std::pair<K,V>(key,value);
-}
-
-
-
-/// @brief 获取当前进程id
-int getCurrentProcessId();
-
-/// @brief 获取当前桌面大小
-/// @return QSize
-QSize getDesktopSize();
 
 /// @brief 将QPixmap转换为圆形
 ///
 /// @param[in] src 将要转换的pixmap
 /// @param[in] radius 转换后圆形的半径
 /// @param QPixmap
-QPixmap pixmapToRound(QPixmap & src,int radius);
+QPixmap pixmapToRound(QPixmap &src, int radius);
 
 
 /// @brief 等比缩放图片
@@ -82,20 +88,21 @@ QPixmap pixmapToRound(QPixmap & src,int radius);
 /// @param[in] width 目标图片的宽
 /// @param[in] height 目标图片的高
 /// @return QPixmap
-QPixmap scaledPixmap(QPixmap & src,int width,int height);
+QPixmap scaledPixmap(QPixmap &src, int width, int height);
 
 /// @brief 直接缩放为适应头像大小
 ///     主要是先缩放，在变为圆形
 ///     scaledPixmap + pixmapToRound
 /// @param[in] src 将要处理的图片
 /// @param[in] diameter 目标图片直径
-QPixmap adjustToHead(QPixmap & src,int diameter);
+QPixmap adjustToHead(QPixmap &src, int diameter);
 
 /// @brief 获取当前的时间
 ///
 /// @param[in] 获取时间的格式，默认为yyyy-MM-dd
 /// @return QString
-inline QString GetCurrentDateTime(const QString & format = "yyyy-MM-dd"){
+inline QString GetCurrentDateTime(const QString &format = "yyyy-MM-dd")
+{
     return qPrintable(QDateTime::currentDateTime().toString(format));
 }
 
@@ -103,14 +110,14 @@ inline QString GetCurrentDateTime(const QString & format = "yyyy-MM-dd"){
 /// @brief 打开url
 ///
 /// @param QString url
-void openUrl(const QString & url = "http://www.xl-zsj.top");
+void openUrl(const QString &url = "http://www.xl-zsj.top");
 
 /// @brief 检查QPixmap是否为空，如果为空则设置一个默认QPixmap
 ///
 /// @param[in/out] 需要检查的QPixmap
 /// @param[in] 默认的QPixmap
-bool checkAndSetPixmap(QPixmap & src,const QString defaultPixmapPath);
-bool checkAndSetPixmap(QPixmap & src, const QPixmap & defaultPixmap);
+bool checkAndSetPixmap(QPixmap &src, const QString defaultPixmapPath);
+bool checkAndSetPixmap(QPixmap &src, const QPixmap &defaultPixmap);
 
 
 
