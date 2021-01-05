@@ -13,6 +13,7 @@
 #include <QGraphicsDropShadowEffect>
 #include <QScrollBar>
 #include <utility>
+#include <QMouseEvent>
 
 
 
@@ -35,6 +36,44 @@ MainWidget::~MainWidget()
     delete ui;
 }
 
+#ifdef Q_OS_LINUX
+
+// 含有一个移动bug
+// 当打开比如下拉框、菜单的东西时，点击桌面（不点击下拉框和菜单），此时移动鼠标到窗口，
+// 窗口会突然非法移动
+void MainWidget::mouseMoveEvent(QMouseEvent * e)
+{
+    QPoint afterMovePos = e->globalPos();
+    if(offset.x()!=0&&offset.y()!=0)
+    {
+        QPoint moveDis = afterMovePos-offset;
+        move(moveDis);
+    }
+}
+
+/*
+    鼠标按下事件，按下就获取当前鼠标坐标并计算出当前坐标和窗口左上角的偏移量offset
+*/
+void MainWidget::mousePressEvent(QMouseEvent * e)
+{
+    QPoint topLeft = ui->widgetTop->mapToGlobal(ui->widgetTop->pos()) - QPoint(0,130);
+    QRect realGeometry(topLeft,QSize(ui->widgetMain->size()));  // 当前窗口的真实位置大小
+    QPoint cursorPos = e->globalPos();              //当前鼠标的全局位置
+    if(realGeometry.contains(cursorPos)){
+        QPoint geometryTopLeft = this->geometry().topLeft();    //当前鼠标点击窗口的左上角坐标
+        offset = cursorPos-geometryTopLeft;
+    }
+}
+
+/*
+    鼠标放开事件，当鼠标放开时，将偏移量offset初始化为0
+*/
+void MainWidget::mouseReleaseEvent(QMouseEvent *)
+{
+    offset = QPoint(0,0);
+}
+#endif
+
 
 
 void MainWidget::initObjects()
@@ -52,9 +91,9 @@ void MainWidget::initResourceAndForm()
 {
     this->setWindowFlags(Qt::Tool | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
     this->setAttribute(Qt::WA_TranslucentBackground);
-
     frameless->setPadding(2);
     frameless->setWidget(this);      //设置窗口可移动，可扩展
+
 
     systemTray->showSystemTray();
     QPixmap *trayIcon = new QPixmap(":/global/res/global/water-tray.png");
@@ -107,9 +146,11 @@ void MainWidget::initSignalsAndSlots()
     connect(ui->toolButtonAdd, &QToolButton::clicked, this, &MainWidget::interfaceManager);
     qInfo() << "connect ui->toolButtonAdd::clicked to MainWidget::interfaceManager";
 
+    // 系统托盘
     connect(systemTray, &zsj::SystemTray::sigOpenWindow, this, &MainWidget::show);
     qInfo() << "connect systemTray::sigOpenWindow to MainWidget::show";
 
+    // 三个主要菜单
     connect(ui->pushButtonMessage, &QPushButton::clicked, this, &MainWidget::switchToMessageWidget);
     qInfo() << "connect ui->pushButtonMessage::clicked to MainWidget::switchToMessageWidget";
 
@@ -119,6 +160,7 @@ void MainWidget::initSignalsAndSlots()
     connect(ui->pushButtonSpace, &QPushButton::clicked, this, &MainWidget::switchToSpaceWidget);
     qInfo() << "connect ui->pushButtonSpace::clicked to MainWidget::switchToSpaceWidget";
 
+    // 内部容器的点击 QTreeWidget
     connect(ui->treeWidgetFriend, &QTreeWidget::itemClicked, this, &MainWidget::treeWidgetItemClick);
     connect(ui->treeWidgetGroup, &QTreeWidget::itemClicked, this, &MainWidget::treeWidgetItemClick);
     qInfo() << "connect ui->treeWidgetGroup,ui->treeWidgetFriend::itemClicked to MainWidget::treeWidgetItemClick";

@@ -27,7 +27,7 @@ public:
 
 public slots:
     /// @brief 值改变的槽函数
-    void valueChanged(QVariant value);
+    void valueChangedAnimation(QVariant value);
 
     /// @brief 动画完成
     void animationFinished();

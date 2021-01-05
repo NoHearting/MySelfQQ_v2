@@ -9,11 +9,11 @@ AnimationStackedWidget::AnimationStackedWidget(QWidget *parent ) : QStackedWidge
     isLeft = true;
     duration = 200;
     animation = new QPropertyAnimation(this, QByteArray());
-    connect(animation, &QPropertyAnimation::valueChanged, this, AnimationStackedWidget::valueChanged);
+    connect(animation, &QPropertyAnimation::valueChanged, this, &AnimationStackedWidget::valueChangedAnimation);
     connect(animation, &QPropertyAnimation::finished, this, &AnimationStackedWidget::animationFinished);
 }
 
-void AnimationStackedWidget::valueChanged(QVariant value)
+void AnimationStackedWidget::valueChangedAnimation(QVariant value)
 {
     currentValue = value;
     update();

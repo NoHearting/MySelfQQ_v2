@@ -1,10 +1,10 @@
 /* --------------- debug ------------------*/
 
-#widgetLogin{
+#widgetLogin {
     background-color: #fff;
 }
 
-#labelHeadImage{
+#labelHeadImage {
     background-color: aqua;
 }
 
@@ -14,58 +14,61 @@
 /* ---------------- env --------------- */
 
 
-#widgetLogin{
+#widgetLogin {
     border-radius: 5px;
 }
 
-#widgetLoginTop,#labelBgMovie{
+#widgetLoginTop,
+#labelBgMovie {
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
 }
 
-#widgetLoginBottom{
-    background-color:#fff;
+#widgetLoginBottom {
+    background-color: #fff;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
 }
 
 
-#lineEditOuterInput{
-    border:none;
+#lineEditOuterInput {
+    border: none;
     font-family: "微软雅黑";
     font-size: 16px;
-    padding:0px 16px 6px;
-    border-bottom:1px solid rgb(229,229,229);
-    background:left top no-repeat url("://res/login/logo1.png");
+    padding: 0px 16px 6px;
+    border-bottom: 1px solid rgb(229, 229, 229);
+    background: left top no-repeat url("://res/login/logo1.png");
     /*background:right top no-repeat url("://res/login/logo1.png");*/
 }
 
-#lineEditOuterInput:hover{
-    border-bottom:1px solid rgb(193,193,193);
+#lineEditOuterInput:hover {
+    border-bottom: 1px solid rgb(193, 193, 193);
 }
 
-#lineEditOuterInput:focus{
-    border-bottom:1px solid rgb(18,183,245);
-    background:left top no-repeat url("://res/login/logo2.png");
+#lineEditOuterInput:focus {
+    border-bottom: 1px solid rgb(18, 183, 245);
+    background: left top no-repeat url("://res/login/logo2.png");
 }
 
-#pushButtonDropDown{
-    border:none;
+#pushButtonDropDown {
+    border: none;
     background-color: white;
-    background:url("://res/login/arrow.png");
+    background: url("://res/login/arrow.png");
 }
 
-#pushButtonDropDown:hover{
-    background:url("://res/login/arrow-hover.png");
+#pushButtonDropDown:hover {
+    background: url("://res/login/arrow-hover.png");
 }
 
 /*账号输入框*/
-#comboBoxAccount:editable{
-    border:none;
+#comboBoxAccount:editable {
+    border: none;
 }
-#comboBoxAccount::drop-down{
-    image:url("://res/login/arrow.png");
+
+#comboBoxAccount::drop-down {
+    image: url("://res/login/arrow.png");
 }
+
 /*废弃，如果不使用#lineEditOuterInput则可以重新启用*/
 /*#comboBoxAccount:editable{
     background: white;
@@ -103,186 +106,200 @@
 }*/
 
 #comboBoxAccount QAbstractItemView {
-    outline:0px;
+    outline: 0px;
     height: 60px;
-    background-color: rgba(255,255,255,0.9);
-    border:none;
-    selection-background-color: rgb(237,237,237);
+    background-color: rgba(255, 255, 255, 0.9);
+    border: none;
+    selection-background-color: rgb(237, 237, 237);
 }
 
-QListView::item{
+QListView::item {
     /*background-color: white;*/
-    border:none;
+    border: none;
 }
 
-QListView::item:hover{
-    background-color: rgb(237,237,237);
+QListView::item:hover {
+    background-color: rgb(237, 237, 237);
 }
 
 
 
 /*密码输入框*/
-#lineEditPwd{
+#lineEditPwd {
     background-color: white;
-    padding:0px 16px 6px;
+    padding: 0px 16px 6px;
     font-family: "微软雅黑";
     font-size: 16px;
-    border:none;
-    border-bottom:1px solid rgb(229,229,229);
-    background:left top no-repeat url("://res/login/locker1.png");
+    border: none;
+    border-bottom: 1px solid rgb(229, 229, 229);
+    background: left top no-repeat url("://res/login/locker1.png");
 }
 
-#lineEditPwd:hover/*,#comboBoxAccount:hover*/{
-    border-bottom:1px solid rgb(193,193,193);
+#lineEditPwd:hover
+
+/*,#comboBoxAccount:hover*/
+    {
+    border-bottom: 1px solid rgb(193, 193, 193);
 }
 
-#lineEditPwd:focus{
-    border-bottom:1px solid rgb(18,183,245);
-    background:left top no-repeat url("://res/login/locker2.png");
+#lineEditPwd:focus {
+    border-bottom: 1px solid rgb(18, 183, 245);
+    background: left top no-repeat url("://res/login/locker2.png");
 }
 
 
 /*登录按钮*/
-#pushButtonLogin{
+#pushButtonLogin {
     border-radius: 3px;
-    background:qlineargradient(x1:0,y1:0,x2:0,y2:1,
-        stop:0 rgb(11,194,255),stop:1 rgb(2,184,250));
-    color:white;
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+            stop:0 rgb(11, 194, 255), stop:1 rgb(2, 184, 250));
+    color: white;
 }
 
-#pushButtonLogin:hover{
-    background:qlineargradient(x1:0,y1:0,x2:0,y2:1,
-        stop:0 rgb(34,203,255),stop:1 rgb(26,194,251));
+#pushButtonLogin:hover {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+            stop:0 rgb(34, 203, 255), stop:1 rgb(26, 194, 251));
 }
 
 /*右上角三个功能按钮*/
-#toolButtonClose{
+#toolButtonClose {
     padding: 6px 0px;
 }
 
-#toolButtonClose:hover{
-    background-color: rgb(254,84,57);
+#toolButtonClose:hover {
+    background-color: rgb(254, 84, 57);
 }
 
-#toolButtonMin,#toolButtonSetting{
+#toolButtonMin,
+#toolButtonSetting {
     padding: 6px 0px;
+    background: transparent;
 }
 
-#toolButtonMin:hover,#toolButtonSetting:hover{
-    background-color: rgba(255,255,255,0.3);
+#toolButtonMin:hover,
+#toolButtonSetting:hover {
+    background: rgba(255, 255, 255, 0.7);
+    /* background: red; */
 }
 
 /*头像*/
-#labelHeadImage{
+#labelHeadImage {
     /*image:url("://res/login/default-head.png");*/
     border-radius: 32px;
     background-color: #fff;
-    border:2px solid white;
+    border: 2px solid white;
 }
 
 /*登录界面下面的四个按钮*/
-#checkBoxAutoLogin,#checkBoxRememberPwd{
-    color: rgb(166,166,166);
+#checkBoxAutoLogin,
+#checkBoxRememberPwd {
+    color: rgb(166, 166, 166);
 }
 
 #checkBoxAutoLogin::indicator:unchecked,
-#checkBoxRememberPwd::indicator:unchecked{
+#checkBoxRememberPwd::indicator:unchecked {
     width: 13px;
     height: 13px;
-    image:url("://res/login/checkbox.png");
+    image: url("://res/login/checkbox.png");
 }
 
 #checkBoxAutoLogin::indicator:unchecked:hover,
-#checkBoxRememberPwd::indicator:unchecked:hover{
-    color: rgb(148,148,148);
-    image:url("://res/login/checkbox-hover.png");
+#checkBoxRememberPwd::indicator:unchecked:hover {
+    color: rgb(148, 148, 148);
+    image: url("://res/login/checkbox-hover.png");
 }
 
 #checkBoxAutoLogin::indicator:checked,
-#checkBoxRememberPwd::indicator:checked{
-    image:url("://res/login/checkbox-on.png");
+#checkBoxRememberPwd::indicator:checked {
+    image: url("://res/login/checkbox-on.png");
 }
 
-#toolButtonFindPwd,#pushButtonRegister{
-    color: rgb(166,166,166);
-    background:transparent;
+#toolButtonFindPwd,
+#pushButtonRegister {
+    color: rgb(166, 166, 166);
+    background: transparent;
 }
 
-#checkBoxAutoLogin:hover,#checkBoxRememberPwd:hover{
-    color: rgb(148,148,148);
+#checkBoxAutoLogin:hover,
+#checkBoxRememberPwd:hover {
+    color: rgb(148, 148, 148);
 }
 
-#toolButtonFindPwd:hover,#pushButtonRegister:hover{
-    color: rgb(148,148,148);
+#toolButtonFindPwd:hover,
+#pushButtonRegister:hover {
+    color: rgb(148, 148, 148);
 }
 
 
 /*垂直滚动条*/
-QScrollBar:vertical{
-    background:transparent;
-    width:9px;
-    margin:0 0 0 2px 0;
+QScrollBar:vertical {
+    background: transparent;
+    width: 9px;
+    margin: 0 0 0 2px 0;
 }
 
-QScrollBar::handle:vertical{
-    background:rgb(195,195,195);
-    min-height:20px;
-    border-radius:3px;
+QScrollBar::handle:vertical {
+    background: rgb(195, 195, 195);
+    min-height: 20px;
+    border-radius: 3px;
 }
 
-QScrollBar::handle:vertiacl:hover{
-    background:rgba(0,0,0,30%);
+QScrollBar::handle:vertiacl:hover {
+    background: rgba(0, 0, 0, 30%);
 }
 
-QScrollBar::add-line:vertical{
-    height:0px;
-    subcontrol-position:bottom;
-    subcontrol-origin:margin;
-
-}
-
-QScrollBar::sub-line:vertical{
-    height:0px;
-    subcontrol-position:top;
-    subcontrol-origin:margin;
+QScrollBar::add-line:vertical {
+    height: 0px;
+    subcontrol-position: bottom;
+    subcontrol-origin: margin;
 
 }
 
+QScrollBar::sub-line:vertical {
+    height: 0px;
+    subcontrol-position: top;
+    subcontrol-origin: margin;
 
-#pushButtonLoginCancel{
-    background:transparent;
-    border:2px solid white;
+}
+
+
+#pushButtonLoginCancel {
+    background: transparent;
+    border: 2px solid white;
     color: white;
     border-radius: 5px;
 }
 
-#pushButtonLoginCancel:hover{
-    background:rgba(255,255,255,0.2);
+#pushButtonLoginCancel:hover {
+    background: rgba(255, 255, 255, 0.2);
 }
 
-#widgetLoginErrorBottom{
-    background: rgb(205,226,242);
+#widgetLoginErrorBottom {
+    background: rgb(205, 226, 242);
 }
 
-#widgetLoginError{
-    background-color: rgb(235,242,249);
+#widgetLoginError {
+    background-color: rgb(235, 242, 249);
 }
 
-#widgetLoginErrorTop{
-    background-color: rgb(147,237,253);
+#widgetLoginErrorTop {
+    background-color: rgb(147, 237, 253);
 }
 
-#pushButtonFindPwd2{
+#pushButtonFindPwd2 {
     background: transparent;
-    color: rgb(0,114,193);
+    color: rgb(0, 114, 193);
 }
 
-#pushButtonFindPwd,#pushButtonCancelLogin{
-    border:1px solid rgb(134,148,158);
+#pushButtonFindPwd,
+#pushButtonCancelLogin {
+    border: 1px solid rgb(134, 148, 158);
     border-radius: 3px;
-    background-color: rgb(244,244,244);
+    background-color: rgb(244, 244, 244);
     color: black;
 }
-#pushButtonFindPwd:hover,#pushButtonCancelLogin:hover{
-    background-color: rgb(190,231,253);
+
+#pushButtonFindPwd:hover,
+#pushButtonCancelLogin:hover {
+    background-color: rgb(190, 231, 253);
 }

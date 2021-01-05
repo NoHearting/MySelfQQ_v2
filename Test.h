@@ -15,6 +15,9 @@ private:
     void testQApplication();
 
     void testFile();
+
+
+    void testGlobalMacroSystem();
 };
 
 }

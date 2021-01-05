@@ -38,7 +38,6 @@ int main(int argc, char *argv[])
     zsj::Test().test();
     return a.exec();
 
-
 }
 
 void outputMessage(QtMsgType type, const QMessageLogContext &context, const QString &msg)
@@ -65,7 +64,7 @@ void outputMessage(QtMsgType type, const QMessageLogContext &context, const QStr
             break;
     }
     QString tab = "\t";
-    int threadId = (int)QThread::currentThreadId();
+    int * threadId = (int *)QThread::currentThreadId();
     int pid = zsj::getCurrentProcessId();
     QString date = zsj::GetCurrentDateTime("yyyy-MM-dd hh:mm:ss");
 
@@ -74,7 +73,7 @@ void outputMessage(QtMsgType type, const QMessageLogContext &context, const QStr
                       .arg(tab)
                       .arg(category)
                       .arg(pid)
-                      .arg(threadId)
+                      .arg(*threadId)
                       .arg(context.file)
                       .arg(context.line)
                       .arg(date)
