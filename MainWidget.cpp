@@ -99,7 +99,6 @@ void MainWidget::initResourceAndForm()
     systemTray->showSystemTray();
     QPixmap *trayIcon = new QPixmap(":/global/res/global/water-tray.png");
     systemTray->setSystemTrayIcon(trayIcon);
-    this->setStyleSheet("");
     this->setStyleSheet(zsj::ReadQStyleSheet::readQss("://css/main.css"));
 
 
@@ -112,18 +111,22 @@ void MainWidget::initResourceAndForm()
 
     //选中第一个消息页面
     switchToMessageWidget();
-//    switchToLinkmanWidget();
 
     // 初始化好友列表
+    // 滚动条滚动规则为按像素滚动
     ui->treeWidgetFriend->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
     ui->treeWidgetGroup->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
     ui->treeWidgetFriend->setContextMenuPolicy(Qt::CustomContextMenu);
     ui->treeWidgetGroup->setContextMenuPolicy(Qt::CustomContextMenu);
+
+    // 添加测试数据
     initManlinkFriend();
     initManlinkGroup();
 
     // 初始化消息列表
     ui->listWidgetMessage->setContextMenuPolicy(Qt::CustomContextMenu);
+
+    // 添加测试数据
     initMessageList();
 
     // 初始化搜索框的搜索图标
@@ -150,6 +153,10 @@ void MainWidget::initSignalsAndSlots()
     // 系统托盘
     connect(systemTray, &zsj::SystemTray::sigOpenWindow, this, &MainWidget::show);
     qInfo() << "connect systemTray::sigOpenWindow to MainWidget::show";
+    connect(systemTray,&zsj::SystemTray::sigDefaultQuit,this,&MainWidget::closeWindow);
+    qInfo() << "connect systemTray::sigDefaultQuit to MainWidget::closeWindow";
+    connect(systemTray,&zsj::SystemTray::sigDefaultOpen,this,&MainWidget::show);
+    qInfo() << "connect systemTray::sigDefaultOpen to MainWidget::show";
 
     // 三个主要菜单
     connect(ui->pushButtonMessage, &QPushButton::clicked, this, &MainWidget::switchToMessageWidget);
@@ -415,7 +422,6 @@ void MainWidget::deleteTreeWidgetItem(QTreeWidgetItem *item, std::map<QTreeWidge
     if(item != nullptr)
     {
         bool isChild = item->data(0, Qt::UserRole).toBool();
-        qDebug() << "进入 " << item->childCount();
         // 为子项目
         if(isChild)
         {
@@ -434,10 +440,8 @@ void MainWidget::deleteTreeWidgetItem(QTreeWidgetItem *item, std::map<QTreeWidge
         {
             for(auto it = data.begin(); it != data.end(); ++it)
             {
-                qDebug() << "--";
                 if(it->first == item)
                 {
-                    qDebug() << "find it";
                     for(auto &itemWidget : it->second)
                     {
                         delete itemWidget;
@@ -457,7 +461,6 @@ void MainWidget::showFriendMenu()
     qDebug() << actions.size();
     for(auto &item : actions)
     {
-//        qDebug() << item->text();
         if(item->text() == "从会话列表中移除")
         {
             item->setVisible(false);
@@ -465,17 +468,14 @@ void MainWidget::showFriendMenu()
         else if(item->text() == "移动联系人至")
         {
             // 添加子菜单
-            qDebug() << item->text();
             if(item->menu() == nullptr)
             {
-                qDebug() << "添加子菜单";
                 updateSubMenu(moveSubMenuFriend, ui->treeWidgetFriend, dataFriend);
                 item->setMenu(moveSubMenuFriend);
                 userMenu->addMenu(moveSubMenuFriend);
             }
             else  // 刷新子菜单
             {
-                qDebug() << "刷新子菜单";
                 updateSubMenu(moveSubMenuFriend, ui->treeWidgetFriend, dataFriend);
             }
         }
@@ -499,14 +499,12 @@ void MainWidget::showMessageListFriendMenu()
             qDebug() << item->text();
             if(item->menu() == nullptr)
             {
-                qDebug() << "添加子菜单";
                 updateSubMenu(moveSubMenuFriend, ui->treeWidgetFriend, dataFriend);
                 item->setMenu(moveSubMenuFriend);
                 userMenu->addMenu(moveSubMenuFriend);
             }
             else  // 刷新子菜单
             {
-                qDebug() << "刷新子菜单";
                 updateSubMenu(moveSubMenuFriend, ui->treeWidgetFriend, dataFriend);
             }
         }
@@ -517,7 +515,6 @@ void MainWidget::showMessageListFriendMenu()
 void MainWidget::showFriendSectionMenu()
 {
     auto actions = sectionMenu->actions();
-    qDebug() << actions.size();
     for(auto &item : actions)
     {
         if(item->text() == "删除该组")
@@ -532,7 +529,6 @@ void MainWidget::showFriendSectionMenu()
 void MainWidget::showDefaultFriendSectionMenu()
 {
     auto actions = sectionMenu->actions();
-    qDebug() << actions.size();
     for(auto &item : actions)
     {
         if(item->text() == "删除该组")
@@ -547,7 +543,6 @@ void MainWidget::showDefaultFriendSectionMenu()
 void MainWidget::showGroupMenu()
 {
     auto actions = groupMenu->actions();
-    qDebug() << actions.size();
     for(auto &item : actions)
     {
         if(item->text() == "从会话列表移除")
@@ -559,14 +554,12 @@ void MainWidget::showGroupMenu()
             qDebug() << item->text();
             if(item->menu() == nullptr)
             {
-                qDebug() << "添加子菜单";
                 updateSubMenu(moveSubMenuGroup, ui->treeWidgetGroup, dataGroup);
                 item->setMenu(moveSubMenuGroup);
                 groupMenu->addMenu(moveSubMenuGroup);
             }
             else  // 刷新子菜单
             {
-                qDebug() << "刷新子菜单";
                 updateSubMenu(moveSubMenuGroup, ui->treeWidgetGroup, dataGroup);
             }
         }
@@ -577,7 +570,6 @@ void MainWidget::showGroupMenu()
 void MainWidget::showMessageListGroupMenu()
 {
     auto actions = groupMenu->actions();
-    qDebug() << actions.size();
     for(auto &item : actions)
     {
         if(item->text() == "从会话列表移除")
@@ -586,17 +578,14 @@ void MainWidget::showMessageListGroupMenu()
         }
         else if(item->text() == "移动群至"){
             // 添加子菜单
-            qDebug() << item->text();
             if(item->menu() == nullptr)
             {
-                qDebug() << "添加子菜单";
                 updateSubMenu(moveSubMenuGroup, ui->treeWidgetGroup, dataGroup);
                 item->setMenu(moveSubMenuGroup);
                 groupMenu->addMenu(moveSubMenuGroup);
             }
             else  // 刷新子菜单
             {
-                qDebug() << "刷新子菜单";
                 updateSubMenu(moveSubMenuGroup, ui->treeWidgetGroup, dataGroup);
             }
         }
@@ -607,7 +596,6 @@ void MainWidget::showMessageListGroupMenu()
 void MainWidget::showGroupSectionMenu()
 {
     auto actions = groupSectionMenu->actions();
-    qDebug() << actions.size();
     for(auto &item : actions)
     {
         if(item->text() == "重命名群分组" || item->text() == "删除群分组")
@@ -621,7 +609,6 @@ void MainWidget::showGroupSectionMenu()
 void MainWidget::showDefaultGroupSectionMenu()
 {
     auto actions = groupSectionMenu->actions();
-    qDebug() << actions.size();
     for(auto &item : actions)
     {
         if(item->text() == "重命名群分组" || item->text() == "删除群分组")
@@ -808,11 +795,9 @@ void MainWidget::showContextMenuFriend(const QPoint &point)
         itemMessage = nullptr;
         isMsgList = false;
 
-        qDebug() << "record itemUser";
         bool isChild = item->data(0, Qt::UserRole).toBool();
         if(isChild)
         {
-//            userMenu->exec(this->cursor().pos());
             showFriendMenu();
         }
         else
@@ -822,7 +807,6 @@ void MainWidget::showContextMenuFriend(const QPoint &point)
 
             // 默认分组名称可以变，这里的判别手段需要后期加上数据之后用其他的
             // 标志来判断是否该分组是否为默认分组
-            qDebug() << itemWidget->getGrouoName();
             if(itemWidget->getGrouoName() == "我的好友")
             {
                 showDefaultFriendSectionMenu();
@@ -851,7 +835,6 @@ void MainWidget::showContextMenuGroup(const QPoint &point)
         itemMessage = nullptr;
         isMsgList = false;
 
-        qDebug() << "record itemGroup";
         bool isChild = item->data(0, Qt::UserRole).toBool();
         if(isChild)
         {
@@ -865,7 +848,6 @@ void MainWidget::showContextMenuGroup(const QPoint &point)
             // 标志来判断是否该分组是否为默认分组
             if(itemWidget->getGrouoName() == "我的群聊")
             {
-                qDebug() << "我的群聊";
                 showDefaultGroupSectionMenu();
             }
             else
@@ -895,16 +877,13 @@ void MainWidget::showContextMenuMessage(const QPoint &point)
             itemUser = nullptr;
             isMsgList = true;
 
-            qDebug() << "record itemMessage  - " << messageItem->getNickname();
             auto type = messageItem->getType();
             switch(type)
             {
                 case DataType::GROUP_DATA:
-//                    listGroupMenu->exec(this->cursor().pos());
                     showMessageListGroupMenu();
                     break;
                 case DataType::USER_DATA:
-//                    listUserMenu->exec(this->cursor().pos());
                     showMessageListFriendMenu();
                     break;
                 default:
@@ -930,7 +909,6 @@ void MainWidget::moveItem(QAction *action)
         return;
     }
 
-    qDebug() << "moveItem";
     QString targetSectionName = action->text();
     // 当前需要操作的项
     QTreeWidgetItem *source = nullptr;
@@ -1017,7 +995,6 @@ void MainWidget::moveItem(QAction *action)
             break;
         }
     }
-    qDebug() << "更改数据成功";
     delete source;
     source = nullptr;
 }
@@ -1044,10 +1021,8 @@ void MainWidget::deleteFriendSection()
 
 void MainWidget::deleteGroupSection()
 {
-    qDebug() << "删除群分组";
     groupDialog->connect(groupDialog, &WarnDialog::sure, this, [ = ]()
     {
-        qDebug() << "get signal";
         deleteTreeWidgetItem(itemGroup, dataGroup);
         groupDialog->close();
     });
@@ -1061,7 +1036,6 @@ void MainWidget::deleteItemFromMessageList()
     {
         int currentRow = ui->listWidgetMessage->row(itemMessage);
         QListWidgetItem *item = ui->listWidgetMessage->takeItem(currentRow);
-//        ui->listWidgetMessage->update();
         delete item;
         itemMessage = nullptr;
     }

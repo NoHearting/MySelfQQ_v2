@@ -6,5 +6,6 @@
         <file>css/systemTrayMenu.css</file>
         <file>css/userMenu.css</file>
         <file>css/dialog.css</file>
+        <file>css/chat.css</file>
     </qresource>
 </RCC>

@@ -1,0 +1,26 @@
+QSplitter::handle:horizontal{
+	width: 1px;
+	background: rgb(233,232,235);
+}
+QSplitter::handle:vertical
+{
+	height: 1px;
+	background: rgb(233,232,235);
+}
+QSplitter::handle:pressed {
+	background: red;
+}	
+
+
+#widgetBody{
+	background: url(":/test/res/test/chatBg.jpg");
+}
+
+#widgetContentRightBottom{
+	background:rgb(253,252,255);
+}
+
+
+#textEditMessageList,#textEditMessageInput{
+	border:none;
+}

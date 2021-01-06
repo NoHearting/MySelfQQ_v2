@@ -121,9 +121,16 @@ void SystemTray::defaultQuitClicked()
     emit sigDefaultQuit();
 }
 
-void SystemTray::openWindow()
+void SystemTray::openWindow(QSystemTrayIcon::ActivationReason reason)
 {
-    emit sigOpenWindow();
+    switch(reason){
+    case QSystemTrayIcon::Trigger:  //只有单击时才打开窗口
+        emit sigOpenWindow();
+        break;
+    default:
+        break;
+    }
+
 }
 
 }

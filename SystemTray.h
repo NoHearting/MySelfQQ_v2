@@ -53,7 +53,7 @@ public slots:
     void defaultOpenClicked();
     void defaultQuitClicked();
 
-    void openWindow();
+    void openWindow(QSystemTrayIcon::ActivationReason reason);
 };
 
 }

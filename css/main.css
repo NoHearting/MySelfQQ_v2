@@ -150,6 +150,6 @@ QListView::item:selected{
 	background: rgb(235,234,237);
 }
 
-#pageLinkman,#pageMessage{
+#pageLinkman,#pageMessage,#pageSpace{
 	background: rgb(252,253,255);
 }

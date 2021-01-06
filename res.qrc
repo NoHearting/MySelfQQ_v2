@@ -25,6 +25,7 @@
         <file>res/test/head2.jpg</file>
         <file>res/test/head3.jpg</file>
         <file>res/test/head4.jpg</file>
+        <file>res/test/chatBg.jpg</file>
     </qresource>
     <qresource prefix="/global">
         <file>res/global/water-tray.png</file>
@@ -58,5 +59,6 @@
         <file>res/main/group-data.png</file>
         <file>res/main/dialog-close.png</file>
         <file>res/main/warn.png</file>
+        <file>res/main/transparent.png</file>
     </qresource>
 </RCC>

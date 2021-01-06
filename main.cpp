@@ -3,6 +3,7 @@
 #include "Log.h"
 #include "Test.h"
 #include "MainWidget.h"
+#include "ChatWidget.h"
 
 #include <QApplication>
 #include <QMutex>
@@ -32,8 +33,14 @@ int main(int argc, char *argv[])
 //    LoginWidget w;
 //    w.show();
 
-    MainWidget mainWidget;
-    mainWidget.show();
+#ifdef Q_OS_WIN64
+    qDebug() << "win64";
+#endif
+
+//    MainWidget mainWidget;
+//    mainWidget.show();
+    ChatWidget chatWidget;
+    chatWidget.show();
 
     zsj::Test().test();
     return a.exec();

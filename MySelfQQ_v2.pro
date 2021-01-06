@@ -37,7 +37,8 @@ SOURCES += main.cpp\
     MyListWidget.cpp \
     MyTreeWidget.cpp \
     StaticIniator.cpp \
-    WarnDialog.cpp
+    WarnDialog.cpp \
+    ChatWidget.cpp
 
 HEADERS  += LoginWidget.h \
     Frameless.h \
@@ -64,7 +65,9 @@ HEADERS  += LoginWidget.h \
     MyTreeWidget.h \
     StaticIniator.h \
     NonCopyable.h \
-    WarnDialog.h
+    WarnDialog.h \
+    Global.h \
+    ChatWidget.h
 
 FORMS    += LoginWidget.ui \
     ComboBoxItemWidget.ui \
@@ -74,7 +77,8 @@ FORMS    += LoginWidget.ui \
     LinkmanGroupWidget.ui \
     LinkmanGroupItemWidget.ui \
     MessageItemWidget.ui \
-    WarnDialog.ui
+    WarnDialog.ui \
+    ChatWidget.ui
 
 RESOURCES += \
     qss.qrc \
