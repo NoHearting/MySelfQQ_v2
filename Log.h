@@ -22,7 +22,7 @@ class LogAppender{
 public:
     typedef std::shared_ptr<LogAppender> ptr;
     LogAppender(QtMsgType level = QtDebugMsg):level(level){}
-    ~LogAppender(){}
+    virtual ~LogAppender(){}
     virtual void log(QtMsgType level,const QString & content) = 0;
 protected:
     QtMsgType level;            //日志级别

@@ -61,4 +61,19 @@
         <file>res/main/warn.png</file>
         <file>res/main/transparent.png</file>
     </qresource>
+    <qresource prefix="/chat">
+        <file>res/chat/max.png</file>
+        <file>res/chat/time.png</file>
+        <file>res/chat/max-arrow.png</file>
+        <file>res/chat/window-shake.png</file>
+        <file>res/chat/image.png</file>
+        <file>res/chat/MQ-file.png</file>
+        <file>res/chat/file.png</file>
+        <file>res/chat/screen-shot.png</file>
+        <file>res/chat/gif.png</file>
+        <file>res/chat/emoji.png</file>
+        <file>res/chat/more-logo.png</file>
+        <file>res/chat/delete-chat-item-hover.png</file>
+        <file>res/chat/delete-chat-item.png</file>
+    </qresource>
 </RCC>

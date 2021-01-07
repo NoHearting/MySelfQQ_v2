@@ -12,6 +12,8 @@
 #include <QWidget>
 #include <utility>
 
+#include "Global.h"
+
 # define DEBUG 1
 
 namespace zsj
@@ -46,7 +48,6 @@ struct HeadSize
     static const quint8 messageItemDiameter = 40;
 };
 
-const QString defaultHead = ":/global/res/global/default-head.png";
 
 class WidgetUtil
 {

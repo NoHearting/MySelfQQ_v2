@@ -15,7 +15,7 @@ MessageItemWidget::MessageItemWidget(QWidget *parent) :
 MessageItemWidget::MessageItemWidget(QPixmap &head, const QString &nickname,
                                      const QString &message, const QString &date,
                                      bool symbol, bool globalInform,
-                                     DataType type,QWidget *parent):
+                                     zsj::global::DataType type,QWidget *parent):
     QWidget(parent),
     ui(new Ui::MessageItemWidget)
 {
@@ -100,12 +100,12 @@ void MessageItemWidget::updatePosition()
                                  ui->labelSymbol->width(), ui->labelSymbol->height());
 }
 
-DataType MessageItemWidget::getType() const
+zsj::global::DataType MessageItemWidget::getType() const
 {
     return type;
 }
 
-void MessageItemWidget::setType(const DataType &value)
+void MessageItemWidget::setType(const zsj::global::DataType &value)
 {
     type = value;
 }

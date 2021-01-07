@@ -38,7 +38,9 @@ SOURCES += main.cpp\
     MyTreeWidget.cpp \
     StaticIniator.cpp \
     WarnDialog.cpp \
-    ChatWidget.cpp
+    ChatWidget.cpp \
+    ChatObjectItem.cpp \
+    Data.cpp
 
 HEADERS  += LoginWidget.h \
     Frameless.h \
@@ -67,7 +69,9 @@ HEADERS  += LoginWidget.h \
     NonCopyable.h \
     WarnDialog.h \
     Global.h \
-    ChatWidget.h
+    ChatWidget.h \
+    ChatObjectItem.h \
+    Data.h
 
 FORMS    += LoginWidget.ui \
     ComboBoxItemWidget.ui \
@@ -78,7 +82,8 @@ FORMS    += LoginWidget.ui \
     LinkmanGroupItemWidget.ui \
     MessageItemWidget.ui \
     WarnDialog.ui \
-    ChatWidget.ui
+    ChatWidget.ui \
+    ChatObjectItem.ui
 
 RESOURCES += \
     qss.qrc \

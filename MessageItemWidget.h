@@ -11,16 +11,13 @@
 #include <QPixmap>
 #include <QString>
 
+#include "Global.h"
+
 namespace Ui {
 class MessageItemWidget;
 }
 
 
-enum class DataType{
-    USER_DATA = 0,
-    GROUP_DATA = 1,
-    SYSTEM_DATA = 2
-};
 
 class MessageItemWidget : public QWidget
 {
@@ -30,12 +27,12 @@ public:
     explicit MessageItemWidget(QWidget *parent = 0);
     MessageItemWidget(QPixmap & head,const QString & nickname,const QString & message,
                       const QString & date,bool symbol = false,bool globalInform = false,
-                      DataType type = DataType::USER_DATA,QWidget *parent = 0);
+                      zsj::global::DataType type = zsj::global::DataType::USER_DATA,QWidget *parent = 0);
 
     ~MessageItemWidget();
 
-    DataType getType() const;
-    void setType(const DataType &value);
+    zsj::global::DataType getType() const;
+    void setType(const zsj::global::DataType &value);
 
     QString getNickname()const;
 protected:
@@ -48,7 +45,7 @@ private:
 private:
     Ui::MessageItemWidget *ui;
 
-    DataType type;      /// 数据类型
+    zsj::global::DataType type;      /// 数据类型
 };
 
 #endif // MESSAGEITEMWIDGET_H

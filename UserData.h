@@ -11,10 +11,11 @@
 #include <QPixmap>
 #include <QString>
 
+#include "Data.h"
 
 namespace zsj {
 
-class UserData
+class UserData : public Data
 {
 public:
     typedef std::shared_ptr<UserData> ptr;
@@ -27,9 +28,10 @@ public:
     QString toString();
 
     // getter
-    QPixmap getHead()const{return head;}
-    QString getNickname()const{return nickname;}
-    QString getAccount()const{return account;}
+    const QPixmap getHead()const override{return head;}
+    const QString getNickname()const{return nickname;}
+    const QString getAccount()const override{return account;}
+    const QString getName()const override{return nickname;}
     QString getSignature()const{return signature;}
     QString getRemark()const{return remark;}
     bool isVip()const{return vip;}

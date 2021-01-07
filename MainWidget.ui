@@ -666,7 +666,7 @@
             <item row="0" column="0">
              <widget class="AnimationStackedWidget" name="stackedWidget">
               <property name="currentIndex">
-               <number>2</number>
+               <number>0</number>
               </property>
               <widget class="QWidget" name="pageMessage">
                <layout class="QGridLayout" name="gridLayout_8">
@@ -998,15 +998,15 @@
  </widget>
  <customwidgets>
   <customwidget>
+   <class>MyListWidget</class>
+   <extends>QListWidget</extends>
+   <header>MyListWidget.h</header>
+  </customwidget>
+  <customwidget>
    <class>AnimationStackedWidget</class>
    <extends>QStackedWidget</extends>
    <header>AnimationStackedWidget.h</header>
    <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>MyListWidget</class>
-   <extends>QListWidget</extends>
-   <header>MyListWidget.h</header>
   </customwidget>
   <customwidget>
    <class>MyTreeWidget</class>

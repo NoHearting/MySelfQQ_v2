@@ -27,7 +27,6 @@ QString ReadQStyleSheet::readQss(QString filePath)
             list << line;
         }
         qss  = list.join("\n");
-        qDebug() << qss;
         file.close();
         return qss;
     }

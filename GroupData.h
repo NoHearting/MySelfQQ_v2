@@ -12,9 +12,11 @@
 #include <QPixmap>
 #include <QString>
 
+#include "Data.h"
+
 namespace zsj{
 
-class GroupData
+class GroupData : public Data
 {
 public:
     typedef std::shared_ptr<GroupData> ptr;
@@ -26,13 +28,13 @@ public:
 
     QString toString();
 
-    QPixmap getHead() const;
+    const QPixmap getHead() const override;
     void setHead(const QPixmap &value);
 
-    QString getName() const;
+    const QString getName() const override;
     void setName(const QString &value);
 
-    QString getAccount() const;
+    const QString getAccount() const override;
     void setAccount(const QString &value);
 
     QString getIntroduce() const;

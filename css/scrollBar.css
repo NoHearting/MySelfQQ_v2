@@ -1,6 +1,6 @@
-/*垂直滚动条*/
+/*vertical scroll bar*/
 QScrollBar:vertical{
-    background:transparent;
+    background: transparent;
     width:8px;
     margin:0 0 0 2px;
 }
@@ -11,7 +11,7 @@ QScrollBar::handle:vertical{
 }
 
 QScrollBar::handle:vertiacl:hover{
-    background:rgb(213,212,215);
+    background:rgba(0,0,0,0.2);
 }
 
 QScrollBar::add-line:vertical{

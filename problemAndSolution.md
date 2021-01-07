@@ -124,3 +124,44 @@
 ### 7、移动好友/群组到其他的分组的时候出现将当前分组内的好友移动到当前分组
 
 * 在UI设计的时期无法解决，需要加上数据之后才能进一步完善逻辑
+
+
+
+
+
+
+
+# 坑
+
+### 1、读取CSS文件
+
+* 使用以下代码读取QSS文件，如果文件中出现中文则会解析出错，不能正确设置css
+
+  ```c++
+  QString ReadQStyleSheet::readQss(QString filePath)
+  {
+      QFile file(filePath);
+      QString qss;
+      if(file.open(QIODevice::ReadOnly))
+      {
+          QStringList list;
+          QTextStream in(&file);
+          while(!in.atEnd()){
+              QString line;
+              in >> line;
+              list << line;
+          }
+          qss  = list.join("\n");
+  //        qDebug() << qss;
+          file.close();
+          return qss;
+      }
+      else{
+          qCritical() << "style file:" << filePath << "not exist";
+  
+      }
+      return QString("");
+  }
+  ```
+
+  

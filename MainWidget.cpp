@@ -6,6 +6,7 @@
 #include "UserData.h"
 #include "GroupData.h"
 #include "StaticIniator.h"
+#include "Global.h"
 
 
 #include <QDebug>
@@ -272,7 +273,7 @@ void MainWidget::initMessageList()
         item->setSizeHint(QSize(ui->widgetMiddle->width(), 60));
         QPixmap head(":/test/res/test/head2.jpg");
         MessageItemWidget *messageItem = new MessageItemWidget(head, QString("昵称%1").arg(i), QString("消息%1").arg(i),
-                QString("7-%1").arg(i), i % 2, i % 2, (i % 2 ? DataType::GROUP_DATA : DataType::USER_DATA), ui->listWidgetMessage);
+                QString("7-%1").arg(i), i % 2, i % 2, (i % 2 ? zsj::global::DataType::GROUP_DATA : zsj::global::DataType::USER_DATA), ui->listWidgetMessage);
         ui->listWidgetMessage->setItemWidget(item, messageItem);
     }
 }
@@ -880,10 +881,10 @@ void MainWidget::showContextMenuMessage(const QPoint &point)
             auto type = messageItem->getType();
             switch(type)
             {
-                case DataType::GROUP_DATA:
+                case zsj::global::DataType::GROUP_DATA:
                     showMessageListGroupMenu();
                     break;
-                case DataType::USER_DATA:
+                case zsj::global::DataType::USER_DATA:
                     showMessageListFriendMenu();
                     break;
                 default:
