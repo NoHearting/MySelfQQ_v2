@@ -33,6 +33,11 @@ protected:
 
     /// @brief 重写mouseReleaseEvent函数
     void mouseReleaseEvent(QMouseEvent *);
+
+
+    void paintEvent(QPaintEvent *event);
+
+
 #endif
 
 private:
