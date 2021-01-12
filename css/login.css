@@ -60,7 +60,7 @@
     background: url("://res/login/arrow-hover.png");
 }
 
-/*账号输入框*/
+/*account input*/
 #comboBoxAccount:editable {
     border: none;
 }
@@ -69,7 +69,7 @@
     image: url("://res/login/arrow.png");
 }
 
-/*废弃，如果不使用#lineEditOuterInput则可以重新启用*/
+/*delete，if not use #lineEditOuterInput,it can be enabled*/
 /*#comboBoxAccount:editable{
     background: white;
     padding:0px 16px 6px;
@@ -124,7 +124,7 @@ QListView::item:hover {
 
 
 
-/*密码输入框*/
+/*password input*/
 #lineEditPwd {
     background-color: white;
     padding: 0px 16px 6px;
@@ -148,7 +148,7 @@ QListView::item:hover {
 }
 
 
-/*登录按钮*/
+/*login button*/
 #pushButtonLogin {
     border-radius: 3px;
     background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
@@ -161,7 +161,7 @@ QListView::item:hover {
             stop:0 rgb(34, 203, 255), stop:1 rgb(26, 194, 251));
 }
 
-/*右上角三个功能按钮*/
+/*right top three buttons*/
 #toolButtonClose {
     padding: 6px 0px;
 }
@@ -182,7 +182,7 @@ QListView::item:hover {
     /* background: red; */
 }
 
-/*头像*/
+/*head image*/
 #labelHeadImage {
     /*image:url("://res/login/default-head.png");*/
     border-radius: 32px;
@@ -190,7 +190,7 @@ QListView::item:hover {
     border: 2px solid white;
 }
 
-/*登录界面下面的四个按钮*/
+/*login widget four buttons*/
 #checkBoxAutoLogin,
 #checkBoxRememberPwd {
     color: rgb(166, 166, 166);
@@ -231,7 +231,7 @@ QListView::item:hover {
 }
 
 
-/*垂直滚动条*/
+/*vertical scroll bar*/
 QScrollBar:vertical {
     background: transparent;
     width: 9px;

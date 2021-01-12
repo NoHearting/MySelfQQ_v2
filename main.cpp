@@ -30,17 +30,14 @@ int main(int argc, char *argv[])
 
     printAppInfo();
 
-//    LoginWidget w;
-//    w.show();
+    LoginWidget w;
+    w.show();
 
-#ifdef Q_OS_WIN64
-    qDebug() << "win64";
-#endif
 
 //    MainWidget mainWidget;
 //    mainWidget.show();
-    ChatWidget chatWidget;
-    chatWidget.show();
+//    ChatWidget chatWidget;
+//    chatWidget.show();
 
     zsj::Test().test();
     return a.exec();

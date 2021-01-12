@@ -18,6 +18,7 @@
 #include "ComboBoxItemWidget.h"
 #include "SystemTray.h"
 #include "ToolTipWidget.h"
+#include "Frameless.h"
 
 namespace Ui {
 class LoginWidget;
@@ -32,20 +33,20 @@ public:
     ~LoginWidget();
 
 protected:
-    //无边框窗口需要重写鼠标点击和移动时间
-    /// @brief 重写mouseMoveEvent函数
-    ///
-    ///     用户点击有可能点击登录页面之上的小部件然后拖动
-    ///会出现抖动，此函数解决此问题
-    void mouseMoveEvent(QMouseEvent *);
+//    //无边框窗口需要重写鼠标点击和移动时间
+//    /// @brief 重写mouseMoveEvent函数
+//    ///
+//    ///     用户点击有可能点击登录页面之上的小部件然后拖动
+//    ///会出现抖动，此函数解决此问题
+//    void mouseMoveEvent(QMouseEvent *);
 
-    /// @brief 重写mousePressEvent函数
-    ///
-    ///  鼠标按下事件，按下就获取当前鼠标坐标并计算出当前坐标和窗口左上角的差值
-    void mousePressEvent(QMouseEvent *);
+//    /// @brief 重写mousePressEvent函数
+//    ///
+//    ///  鼠标按下事件，按下就获取当前鼠标坐标并计算出当前坐标和窗口左上角的差值
+//    void mousePressEvent(QMouseEvent *);
 
-    /// @brief 重写mouseReleaseEvent函数
-    void mouseReleaseEvent(QMouseEvent *);
+//    /// @brief 重写mouseReleaseEvent函数
+//    void mouseReleaseEvent(QMouseEvent *);
 
 
 
@@ -76,6 +77,8 @@ private:
 
     // 提示窗口
     ToolTipWidget * toolTip;
+
+    zsj::Frameless * frameless = nullptr;
 
 
 private slots:

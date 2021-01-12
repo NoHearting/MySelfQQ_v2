@@ -28,6 +28,8 @@ const static QString transparentMenuIconPath =":/main/res/main/transparent.png";
 /// 默认头像路径
 const static QString defaultHead = ":/global/res/global/default-head.png";
 
+/// 最外层窗口和内层内容窗口之间的padding
+const static int TopLayoutPadding = 9;
 
 }
 
