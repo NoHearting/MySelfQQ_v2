@@ -3,6 +3,8 @@
 
 #include <QWidget>
 #include <QResizeEvent>
+#include <QPoint>
+#include <QRect>
 
 #include "Data.h"
 
@@ -19,8 +21,18 @@ public:
     ~ChatObjectItem();
     zsj::Data::ptr getData() const;
 
+    /// @brief 获取删除按钮的位置和大小
+    /// @return QRect
+    QRect getDeleteButtonPosition() const;
+
+    int getIndex() const;
+
 protected:
+
     void resizeEvent(QResizeEvent *);
+
+    void enterEvent(QEvent *event);
+    void leaveEvent(QEvent *event);
 
 private:
     void init();
@@ -39,6 +51,12 @@ private:
     Ui::ChatObjectItem *ui;
 
     zsj::Data::ptr data;
+
+public slots:
+    void slotDeleteItem();
+signals:
+
+    void sigDeleteItem(QPoint pos);
 
 };
 

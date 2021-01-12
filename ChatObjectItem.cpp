@@ -1,6 +1,8 @@
 #include "ChatObjectItem.h"
 #include "ui_ChatObjectItem.h"
 
+#include "Util.h"
+
 #include <QSize>
 #include <QStringList>
 #include <QDebug>
@@ -37,25 +39,44 @@ void ChatObjectItem::resizeEvent(QResizeEvent *e)
     }
     else{
         ui->labelDate->show();
-        ui->toolButtonClose->show();
+//        ui->toolButtonClose->show();
         adjustLabelPostion();
     }
 
     QWidget::resizeEvent(e);
 }
 
+void ChatObjectItem::enterEvent(QEvent *event)
+{
+    ui->toolButtonClose->show();
+
+    QWidget::enterEvent(event);
+}
+
+void ChatObjectItem::leaveEvent(QEvent *event)
+{
+    ui->toolButtonClose->hide();
+
+    QWidget::leaveEvent(event);
+}
+
 void ChatObjectItem::init()
 {
     // 设置数据
-    ui->labelHead->setPixmap(data->getHead());
+    QPixmap pix = data->getHead();
+    ui->labelHead->setPixmap(zsj::adjustToHead(pix,40));
     ui->labelNickname->setText(data->getName());
     ui->labelMessage->setText("messages....");
+    ui->labelDate->setText(zsj::GetCurrentDateTime());
 
+    ui->toolButtonClose->hide();
     adjustLabelText();
 
     adjustLabelPostion();
 
     initStyleSheet();
+
+    connect(ui->toolButtonClose,&QToolButton::clicked,this,&ChatObjectItem::slotDeleteItem);
 }
 
 void ChatObjectItem::adjustLabelText()
@@ -82,11 +103,22 @@ void ChatObjectItem::initStyleSheet()
     list.append("#toolButtonClose:hover{background:url(\":/chat/res/chat/delete-chat-item-hover.png\");}");
     list.append("#labelDate,#labelMessage{color:gray;}");
     QString qss = list.join("\n");
-//    qDebug() << qss;
     this->setStyleSheet(qss);
+}
+
+void ChatObjectItem::slotDeleteItem()
+{
+    QPoint globalPos = this->mapToGlobal(ui->toolButtonClose->pos());
+    emit sigDeleteItem(globalPos);
 }
 
 zsj::Data::ptr ChatObjectItem::getData() const
 {
     return data;
 }
+
+QRect ChatObjectItem::getDeleteButtonPosition() const
+{
+    return ui->toolButtonClose->geometry();
+}
+
