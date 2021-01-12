@@ -27,11 +27,7 @@ ChatWidget::~ChatWidget()
     delete ui;
 }
 
-void ChatWidget::paintEvent(QPaintEvent *event)
-{
-    qDebug() << "paint event";
-    QWidget::paintEvent(event);
-}
+
 
 void ChatWidget::initObjects()
 {
@@ -141,42 +137,3 @@ void ChatWidget::changeChatObject(const QModelIndex &index)
 
 }
 
-#ifdef Q_OS_LINUX
-
-// 含有一个移动bug
-// 当打开比如下拉框、菜单的东西时，点击桌面（不点击下拉框和菜单），此时移动鼠标到窗口，
-// 窗口会突然非法移动
-void ChatWidget::mouseMoveEvent(QMouseEvent *e)
-{
-    QPoint afterMovePos = e->globalPos();
-    if(offset.x() != 0 && offset.y() != 0)
-    {
-        QPoint moveDis = afterMovePos - offset;
-        move(moveDis);
-        qDebug() << "move widget";
-    }
-}
-
-/*
-    鼠标按下事件，按下就获取当前鼠标坐标并计算出当前坐标和窗口左上角的偏移量offset
-*/
-void ChatWidget::mousePressEvent(QMouseEvent *e)
-{
-    QPoint topLeft = ui->widgetBody->mapToGlobal(ui->widgetBody->pos()) - QPoint(0, 130);
-    QRect realGeometry(topLeft, QSize(ui->widgetBody->size())); // 当前窗口的真实位置大小
-    QPoint cursorPos = e->globalPos();              //当前鼠标的全局位置
-    if(realGeometry.contains(cursorPos))
-    {
-        QPoint geometryTopLeft = this->geometry().topLeft();    //当前鼠标点击窗口的左上角坐标
-        offset = cursorPos - geometryTopLeft;
-    }
-}
-
-/*
-    鼠标放开事件，当鼠标放开时，将偏移量offset初始化为0
-*/
-void ChatWidget::mouseReleaseEvent(QMouseEvent *)
-{
-    offset = QPoint(0, 0);
-}
-#endif

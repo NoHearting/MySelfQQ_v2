@@ -169,7 +169,6 @@ void Frameless::setResizeCursor(QPoint point)
 
 }
 
-#ifdef Q_OS_WIN
 void Frameless::moveWindow(int offsetX, int offsetY)
 {
     if(moveEnable)
@@ -180,7 +179,7 @@ void Frameless::moveWindow(int offsetX, int offsetY)
         }
     }
 }
-#endif
+
 
 void Frameless::judgeMousePos()
 {

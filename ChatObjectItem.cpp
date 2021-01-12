@@ -84,7 +84,6 @@ void ChatObjectItem::initStyleSheet()
     QString qss = list.join("\n");
 //    qDebug() << qss;
     this->setStyleSheet(qss);
-    qDebug() << "load ChatObjectItem css";
 }
 
 zsj::Data::ptr ChatObjectItem::getData() const
