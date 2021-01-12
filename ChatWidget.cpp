@@ -36,6 +36,7 @@ void ChatWidget::paintEvent(QPaintEvent *event)
 void ChatWidget::initObjects()
 {
     frameless = new zsj::Frameless(this);
+    frameless->setPadding(17);
 }
 
 void ChatWidget::initResourceAndForm()

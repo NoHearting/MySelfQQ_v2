@@ -40,7 +40,8 @@ SOURCES += main.cpp\
     WarnDialog.cpp \
     ChatWidget.cpp \
     ChatObjectItem.cpp \
-    Data.cpp
+    Data.cpp \
+    CacheWidget.cpp
 
 HEADERS  += LoginWidget.h \
     Frameless.h \
@@ -71,7 +72,8 @@ HEADERS  += LoginWidget.h \
     Global.h \
     ChatWidget.h \
     ChatObjectItem.h \
-    Data.h
+    Data.h \
+    CacheWidget.h
 
 FORMS    += LoginWidget.ui \
     ComboBoxItemWidget.ui \
