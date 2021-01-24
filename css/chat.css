@@ -34,6 +34,14 @@ QSplitter::handle:pressed {
 	border-left: 1px solid black;
 }*/
 
+#toolButtonClose,
+#toolButtoMin,
+#toolButtonMax,
+#toolButtonWindowSetting{
+	background: transparent;
+	border:none;
+}
+
 #toolButtonClose:hover{
 	background: red;
 }

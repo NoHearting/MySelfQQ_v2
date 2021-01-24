@@ -92,8 +92,11 @@ bool Frameless::eventFilter(QObject *watched, QEvent *event)
             pressedLeftBottom = false;
             pressedRightBottom = false;
             widget->setCursor(Qt::ArrowCursor);
-            cacheWidget->hide();
-            widget->setGeometry(cacheWidget->geometry());
+            if(cacheWidget->isVisible()){
+                cacheWidget->hide();
+                widget->setGeometry(cacheWidget->geometry());
+            }
+
         }
     }
     return QObject::eventFilter(watched, event);

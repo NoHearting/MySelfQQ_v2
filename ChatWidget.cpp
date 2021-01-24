@@ -77,8 +77,8 @@ void ChatWidget::initSignalsAndSlots()
     connect(ui->listWidgetChatObjList, &QListWidget::clicked, this, &ChatWidget::changeChatObject);
     qInfo() << "connect listWidgetChatObjList::clicked to ChatWidget::changeChatObject";
 
-    connect(ui->listWidgetChatObjList,&MyListWidget::sigAddItem,this,&ChatWidget::slotItemAdd);
-    connect(ui->listWidgetChatObjList,&MyListWidget::sigTakeItem,this,&ChatWidget::slotItemTake);
+    connect(ui->listWidgetChatObjList, &MyListWidget::sigAddItem, this, &ChatWidget::slotItemAdd);
+    connect(ui->listWidgetChatObjList, &MyListWidget::sigTakeItem, this, &ChatWidget::slotItemTake);
 
 }
 
@@ -110,19 +110,21 @@ void ChatWidget::initTestChatObjs()
         {
             data.reset(new zsj::GroupData(head, QString("groupName-%1").arg(i), "222", "群介绍", 10, 100));
         }
-        ChatObjectItem *chatObjsItem = new ChatObjectItem(data,ui->listWidgetChatObjList);
+        ChatObjectItem *chatObjsItem = new ChatObjectItem(data, ui->listWidgetChatObjList);
         ui->listWidgetChatObjList->setItemWidget(item, chatObjsItem);
-        connect(chatObjsItem,&ChatObjectItem::sigDeleteItem,this,&ChatWidget::slotDeleteChatObject);
+        connect(chatObjsItem, &ChatObjectItem::sigDeleteItem, this, &ChatWidget::slotDeleteChatObject);
     }
 }
 
 void ChatWidget::changeChatObject(const QModelIndex &index)
 {
-    if(index == currentIndex){
+    if(index == currentIndex)
+    {
         return;
     }
     QWidget *widget = ui->listWidgetChatObjList->indexWidget(index);
-    if(widget){
+    if(widget)
+    {
         ChatObjectItem *objItem = dynamic_cast<ChatObjectItem *>(widget);
         if(objItem != nullptr)
         {
@@ -148,7 +150,8 @@ void ChatWidget::changeChatObject(const QModelIndex &index)
             qCritical() << "list item convert to ChatObjectItem failed";
         }
     }
-    else{
+    else
+    {
         qCritical() << "get index widget failed";
     }
 
@@ -159,21 +162,33 @@ void ChatWidget::slotDeleteChatObject(QPoint point)
 {
     QPoint localPos = ui->listWidgetChatObjList->mapFromGlobal(point);
     QListWidgetItem *item = ui->listWidgetChatObjList->itemAt(localPos);
-    if(item){
-        QWidget * widget = ui->listWidgetChatObjList->itemWidget(item);
-        ChatObjectItem * chatItem = dynamic_cast<ChatObjectItem*>(widget);
-        if(chatItem){
+    if(item)
+    {
+        QWidget *widget = ui->listWidgetChatObjList->itemWidget(item);
+        ChatObjectItem *chatItem = dynamic_cast<ChatObjectItem *>(widget);
+        if(chatItem)
+        {
             auto deleteItem = ui->listWidgetChatObjList->takeItem(ui->listWidgetChatObjList->row(item));
+
+            if(chatItem->getData() == currentData)
+            {
+                ui->listWidgetChatObjList->setCurrentRow(ui->listWidgetChatObjList->count() - 1);
+            }
+
             delete deleteItem;
-            if(ui->listWidgetChatObjList->count() <= 1){
+            if(ui->listWidgetChatObjList->count() <= 1)
+            {
                 setChatObjListStyle();
             }
+
         }
-        else{
+        else
+        {
             qCritical() << "dynamic_cast QWidget to ChatObjectItem failed";
         }
     }
-    else{
+    else
+    {
         qCritical() << "that position have not widget";
     }
 
@@ -187,7 +202,8 @@ void ChatWidget::slotItemAdd(QListWidgetItem *item)
 void ChatWidget::slotItemTake()
 {
     int currentRow = ui->listWidgetChatObjList->currentRow();
-    if(currentRow <0 || currentRow >= ui->listWidgetChatObjList->count()){
+    if(currentRow < 0 || currentRow >= ui->listWidgetChatObjList->count())
+    {
         ui->listWidgetChatObjList->setCurrentRow(0);
     }
 }
