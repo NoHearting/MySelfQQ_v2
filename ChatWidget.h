@@ -37,6 +37,10 @@ private:
     /// 如果没有一个元素，则隐藏
     void setChatObjListStyle();
 
+
+    /// @brief 初始化所有菜单
+    void initMenus();
+
     /// @brief 测试阶段
     void initTestData();
 
@@ -60,6 +64,17 @@ private:
     QModelIndex currentIndex;
 
 
+    /// 消息发送菜单
+    QMenu * sendMenu = nullptr;
+
+public slots:
+
+    /// @brief 选择Enter发送消息
+    void slotChooseEnter();
+
+    /// @brief 选择Ctrl+Enter发送消息
+    void slotChooseCtrlEnter();
+
 private slots:
     /// @brief 改变聊天对象
     void changeChatObject(const QModelIndex &index);
@@ -72,6 +87,8 @@ private slots:
 
     /// @brief 移除item时触发
     void slotItemTake();
+
+
 
 
 };

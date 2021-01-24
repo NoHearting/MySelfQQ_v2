@@ -88,6 +88,7 @@ void outputMessage(QtMsgType type, const QMessageLogContext &context, const QStr
 
 void printAppInfo()
 {
+    qInfo() << "< qt version:    " << QT_VERSION_STR;
     qInfo() << "< appName:       " << qApp->applicationName() << ">";
     qInfo() << "< process id:    " << qApp->applicationPid() << ">";
     qInfo() << "< process path:  " << qApp->applicationFilePath() << ">";

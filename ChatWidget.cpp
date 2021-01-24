@@ -6,12 +6,14 @@
 #include "GroupData.h"
 #include "UserData.h"
 #include "ChatObjectItem.h"
+#include "StaticIniator.h"
 
 #include <QDebug>
 #include <QAction>
 #include <QListWidget>
 #include <QPoint>
 #include <QCursor>
+#include <QActionGroup>
 
 
 ChatWidget::ChatWidget(QWidget *parent) :
@@ -37,6 +39,10 @@ void ChatWidget::initObjects()
 {
     frameless = new zsj::Frameless(this);
     frameless->setPadding(17);
+
+
+    // 初始化所有菜单
+    initMenus();
 }
 
 void ChatWidget::initResourceAndForm()
@@ -47,8 +53,8 @@ void ChatWidget::initResourceAndForm()
 
     // ://css/chat.css
 //    this->setStyleSheet(zsj::ReadQStyleSheet::readQss("D:\\QT\\QtCode\\MySelfQQ_v2\\MySelfQQ_v2\\css\\chat.css"));
-    this->setStyleSheet(zsj::ReadQStyleSheet::readQss("://css/chat.css"));
-    qDebug() << "load chat.css";
+
+
     zsj::WidgetUtil::setWidgetBoxShadow(ui->widgetBody);
 
 
@@ -66,7 +72,17 @@ void ChatWidget::initResourceAndForm()
     ui->lineEditSearch->addAction(action, QLineEdit::LeadingPosition);
 
 
+    // 设置消息发送选项菜单
+//    ui->toolButtonSendMenu->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+    ui->toolButtonSendMenu->setPopupMode(QToolButton::InstantPopup);
+    ui->toolButtonSendMenu->setMenu(sendMenu);
 
+
+
+    ui->textEditMessageList->insertHtml("<div style='color:red;width:50px;height:50px;border:1px solid blue;background-color:green;'>hello</div>");
+
+    this->setStyleSheet(zsj::ReadQStyleSheet::readQss("://css/chat.css"));
+    qDebug() << "load chat.css";
 }
 
 void ChatWidget::initSignalsAndSlots()
@@ -85,6 +101,13 @@ void ChatWidget::initSignalsAndSlots()
 void ChatWidget::setChatObjListStyle()
 {
     ui->widgetContentLeft->setVisible(false);
+}
+
+void ChatWidget::initMenus()
+{
+    sendMenu = new QMenu();
+    zsj::StaticIniator::Instatcne()->initSendMenu(sendMenu, this);
+
 }
 
 void ChatWidget::initTestData()
@@ -118,13 +141,25 @@ void ChatWidget::initTestChatObjs()
 
 void ChatWidget::setCurrentData(zsj::Data::ptr data)
 {
-    if(data){
+    if(data)
+    {
         this->currentData = data;
         ui->labelCurrentObjName->setText(currentData->getName());
     }
-    else{
+    else
+    {
         qCritical() << "paramter data is nullptr";
     }
+
+}
+
+void ChatWidget::slotChooseEnter()
+{
+
+}
+
+void ChatWidget::slotChooseCtrlEnter()
+{
 
 }
 

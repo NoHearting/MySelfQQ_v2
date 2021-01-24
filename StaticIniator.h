@@ -29,6 +29,10 @@ public:
 
     void initMenusStyle(QMenu * menu);
 
+
+    /// @brief 初始化聊天窗口的发送选项菜单
+    void initSendMenu(QMenu * menu,QWidget * owner);
+
 private:
     StaticIniator(){}
 

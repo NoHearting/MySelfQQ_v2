@@ -34,3 +34,20 @@ QMenu::right-arrow{
     image:url(":/main/res/main/arrow-right.png");
     padding-right: 10px;
 }
+
+#sendMenu::indicator:exclusive{
+    width: 20px;
+    height: 20px;
+    margin-left: 10px;
+}
+
+#sendMenu::item{
+    padding: 0 10px 0 10px;
+}
+
+#sendMenu::indicator:exclusive:unchecked{
+    image:url(":/main/res/main/transparent.png");
+}
+#sendMenu::indicator:exclusive:checked{
+    image:url(":/chat/res/chat/success.png");
+}

@@ -1,11 +1,13 @@
 #include "StaticIniator.h"
 #include "MainWidget.h"
+#include "ChatWidget.h"
 #include "Util.h"
 #include "ReadQStyleSheet.h"
 #include "Global.h"
 
 #include <QMutex>
 #include <QMutexLocker>
+#include <QActionGroup>
 
 namespace zsj {
 
@@ -210,6 +212,37 @@ void zsj::StaticIniator::initMenusStyle(QMenu * menu)
     menu->setWindowFlags(menu->windowFlags() | Qt::FramelessWindowHint);
     menu->setAttribute(Qt::WA_TranslucentBackground);
     menu->setStyleSheet(zsj::ReadQStyleSheet::readQss("://css/userMenu.css"));
+}
+
+void StaticIniator::initSendMenu(QMenu *menu, QWidget *owner)
+{
+    ChatWidget * ownerChild = dynamic_cast<ChatWidget*>(owner);
+    menu->setObjectName("sendMenu");
+    QIcon icon = QIcon(zsj::global::transparentMenuIconPath);
+    QActionGroup * actionGroup = new QActionGroup(ownerChild);
+    actionGroup->setExclusive(true);
+
+    QAction * actionEnter = new QAction("按Enter键发送消息",actionGroup);
+    actionEnter->setCheckable(true);
+    actionEnter->setChecked(true);
+    QAction * actionCtrlEnter = new QAction("按Ctrl+Enter键发送消息",actionGroup);
+    actionCtrlEnter->setCheckable(true);
+
+    menu->addAction(actionEnter);
+    menu->addAction(actionCtrlEnter);
+
+
+
+
+
+
+
+
+    initMenusStyle(menu);
+
+    connect(actionEnter,&QAction::triggered,ownerChild,&ChatWidget::slotChooseEnter);
+    connect(actionCtrlEnter,&QAction::triggered,ownerChild,&ChatWidget::slotChooseCtrlEnter);
+
 }
 
 }
