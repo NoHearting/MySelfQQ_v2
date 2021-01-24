@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QModelIndex>
+#include <QListWidget>
 
 #include "Frameless.h"
 #include "Data.h"
@@ -19,21 +20,6 @@ public:
     ~ChatWidget();
 
 protected:
-#ifdef Q_OS_LINUX
-    /// @brief 重写mouseMoveEvent函数
-    ///
-    ///     用户点击有可能点击登录页面之上的小部件然后拖动
-    ///会出现抖动，此函数解决此问题
-    void mouseMoveEvent(QMouseEvent *);
-
-    /// @brief 重写mousePressEvent函数
-    ///
-    ///  鼠标按下事件，按下就获取当前鼠标坐标并计算出当前坐标和窗口左上角的差值
-    void mousePressEvent(QMouseEvent *);
-
-    /// @brief 重写mouseReleaseEvent函数
-    void mouseReleaseEvent(QMouseEvent *);
-#endif
 
 private:
 
@@ -47,18 +33,21 @@ private:
     void initSignalsAndSlots();
 
 
+    /// @brief 设置聊天对象列表样式
+    /// 如果没有一个元素，则隐藏
+    void setChatObjListStyle();
+
     /// @brief 测试阶段
     void initTestData();
 
     /// @brief 初始化左边的聊天对象列表
     void initTestChatObjs();
 
+
+
+
 private:
     Ui::ChatWidget *ui;
-
-#ifdef Q_OS_LINUX
-    QPoint offset;      /// 鼠标位移值
-#endif
 
     /// 设置窗口可拉伸和移动
     zsj::Frameless *frameless = nullptr;
@@ -73,6 +62,17 @@ private:
 private slots:
     /// @brief 改变聊天对象
     void changeChatObject(const QModelIndex &index);
+
+    /// @brief 删除聊天对象
+    void slotDeleteChatObject(QPoint point);
+
+    /// @brief 添加item时触发
+    void slotItemAdd(QListWidgetItem * item);
+
+    /// @brief 移除item时触发
+    void slotItemTake();
+
+
 };
 
 #endif // CHATWIDGET_H

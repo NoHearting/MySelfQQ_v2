@@ -158,7 +158,6 @@ void Frameless::setResizeCursor(QPoint point)
         }
         else if(rectRightBottom.contains(point))
         {
-            qDebug() << "right bottom set cursor";
             widget->setCursor(Qt::SizeFDiagCursor);
         }
         else
@@ -169,7 +168,6 @@ void Frameless::setResizeCursor(QPoint point)
 
 }
 
-#ifdef Q_OS_WIN
 void Frameless::moveWindow(int offsetX, int offsetY)
 {
     if(moveEnable)
@@ -180,7 +178,7 @@ void Frameless::moveWindow(int offsetX, int offsetY)
         }
     }
 }
-#endif
+
 
 void Frameless::judgeMousePos()
 {
@@ -210,7 +208,6 @@ void Frameless::judgeMousePos()
     }
     else if(rectRightBottom.contains(lastPos))
     {
-        qDebug() << "right bottom";
         pressedRightBottom = true;
     }
     else if(rectLeftBottom.contains(lastPos))

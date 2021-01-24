@@ -21,11 +21,19 @@ public:
     /// @brief 设置滚动条的样式表
     /// @param[in] qss 样式
     void setScrollBarQss(const QString & qss);
+
+    void addItem(QListWidgetItem *item);
+
+    QListWidgetItem * takeItem(int row);
 protected:
     void resizeEvent(QResizeEvent *e);
     void enterEvent(QEvent *);
     void leaveEvent(QEvent *);
 signals:
+
+    void sigAddItem(QListWidgetItem * item);
+
+    void sigTakeItem();
 
 public slots:
     void valueChanged(int value);
@@ -35,6 +43,8 @@ private:
 
     /// 垂直滚动条宽度
     int verticalScrollBarWidth;
+
+
 };
 
 #endif // MYLISTWIDGET_H

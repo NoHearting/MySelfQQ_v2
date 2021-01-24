@@ -30,14 +30,14 @@ int main(int argc, char *argv[])
 
     printAppInfo();
 
-    LoginWidget w;
-    w.show();
+//    LoginWidget w;
+//    w.show();
 
 
 //    MainWidget mainWidget;
 //    mainWidget.show();
-//    ChatWidget chatWidget;
-//    chatWidget.show();
+    ChatWidget chatWidget;
+    chatWidget.show();
 
     zsj::Test().test();
     return a.exec();

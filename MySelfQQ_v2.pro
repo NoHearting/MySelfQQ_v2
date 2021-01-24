@@ -41,7 +41,8 @@ SOURCES += main.cpp\
     ChatWidget.cpp \
     ChatObjectItem.cpp \
     Data.cpp \
-    CacheWidget.cpp
+    CacheWidget.cpp \
+    MyToolButton.cpp
 
 HEADERS  += LoginWidget.h \
     Frameless.h \
@@ -73,7 +74,8 @@ HEADERS  += LoginWidget.h \
     ChatWidget.h \
     ChatObjectItem.h \
     Data.h \
-    CacheWidget.h
+    CacheWidget.h \
+    MyToolButton.h
 
 FORMS    += LoginWidget.ui \
     ComboBoxItemWidget.ui \

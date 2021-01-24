@@ -10,6 +10,8 @@
 #include <QDebug>
 #include <QAction>
 #include <QListWidget>
+#include <QPoint>
+#include <QCursor>
 
 
 ChatWidget::ChatWidget(QWidget *parent) :
@@ -20,12 +22,16 @@ ChatWidget::ChatWidget(QWidget *parent) :
     initObjects();
     initResourceAndForm();
     initSignalsAndSlots();
+
+    initTestData();
 }
 
 ChatWidget::~ChatWidget()
 {
     delete ui;
 }
+
+
 
 void ChatWidget::initObjects()
 {
@@ -40,7 +46,8 @@ void ChatWidget::initResourceAndForm()
 
 
     // ://css/chat.css
-    this->setStyleSheet(zsj::ReadQStyleSheet::readQss("D:\\QT\\QtCode\\MySelfQQ_v2\\MySelfQQ_v2\\css\\chat.css"));
+//    this->setStyleSheet(zsj::ReadQStyleSheet::readQss("D:\\QT\\QtCode\\MySelfQQ_v2\\MySelfQQ_v2\\css\\chat.css"));
+    this->setStyleSheet(zsj::ReadQStyleSheet::readQss("://css/chat.css"));
     qDebug() << "load chat.css";
     zsj::WidgetUtil::setWidgetBoxShadow(ui->widgetBody);
 
@@ -58,7 +65,7 @@ void ChatWidget::initResourceAndForm()
     action->setIcon(QIcon(":/main/res/main/search.png"));
     ui->lineEditSearch->addAction(action, QLineEdit::LeadingPosition);
 
-    initTestData();
+
 
 }
 
@@ -70,7 +77,14 @@ void ChatWidget::initSignalsAndSlots()
     connect(ui->listWidgetChatObjList, &QListWidget::clicked, this, &ChatWidget::changeChatObject);
     qInfo() << "connect listWidgetChatObjList::clicked to ChatWidget::changeChatObject";
 
-//    connect(ui->listWidgetChatObjList,&QListWidget::)
+    connect(ui->listWidgetChatObjList,&MyListWidget::sigAddItem,this,&ChatWidget::slotItemAdd);
+    connect(ui->listWidgetChatObjList,&MyListWidget::sigTakeItem,this,&ChatWidget::slotItemTake);
+
+}
+
+void ChatWidget::setChatObjListStyle()
+{
+    ui->widgetContentLeft->setVisible(false);
 }
 
 void ChatWidget::initTestData()
@@ -96,8 +110,9 @@ void ChatWidget::initTestChatObjs()
         {
             data.reset(new zsj::GroupData(head, QString("groupName-%1").arg(i), "222", "群介绍", 10, 100));
         }
-        ChatObjectItem *chatObjsItem = new ChatObjectItem(data, ui->listWidgetChatObjList);
+        ChatObjectItem *chatObjsItem = new ChatObjectItem(data,ui->listWidgetChatObjList);
         ui->listWidgetChatObjList->setItemWidget(item, chatObjsItem);
+        connect(chatObjsItem,&ChatObjectItem::sigDeleteItem,this,&ChatWidget::slotDeleteChatObject);
     }
 }
 
@@ -107,68 +122,73 @@ void ChatWidget::changeChatObject(const QModelIndex &index)
         return;
     }
     QWidget *widget = ui->listWidgetChatObjList->indexWidget(index);
-    ChatObjectItem *objItem = dynamic_cast<ChatObjectItem *>(widget);
-    if(objItem != nullptr)
-    {
-        currentData = objItem->getData();
-        switch(currentData->getDataType())
+    if(widget){
+        ChatObjectItem *objItem = dynamic_cast<ChatObjectItem *>(widget);
+        if(objItem != nullptr)
         {
-            case zsj::global::DataType::GROUP_DATA:
-                ui->stackedWidgetMain->setCurrentIndex(1);
-                qDebug() << "更改到群组的界面";
-                break;
-            case zsj::global::DataType::USER_DATA:
-                ui->stackedWidgetMain->setCurrentIndex(0);
-                qDebug() << "执行用户类型的逻辑";
-                break;
-            case zsj::global::DataType::SYSTEM_DATA:
-                qDebug() << "执行系统类型的逻辑";
-                break;
+            currentData = objItem->getData();
+            switch(currentData->getDataType())
+            {
+                case zsj::global::DataType::GROUP_DATA:
+                    ui->stackedWidgetMain->setCurrentIndex(1);
+                    qDebug() << "更改到群组的界面";
+                    break;
+                case zsj::global::DataType::USER_DATA:
+                    ui->stackedWidgetMain->setCurrentIndex(0);
+                    qDebug() << "执行用户类型的逻辑";
+                    break;
+                case zsj::global::DataType::SYSTEM_DATA:
+                    qDebug() << "执行系统类型的逻辑";
+                    break;
+            }
+            ui->labelCurrentObjName->setText(currentData->getName());
         }
-        ui->labelCurrentObjName->setText(currentData->getName());
+        else
+        {
+            qCritical() << "list item convert to ChatObjectItem failed";
+        }
     }
-    else
-    {
-        qCritical() << "list item convert to ChatObjectItem failed";
+    else{
+        qCritical() << "get index widget failed";
     }
+
 
 }
 
-#ifdef Q_OS_LINUX
-
-// 含有一个移动bug
-// 当打开比如下拉框、菜单的东西时，点击桌面（不点击下拉框和菜单），此时移动鼠标到窗口，
-// 窗口会突然非法移动
-void MainWidget::mouseMoveEvent(QMouseEvent *e)
+void ChatWidget::slotDeleteChatObject(QPoint point)
 {
-    QPoint afterMovePos = e->globalPos();
-    if(offset.x() != 0 && offset.y() != 0)
-    {
-        QPoint moveDis = afterMovePos - offset;
-        move(moveDis);
+    QPoint localPos = ui->listWidgetChatObjList->mapFromGlobal(point);
+    QListWidgetItem *item = ui->listWidgetChatObjList->itemAt(localPos);
+    if(item){
+        QWidget * widget = ui->listWidgetChatObjList->itemWidget(item);
+        ChatObjectItem * chatItem = dynamic_cast<ChatObjectItem*>(widget);
+        if(chatItem){
+            auto deleteItem = ui->listWidgetChatObjList->takeItem(ui->listWidgetChatObjList->row(item));
+            delete deleteItem;
+            if(ui->listWidgetChatObjList->count() <= 1){
+                setChatObjListStyle();
+            }
+        }
+        else{
+            qCritical() << "dynamic_cast QWidget to ChatObjectItem failed";
+        }
+    }
+    else{
+        qCritical() << "that position have not widget";
+    }
+
+}
+
+void ChatWidget::slotItemAdd(QListWidgetItem *item)
+{
+    ui->listWidgetChatObjList->setCurrentItem(item);
+}
+
+void ChatWidget::slotItemTake()
+{
+    int currentRow = ui->listWidgetChatObjList->currentRow();
+    if(currentRow <0 || currentRow >= ui->listWidgetChatObjList->count()){
+        ui->listWidgetChatObjList->setCurrentRow(0);
     }
 }
 
-/*
-    鼠标按下事件，按下就获取当前鼠标坐标并计算出当前坐标和窗口左上角的偏移量offset
-*/
-void MainWidget::mousePressEvent(QMouseEvent *e)
-{
-    QPoint topLeft = ui->widgetTop->mapToGlobal(ui->widgetTop->pos()) - QPoint(0, 130);
-    QRect realGeometry(topLeft, QSize(ui->widgetMain->size())); // 当前窗口的真实位置大小
-    QPoint cursorPos = e->globalPos();              //当前鼠标的全局位置
-    if(realGeometry.contains(cursorPos))
-    {
-        QPoint geometryTopLeft = this->geometry().topLeft();    //当前鼠标点击窗口的左上角坐标
-        offset = cursorPos - geometryTopLeft;
-    }
-}
-
-/*
-    鼠标放开事件，当鼠标放开时，将偏移量offset初始化为0
-*/
-void MainWidget::mouseReleaseEvent(QMouseEvent *)
-{
-    offset = QPoint(0, 0);
-}
-#endif

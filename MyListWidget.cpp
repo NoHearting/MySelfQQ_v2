@@ -1,6 +1,8 @@
 #include "MyListWidget.h"
 #include "ReadQStyleSheet.h"
 
+#include <QDebug>
+
 MyListWidget::MyListWidget(QWidget *parent)
     : QListWidget(parent)
     , verticalScrollBarWidth(8)
@@ -20,6 +22,25 @@ void MyListWidget::setScrollBarQss(const QString &qss)
 {
     floatScrollBar->setQss(qss);
 }
+
+void MyListWidget::addItem(QListWidgetItem *item)
+{
+    QListWidget::addItem(item);
+
+    // 添加项目的时候发送一个信号
+    emit sigAddItem(item);
+}
+
+QListWidgetItem * MyListWidget::takeItem(int row)
+{
+    auto item = QListWidget::takeItem(row);
+
+    // 移除元素时发送一个信号
+    emit sigTakeItem();
+
+    return item;
+}
+
 
 void MyListWidget::resizeEvent(QResizeEvent *e)
 {
