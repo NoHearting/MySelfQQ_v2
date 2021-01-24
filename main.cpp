@@ -24,6 +24,7 @@ int main(int argc, char *argv[])
 
 #ifdef DEBUG
     qsrand(QTime(0, 0, 0).secsTo(QTime::currentTime()));
+    // msg
 #endif
     //安装日志处理钩子函数
     qInstallMessageHandler(outputMessage);
