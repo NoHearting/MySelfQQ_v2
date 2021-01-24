@@ -44,6 +44,7 @@ private:
     void initTestChatObjs();
 
 
+    void setCurrentData(zsj::Data::ptr data);
 
 
 private:

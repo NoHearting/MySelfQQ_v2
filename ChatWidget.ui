@@ -360,7 +360,7 @@
                  <normaloff>:/main/res/main/main-close.png</normaloff>:/main/res/main/main-close.png</iconset>
                </property>
                <property name="autoRaise">
-                <bool>true</bool>
+                <bool>false</bool>
                </property>
               </widget>
              </item>

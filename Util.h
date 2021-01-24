@@ -11,6 +11,7 @@
 #include <QColor>
 #include <QWidget>
 #include <utility>
+#include <QDebug>
 
 #include "Global.h"
 
@@ -54,6 +55,24 @@ class WidgetUtil
 public:
     static void setWidgetBoxShadow(QWidget *widget, int offsetX = 0, int offsetY = 0,
                                    const QColor &color = Qt::black, int radius = 5);
+
+    template<typename originParent,typename originItem,typename target>
+    static target * widgetCast(originParent * parentWidget,originItem * item){
+
+        if(!parentWidget || !item){
+            qCritical() << "paramter is nullptr";
+            return nullptr;
+        }
+        QWidget * widget = parentWidget->itemWidget(item);
+        if(widget){
+            target * obj = dynamic_cast<target*>(widget);
+            if(obj){
+                return obj;
+            }
+        }
+        return nullptr;
+
+    }
 };
 
 class SystemUtil

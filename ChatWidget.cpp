@@ -78,7 +78,7 @@ void ChatWidget::initSignalsAndSlots()
     qInfo() << "connect listWidgetChatObjList::clicked to ChatWidget::changeChatObject";
 
     connect(ui->listWidgetChatObjList, &MyListWidget::sigAddItem, this, &ChatWidget::slotItemAdd);
-    connect(ui->listWidgetChatObjList, &MyListWidget::sigTakeItem, this, &ChatWidget::slotItemTake);
+//    connect(ui->listWidgetChatObjList, &MyListWidget::sigTakeItem, this, &ChatWidget::slotItemTake);
 
 }
 
@@ -98,7 +98,6 @@ void ChatWidget::initTestChatObjs()
     for(int i = 0; i < count; i++)
     {
         QListWidgetItem *item = new QListWidgetItem(ui->listWidgetChatObjList);
-        ui->listWidgetChatObjList->addItem(item);
         item->setSizeHint(QSize(ui->widgetContentLeftBottom->width(), 60));
         zsj::Data::ptr data = nullptr;
         QPixmap head(QString(":/test/res/test/head%1.jpg").arg(i % 5));
@@ -112,8 +111,21 @@ void ChatWidget::initTestChatObjs()
         }
         ChatObjectItem *chatObjsItem = new ChatObjectItem(data, ui->listWidgetChatObjList);
         ui->listWidgetChatObjList->setItemWidget(item, chatObjsItem);
+        ui->listWidgetChatObjList->addItem(item);
         connect(chatObjsItem, &ChatObjectItem::sigDeleteItem, this, &ChatWidget::slotDeleteChatObject);
     }
+}
+
+void ChatWidget::setCurrentData(zsj::Data::ptr data)
+{
+    if(data){
+        this->currentData = data;
+        ui->labelCurrentObjName->setText(currentData->getName());
+    }
+    else{
+        qCritical() << "paramter data is nullptr";
+    }
+
 }
 
 void ChatWidget::changeChatObject(const QModelIndex &index)
@@ -164,15 +176,19 @@ void ChatWidget::slotDeleteChatObject(QPoint point)
     QListWidgetItem *item = ui->listWidgetChatObjList->itemAt(localPos);
     if(item)
     {
-        QWidget *widget = ui->listWidgetChatObjList->itemWidget(item);
-        ChatObjectItem *chatItem = dynamic_cast<ChatObjectItem *>(widget);
+        ChatObjectItem *chatItem = zsj::WidgetUtil::widgetCast <
+                                   QListWidget, QListWidgetItem, ChatObjectItem > (ui->listWidgetChatObjList, item);
         if(chatItem)
         {
             auto deleteItem = ui->listWidgetChatObjList->takeItem(ui->listWidgetChatObjList->row(item));
 
             if(chatItem->getData() == currentData)
             {
-                ui->listWidgetChatObjList->setCurrentRow(ui->listWidgetChatObjList->count() - 1);
+                int lastIndex = ui->listWidgetChatObjList->count() - 1;
+                ui->listWidgetChatObjList->setCurrentRow(lastIndex);
+                QListWidgetItem *lastItem = ui->listWidgetChatObjList->item(lastIndex);
+                ChatObjectItem *chatObj = zsj::WidgetUtil::widgetCast<QListWidget, QListWidgetItem, ChatObjectItem>(ui->listWidgetChatObjList, lastItem);
+                this->setCurrentData(chatObj->getData());
             }
 
             delete deleteItem;
@@ -197,10 +213,28 @@ void ChatWidget::slotDeleteChatObject(QPoint point)
 void ChatWidget::slotItemAdd(QListWidgetItem *item)
 {
     ui->listWidgetChatObjList->setCurrentItem(item);
+
+    if(!item)
+    {
+        qDebug() << "item is nullptr";
+    }
+
+    ChatObjectItem *chatObj = zsj::WidgetUtil::widgetCast<MyListWidget, QListWidgetItem, ChatObjectItem>
+                              (ui->listWidgetChatObjList, item);
+    if(chatObj)
+    {
+        setCurrentData(chatObj->getData());
+    }
+    else
+    {
+        qCritical() << "set chat item failed";
+    }
+
 }
 
 void ChatWidget::slotItemTake()
 {
+    qDebug() << "slotItemTake";
     int currentRow = ui->listWidgetChatObjList->currentRow();
     if(currentRow < 0 || currentRow >= ui->listWidgetChatObjList->count())
     {
