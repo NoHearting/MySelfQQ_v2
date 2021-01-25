@@ -513,11 +513,7 @@
                             <number>0</number>
                            </property>
                            <item row="0" column="0">
-                            <widget class="QTextEdit" name="textEditMessageList">
-                             <property name="readOnly">
-                              <bool>true</bool>
-                             </property>
-                            </widget>
+                            <widget class="MyListWidget" name="listWidgetMessageList"/>
                            </item>
                           </layout>
                          </widget>
@@ -1833,7 +1829,7 @@
   <customwidget>
    <class>MyListWidget</class>
    <extends>QListWidget</extends>
-   <header>MyListWidget.h</header>
+   <header location="global">MyListWidget.h</header>
   </customwidget>
  </customwidgets>
  <resources>

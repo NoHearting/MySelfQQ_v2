@@ -125,7 +125,28 @@
 
 * 在UI设计的时期无法解决，需要加上数据之后才能进一步完善逻辑
 
+### 8、聊天界面变化时聊天记录控件的变化出现问题
 
+* 出现的问题：
+
+  ![image-20210125212949464](C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20210125212949464.png)
+
+  消息的气泡窗口的`resizeEvent`没有触发，所以没有适应
+
+* 当前的解决办法：
+
+  ```c++
+  // Frameless.cpp eventFilter函数中
+  
+  auto geo = cacheWidget->geometry();
+  widget->setGeometry(geo);
+  // 设置两次是为了解决聊天窗口（ChatWidget）的聊天记录的大小在窗口变化的时候不跟着变化
+  // 只有再次改变窗口大小才跟着变化，所以这里多设置一次
+  // 权宜之计
+  widget->setGeometry(geo.x(),geo.y(),geo.width()+1,geo.height()+1);
+  ```
+
+  只是简单的解决办法，还是会出现这个问题，只是出现的频率变小了。目前不知道什么原因
 
 
 

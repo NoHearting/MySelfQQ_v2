@@ -7,14 +7,13 @@ FloatScrollBar::FloatScrollBar(Qt::Orientation orientation, QWidget *parent) : Q
     this->setOrientation(orientation);
     this->setRange(0, 0);
     this->hide();
+
 }
 
 
 void FloatScrollBar::setQss(const QString &qss)
 {
-//    qDebug() << qss;
     this->setStyleSheet(qss);
-    qDebug() << "load scroll bar css";
 }
 
 void FloatScrollBar::valueChangedFloat(int value)

@@ -47,6 +47,9 @@ private:
     /// @brief 初始化左边的聊天对象列表
     void initTestChatObjs();
 
+    /// @brief 初始化消息列表
+    void initTestMessageList();
+
 
     void setCurrentData(zsj::Data::ptr data);
 

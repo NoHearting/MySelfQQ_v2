@@ -42,7 +42,12 @@ SOURCES += main.cpp\
     ChatObjectItem.cpp \
     Data.cpp \
     CacheWidget.cpp \
-    MyToolButton.cpp
+    MyToolButton.cpp \
+    ChatMessageItem.cpp \
+    ChatMessageItemObject.cpp \
+    ChatMessageData.cpp \
+    ChatBubble.cpp \
+    ChatMessageItemSelf.cpp
 
 HEADERS  += LoginWidget.h \
     Frameless.h \
@@ -75,7 +80,12 @@ HEADERS  += LoginWidget.h \
     ChatObjectItem.h \
     Data.h \
     CacheWidget.h \
-    MyToolButton.h
+    MyToolButton.h \
+    ChatMessageItem.h \
+    ChatMessageItemObject.h \
+    ChatMessageData.h \
+    ChatBubble.h \
+    ChatMessageItemSelf.h
 
 FORMS    += LoginWidget.ui \
     ComboBoxItemWidget.ui \
@@ -87,7 +97,9 @@ FORMS    += LoginWidget.ui \
     MessageItemWidget.ui \
     WarnDialog.ui \
     ChatWidget.ui \
-    ChatObjectItem.ui
+    ChatObjectItem.ui \
+    ChatMessageItemObject.ui \
+    ChatMessageItemSelf.ui
 
 RESOURCES += \
     qss.qrc \

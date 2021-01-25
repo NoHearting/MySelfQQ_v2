@@ -163,18 +163,38 @@ QSplitter::handle:pressed {
 }
 
 
-QListView{
+QListView#listWidgetChatObjList{
 	outline: 0px;
 	background: transparent;
 }
 
-QListView::item:hover{
+QListView#listWidgetChatObjList::item:hover{
 	background:	rgba(0,0,0,30);
 }
 
-QListView::item:selected{
+QListView#listWidgetChatObjList::item:selected{
 	background:	rgba(0,0,0,50);
 	border-left: 3px solid aqua;
+}
+
+
+
+#listWidgetMessageList{
+	border:none;
+	background:transparent;
+}
+
+QListView#listWidgetMessageList{
+	outline: 0px;
+	background: transparent;
+}
+
+QListView#listWidgetMessageList::item:hover{
+	background:	transparent;
+}
+
+QListView#listWidgetMessageList::item:selected{
+	background: transparent;
 }
 
 #stackedWidgetMain{

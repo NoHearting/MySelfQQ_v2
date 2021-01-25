@@ -35,6 +35,9 @@ signals:
 
     void sigTakeItem();
 
+    /// @brief 窗口触发resize事件时发送此信号
+    void sigResizeEvent();
+
 public slots:
     void valueChanged(int value);
 private:

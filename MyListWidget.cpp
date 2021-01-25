@@ -7,6 +7,9 @@ MyListWidget::MyListWidget(QWidget *parent)
     : QListWidget(parent)
     , verticalScrollBarWidth(8)
 {
+
+    this->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
+
     this->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
