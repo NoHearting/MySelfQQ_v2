@@ -96,6 +96,12 @@ void ChatWidget::initSignalsAndSlots()
     connect(ui->toolButtonClose, &QToolButton::clicked, this, &ChatWidget::close);
     qInfo() << "connect toolButtonClose::clicked to ChatWidget::close";
 
+    connect(ui->toolButtoMin,&QToolButton::clicked,this,&ChatWidget::showMinimized);
+    qInfo() << "connect toolButtoMin::clicked to ChatWidget::showMinimized";
+
+    connect(ui->toolButtonMax,&QToolButton::clicked,this,&ChatWidget::slotShowMaxWindow);
+    qInfo() << "connect toolButtonMax::clicked to ChatWidget::showMaximized";
+
     connect(ui->listWidgetChatObjList, &MyListWidget::itemClicked, this, &ChatWidget::slotChangeChatObject);
     qInfo() << "connect listWidgetChatObjList::clicked to ChatWidget::changeChatObject";
 
@@ -108,6 +114,8 @@ void ChatWidget::initSignalsAndSlots()
 
     connect(ui->textEditMessageInput,&MyTextEdit::sigKeyToSendMsg,this,&ChatWidget::slotKeyToSendMessage);
     qInfo() << "connect textEditMessageInput::sigKeyToSendMsg to ChatWidget::slotKeyToSendMessage";
+
+
 
 }
 
@@ -239,6 +247,19 @@ void ChatWidget::slotChooseEnter()
 void ChatWidget::slotChooseCtrlEnter()
 {
     ui->textEditMessageInput->setCtrlEnterSendMsg();
+}
+
+void ChatWidget::slotShowMaxWindow()
+{
+    static bool isMax = false;
+    if(!isMax){
+        this->showMaximized();
+        isMax = !isMax;
+    }
+    else{
+        this->showNormal();
+        isMax = !isMax;
+    }
 }
 
 void ChatWidget::slotChangeChatObject(QListWidgetItem *item)

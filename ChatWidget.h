@@ -92,6 +92,11 @@ public slots:
     void slotChooseCtrlEnter();
 
 private slots:
+
+    /// @brief 最大化窗口，如果已经最大化则恢复之前的状态
+    void slotShowMaxWindow();
+
+
     /// @brief 改变聊天对象
     void slotChangeChatObject(QListWidgetItem *item);
 
