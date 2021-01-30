@@ -37,6 +37,7 @@ ChatWidget::~ChatWidget()
 
 
 
+
 void ChatWidget::initObjects()
 {
     frameless = new zsj::Frameless(this);
@@ -79,6 +80,9 @@ void ChatWidget::initResourceAndForm()
     ui->toolButtonSendMenu->setPopupMode(QToolButton::InstantPopup);
     ui->toolButtonSendMenu->setMenu(sendMenu);
 
+    // 滚动条设置按照像素滚动
+    ui->listWidgetMessageList->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
+
 
 
 //    ui->textEditMessageList->insertHtml("<div style='color:red;width:50px;height:50px;border:1px solid blue;background-color:green;'>hello</div>");
@@ -92,11 +96,18 @@ void ChatWidget::initSignalsAndSlots()
     connect(ui->toolButtonClose, &QToolButton::clicked, this, &ChatWidget::close);
     qInfo() << "connect toolButtonClose::clicked to ChatWidget::close";
 
-    connect(ui->listWidgetChatObjList, &QListWidget::clicked, this, &ChatWidget::changeChatObject);
+    connect(ui->listWidgetChatObjList, &MyListWidget::itemClicked, this, &ChatWidget::slotChangeChatObject);
     qInfo() << "connect listWidgetChatObjList::clicked to ChatWidget::changeChatObject";
 
     connect(ui->listWidgetChatObjList, &MyListWidget::sigAddItem, this, &ChatWidget::slotItemAdd);
 //    connect(ui->listWidgetChatObjList, &MyListWidget::sigTakeItem, this, &ChatWidget::slotItemTake);
+
+
+    connect(ui->pushButtonSend,&QPushButton::clicked,this,&ChatWidget::slotButtonToSendMessage);
+    qInfo() << "connect pushButtonSend::clicked to ChatWidget::slotButtonToSendMessage";
+
+    connect(ui->textEditMessageInput,&MyTextEdit::sigKeyToSendMsg,this,&ChatWidget::slotKeyToSendMessage);
+    qInfo() << "connect textEditMessageInput::sigKeyToSendMsg to ChatWidget::slotKeyToSendMessage";
 
 }
 
@@ -199,56 +210,75 @@ void ChatWidget::setCurrentData(zsj::Data::ptr data)
 
 }
 
+void ChatWidget::addMessageItem(QListWidget *listWidget,QPixmap &head, const QString &message,bool isSelf)
+{
+    QListWidgetItem * item = new QListWidgetItem(listWidget);
+    listWidget->addItem(item);
+    zsj::ChatMessageData::ptr data(new zsj::ChatMessageData(head,message));
+    QWidget * widget = nullptr;
+    if(isSelf){
+        widget = new ChatMessageItemSelf(data,item,listWidget);
+    }
+    else{
+        widget = new ChatMessageItemObject(data,item,listWidget);
+    }
+    listWidget->setItemWidget(item,widget);
+
+    // 滚动到最底部
+    listWidget->scrollToBottom();
+
+}
+
+
+
 void ChatWidget::slotChooseEnter()
 {
-
+    ui->textEditMessageInput->setEnterSendMsg();
 }
 
 void ChatWidget::slotChooseCtrlEnter()
 {
-
+    ui->textEditMessageInput->setCtrlEnterSendMsg();
 }
 
-void ChatWidget::changeChatObject(const QModelIndex &index)
+void ChatWidget::slotChangeChatObject(QListWidgetItem *item)
 {
-    if(index == currentIndex)
-    {
+    if(currentItem == item){
         return;
     }
-    QWidget *widget = ui->listWidgetChatObjList->indexWidget(index);
-    if(widget)
-    {
-        ChatObjectItem *objItem = dynamic_cast<ChatObjectItem *>(widget);
-        if(objItem != nullptr)
-        {
-            currentData = objItem->getData();
-            switch(currentData->getDataType())
-            {
-                case zsj::global::DataType::GROUP_DATA:
-                    ui->stackedWidgetMain->setCurrentIndex(1);
-                    qDebug() << "更改到群组的界面";
-                    break;
-                case zsj::global::DataType::USER_DATA:
-                    ui->stackedWidgetMain->setCurrentIndex(0);
-                    qDebug() << "执行用户类型的逻辑";
-                    break;
-                case zsj::global::DataType::SYSTEM_DATA:
-                    qDebug() << "执行系统类型的逻辑";
-                    break;
-            }
-            ui->labelCurrentObjName->setText(currentData->getName());
-        }
-        else
-        {
-            qCritical() << "list item convert to ChatObjectItem failed";
-        }
+
+    ChatObjectItem *chatObj = zsj::WidgetUtil::widgetCast<MyListWidget,QListWidgetItem,ChatObjectItem>
+            (ui->listWidgetChatObjList,item);
+    if(chatObj){
+        currentItem = item;
+        setCurrentData(chatObj->getData());
+        switchChatObj();
     }
-    else
+    else{
+        qCritical() << "change chat object failed!";
+    }
+}
+
+void ChatWidget::switchChatObj()
+{
+    switch(currentData->getDataType())
     {
-        qCritical() << "get index widget failed";
+        case zsj::global::DataType::GROUP_DATA:
+            ui->stackedWidgetMain->setCurrentIndex(1);
+            qDebug() << "更改到群组的界面";
+            break;
+        case zsj::global::DataType::USER_DATA:
+            ui->stackedWidgetMain->setCurrentIndex(0);
+            qDebug() << "执行用户类型的逻辑";
+            break;
+        case zsj::global::DataType::SYSTEM_DATA:
+            qDebug() << "执行系统类型的逻辑";
+            break;
     }
 
-
+    // 设置数据
+    // 目前只有一个简单的数据
+    ui->labelCurrentObjName->setText(currentData->getName());
 }
 
 void ChatWidget::slotDeleteChatObject(QPoint point)
@@ -295,16 +325,13 @@ void ChatWidget::slotItemAdd(QListWidgetItem *item)
 {
     ui->listWidgetChatObjList->setCurrentItem(item);
 
-    if(!item)
-    {
-        qDebug() << "item is nullptr";
-    }
-
     ChatObjectItem *chatObj = zsj::WidgetUtil::widgetCast<MyListWidget, QListWidgetItem, ChatObjectItem>
                               (ui->listWidgetChatObjList, item);
     if(chatObj)
     {
+        currentItem = item;
         setCurrentData(chatObj->getData());
+        switchChatObj();
     }
     else
     {
@@ -321,5 +348,24 @@ void ChatWidget::slotItemTake()
     {
         ui->listWidgetChatObjList->setCurrentRow(0);
     }
+}
+
+
+void ChatWidget::slotButtonToSendMessage()
+{
+    QPixmap head(":/test/res/test/head4.jpg");
+    QString msg = ui->textEditMessageInput->toPlainText();
+    addMessageItem(ui->listWidgetMessageList,head,msg);
+    ui->textEditMessageInput->clear();
+
+}
+
+
+void ChatWidget::slotKeyToSendMessage(const QString & msg)
+{
+    QPixmap head(":/test/res/test/head4.jpg");
+    addMessageItem(ui->listWidgetMessageList,head,msg);
+    ui->textEditMessageInput->clear();
+
 }
 

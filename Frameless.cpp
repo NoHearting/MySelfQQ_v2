@@ -15,6 +15,7 @@ Frameless::Frameless(QObject *parent) : QObject(parent)
     moveEnable = true;
     resizeEnable = true;
     widget = nullptr;
+    isMoved = false;
 
     pressed = false;
     pressedLeft = false;
@@ -81,7 +82,21 @@ bool Frameless::eventFilter(QObject *watched, QEvent *event)
         }
         else if(event->type() == QEvent::MouseButtonRelease)
         {
+
+            if(cacheWidget->isVisible()){
+                cacheWidget->hide();
+                auto geo = cacheWidget->geometry();
+                widget->setGeometry(geo);
+                if(isMoved){
+                    // 设置两次是为了解决聊天窗口（ChatWidget）的聊天记录的大小在窗口变化的时候不跟着变化
+                    // 只有再次改变窗口大小才跟着变化，所以这里多设置一次
+                    // 权宜之计
+                    widget->setGeometry(geo.x(),geo.y(),geo.width()+1,geo.height()+1);
+                }
+            }
+
             //恢复所有
+            isMoved = false;
             pressed = false;
             pressedLeft = false;
             pressedRight = false;
@@ -92,15 +107,6 @@ bool Frameless::eventFilter(QObject *watched, QEvent *event)
             pressedLeftBottom = false;
             pressedRightBottom = false;
             widget->setCursor(Qt::ArrowCursor);
-            if(cacheWidget->isVisible()){
-                cacheWidget->hide();
-                auto geo = cacheWidget->geometry();
-                widget->setGeometry(geo);
-                // 设置两次是为了解决聊天窗口（ChatWidget）的聊天记录的大小在窗口变化的时候不跟着变化
-                // 只有再次改变窗口大小才跟着变化，所以这里多设置一次
-                // 权宜之计
-                widget->setGeometry(geo.x(),geo.y(),geo.width()+1,geo.height()+1);
-            }
 
         }
     }
@@ -182,6 +188,7 @@ void Frameless::moveWindow(int offsetX, int offsetY)
     {
         if(pressed)
         {
+            isMoved = true;
             cacheWidget->move(widget->x() + offsetX, widget->y() + offsetY);
         }
     }

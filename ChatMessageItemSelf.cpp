@@ -48,11 +48,9 @@ void ChatMessageItemSelf::initResourceAndForm()
 
 void ChatMessageItemSelf::adjustWidgetsPosition()
 {
-    qDebug() << "adjustWidgetPosition";
     QSize size = calculateMessageWidgetSize();
     int padding = zsj::ChatBubble::Instance()->getBubblePadding();
     ui->labelHead->setGeometry(this->width() - 41, 9, ui->labelHead->width(), ui->labelHead->height());
-    qDebug() << "this width: " << this->width();
     ui->widget->setGeometry(QRect(this->width() - size.width() - 2 * padding - 50, 9, size.width() + 2 * padding, size.height() + 2 * padding));
 }
 
@@ -64,7 +62,6 @@ QSize ChatMessageItemSelf::calculateMessageWidgetSize()
     QString message = chatMessageData->getMessage();
     int pixWidth = fm.horizontalAdvance(message);
     int count = message.size();
-//    qDebug() << count << " - " << pixWidth << " - " << pixWidth / count << " - " << font.pixelSize();
     int offset = (abs((pixWidth / count) - font.pixelSize())) * count;
     pixWidth = pixWidth - offset;
     int pixHeight = fm.height();

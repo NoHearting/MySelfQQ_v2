@@ -68,6 +68,8 @@ private:
     int padding;                    //边距
     bool moveEnable;               //可移动
     bool resizeEnable;              //可拉伸
+
+    bool isMoved = false;           // 是否是移动
     QWidget *widget;                //无边框窗体
 
     bool pressed;                   //鼠标按下

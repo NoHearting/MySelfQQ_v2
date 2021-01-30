@@ -19,6 +19,7 @@ public:
     explicit ChatWidget(QWidget *parent = nullptr);
     ~ChatWidget();
 
+
 protected:
 
 private:
@@ -50,9 +51,21 @@ private:
     /// @brief 初始化消息列表
     void initTestMessageList();
 
+private:
 
+    /// @brief 设置当前聊天对象
+    /// @param[in] data 设置数据
     void setCurrentData(zsj::Data::ptr data);
 
+    /// @brief 添加消息item
+    /// @param[in] listWidget 需要添加item的QListWidget
+    /// @param[in] head 头像
+    /// @param[in] message 聊天消息
+    void addMessageItem(QListWidget * listWidget,QPixmap & head,const QString & message,bool isSelf = true);
+
+
+    /// @brief 切换聊天对象
+    void switchChatObj();
 
 private:
     Ui::ChatWidget *ui;
@@ -63,8 +76,8 @@ private:
     /// 当前聊天对象数据
     zsj::Data::ptr currentData = nullptr;
 
-    /// 当前选中聊天对象的坐标
-    QModelIndex currentIndex;
+    /// 当前选择聊天对象的item
+    QListWidgetItem * currentItem = nullptr;
 
 
     /// 消息发送菜单
@@ -80,7 +93,7 @@ public slots:
 
 private slots:
     /// @brief 改变聊天对象
-    void changeChatObject(const QModelIndex &index);
+    void slotChangeChatObject(QListWidgetItem *item);
 
     /// @brief 删除聊天对象
     void slotDeleteChatObject(QPoint point);
@@ -90,6 +103,12 @@ private slots:
 
     /// @brief 移除item时触发
     void slotItemTake();
+
+    /// @brief 点击按钮发送消息
+    void slotButtonToSendMessage();
+
+    /// @brief 按键发送消息
+    void slotKeyToSendMessage(const QString & msg);
 
 
 
