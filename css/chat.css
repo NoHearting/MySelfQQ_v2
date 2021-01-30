@@ -200,3 +200,9 @@ QListView#listWidgetMessageList::item:selected{
 #stackedWidgetMain{
 	background: transparent;
 }
+
+/* test */
+
+#widgetMessageList{
+	border:1px solid red;
+}

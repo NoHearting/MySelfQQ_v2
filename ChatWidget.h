@@ -106,14 +106,14 @@ private slots:
     /// @brief 添加item时触发
     void slotItemAdd(QListWidgetItem * item);
 
-    /// @brief 移除item时触发
-    void slotItemTake();
-
     /// @brief 点击按钮发送消息
     void slotButtonToSendMessage();
 
     /// @brief 按键发送消息
     void slotKeyToSendMessage(const QString & msg);
+
+    /// @brief 最大化聊天框
+    void slotMaxShowMessageList();
 
 
 

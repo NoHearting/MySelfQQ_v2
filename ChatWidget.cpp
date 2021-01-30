@@ -115,6 +115,8 @@ void ChatWidget::initSignalsAndSlots()
     connect(ui->textEditMessageInput,&MyTextEdit::sigKeyToSendMsg,this,&ChatWidget::slotKeyToSendMessage);
     qInfo() << "connect textEditMessageInput::sigKeyToSendMsg to ChatWidget::slotKeyToSendMessage";
 
+    connect(ui->toolButtonFullScreen,&QToolButton::clicked,this,&ChatWidget::slotMaxShowMessageList);
+
 
 
 }
@@ -321,6 +323,7 @@ void ChatWidget::slotDeleteChatObject(QPoint point)
                 QListWidgetItem *lastItem = ui->listWidgetChatObjList->item(lastIndex);
                 ChatObjectItem *chatObj = zsj::WidgetUtil::widgetCast<QListWidget, QListWidgetItem, ChatObjectItem>(ui->listWidgetChatObjList, lastItem);
                 this->setCurrentData(chatObj->getData());
+                switchChatObj();
             }
 
             delete deleteItem;
@@ -361,16 +364,6 @@ void ChatWidget::slotItemAdd(QListWidgetItem *item)
 
 }
 
-void ChatWidget::slotItemTake()
-{
-    qDebug() << "slotItemTake";
-    int currentRow = ui->listWidgetChatObjList->currentRow();
-    if(currentRow < 0 || currentRow >= ui->listWidgetChatObjList->count())
-    {
-        ui->listWidgetChatObjList->setCurrentRow(0);
-    }
-}
-
 
 void ChatWidget::slotButtonToSendMessage()
 {
@@ -388,5 +381,26 @@ void ChatWidget::slotKeyToSendMessage(const QString & msg)
     addMessageItem(ui->listWidgetMessageList,head,msg);
     ui->textEditMessageInput->clear();
 
+}
+
+void ChatWidget::slotMaxShowMessageList()
+{
+    static bool isChecked = false;
+    static int maxHeightInput = ui->widgetMessageInput->maximumHeight();
+    if(isChecked){
+        ui->widgetMessageListBody->setVisible(true);
+//        ui->widgetMessageListBody->show();
+        ui->widgetMessageInput->setMaximumHeight(maxHeightInput);
+        isChecked = false;
+    }
+    else{
+        ui->widgetMessageInput->setMaximumHeight(9999);
+        ui->widgetMessageListBody->setVisible(false);
+//        ui->widgetMessageListBody->hide();
+        const QRect geometry = ui->widgetMessageList->geometry();
+        ui->widgetMessageList->setGeometry(geometry.x(),geometry.y(),geometry.width(),ui->widgetMessageListTools->height());
+//        ui->widgetMessageInput->setAcceptDrops();
+        isChecked = true;
+    }
 }
 
