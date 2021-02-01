@@ -94,6 +94,38 @@ QSplitter::handle:pressed {
 	border-radius: 4px;
 }
 
+#pushButtonSend,#toolButtonSendMenu,
+#pushButtonSendGroup,#toolButtonSendMenuGroup{
+	border:none;
+	background: rgb(176,156,227);
+	border-right: 1px solid white;
+}
+
+#pushButtonSend,
+#pushButtonSendGroup{
+	border-top-left-radius: 4px;
+	border-bottom-left-radius: 4px;
+}
+
+#toolButtonSendMenu,
+#toolButtonSendMenuGroup{
+	border-top-right-radius: 4px;
+	border-bottom-right-radius: 4px;
+}
+
+#toolButtonSendMenu::menu-indicator,
+#toolButtonSendMenuGroup::menu-indicator{
+	image:none;
+}
+
+#pushButtonSend:hover,
+#pushButtonSendGroup:hover,
+#toolButtonSendMenu:hover,
+#toolButtonSendMenuGroup:hover{
+	background: rgb(193,178,233);
+}
+
+
 #pushButtonClose:hover,
 #pushButtonCloseGroup:hover{
 	background: rgb(239,239,240);
@@ -138,20 +170,65 @@ QSplitter::handle:pressed {
 }
 
 
-QListView{
+QListView#listWidgetChatObjList{
 	outline: 0px;
 	background: transparent;
 }
 
-QListView::item:hover{
+QListView#listWidgetChatObjList::item:hover{
 	background:	rgba(0,0,0,30);
 }
 
-QListView::item:selected{
+QListView#listWidgetChatObjList::item:selected{
 	background:	rgba(0,0,0,50);
 	border-left: 3px solid aqua;
 }
 
+
+
+#listWidgetMessageList,
+#listWidgetMessageListGroup{
+	border:none;
+	background:transparent;
+}
+
+QListView#listWidgetMessageList{
+	outline: 0px;
+	background: transparent;
+}
+
+QListView#listWidgetMessageList::item:hover{
+	background:	transparent;
+}
+
+QListView#listWidgetMessageList::item:selected{
+	background: transparent;
+}
+
+QListView#listWidgetMessageListGroup{
+	outline: 0px;
+	background: transparent;
+}
+
+QListView#listWidgetMessageListGroup::item:hover{
+	background:	transparent;
+}
+
+QListView#listWidgetMessageListGroup::item:selected{
+	background: transparent;
+}
+
+
 #stackedWidgetMain{
 	background: transparent;
 }
+
+/* test */
+
+/*#widgetMessageList{
+	border:1px solid red;
+}
+
+#widgetMessageListTools{
+	border:2px solid blue;
+}*/

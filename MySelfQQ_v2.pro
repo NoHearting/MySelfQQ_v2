@@ -13,84 +13,105 @@ TARGET = MySelfQQ_v2
 TEMPLATE = app
 
 
-SOURCES += main.cpp\
-        LoginWidget.cpp \
-    Frameless.cpp \
-    ReadQStyleSheet.cpp \
-    Util.cpp \
-    Log.cpp \
-    Test.cpp \
-    HeadShadowWidget.cpp \
-    ComboBoxItemWidget.cpp \
-    MyComboBox.cpp \
-    SystemTray.cpp \
-    ToolTipWidget.cpp \
-    MainWidget.cpp \
-    LinkmanItemWidget.cpp \
-    LinkmanGroupWidget.cpp \
-    LinkmanGroupItemWidget.cpp \
-    MessageItemWidget.cpp \
-    UserData.cpp \
-    GroupData.cpp \
-    AnimationStackedWidget.cpp \
-    FloatScrollBar.cpp \
-    MyListWidget.cpp \
-    MyTreeWidget.cpp \
-    StaticIniator.cpp \
-    WarnDialog.cpp \
+SOURCES += main.cpp \
     ChatWidget.cpp \
-    ChatObjectItem.cpp \
-    Data.cpp \
-    CacheWidget.cpp \
-    MyToolButton.cpp
+    LoginWidget.cpp \
+    MainWidget.cpp \
+    customer_widgets/MyComboBox.cpp \
+    customer_widgets/MyListWidget.cpp \
+    customer_widgets/MySplitter.cpp \
+    customer_widgets/MyTextEdit.cpp \
+    customer_widgets/MyToolButton.cpp \
+    customer_widgets/MyTreeWidget.cpp \
+    feature_widgets/AnimationStackedWidget.cpp \
+    feature_widgets/CacheWidget.cpp \
+    feature_widgets/FloatScrollBar.cpp \
+    feature_widgets/HeadShadowWidget.cpp \
+    feature_widgets/SystemTray.cpp \
+    feature_widgets/ToolTipWidget.cpp \
+    feature_widgets/WarnDialog.cpp \
+    item_widgets/ChatMessageItem.cpp \
+    item_widgets/ChatMessageItemObject.cpp \
+    item_widgets/ChatMessageItemSelf.cpp \
+    item_widgets/ChatObjectItem.cpp \
+    item_widgets/ComboBoxItemWidget.cpp \
+    item_widgets/LinkmanGroupItemWidget.cpp \
+    item_widgets/LinkmanGroupWidget.cpp \
+    item_widgets/LinkmanItemWidget.cpp \
+    item_widgets/MessageItemWidget.cpp \
+    main/ChatBubble.cpp \
+    main/ChatMessageData.cpp \
+    main/Data.cpp \
+    main/Frameless.cpp \
+    main/GroupData.cpp \
+    main/Log.cpp \
+    main/ReadQStyleSheet.cpp \
+    main/StaticIniator.cpp \
+    main/UserData.cpp \
+    test/Test.cpp \
+    utils/Util.cpp
 
-HEADERS  += LoginWidget.h \
-    Frameless.h \
-    ReadQStyleSheet.h \
-    Util.h \
-    Log.h \
-    Test.h \
-    HeadShadowWidget.h \
-    ComboBoxItemWidget.h \
-    MyComboBox.h \
-    SystemTray.h \
-    ToolTipWidget.h \
+
+HEADERS  += ChatWidget.h \
+    LoginWidget.h \
     MainWidget.h \
-    LinkmanItemWidget.h \
-    LinkmanGroupWidget.h \
-    LinkmanGroupItemWidget.h \
-    Linkman.h \
-    MessageItemWidget.h \
-    UserData.h \
-    GroupData.h \
-    AnimationStackedWidget.h \
-    FloatScrollBar.h \
-    MyListWidget.h \
-    MyTreeWidget.h \
-    StaticIniator.h \
-    NonCopyable.h \
-    WarnDialog.h \
-    Global.h \
-    ChatWidget.h \
-    ChatObjectItem.h \
-    Data.h \
-    CacheWidget.h \
-    MyToolButton.h
+    customer_widgets/MyComboBox.h \
+    customer_widgets/MyListWidget.h \
+    customer_widgets/MySplitter.h \
+    customer_widgets/MyTextEdit.h \
+    customer_widgets/MyToolButton.h \
+    customer_widgets/MyTreeWidget.h \
+    feature_widgets/AnimationStackedWidget.h \
+    feature_widgets/CacheWidget.h \
+    feature_widgets/FloatScrollBar.h \
+    feature_widgets/HeadShadowWidget.h \
+    feature_widgets/SystemTray.h \
+    feature_widgets/ToolTipWidget.h \
+    feature_widgets/WarnDialog.h \
+    item_widgets/ChatMessageItem.h \
+    item_widgets/ChatMessageItemObject.h \
+    item_widgets/ChatMessageItemSelf.h \
+    item_widgets/ChatObjectItem.h \
+    item_widgets/ComboBoxItemWidget.h \
+    item_widgets/LinkmanGroupItemWidget.h \
+    item_widgets/LinkmanGroupWidget.h \
+    item_widgets/LinkmanItemWidget.h \
+    item_widgets/MessageItemWidget.h \
+    main/ChatBubble.h \
+    main/ChatMessageData.h \
+    main/Data.h \
+    main/Frameless.h \
+    main/GroupData.h \
+    main/Linkman.h \
+    main/Log.h \
+    main/NonCopyable.h \
+    main/ReadQStyleSheet.h \
+    main/StaticIniator.h \
+    main/UserData.h \
+    test/Test.h \
+    utils/Global.h \
+    utils/Util.h
 
-FORMS    += LoginWidget.ui \
-    ComboBoxItemWidget.ui \
-    ToolTipWidget.ui \
-    MainWidget.ui \
-    LinkmanItemWidget.ui \
-    LinkmanGroupWidget.ui \
-    LinkmanGroupItemWidget.ui \
-    MessageItemWidget.ui \
-    WarnDialog.ui \
+FORMS    +=     LoginWidget.ui \
     ChatWidget.ui \
-    ChatObjectItem.ui
+    MainWidget.ui \
+    feature_widgets/ToolTipWidget.ui \
+    feature_widgets/WarnDialog.ui \
+    item_widgets/ComboBoxItemWidget.ui \
+    item_widgets/LinkmanItemWidget.ui \
+    item_widgets/LinkmanGroupWidget.ui \
+    item_widgets/LinkmanGroupItemWidget.ui \
+    item_widgets/ChatObjectItem.ui \
+    item_widgets/ChatMessageItemObject.ui \
+    item_widgets/ChatMessageItemSelf.ui \
+    item_widgets/MessageItemWidget.ui
+
+
+
 
 RESOURCES += \
     qss.qrc \
     res.qrc
 
 RC_ICONS = logo.ico
+

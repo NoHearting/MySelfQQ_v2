@@ -1,7 +1,7 @@
 #include "LoginWidget.h"
-#include "Util.h"
-#include "Log.h"
-#include "Test.h"
+#include "utils/Util.h"
+#include "main/Log.h"
+#include "test/Test.h"
 #include "MainWidget.h"
 #include "ChatWidget.h"
 
@@ -24,6 +24,7 @@ int main(int argc, char *argv[])
 
 #ifdef DEBUG
     qsrand(QTime(0, 0, 0).secsTo(QTime::currentTime()));
+    // msg
 #endif
     //安装日志处理钩子函数
     qInstallMessageHandler(outputMessage);
@@ -88,6 +89,7 @@ void outputMessage(QtMsgType type, const QMessageLogContext &context, const QStr
 
 void printAppInfo()
 {
+    qInfo() << "< qt version:    " << QT_VERSION_STR;
     qInfo() << "< appName:       " << qApp->applicationName() << ">";
     qInfo() << "< process id:    " << qApp->applicationPid() << ">";
     qInfo() << "< process path:  " << qApp->applicationFilePath() << ">";

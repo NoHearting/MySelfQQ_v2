@@ -1,9 +1,9 @@
 #include "LoginWidget.h"
 #include "ui_LoginWidget.h"
-#include "Util.h"
+#include "utils/Util.h"
 
-#include "ReadQStyleSheet.h"
-#include "Frameless.h"
+#include "main/ReadQStyleSheet.h"
+#include "main/Frameless.h"
 
 
 #include <QDebug>

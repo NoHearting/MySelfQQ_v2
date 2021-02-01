@@ -75,5 +75,7 @@
         <file>res/chat/more-logo.png</file>
         <file>res/chat/delete-chat-item-hover.png</file>
         <file>res/chat/delete-chat-item.png</file>
+        <file>res/login/arrow-hover.png</file>
+        <file>res/chat/success.png</file>
     </qresource>
 </RCC>

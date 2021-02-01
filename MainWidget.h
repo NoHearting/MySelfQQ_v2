@@ -15,10 +15,10 @@
 #include <list>
 
 
-#include "Frameless.h"
-#include "SystemTray.h"
-#include "Linkman.h"
-#include "WarnDialog.h"
+#include "main/Frameless.h"
+#include "feature_widgets/SystemTray.h"
+#include "main/Linkman.h"
+#include "feature_widgets/WarnDialog.h"
 
 namespace Ui
 {

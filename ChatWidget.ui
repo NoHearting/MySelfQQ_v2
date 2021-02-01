@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1126</width>
-    <height>577</height>
+    <width>1094</width>
+    <height>659</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -20,6 +20,18 @@
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
+   <property name="leftMargin">
+    <number>9</number>
+   </property>
+   <property name="topMargin">
+    <number>9</number>
+   </property>
+   <property name="rightMargin">
+    <number>9</number>
+   </property>
+   <property name="bottomMargin">
+    <number>9</number>
+   </property>
    <item row="0" column="0">
     <widget class="QWidget" name="widgetBody" native="true">
      <property name="minimumSize">
@@ -454,7 +466,7 @@
                      <number>0</number>
                     </property>
                     <item row="0" column="0">
-                     <widget class="QSplitter" name="splitter_2">
+                     <widget class="MySplitter" name="splitterContent">
                       <property name="orientation">
                        <enum>Qt::Vertical</enum>
                       </property>
@@ -513,9 +525,11 @@
                             <number>0</number>
                            </property>
                            <item row="0" column="0">
-                            <widget class="QTextEdit" name="textEditMessageList">
-                             <property name="readOnly">
-                              <bool>true</bool>
+                            <widget class="MyListWidget" name="listWidgetMessageList">
+                             <property name="font">
+                              <font>
+                               <pointsize>14</pointsize>
+                              </font>
                              </property>
                             </widget>
                            </item>
@@ -525,6 +539,12 @@
                        </layout>
                       </widget>
                       <widget class="QWidget" name="widgetMessageInput" native="true">
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                         <horstretch>0</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
                        <property name="minimumSize">
                         <size>
                          <width>0</width>
@@ -941,7 +961,12 @@
                             <number>0</number>
                            </property>
                            <item row="0" column="0">
-                            <widget class="QTextEdit" name="textEditMessageInput">
+                            <widget class="MyTextEdit" name="textEditMessageInput">
+                             <property name="font">
+                              <font>
+                               <pointsize>9</pointsize>
+                              </font>
+                             </property>
                              <property name="tabChangesFocus">
                               <bool>true</bool>
                              </property>
@@ -983,6 +1008,19 @@
                            <property name="horizontalSpacing">
                             <number>16</number>
                            </property>
+                           <item row="0" column="0">
+                            <spacer name="horizontalSpacer">
+                             <property name="orientation">
+                              <enum>Qt::Horizontal</enum>
+                             </property>
+                             <property name="sizeHint" stdset="0">
+                              <size>
+                               <width>40</width>
+                               <height>20</height>
+                              </size>
+                             </property>
+                            </spacer>
+                           </item>
                            <item row="0" column="1">
                             <widget class="QPushButton" name="pushButtonClose">
                              <property name="minimumSize">
@@ -1003,36 +1041,62 @@
                             </widget>
                            </item>
                            <item row="0" column="2">
-                            <widget class="QPushButton" name="pushButtonSend">
-                             <property name="minimumSize">
-                              <size>
-                               <width>0</width>
-                               <height>28</height>
-                              </size>
+                            <layout class="QHBoxLayout" name="horizontalLayout">
+                             <property name="spacing">
+                              <number>0</number>
                              </property>
-                             <property name="maximumSize">
-                              <size>
-                               <width>16777215</width>
-                               <height>28</height>
-                              </size>
-                             </property>
-                             <property name="text">
-                              <string>发送</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="0" column="0">
-                            <spacer name="horizontalSpacer">
-                             <property name="orientation">
-                              <enum>Qt::Horizontal</enum>
-                             </property>
-                             <property name="sizeHint" stdset="0">
-                              <size>
-                               <width>40</width>
-                               <height>20</height>
-                              </size>
-                             </property>
-                            </spacer>
+                             <item>
+                              <widget class="QPushButton" name="pushButtonSend">
+                               <property name="minimumSize">
+                                <size>
+                                 <width>72</width>
+                                 <height>28</height>
+                                </size>
+                               </property>
+                               <property name="maximumSize">
+                                <size>
+                                 <width>72</width>
+                                 <height>28</height>
+                                </size>
+                               </property>
+                               <property name="text">
+                                <string>发送</string>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="QToolButton" name="toolButtonSendMenu">
+                               <property name="minimumSize">
+                                <size>
+                                 <width>25</width>
+                                 <height>28</height>
+                                </size>
+                               </property>
+                               <property name="maximumSize">
+                                <size>
+                                 <width>25</width>
+                                 <height>28</height>
+                                </size>
+                               </property>
+                               <property name="text">
+                                <string/>
+                               </property>
+                               <property name="icon">
+                                <iconset resource="res.qrc">
+                                 <normaloff>:/chat/res/login/arrow-hover.png</normaloff>:/chat/res/login/arrow-hover.png</iconset>
+                               </property>
+                               <property name="iconSize">
+                                <size>
+                                 <width>20</width>
+                                 <height>20</height>
+                                </size>
+                               </property>
+                               <property name="arrowType">
+                                <enum>Qt::NoArrow</enum>
+                               </property>
+                              </widget>
+                             </item>
+                            </layout>
                            </item>
                           </layout>
                          </widget>
@@ -1174,7 +1238,7 @@
                             <number>0</number>
                            </property>
                            <item row="0" column="0">
-                            <widget class="QSplitter" name="splitter_3">
+                            <widget class="MySplitter" name="splitterContentGroup">
                              <property name="orientation">
                               <enum>Qt::Vertical</enum>
                              </property>
@@ -1217,11 +1281,7 @@
                                    <number>0</number>
                                   </property>
                                   <item row="0" column="0">
-                                   <widget class="QTextEdit" name="textEditMessageListGroup">
-                                    <property name="readOnly">
-                                     <bool>true</bool>
-                                    </property>
-                                   </widget>
+                                   <widget class="MyListWidget" name="listWidgetMessageListGroup"/>
                                   </item>
                                  </layout>
                                 </widget>
@@ -1645,7 +1705,7 @@
                                    <number>0</number>
                                   </property>
                                   <item row="0" column="0">
-                                   <widget class="QTextEdit" name="textEditMessageInputGroup">
+                                   <widget class="MyTextEdit" name="textEditMessageInputGroup">
                                     <property name="tabChangesFocus">
                                      <bool>true</bool>
                                     </property>
@@ -1684,9 +1744,19 @@
                                   <property name="bottomMargin">
                                    <number>13</number>
                                   </property>
-                                  <property name="horizontalSpacing">
-                                   <number>16</number>
-                                  </property>
+                                  <item row="0" column="0">
+                                   <spacer name="horizontalSpacer_6">
+                                    <property name="orientation">
+                                     <enum>Qt::Horizontal</enum>
+                                    </property>
+                                    <property name="sizeHint" stdset="0">
+                                     <size>
+                                      <width>40</width>
+                                      <height>20</height>
+                                     </size>
+                                    </property>
+                                   </spacer>
+                                  </item>
                                   <item row="0" column="1">
                                    <widget class="QPushButton" name="pushButtonCloseGroup">
                                     <property name="minimumSize">
@@ -1707,36 +1777,68 @@
                                    </widget>
                                   </item>
                                   <item row="0" column="2">
-                                   <widget class="QPushButton" name="pushButtonSendGroup">
-                                    <property name="minimumSize">
-                                     <size>
-                                      <width>0</width>
-                                      <height>28</height>
-                                     </size>
+                                   <layout class="QHBoxLayout" name="horizontalLayout_2">
+                                    <property name="spacing">
+                                     <number>0</number>
                                     </property>
-                                    <property name="maximumSize">
-                                     <size>
-                                      <width>16777215</width>
-                                      <height>28</height>
-                                     </size>
-                                    </property>
-                                    <property name="text">
-                                     <string>发送</string>
-                                    </property>
-                                   </widget>
-                                  </item>
-                                  <item row="0" column="0">
-                                   <spacer name="horizontalSpacer_6">
-                                    <property name="orientation">
-                                     <enum>Qt::Horizontal</enum>
-                                    </property>
-                                    <property name="sizeHint" stdset="0">
-                                     <size>
-                                      <width>40</width>
-                                      <height>20</height>
-                                     </size>
-                                    </property>
-                                   </spacer>
+                                    <item>
+                                     <widget class="QPushButton" name="pushButtonSendGroup">
+                                      <property name="sizePolicy">
+                                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                                        <horstretch>0</horstretch>
+                                        <verstretch>0</verstretch>
+                                       </sizepolicy>
+                                      </property>
+                                      <property name="minimumSize">
+                                       <size>
+                                        <width>72</width>
+                                        <height>28</height>
+                                       </size>
+                                      </property>
+                                      <property name="maximumSize">
+                                       <size>
+                                        <width>72</width>
+                                        <height>28</height>
+                                       </size>
+                                      </property>
+                                      <property name="text">
+                                       <string>发送</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                    <item>
+                                     <widget class="QToolButton" name="toolButtonSendMenuGroup">
+                                      <property name="minimumSize">
+                                       <size>
+                                        <width>25</width>
+                                        <height>28</height>
+                                       </size>
+                                      </property>
+                                      <property name="maximumSize">
+                                       <size>
+                                        <width>25</width>
+                                        <height>28</height>
+                                       </size>
+                                      </property>
+                                      <property name="text">
+                                       <string/>
+                                      </property>
+                                      <property name="icon">
+                                       <iconset resource="res.qrc">
+                                        <normaloff>:/chat/res/login/arrow-hover.png</normaloff>:/chat/res/login/arrow-hover.png</iconset>
+                                      </property>
+                                      <property name="iconSize">
+                                       <size>
+                                        <width>20</width>
+                                        <height>20</height>
+                                       </size>
+                                      </property>
+                                      <property name="arrowType">
+                                       <enum>Qt::NoArrow</enum>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                   </layout>
                                   </item>
                                  </layout>
                                 </widget>
@@ -1794,7 +1896,18 @@
   <customwidget>
    <class>MyListWidget</class>
    <extends>QListWidget</extends>
-   <header>MyListWidget.h</header>
+   <header location="global">customer_widgets/MyListWidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>MyTextEdit</class>
+   <extends>QTextEdit</extends>
+   <header>customer_widgets/MyTextEdit.h</header>
+  </customwidget>
+  <customwidget>
+   <class>MySplitter</class>
+   <extends>QSplitter</extends>
+   <header>customer_widgets/MySplitter.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources>
