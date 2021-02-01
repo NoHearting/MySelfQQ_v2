@@ -1,12 +1,12 @@
 #include "MainWidget.h"
 #include "ui_MainWidget.h"
-#include "ReadQStyleSheet.h"
-#include "Util.h"
-#include "MessageItemWidget.h"
-#include "UserData.h"
-#include "GroupData.h"
-#include "StaticIniator.h"
-#include "Global.h"
+#include "main/ReadQStyleSheet.h"
+#include "utils/Util.h"
+#include "item_widgets/MessageItemWidget.h"
+#include "main/UserData.h"
+#include "main/GroupData.h"
+#include "main/StaticIniator.h"
+#include "utils/Global.h"
 
 
 #include <QDebug>

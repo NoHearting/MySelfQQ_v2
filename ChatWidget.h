@@ -7,8 +7,8 @@
 
 #include <QRect>
 
-#include "Frameless.h"
-#include "Data.h"
+#include "main/Frameless.h"
+#include "main/Data.h"
 
 namespace Ui {
 class ChatWidget;

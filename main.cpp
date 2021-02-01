@@ -1,7 +1,7 @@
 #include "LoginWidget.h"
-#include "Util.h"
-#include "Log.h"
-#include "Test.h"
+#include "utils/Util.h"
+#include "main/Log.h"
+#include "test/Test.h"
 #include "MainWidget.h"
 #include "ChatWidget.h"
 

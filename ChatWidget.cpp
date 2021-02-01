@@ -1,14 +1,14 @@
 #include "ChatWidget.h"
 #include "ui_ChatWidget.h"
-#include "ReadQStyleSheet.h"
-#include "Util.h"
+#include "main/ReadQStyleSheet.h"
+#include "utils/Util.h"
 //#include "Data.h"
-#include "GroupData.h"
-#include "UserData.h"
-#include "ChatObjectItem.h"
-#include "StaticIniator.h"
-#include "ChatMessageItemObject.h"
-#include "ChatMessageItemSelf.h"
+#include "main/GroupData.h"
+#include "main/UserData.h"
+#include "item_widgets/ChatObjectItem.h"
+#include "main/StaticIniator.h"
+#include "item_widgets/ChatMessageItemObject.h"
+#include "item_widgets/ChatMessageItemSelf.h"
 
 #include <QDebug>
 #include <QAction>

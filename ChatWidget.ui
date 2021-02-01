@@ -1896,17 +1896,17 @@
   <customwidget>
    <class>MyListWidget</class>
    <extends>QListWidget</extends>
-   <header location="global">MyListWidget.h</header>
+   <header location="global">customer_widgets/MyListWidget.h</header>
   </customwidget>
   <customwidget>
    <class>MyTextEdit</class>
    <extends>QTextEdit</extends>
-   <header>MyTextEdit.h</header>
+   <header>customer_widgets/MyTextEdit.h</header>
   </customwidget>
   <customwidget>
    <class>MySplitter</class>
    <extends>QSplitter</extends>
-   <header>MySplitter.h</header>
+   <header>customer_widgets/MySplitter.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

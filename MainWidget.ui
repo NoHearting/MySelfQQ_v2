@@ -1000,18 +1000,18 @@
   <customwidget>
    <class>MyListWidget</class>
    <extends>QListWidget</extends>
-   <header>MyListWidget.h</header>
+   <header>customer_widgets/MyListWidget.h</header>
   </customwidget>
   <customwidget>
    <class>AnimationStackedWidget</class>
    <extends>QStackedWidget</extends>
-   <header>AnimationStackedWidget.h</header>
+   <header>feature_widgets/AnimationStackedWidget.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>MyTreeWidget</class>
    <extends>QTreeWidget</extends>
-   <header>MyTreeWidget.h</header>
+   <header>customer_widgets/MyTreeWidget.h</header>
   </customwidget>
  </customwidgets>
  <resources>

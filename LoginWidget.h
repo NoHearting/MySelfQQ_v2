@@ -15,10 +15,10 @@
 #include <QSystemTrayIcon>
 #include <QAction>
 
-#include "ComboBoxItemWidget.h"
-#include "SystemTray.h"
-#include "ToolTipWidget.h"
-#include "Frameless.h"
+#include "item_widgets/ComboBoxItemWidget.h"
+#include "feature_widgets/SystemTray.h"
+#include "feature_widgets/ToolTipWidget.h"
+#include "main/Frameless.h"
 
 namespace Ui {
 class LoginWidget;
