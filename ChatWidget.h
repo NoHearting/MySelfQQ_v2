@@ -78,6 +78,10 @@ private:
     /// @brief 切换聊天对象
     void switchChatObj();
 
+
+    /// @brief 改变消息输入框的大小
+    void changeMessageInput();
+
 private:
     Ui::ChatWidget *ui;
 
@@ -123,12 +127,17 @@ private slots:
 
     /// @brief 点击按钮发送消息
     void slotButtonToSendMessage();
+    void slotButtonToSendMessageGroup();
 
     /// @brief 按键发送消息
+    /// @param QString 发送的消息
     void slotKeyToSendMessage(const QString & msg);
+    void slotKeyToSendMessageGroup(const QString &msg);
 
     /// @brief 最大化聊天框
     void slotMaxShowMessageList();
+    void slotMaxShowMessageListGroup();
+
 
 
 

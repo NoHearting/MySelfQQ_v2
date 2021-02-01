@@ -46,8 +46,8 @@ void ChatWidget::showMaximizedWindow()
     QRect desktopGeometry = zsj::SystemUtil::getAvailableGeometry();
 
     int padding = zsj::global::TopLayoutPadding;
-    this->setGeometry(desktopGeometry.x()-padding,desktopGeometry.y()-padding,
-                      desktopGeometry.width() + 2 * padding,desktopGeometry.height() + 2 * padding);
+    this->setGeometry(desktopGeometry.x() - padding, desktopGeometry.y() - padding,
+                      desktopGeometry.width() + 2 * padding, desktopGeometry.height() + 2 * padding);
 }
 
 void ChatWidget::showNormalWindow()
@@ -58,11 +58,15 @@ void ChatWidget::showNormalWindow()
 void ChatWidget::resizeEvent(QResizeEvent *event)
 {
     // 当窗口变化的时候，如果输入框为全屏状态，则应该适应窗口的变化
-    if(ui->widgetMessageListBody->isHidden()){
-        ui->splitterContent->moveSplitter(ui->widgetMessageListTools->height(),1);
+    if(ui->widgetMessageListBody->isHidden())
+    {
+        ui->splitterContent->moveSplitter(ui->widgetMessageListTools->height(), 1);
     }
+    if(ui->widgetMessageListBodyGroup->isHidden())
+    {
 
-
+        ui->splitterContentGroup->moveSplitter(ui->widgetMessageListToolsGroup->height(), 1);
+    }
     QWidget::resizeEvent(event);
 }
 
@@ -107,9 +111,10 @@ void ChatWidget::initResourceAndForm()
 
 
     // 设置消息发送选项菜单
-//    ui->toolButtonSendMenu->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
     ui->toolButtonSendMenu->setPopupMode(QToolButton::InstantPopup);
     ui->toolButtonSendMenu->setMenu(sendMenu);
+    ui->toolButtonSendMenuGroup->setPopupMode(QToolButton::InstantPopup);
+    ui->toolButtonSendMenuGroup->setMenu(sendMenu);
 
     // 滚动条设置按照像素滚动
     ui->listWidgetMessageList->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
@@ -127,10 +132,10 @@ void ChatWidget::initSignalsAndSlots()
     connect(ui->toolButtonClose, &QToolButton::clicked, this, &ChatWidget::close);
     qInfo() << "connect toolButtonClose::clicked to ChatWidget::close";
 
-    connect(ui->toolButtoMin,&QToolButton::clicked,this,&ChatWidget::showMinimized);
+    connect(ui->toolButtoMin, &QToolButton::clicked, this, &ChatWidget::showMinimized);
     qInfo() << "connect toolButtoMin::clicked to ChatWidget::showMinimized";
 
-    connect(ui->toolButtonMax,&QToolButton::clicked,this,&ChatWidget::slotShowMaxWindow);
+    connect(ui->toolButtonMax, &QToolButton::clicked, this, &ChatWidget::slotShowMaxWindow);
     qInfo() << "connect toolButtonMax::clicked to ChatWidget::showMaximized";
 
     connect(ui->listWidgetChatObjList, &MyListWidget::itemClicked, this, &ChatWidget::slotChangeChatObject);
@@ -140,14 +145,16 @@ void ChatWidget::initSignalsAndSlots()
 //    connect(ui->listWidgetChatObjList, &MyListWidget::sigTakeItem, this, &ChatWidget::slotItemTake);
 
 
-    connect(ui->pushButtonSend,&QPushButton::clicked,this,&ChatWidget::slotButtonToSendMessage);
+    connect(ui->pushButtonSend, &QPushButton::clicked, this, &ChatWidget::slotButtonToSendMessage);
+    connect(ui->pushButtonSendGroup, &QPushButton::clicked, this, &ChatWidget::slotButtonToSendMessageGroup);
     qInfo() << "connect pushButtonSend::clicked to ChatWidget::slotButtonToSendMessage";
 
-    connect(ui->textEditMessageInput,&MyTextEdit::sigKeyToSendMsg,this,&ChatWidget::slotKeyToSendMessage);
+    connect(ui->textEditMessageInput, &MyTextEdit::sigKeyToSendMsg, this, &ChatWidget::slotKeyToSendMessage);
+    connect(ui->textEditMessageInputGroup, &MyTextEdit::sigKeyToSendMsg, this, &ChatWidget::slotKeyToSendMessageGroup);
     qInfo() << "connect textEditMessageInput::sigKeyToSendMsg to ChatWidget::slotKeyToSendMessage";
 
-    connect(ui->toolButtonFullScreen,&QToolButton::clicked,this,&ChatWidget::slotMaxShowMessageList);
-
+    connect(ui->toolButtonFullScreen, &QToolButton::clicked, this, &ChatWidget::slotMaxShowMessageList);
+    connect(ui->toolButtonFullScreenGroup, &QToolButton::clicked, this, &ChatWidget::slotMaxShowMessageListGroup);
 
 
 }
@@ -225,13 +232,15 @@ void ChatWidget::initTestMessageList()
                 break;
         }
         zsj::ChatMessageData::ptr data(new zsj::ChatMessageData(pic, msg));
-        if(i%2){
-            auto * cmio = new ChatMessageItemObject(data,item,ui->listWidgetMessageList);
-            ui->listWidgetMessageList->setItemWidget(item,cmio);
+        if(i % 2)
+        {
+            auto *cmio = new ChatMessageItemObject(data, item, ui->listWidgetMessageList);
+            ui->listWidgetMessageList->setItemWidget(item, cmio);
         }
-        else{
-            auto * cmio = new ChatMessageItemSelf(data,item,ui->listWidgetMessageList);
-            ui->listWidgetMessageList->setItemWidget(item,cmio);
+        else
+        {
+            auto *cmio = new ChatMessageItemSelf(data, item, ui->listWidgetMessageList);
+            ui->listWidgetMessageList->setItemWidget(item, cmio);
         }
 
     }
@@ -251,19 +260,21 @@ void ChatWidget::setCurrentData(zsj::Data::ptr data)
 
 }
 
-void ChatWidget::addMessageItem(QListWidget *listWidget,QPixmap &head, const QString &message,bool isSelf)
+void ChatWidget::addMessageItem(QListWidget *listWidget, QPixmap &head, const QString &message, bool isSelf)
 {
-    QListWidgetItem * item = new QListWidgetItem(listWidget);
+    QListWidgetItem *item = new QListWidgetItem(listWidget);
     listWidget->addItem(item);
-    zsj::ChatMessageData::ptr data(new zsj::ChatMessageData(head,message));
-    QWidget * widget = nullptr;
-    if(isSelf){
-        widget = new ChatMessageItemSelf(data,item,listWidget);
+    zsj::ChatMessageData::ptr data(new zsj::ChatMessageData(head, message));
+    QWidget *widget = nullptr;
+    if(isSelf)
+    {
+        widget = new ChatMessageItemSelf(data, item, listWidget);
     }
-    else{
-        widget = new ChatMessageItemObject(data,item,listWidget);
+    else
+    {
+        widget = new ChatMessageItemObject(data, item, listWidget);
     }
-    listWidget->setItemWidget(item,widget);
+    listWidget->setItemWidget(item, widget);
 
     // 滚动到最底部
     listWidget->scrollToBottom();
@@ -275,21 +286,25 @@ void ChatWidget::addMessageItem(QListWidget *listWidget,QPixmap &head, const QSt
 void ChatWidget::slotChooseEnter()
 {
     ui->textEditMessageInput->setEnterSendMsg();
+    ui->textEditMessageInputGroup->setEnterSendMsg();
 }
 
 void ChatWidget::slotChooseCtrlEnter()
 {
     ui->textEditMessageInput->setCtrlEnterSendMsg();
+    ui->textEditMessageInputGroup->setCtrlEnterSendMsg();
 }
 
 void ChatWidget::slotShowMaxWindow()
 {
     static bool isMax = false;
-    if(!isMax){
+    if(!isMax)
+    {
         this->showMaximizedWindow();
         isMax = !isMax;
     }
-    else{
+    else
+    {
         this->showNormalWindow();
         isMax = !isMax;
     }
@@ -297,18 +312,21 @@ void ChatWidget::slotShowMaxWindow()
 
 void ChatWidget::slotChangeChatObject(QListWidgetItem *item)
 {
-    if(currentItem == item){
+    if(currentItem == item)
+    {
         return;
     }
 
-    ChatObjectItem *chatObj = zsj::WidgetUtil::widgetCast<MyListWidget,QListWidgetItem,ChatObjectItem>
-            (ui->listWidgetChatObjList,item);
-    if(chatObj){
+    ChatObjectItem *chatObj = zsj::WidgetUtil::widgetCast<MyListWidget, QListWidgetItem, ChatObjectItem>
+                              (ui->listWidgetChatObjList, item);
+    if(chatObj)
+    {
         currentItem = item;
         setCurrentData(chatObj->getData());
         switchChatObj();
     }
-    else{
+    else
+    {
         qCritical() << "change chat object failed!";
     }
 }
@@ -333,6 +351,34 @@ void ChatWidget::switchChatObj()
     // 设置数据
     // 目前只有一个简单的数据
     ui->labelCurrentObjName->setText(currentData->getName());
+}
+
+void ChatWidget::changeMessageInput()
+{
+    static bool isChecked = false;
+    static int maxHeightInput = ui->widgetMessageInput->maximumHeight();
+    if(isChecked)
+    {
+        ui->widgetMessageListBody->setVisible(true);
+        ui->widgetMessageInput->setMaximumHeight(maxHeightInput);
+        ui->widgetMessageListBodyGroup->setVisible(true);
+        ui->widgetMessageInputGroup->setMaximumHeight(maxHeightInput);
+        isChecked = false;
+    }
+    else
+    {
+        ui->widgetMessageInput->setMaximumHeight(9999);
+        ui->widgetMessageListBody->setVisible(false);
+
+        ui->splitterContent->moveSplitter(ui->widgetMessageListTools->height(), 1);
+
+        ui->widgetMessageInputGroup->setMaximumHeight(9999);
+        ui->widgetMessageListBodyGroup->setVisible(false);
+
+        ui->splitterContentGroup->moveSplitter(0, 1);
+
+        isChecked = true;
+    }
 }
 
 void ChatWidget::slotDeleteChatObject(QPoint point)
@@ -400,36 +446,44 @@ void ChatWidget::slotButtonToSendMessage()
 {
     QPixmap head(":/test/res/test/head4.jpg");
     QString msg = ui->textEditMessageInput->toPlainText();
-    addMessageItem(ui->listWidgetMessageList,head,msg);
+    addMessageItem(ui->listWidgetMessageList, head, msg);
     ui->textEditMessageInput->clear();
 
 }
 
+void ChatWidget::slotButtonToSendMessageGroup()
+{
+    QPixmap head(":/test/res/test/head1.jpg");
+    QString msg = ui->textEditMessageInputGroup->toPlainText();
+    addMessageItem(ui->listWidgetMessageListGroup, head, msg);
+    ui->textEditMessageInputGroup->clear();
+}
 
-void ChatWidget::slotKeyToSendMessage(const QString & msg)
+
+void ChatWidget::slotKeyToSendMessage(const QString &msg)
 {
     QPixmap head(":/test/res/test/head4.jpg");
-    addMessageItem(ui->listWidgetMessageList,head,msg);
+    addMessageItem(ui->listWidgetMessageList, head, msg);
     ui->textEditMessageInput->clear();
 
+}
+
+void ChatWidget::slotKeyToSendMessageGroup(const QString &msg)
+{
+    QPixmap head(":/test/res/test/head1.jpg");
+    addMessageItem(ui->listWidgetMessageListGroup, head, msg);
+    ui->textEditMessageInputGroup->clear();
 }
 
 void ChatWidget::slotMaxShowMessageList()
 {
-    static bool isChecked = false;
-    static int maxHeightInput = ui->widgetMessageInput->maximumHeight();
-    if(isChecked){
-        ui->widgetMessageListBody->setVisible(true);
-        ui->widgetMessageInput->setMaximumHeight(maxHeightInput);
-        isChecked = false;
-    }
-    else{
-        ui->widgetMessageInput->setMaximumHeight(9999);
-        ui->widgetMessageListBody->setVisible(false);
+    changeMessageInput();
+    ui->toolButtonFullScreenGroup->setChecked(!ui->toolButtonFullScreenGroup->isChecked());
+}
 
-        ui->splitterContent->moveSplitter(ui->widgetMessageListTools->height(),1);
-
-        isChecked = true;
-    }
+void ChatWidget::slotMaxShowMessageListGroup()
+{
+    changeMessageInput();
+    ui->toolButtonFullScreen->setChecked(!ui->toolButtonFullScreen->isChecked());
 }
 
