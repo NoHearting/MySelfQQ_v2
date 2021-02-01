@@ -34,6 +34,7 @@ void Test::testQApplication()
     qDebug() << appName;
     qDebug() << pid;
     qDebug() << screen->width() << ":" << screen->height();
+    qDebug() << "availableGeometry: " << qApp->desktop()->availableGeometry();
 }
 
 void Test::testFile()

@@ -5,6 +5,8 @@
 #include <QModelIndex>
 #include <QListWidget>
 
+#include <QRect>
+
 #include "Frameless.h"
 #include "Data.h"
 
@@ -20,7 +22,16 @@ public:
     ~ChatWidget();
 
 
+    /// @brief 全屏显示窗口
+    void showMaximizedWindow();
+
+    /// @brief 显示普通大小窗口
+    void showNormalWindow();
+
 protected:
+
+    /// @brief 重写窗口大小改变事件
+    void resizeEvent(QResizeEvent *event);
 
 private:
 
@@ -82,6 +93,10 @@ private:
 
     /// 消息发送菜单
     QMenu * sendMenu = nullptr;
+
+
+    /// 当前窗口的位置大小
+    QRect windowGeometry;
 
 public slots:
 

@@ -107,6 +107,16 @@ QSize SystemUtil::getDesktopSize()
     return QSize(screen->width(),screen->height());
 }
 
+QRect SystemUtil::getAvailableGeometry()
+{
+    return qApp->desktop()->availableGeometry();
+}
+
+QSize SystemUtil::getAvailableDesktopSize()
+{
+    return qApp->desktop()->availableGeometry().size();
+}
+
 
 
 }

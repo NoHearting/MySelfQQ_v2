@@ -70,6 +70,8 @@ private:
     bool resizeEnable;              //可拉伸
 
     bool isMoved = false;           // 是否是移动
+    bool isResize = false;          // 是否resize
+
     QWidget *widget;                //无边框窗体
 
     bool pressed;                   //鼠标按下

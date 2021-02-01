@@ -86,6 +86,14 @@ public:
     static QSize getDesktopSize();
 
 
+    /// @brief 获取当前可用左面的位置大小
+    /// @return QRect
+    static QRect getAvailableGeometry();
+
+    /// @brief 获取当前可用桌面大小，不包含工具栏
+    static QSize getAvailableDesktopSize();
+
+
     /// @brief 获取当前线程id
     /// @return QString
     static QString getCurrentThreadId();

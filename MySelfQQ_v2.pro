@@ -48,7 +48,8 @@ SOURCES += main.cpp\
     ChatMessageData.cpp \
     ChatBubble.cpp \
     ChatMessageItemSelf.cpp \
-    MyTextEdit.cpp
+    MyTextEdit.cpp \
+    MySplitter.cpp
 
 HEADERS  += LoginWidget.h \
     Frameless.h \
@@ -87,7 +88,8 @@ HEADERS  += LoginWidget.h \
     ChatMessageData.h \
     ChatBubble.h \
     ChatMessageItemSelf.h \
-    MyTextEdit.h
+    MyTextEdit.h \
+    MySplitter.h
 
 FORMS    += LoginWidget.ui \
     ComboBoxItemWidget.ui \

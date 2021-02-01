@@ -20,6 +20,18 @@
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
+   <property name="leftMargin">
+    <number>9</number>
+   </property>
+   <property name="topMargin">
+    <number>9</number>
+   </property>
+   <property name="rightMargin">
+    <number>9</number>
+   </property>
+   <property name="bottomMargin">
+    <number>9</number>
+   </property>
    <item row="0" column="0">
     <widget class="QWidget" name="widgetBody" native="true">
      <property name="minimumSize">
@@ -454,7 +466,7 @@
                      <number>0</number>
                     </property>
                     <item row="0" column="0">
-                     <widget class="QSplitter" name="splitter_2">
+                     <widget class="MySplitter" name="splitterContent">
                       <property name="orientation">
                        <enum>Qt::Vertical</enum>
                       </property>
@@ -528,7 +540,7 @@
                       </widget>
                       <widget class="QWidget" name="widgetMessageInput" native="true">
                        <property name="sizePolicy">
-                        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                          <horstretch>0</horstretch>
                          <verstretch>0</verstretch>
                         </sizepolicy>
@@ -1852,6 +1864,12 @@
    <class>MyTextEdit</class>
    <extends>QTextEdit</extends>
    <header>MyTextEdit.h</header>
+  </customwidget>
+  <customwidget>
+   <class>MySplitter</class>
+   <extends>QSplitter</extends>
+   <header>MySplitter.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources>

@@ -56,10 +56,14 @@ bool Frameless::eventFilter(QObject *watched, QEvent *event)
             int offsetX = point.x() - lastPos.x();
             int offsetY = point.y() - lastPos.y();
 
-            //根据按下处的位置判断是否移动空间还是拉伸控件
+            // 偏移量不能为0
+            if(offsetX != 0 || offsetY != 0 )
+            {
+                //根据按下处的位置判断是否移动空间还是拉伸控件
+                moveWindow(offsetX, offsetY);
+                resizeWindow(offsetX, offsetY);
+            }
 
-            moveWindow(offsetX, offsetY);
-            resizeWindow(offsetX, offsetY);
         }
         else if(event->type() == QEvent::MouseButtonPress)
         {
@@ -83,15 +87,18 @@ bool Frameless::eventFilter(QObject *watched, QEvent *event)
         else if(event->type() == QEvent::MouseButtonRelease)
         {
 
-            if(cacheWidget->isVisible()){
+            if(cacheWidget->isVisible())
+            {
                 cacheWidget->hide();
                 auto geo = cacheWidget->geometry();
                 widget->setGeometry(geo);
-                if(isMoved){
+                if(isResize)
+                {
                     // 设置两次是为了解决聊天窗口（ChatWidget）的聊天记录的大小在窗口变化的时候不跟着变化
                     // 只有再次改变窗口大小才跟着变化，所以这里多设置一次
                     // 权宜之计
-                    widget->setGeometry(geo.x(),geo.y(),geo.width()+1,geo.height()+1);
+                    widget->setGeometry(geo.x(), geo.y(), geo.width() + 1, geo.height() + 1);
+                    qDebug() << "move once";
                 }
             }
 
@@ -245,6 +252,7 @@ void Frameless::resizeWindow(int offsetX, int offsetY)
             if(widget->minimumWidth() <= resizeW)
             {
                 cacheWidget->setGeometry(widget->x() + offsetX, rectY, resizeW, rectH);
+                isResize = true;
             }
         }
         else if(pressedRight)
@@ -253,6 +261,7 @@ void Frameless::resizeWindow(int offsetX, int offsetY)
             if(widget->minimumWidth() <= resizeW && resizeW <= widget->maximumWidth())
             {
                 cacheWidget->setGeometry(rectX, rectY, rectW + offsetX, rectH);
+                isResize = true;
             }
         }
         else if(pressedTop)
@@ -261,6 +270,7 @@ void Frameless::resizeWindow(int offsetX, int offsetY)
             if(widget->minimumHeight() <= resizeH)
             {
                 cacheWidget->setGeometry(rectX, widget->y() + offsetY, rectW, resizeH);
+                isResize = true;
             }
         }
         else if(pressedBottom)
@@ -269,6 +279,7 @@ void Frameless::resizeWindow(int offsetX, int offsetY)
             if(widget->minimumHeight() <= resizeH && resizeH <= widget->maximumHeight())
             {
                 cacheWidget->setGeometry(rectX, rectY, rectW, rectH + offsetY);
+                isResize = true;
             }
         }
         else if(pressedLeftTop)
@@ -279,17 +290,20 @@ void Frameless::resizeWindow(int offsetX, int offsetY)
             int ofsX = offsetX;
             int ofsY = offsetY;
 
-            if(resizeW <= widget->minimumWidth()){
+            if(resizeW <= widget->minimumWidth())
+            {
                 ofsX = offsetX - (widget->minimumWidth() - resizeW);
                 resizeW = widget->minimumWidth();
             }
-            if(resizeH <= widget->minimumHeight()){
+            if(resizeH <= widget->minimumHeight())
+            {
                 ofsY = offsetY - (widget->minimumHeight() - resizeH);
                 resizeH = widget->minimumHeight();
             }
 
 
             cacheWidget->setGeometry(widget->x() + ofsX, widget->y() + ofsY, resizeW, resizeH);
+            isResize = true;
 
         }
         else if(pressedRightTop)
@@ -299,14 +313,17 @@ void Frameless::resizeWindow(int offsetX, int offsetY)
 
             int ofsY = offsetY;
 
-            if(resizeW <= widget->minimumWidth()){
+            if(resizeW <= widget->minimumWidth())
+            {
                 resizeW = widget->minimumWidth();
             }
-            if(resizeH <= widget->minimumHeight()){
+            if(resizeH <= widget->minimumHeight())
+            {
                 ofsY = offsetY - (widget->minimumHeight() - resizeH);
                 resizeH = widget->minimumHeight();
             }
             cacheWidget->setGeometry(widget->x(), widget->y() + ofsY, resizeW, resizeH);
+            isResize = true;
 
         }
         else if(pressedLeftBottom)
@@ -317,29 +334,35 @@ void Frameless::resizeWindow(int offsetX, int offsetY)
 
             int ofsX = offsetX;
 
-            if(resizeW <= widget->minimumWidth()){
+            if(resizeW <= widget->minimumWidth())
+            {
                 ofsX = offsetX - (widget->minimumWidth() - resizeW);
                 resizeW = widget->minimumWidth();
             }
-            if(resizeH <= widget->minimumHeight()){
+            if(resizeH <= widget->minimumHeight())
+            {
                 resizeH = widget->minimumHeight();
             }
 
 
             cacheWidget->setGeometry(widget->x() + ofsX, widget->y(), resizeW, resizeH);
+            isResize = true;
         }
         else if(pressedRightBottom)
         {
             int resizeW = rectW + offsetX;
             int resizeH = rectH + offsetY;
 
-            if(resizeW <= widget->minimumWidth()){
+            if(resizeW <= widget->minimumWidth())
+            {
                 resizeW = widget->minimumWidth();
             }
-            if(resizeH <= widget->minimumHeight()){
+            if(resizeH <= widget->minimumHeight())
+            {
                 resizeH = widget->minimumHeight();
             }
             cacheWidget->setGeometry(widget->x(), widget->y(), resizeW, resizeH);
+            isResize = true;
         }
     }
 }

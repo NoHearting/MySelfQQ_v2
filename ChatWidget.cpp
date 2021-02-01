@@ -16,6 +16,9 @@
 #include <QPoint>
 #include <QCursor>
 #include <QActionGroup>
+#include <QSize>
+#include <QSizePolicy>
+#include <QSplitter>
 
 
 ChatWidget::ChatWidget(QWidget *parent) :
@@ -33,6 +36,34 @@ ChatWidget::ChatWidget(QWidget *parent) :
 ChatWidget::~ChatWidget()
 {
     delete ui;
+}
+
+void ChatWidget::showMaximizedWindow()
+{
+    windowGeometry = this->geometry();
+
+//    QSize desktopSize = zsj::SystemUtil::getDesktopSize();
+    QRect desktopGeometry = zsj::SystemUtil::getAvailableGeometry();
+
+    int padding = zsj::global::TopLayoutPadding;
+    this->setGeometry(desktopGeometry.x()-padding,desktopGeometry.y()-padding,
+                      desktopGeometry.width() + 2 * padding,desktopGeometry.height() + 2 * padding);
+}
+
+void ChatWidget::showNormalWindow()
+{
+    this->setGeometry(windowGeometry);
+}
+
+void ChatWidget::resizeEvent(QResizeEvent *event)
+{
+    // 当窗口变化的时候，如果输入框为全屏状态，则应该适应窗口的变化
+    if(ui->widgetMessageListBody->isHidden()){
+        ui->splitterContent->moveSplitter(ui->widgetMessageListTools->height(),1);
+    }
+
+
+    QWidget::resizeEvent(event);
 }
 
 
@@ -255,11 +286,11 @@ void ChatWidget::slotShowMaxWindow()
 {
     static bool isMax = false;
     if(!isMax){
-        this->showMaximized();
+        this->showMaximizedWindow();
         isMax = !isMax;
     }
     else{
-        this->showNormal();
+        this->showNormalWindow();
         isMax = !isMax;
     }
 }
@@ -389,17 +420,15 @@ void ChatWidget::slotMaxShowMessageList()
     static int maxHeightInput = ui->widgetMessageInput->maximumHeight();
     if(isChecked){
         ui->widgetMessageListBody->setVisible(true);
-//        ui->widgetMessageListBody->show();
         ui->widgetMessageInput->setMaximumHeight(maxHeightInput);
         isChecked = false;
     }
     else{
         ui->widgetMessageInput->setMaximumHeight(9999);
         ui->widgetMessageListBody->setVisible(false);
-//        ui->widgetMessageListBody->hide();
-        const QRect geometry = ui->widgetMessageList->geometry();
-        ui->widgetMessageList->setGeometry(geometry.x(),geometry.y(),geometry.width(),ui->widgetMessageListTools->height());
-//        ui->widgetMessageInput->setAcceptDrops();
+
+        ui->splitterContent->moveSplitter(ui->widgetMessageListTools->height(),1);
+
         isChecked = true;
     }
 }

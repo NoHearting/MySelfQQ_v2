@@ -203,6 +203,10 @@ QListView#listWidgetMessageList::item:selected{
 
 /* test */
 
-#widgetMessageList{
+/*#widgetMessageList{
 	border:1px solid red;
 }
+
+#widgetMessageListTools{
+	border:2px solid blue;
+}*/
