@@ -97,6 +97,13 @@ public:
     /// @brief 获取当前线程id
     /// @return QString
     static QString getCurrentThreadId();
+
+
+    /**
+     * @brief 获取程序运行路径
+     * @return
+     */
+    static QString getProcessPath();
 };
 
 

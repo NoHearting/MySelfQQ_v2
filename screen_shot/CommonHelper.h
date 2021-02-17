@@ -40,14 +40,14 @@ public:
      * @return float 倍率
      * @remark 开发时的桌面和运行时的桌面大小可能不一样
      */
-    static const float getWindowWidthMultiplyingPower();
+    static float getWindowWidthMultiplyingPower();
 
     /**
      * @brief 获得当前界面与开发时界面之间的纵向倍率
      * @return float 倍率
      * @remark 开发时的桌面和运行时的桌面大小可能不一样
      */
-    static const float getWindowHeightMultiplyingPower();
+    static float getWindowHeightMultiplyingPower();
 
 #ifdef Q_OS_WIN
     /**

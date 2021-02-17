@@ -76,7 +76,8 @@ void Amplifier::paintEvent(QPaintEvent *event)
             && (cursorPoint.y() + 11 < parentSize.height() && cursorPoint.y() - 11 > 0))
     {
         endPointImage = originPainting->copy(
-                            QRect(cursorPoint.x() - 15, cursorPoint.y() - 11, 30, 22));
+                            QRect(cursorPoint.x() - 15, cursorPoint.y() - 11, 30, 22))
+                .scaled(sideLength,imageHeight);
         painter.drawPixmap(0, 0, endPointImage);
     }
     else
@@ -116,6 +117,7 @@ void Amplifier::paintEvent(QPaintEvent *event)
     painter.drawText(QPoint(6,imageHeight + 14),selectScreenInfo);
     painter.drawText(QPoint(6,imageHeight + 27),selecctPtRGB);
 
+    QWidget::paintEvent(event);
 
 }
 } // namespace zsj

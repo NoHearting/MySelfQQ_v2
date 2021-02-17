@@ -57,7 +57,7 @@ void CommonHelper::moveCenter(QWidget *widget, QRect parentRect)
                  ((parentRect.height() - widget->height()) >> 1));
 }
 
-const float CommonHelper::getWindowWidthMultiplyingPower()
+float CommonHelper::getWindowWidthMultiplyingPower()
 {
     if(widthMultiplyingPower == 0){
         updateWindowSizeMultiplyingPower();
@@ -66,7 +66,7 @@ const float CommonHelper::getWindowWidthMultiplyingPower()
     return widthMultiplyingPower;
 }
 
-const float CommonHelper::getWindowHeightMultiplyingPower()
+float CommonHelper::getWindowHeightMultiplyingPower()
 {
     if(heightMultiplyingPower == 0){
         updateWindowSizeMultiplyingPower();

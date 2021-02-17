@@ -15,13 +15,14 @@
 #include <QDebug>
 
 #ifdef Q_OS_WIN
-#include <windows.h>
+    #include <windows.h>
 #endif
 
 #include "Amplifier.h"
 #include "CommonHelper.h"
 
-namespace zsj {
+namespace zsj
+{
 
 
 
@@ -131,16 +132,20 @@ void ScreenShot::Destory()
 void ScreenShot::hideEvent(QHideEvent *event)
 {
     IsActivity = false;
+
+    QWidget::hideEvent(event);
 }
 
 void ScreenShot::closeEvent(QCloseEvent *event)
 {
     IsActivity = false;
+    QWidget::closeEvent(event);
 }
 
 void ScreenShot::mouseDoubleClickEvent(QMouseEvent *event)
 {
     emit sigDoubleClick();
+    QWidget::mouseDoubleClickEvent(event);
 }
 
 
@@ -428,7 +433,7 @@ Rect::Rect(QWidget *widget) : QWidget(widget)
 
     // 填充默认背景
     backgroundPixmap.reset(new QPixmap(width(), height()));
-    backgroundPixmap->fill(QColor(8, 8, 8, 168));
+    backgroundPixmap->fill(QColor(8, 8, 8, 160));
 
     // 默认隐藏
     hide();
@@ -491,7 +496,8 @@ Screen::Screen(pixPtr originPainting, QPoint pos, QWidget *parent) : QWidget(par
 
 Screen::DIRECTION Screen::getRegion(const QPoint &cursor)
 {
-    if (!IsInit) {
+    if (!IsInit)
+    {
         return NONE;
     }
     Screen::DIRECTION ret_dir = NONE;
@@ -505,54 +511,71 @@ Screen::DIRECTION Screen::getRegion(const QPoint &cursor)
 
     /// 获得鼠标当前所处窗口的边界方向
     if(pt_lu.x() + PADDING >= x
-    && pt_lu.x() <= x
-    && pt_lu.y() + PADDING >= y
-    && pt_lu.y() <= y) {
+            && pt_lu.x() <= x
+            && pt_lu.y() + PADDING >= y
+            && pt_lu.y() <= y)
+    {
         // 左上角
         ret_dir = LEFT_TOP;
         this->setCursor(QCursor(Qt::SizeFDiagCursor));
-    } else if(x >= pt_rl.x() - PADDING
-           && x <= pt_rl.x()
-           && y >= pt_rl.y() - PADDING
-           && y <= pt_rl.y()) {
+    }
+    else if(x >= pt_rl.x() - PADDING
+            && x <= pt_rl.x()
+            && y >= pt_rl.y() - PADDING
+            && y <= pt_rl.y())
+    {
         // 右下角
         ret_dir = RIGHT_BOTTOM;
         this->setCursor(QCursor(Qt::SizeFDiagCursor));
-    } else if(x <= pt_lu.x() + PADDING
-           && x >= pt_lu.x()
-           && y >= pt_rl.y() - PADDING
-           && y <= pt_rl.y()) {
+    }
+    else if(x <= pt_lu.x() + PADDING
+            && x >= pt_lu.x()
+            && y >= pt_rl.y() - PADDING
+            && y <= pt_rl.y())
+    {
         // 左下角
         ret_dir = LEFT_BOTTOM;
         this->setCursor(QCursor(Qt::SizeBDiagCursor));
-    } else if(x <= pt_rl.x()
-           && x >= pt_rl.x() - PADDING
-           && y >= pt_lu.y()
-           && y <= pt_lu.y() + PADDING) {
+    }
+    else if(x <= pt_rl.x()
+            && x >= pt_rl.x() - PADDING
+            && y >= pt_lu.y()
+            && y <= pt_lu.y() + PADDING)
+    {
         // 右上角
         ret_dir = RIGHT_TOP;
         this->setCursor(QCursor(Qt::SizeBDiagCursor));
-    } else if(x <= pt_lu.x() + PADDING
-           && x >= pt_lu.x()) {
+    }
+    else if(x <= pt_lu.x() + PADDING
+            && x >= pt_lu.x())
+    {
         // 左边
         ret_dir = LEFT;
         this->setCursor(QCursor(Qt::SizeHorCursor));
-    } else if( x <= pt_rl.x()
-            && x >= pt_rl.x() - PADDING) {
+    }
+    else if( x <= pt_rl.x()
+             && x >= pt_rl.x() - PADDING)
+    {
         // 右边
         ret_dir = RIGHT;
         this->setCursor(QCursor(Qt::SizeHorCursor));
-    }else if(y >= pt_lu.y()
-          && y <= pt_lu.y() + PADDING){
+    }
+    else if(y >= pt_lu.y()
+            && y <= pt_lu.y() + PADDING)
+    {
         // 上边
         ret_dir = TOP;
         this->setCursor(QCursor(Qt::SizeVerCursor));
-    } else if(y <= pt_rl.y()
-           && y >= pt_rl.y() - PADDING) {
+    }
+    else if(y <= pt_rl.y()
+            && y >= pt_rl.y() - PADDING)
+    {
         // 下边
         ret_dir = BOTTOM;
         this->setCursor(QCursor(Qt::SizeVerCursor));
-    }else {
+    }
+    else
+    {
         // 默认
         ret_dir = NONE;
         this->setCursor(QCursor(Qt::SizeAllCursor));
@@ -567,7 +590,8 @@ void Screen::contextMenuEvent(QContextMenuEvent *)
 
 void Screen::mouseDoubleClickEvent(QMouseEvent *event)
 {
-    if(event->button() == Qt::LeftButton){
+    if(event->button() == Qt::LeftButton)
+    {
         emit sigDoubleClick();
         event->accept();
     }
@@ -575,9 +599,11 @@ void Screen::mouseDoubleClickEvent(QMouseEvent *event)
 
 void Screen::mousePressEvent(QMouseEvent *event)
 {
-    if(event->button() == Qt::LeftButton){
+    if(event->button() == Qt::LeftButton)
+    {
         isPressed = true;
-        if(direction != NONE){
+        if(direction != NONE)
+        {
             this->mouseGrabber();
         }
 
@@ -588,9 +614,11 @@ void Screen::mousePressEvent(QMouseEvent *event)
 
 void Screen::mouseReleaseEvent(QMouseEvent *event)
 {
-    if(event->button() == Qt::LeftButton){
+    if(event->button() == Qt::LeftButton)
+    {
         isPressed = false;
-        if(direction != NONE){
+        if(direction != NONE)
+        {
             setCursor(QCursor(Qt::SizeAllCursor));
         }
     }
@@ -607,66 +635,67 @@ void Screen::mouseMoveEvent(QMouseEvent *event)
     QPoint pt_rl = mapToParent(rect().bottomRight());
     // right upper
     QPoint pt_ru = mapToParent(rect().topRight());
-    if(!isPressed) {
+    if(!isPressed)
+    {
         /// 检查鼠标鼠标方向
         direction = getRegion(gloPoint);
 
         /// 根据方位判断拖拉对应支点
-        switch(direction) {
-        case NONE:
-        case RIGHT:
-        case RIGHT_BOTTOM:
-            originPoint = pt_lu;
-            break;
-        case RIGHT_TOP:
-            originPoint = pt_ll;
-            break;
-        case LEFT:
-        case LEFT_BOTTOM:
-            originPoint = pt_ru;
-            break;
-        case LEFT_TOP:
-        case TOP:
-            originPoint = pt_rl;
-            break;
-        case BOTTOM:
-            originPoint = pt_lu;
-            break;
+        switch(direction)
+        {
+            case NONE:
+            case RIGHT:
+            case RIGHT_BOTTOM:
+                originPoint = pt_lu;
+                break;
+            case RIGHT_TOP:
+                originPoint = pt_ll;
+                break;
+            case LEFT:
+            case LEFT_BOTTOM:
+                originPoint = pt_ru;
+                break;
+            case LEFT_TOP:
+            case TOP:
+                originPoint = pt_rl;
+                break;
+            case BOTTOM:
+                originPoint = pt_lu;
+                break;
         }
     }
-    else {
-        if(direction != NONE) {
-            const int& global_x = gloPoint.x();
-#ifndef QT_NO_DEBUG
-//            qDebug() << "OEScreen::" << __FUNCTION__ << "call slotMouseChange()";
-#endif
+    else
+    {
+        if(direction != NONE)
+        {
+            const int &global_x = gloPoint.x();
+
             /// 鼠标进行拖拉拽
-            switch(direction) {
-            case LEFT:
-                return slotMouseChange(global_x, pt_ll.y() + 1);
-            case RIGHT:
-                return slotMouseChange(global_x, pt_rl.y() + 1);
-            case TOP:
-                return slotMouseChange(pt_lu.x(), gloPoint.y());
-            case BOTTOM:
-                return slotMouseChange(pt_rl.x() + 1, gloPoint.y());
-            case LEFT_TOP:
-            case RIGHT_TOP:
-            case LEFT_BOTTOM:
-            case RIGHT_BOTTOM:
-                return slotMouseChange(global_x, gloPoint.y());
-            default:
-                break;
+            switch(direction)
+            {
+                case LEFT:
+                    return slotMouseChange(global_x, pt_ll.y() + 1);
+                case RIGHT:
+                    return slotMouseChange(global_x, pt_rl.y() + 1);
+                case TOP:
+                    return slotMouseChange(pt_lu.x(), gloPoint.y());
+                case BOTTOM:
+                    return slotMouseChange(pt_rl.x() + 1, gloPoint.y());
+                case LEFT_TOP:
+                case RIGHT_TOP:
+                case LEFT_BOTTOM:
+                case RIGHT_BOTTOM:
+                    return slotMouseChange(global_x, gloPoint.y());
+                default:
+                    break;
             }
         }
-        else {
+        else
+        {
             /// 窗口的移动
             /// @bug :这里可能存在问题, 不应当使用globalPos
             move(event->globalPos() - movePos);
             movePos = event->globalPos() - pos();
-#ifndef QT_NO_DEBUG
-//            qDebug() << "OEScreen::" << __FUNCTION__ << pos();
-#endif
         }
     }
     currentRect = geometry();
@@ -674,7 +703,7 @@ void Screen::mouseMoveEvent(QMouseEvent *event)
 
 void Screen::moveEvent(QMoveEvent *event)
 {
-    emit sigPositionChange(x(),y());
+    emit sigPositionChange(x(), y());
 
     QWidget::moveEvent(event);
 }
@@ -740,10 +769,10 @@ void Screen::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
     // 绘制截屏编辑窗口
-    painter.drawPixmap(QPoint(0,0),*originPainting,currentRect);
+    painter.drawPixmap(QPoint(0, 0), *originPainting, currentRect);
 
     // 绘制边框线
-    QPen pen(QColor(0,174,255),2);
+    QPen pen(QColor(0, 174, 255), 2);
     painter.setPen(pen);
     painter.drawRect(rect());
 
@@ -767,7 +796,8 @@ const QString Screen::getFileName()
 void Screen::slotMouseChange(int xPos, int yPos)
 {
     show();
-    if(xPos < 0 || yPos < 0){
+    if(xPos < 0 || yPos < 0)
+    {
         return;
     }
 
@@ -777,7 +807,7 @@ void Screen::slotMouseChange(int xPos, int yPos)
     int rh = abs(yPos - originPoint.y());
 
     // 改变大小
-    currentRect = QRect(rx,ry,rw,rh);
+    currentRect = QRect(rx, ry, rw, rh);
 
     this->setGeometry(currentRect);
 
@@ -789,9 +819,10 @@ void Screen::slotMouseChange(int xPos, int yPos)
 
 void Screen::slotSaveScreenOther()
 {
-    QString fileName = QFileDialog::getSaveFileName(this,"保存图片",getFileName(),"JPEG Files (*.jpg)");
-    if(fileName.length() > 0){
-        originPainting->copy(currentRect).save(fileName,"jpg");
+    QString fileName = QFileDialog::getSaveFileName(this, "保存图片", getFileName(), "JPEG Files (*.jpg)");
+    if(fileName.length() > 0)
+    {
+        originPainting->copy(currentRect).save(fileName, "jpg");
         slotQuitScreenShot();
     }
 }
@@ -805,14 +836,15 @@ void Screen::slotQuitScreenShot()
 void Screen::slotSaveScreen()
 {
     // 把图片放入剪切板
-    QClipboard * board = QApplication::clipboard();
+    QClipboard *board = QApplication::clipboard();
     board->setPixmap(originPainting->copy(currentRect));
     // 退出当前截图
     slotQuitScreenShot();
 }
 
 
-extern "C" void ScreenShot(){
+extern "C" void ScreenShot()
+{
     ScreenShot::Instance();
 }
 

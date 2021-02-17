@@ -95,6 +95,11 @@ QString SystemUtil::getCurrentThreadId()
     return threadText;
 }
 
+QString SystemUtil::getProcessPath()
+{
+    return qApp->applicationDirPath();
+}
+
 
 int SystemUtil::getCurrentProcessId()
 {

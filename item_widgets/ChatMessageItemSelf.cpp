@@ -7,7 +7,9 @@
 
 ChatMessageItemSelf::ChatMessageItemSelf(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::ChatMessageItemSelf)
+    ui(new Ui::ChatMessageItemSelf),
+    chatMessageData(nullptr),
+    item(nullptr)
 {
     ui->setupUi(this);
     initResourceAndForm();
