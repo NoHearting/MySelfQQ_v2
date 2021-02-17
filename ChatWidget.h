@@ -138,7 +138,10 @@ private slots:
     void slotMaxShowMessageList();
     void slotMaxShowMessageListGroup();
 
-
+    /**
+     * @brief 截屏
+     */
+    void slotScreenShot();
 
 
 

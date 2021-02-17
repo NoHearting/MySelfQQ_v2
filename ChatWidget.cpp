@@ -9,6 +9,7 @@
 #include "main/StaticIniator.h"
 #include "item_widgets/ChatMessageItemObject.h"
 #include "item_widgets/ChatMessageItemSelf.h"
+#include "screen_shot/ScreenShot.h"
 
 #include <QDebug>
 #include <QAction>
@@ -156,7 +157,7 @@ void ChatWidget::initSignalsAndSlots()
     connect(ui->toolButtonFullScreen, &QToolButton::clicked, this, &ChatWidget::slotMaxShowMessageList);
     connect(ui->toolButtonFullScreenGroup, &QToolButton::clicked, this, &ChatWidget::slotMaxShowMessageListGroup);
 
-
+    connect(ui->toolButtonScreenShot,&QToolButton::clicked,this,&ChatWidget::slotScreenShot);
 }
 
 void ChatWidget::setChatObjListStyle()
@@ -485,5 +486,10 @@ void ChatWidget::slotMaxShowMessageListGroup()
 {
     changeMessageInput();
     ui->toolButtonFullScreen->setChecked(!ui->toolButtonFullScreen->isChecked());
+}
+
+void ChatWidget::slotScreenShot()
+{
+    zsj::ScreenShot::Instance();
 }
 
