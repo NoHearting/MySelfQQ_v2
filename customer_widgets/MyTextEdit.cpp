@@ -24,7 +24,7 @@ void MyTextEdit::setCtrlEnterSendMsg()
     isEnterSendMsg = false;
 }
 
-bool MyTextEdit::eventFilter(QObject *watched, QEvent *event)
+bool MyTextEdit::eventFilter(QObject *, QEvent *event)
 {
     if(event->type() == event->KeyPress)
     {
