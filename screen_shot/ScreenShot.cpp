@@ -14,7 +14,9 @@
 #include <QPen>
 #include <QDebug>
 
+#ifdef Q_OS_WIN
 #include <windows.h>
+#endif
 
 #include "Amplifier.h"
 #include "CommonHelper.h"
@@ -297,9 +299,10 @@ void ScreenShot::mouseReleaseEvent(QMouseEvent *event)
             pAmplifier->slotPositionChange(event->x(), event->y());
             pAmplifier->show();
 
+#ifdef Q_OS_WIN
             /// 更新当前鼠标选中的窗口
             updateMouse();
-
+#endif
             return destoryScreen();
         }
         close();
@@ -341,9 +344,10 @@ void ScreenShot::mouseMoveEvent(QMouseEvent *event)
     {
         // 置顶
         slotEgoistic();
-
+#ifdef Q_OS_WIN
         // 更新当前鼠标选中的窗口
         updateMouse();
+#endif
     }
 
     QWidget::mouseMoveEvent(event);
@@ -661,7 +665,7 @@ void Screen::mouseMoveEvent(QMouseEvent *event)
             move(event->globalPos() - movePos);
             movePos = event->globalPos() - pos();
 #ifndef QT_NO_DEBUG
-            qDebug() << "OEScreen::" << __FUNCTION__ << pos();
+//            qDebug() << "OEScreen::" << __FUNCTION__ << pos();
 #endif
         }
     }
