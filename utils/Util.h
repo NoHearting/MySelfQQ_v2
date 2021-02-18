@@ -25,6 +25,14 @@ class Util
 {
 public:
     Util();
+    /**
+     * @brief 自适应长宽
+     * @param originSize 原来的大小
+     * @param max 最大的大小
+     * @return 适应后的Size
+     * @note 主要用于截图后粘贴到输入框中
+     */
+    static QSize ScaledImageSize(const QSize & originSize,int max = 150 );
 };
 
 struct HeadSize
@@ -106,6 +114,16 @@ public:
     static QString getProcessPath();
 };
 
+
+class FileUtil{
+public:
+    /**
+     * @brief 判断目录是否存在，不存在就创建
+     * @param dirPath 需要判断的目录
+     * @return 目录存在和创建成功返回true，否则返回false
+     */
+    static bool judgeAndMakeDir(const QString & dirPath);
+};
 
 
 

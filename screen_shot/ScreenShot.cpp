@@ -789,7 +789,7 @@ void Screen::paintEvent(QPaintEvent *event)
 
 const QString Screen::getFileName()
 {
-    QString fileName = QDateTime::currentDateTime().toString("yyyy-MM-dd HH-mm-ss");
+    QString fileName = QDateTime::currentDateTime().toString("yyyy-MM-dd HH:mm:ss");
     return fileName;
 }
 

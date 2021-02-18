@@ -31,6 +31,10 @@ const static QString defaultHead = ":/global/res/global/default-head.png";
 /// 最外层窗口和内层内容窗口之间的padding
 const static int TopLayoutPadding = 9;
 
+/// 截屏保存的文件夹名称
+const static QString sScreenShotDirName = "screen_shot";
+
+
 }
 
 
