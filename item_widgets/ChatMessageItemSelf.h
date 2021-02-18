@@ -41,7 +41,7 @@ private:
     QListWidgetItem *item;
 
     /// 聊天对象的数据  包括聊天信息、头像
-    zsj::ChatMessageData::ptr chatMessageData = nullptr;
+    zsj::ChatMessageData::ptr chatMessageData;
 };
 
 #endif // CHATMESSAGEITEMSELF_H

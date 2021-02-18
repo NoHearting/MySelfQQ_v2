@@ -9,6 +9,7 @@
 #include "main/StaticIniator.h"
 #include "item_widgets/ChatMessageItemObject.h"
 #include "item_widgets/ChatMessageItemSelf.h"
+#include "screen_shot/ScreenShot.h"
 
 #include <QDebug>
 #include <QAction>
@@ -19,6 +20,10 @@
 #include <QSize>
 #include <QSizePolicy>
 #include <QSplitter>
+
+#include <QDir>
+#include <QMimeData>
+#include <QClipboard>
 
 
 ChatWidget::ChatWidget(QWidget *parent) :
@@ -156,7 +161,55 @@ void ChatWidget::initSignalsAndSlots()
     connect(ui->toolButtonFullScreen, &QToolButton::clicked, this, &ChatWidget::slotMaxShowMessageList);
     connect(ui->toolButtonFullScreenGroup, &QToolButton::clicked, this, &ChatWidget::slotMaxShowMessageListGroup);
 
+    connect(ui->toolButtonScreenShot, &QToolButton::clicked, this, &ChatWidget::slotScreenShot);
 
+    connect(ui->toolButtonWindowSetting, &QToolButton::clicked, this, [this]()
+    {
+        QClipboard *clipboard = QApplication::clipboard();
+        const QMimeData *mimeData = clipboard->mimeData();
+        if (mimeData->hasImage())
+        {
+//            setPixmap(qvariant_cast<QPixmap>(mimeData->imageData()));
+            QString processPath = zsj::SystemUtil::getProcessPath();
+
+            QString screenShotPath = processPath + "/" + "screen_shot/";
+            QString fileName = zsj::GetCurrentDateTime() + ".jpg";
+            QPixmap pix = qvariant_cast<QPixmap>(mimeData->imageData());
+
+            QSharedPointer<QDir> dir(new QDir);
+            if(!dir->exists(screenShotPath)){
+                dir->mkdir(screenShotPath);
+            }
+            QString imagePath = screenShotPath + fileName;
+            bool isOk = pix.save(imagePath,Q_NULLPTR,100);
+            if(isOk){
+
+                QString imgUrl = "<img src='"+imagePath+"'></img>";
+                qDebug() << imgUrl;
+                clipboard->setText(imgUrl);
+            }
+            else{
+                qDebug() << "save image failed";
+            }
+        }
+        else if (mimeData->hasHtml())
+        {
+//            setText(mimeData->html());
+//            setTextFormat(Qt::RichText);
+            qDebug() << mimeData->html();
+        }
+        else if (mimeData->hasText())
+        {
+//            setText(mimeData->text());
+//            setTextFormat(Qt::PlainText);
+            qDebug() << mimeData->text();
+        }
+        else
+        {
+//            setText(tr("Cannot display data"));
+            qDebug() << "no data";
+        }
+    });
 }
 
 void ChatWidget::setChatObjListStyle()
@@ -485,5 +538,10 @@ void ChatWidget::slotMaxShowMessageListGroup()
 {
     changeMessageInput();
     ui->toolButtonFullScreen->setChecked(!ui->toolButtonFullScreen->isChecked());
+}
+
+void ChatWidget::slotScreenShot()
+{
+    zsj::ScreenShot::Instance();
 }
 

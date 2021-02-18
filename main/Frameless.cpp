@@ -5,6 +5,7 @@
 #include <QEvent>
 #include <QHoverEvent>
 #include <QDebug>
+#include <QMouseEvent>
 
 namespace zsj
 {
@@ -75,9 +76,13 @@ bool Frameless::eventFilter(QObject *watched, QEvent *event)
             rectH = widget->height();
             lastPos = mouseEvent->pos();
 
-            //判断按下的手柄的区域位置
-            judgeMousePos();
-            cacheWidget->showWidget(widget);
+            if(mouseEvent->button() == Qt::LeftButton){
+                //判断按下的手柄的区域位置
+                judgeMousePos();
+
+                cacheWidget->showWidget(widget);
+            }
+
 
         }
         else if(event->type() == QEvent::MouseMove)

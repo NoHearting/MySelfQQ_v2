@@ -49,7 +49,11 @@ SOURCES += main.cpp \
     main/StaticIniator.cpp \
     main/UserData.cpp \
     test/Test.cpp \
-    utils/Util.cpp
+    utils/Util.cpp \
+    screen_shot/Amplifier.cpp \
+    screen_shot/CommonHelper.cpp \
+    screen_shot/ScreenShot.cpp
+
 
 
 HEADERS  += ChatWidget.h \
@@ -90,7 +94,11 @@ HEADERS  += ChatWidget.h \
     main/UserData.h \
     test/Test.h \
     utils/Global.h \
-    utils/Util.h
+    utils/Util.h \
+    screen_shot/CommonHelper.h \
+    screen_shot/ScreenShot.h \
+    screen_shot/Amplifier.h \
+
 
 FORMS    +=     LoginWidget.ui \
     ChatWidget.ui \

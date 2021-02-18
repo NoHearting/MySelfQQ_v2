@@ -16,6 +16,8 @@ private:
 
     void testFile();
 
+    void testDir();
+
 
     void testGlobalMacroSystem();
 };

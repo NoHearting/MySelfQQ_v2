@@ -12,6 +12,7 @@
 #include <QtGlobal>
 
 #include "main/ReadQStyleSheet.h"
+#include "utils/Util.h"
 
 namespace zsj {
 
@@ -22,8 +23,9 @@ Test::Test()
 
 void Test::test()
 {
-    testQApplication();
+//    testQApplication();
 //    testFile();
+    testDir();
 }
 
 void Test::testQApplication()
@@ -42,6 +44,17 @@ void Test::testFile()
     qDebug() << zsj::ReadQStyleSheet::readQss("://css/main.css");
     qDebug() << "=====================================================";
     qDebug() << zsj::ReadQStyleSheet::readQss("://css/userMenu.css");
+}
+
+void Test::testDir()
+{
+    bool isOk = zsj::FileUtil::judgeAndMakeDir("D:/TestDir/test1");
+    if(isOk){
+        qDebug() << "mkdir ok";
+    }
+    else{
+        qDebug() << "mkdir failed";
+    }
 }
 
 void Test::testGlobalMacroSystem()
