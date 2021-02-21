@@ -86,6 +86,9 @@ void ChatWidget::initObjects()
 
     // 初始化所有菜单
     initMenus();
+
+
+    emojiWidget = new EmojiWidget();
 }
 
 void ChatWidget::initResourceAndForm()
@@ -163,52 +166,65 @@ void ChatWidget::initSignalsAndSlots()
 
     connect(ui->toolButtonScreenShot, &QToolButton::clicked, this, &ChatWidget::slotScreenShot);
 
-    connect(ui->toolButtonWindowSetting, &QToolButton::clicked, this, [this]()
-    {
-        QClipboard *clipboard = QApplication::clipboard();
-        const QMimeData *mimeData = clipboard->mimeData();
-        if (mimeData->hasImage())
-        {
-//            setPixmap(qvariant_cast<QPixmap>(mimeData->imageData()));
-            QString processPath = zsj::SystemUtil::getProcessPath();
+//    connect(ui->toolButtonWindowSetting, &QToolButton::clicked, this, [this]()
+//    {
+//        QClipboard *clipboard = QApplication::clipboard();
+//        const QMimeData *mimeData = clipboard->mimeData();
+//        if (mimeData->hasImage())
+//        {
+////            setPixmap(qvariant_cast<QPixmap>(mimeData->imageData()));
+//            QString processPath = zsj::SystemUtil::getProcessPath();
 
-            QString screenShotPath = processPath + "/" + "screen_shot/";
-            QString fileName = zsj::GetCurrentDateTime() + ".jpg";
-            QPixmap pix = qvariant_cast<QPixmap>(mimeData->imageData());
+//            QString screenShotPath = processPath + "/" + "screen_shot/";
+//            QString fileName = zsj::GetCurrentDateTime() + ".jpg";
+//            QPixmap pix = qvariant_cast<QPixmap>(mimeData->imageData());
 
-            QSharedPointer<QDir> dir(new QDir);
-            if(!dir->exists(screenShotPath)){
-                dir->mkdir(screenShotPath);
-            }
-            QString imagePath = screenShotPath + fileName;
-            bool isOk = pix.save(imagePath,Q_NULLPTR,100);
-            if(isOk){
+//            QSharedPointer<QDir> dir(new QDir);
+//            if(!dir->exists(screenShotPath)){
+//                dir->mkdir(screenShotPath);
+//            }
+//            QString imagePath = screenShotPath + fileName;
+//            bool isOk = pix.save(imagePath,Q_NULLPTR,100);
+//            if(isOk){
 
-                QString imgUrl = "<img src='"+imagePath+"'></img>";
-                qDebug() << imgUrl;
-                clipboard->setText(imgUrl);
-            }
-            else{
-                qDebug() << "save image failed";
-            }
-        }
-        else if (mimeData->hasHtml())
-        {
-//            setText(mimeData->html());
-//            setTextFormat(Qt::RichText);
-            qDebug() << mimeData->html();
-        }
-        else if (mimeData->hasText())
-        {
-//            setText(mimeData->text());
-//            setTextFormat(Qt::PlainText);
-            qDebug() << mimeData->text();
-        }
-        else
-        {
-//            setText(tr("Cannot display data"));
-            qDebug() << "no data";
-        }
+//                QString imgUrl = "<img src='"+imagePath+"'></img>";
+//                qDebug() << imgUrl;
+//                clipboard->setText(imgUrl);
+//            }
+//            else{
+//                qDebug() << "save image failed";
+//            }
+//        }
+//        else if (mimeData->hasHtml())
+//        {
+////            setText(mimeData->html());
+////            setTextFormat(Qt::RichText);
+//            qDebug() << mimeData->html();
+//        }
+//        else if (mimeData->hasText())
+//        {
+////            setText(mimeData->text());
+////            setTextFormat(Qt::PlainText);
+//            qDebug() << mimeData->text();
+//        }
+//        else
+//        {
+////            setText(tr("Cannot display data"));
+//            qDebug() << "no data";
+//        }
+//    });
+
+
+    connect(ui->toolButtonEmoji,&QToolButton::clicked,this,[this](){
+//        QPoint pos = this->mapToGlobal(ui->toolButtonEmoji->pos());
+        QPoint pos = ui->widgetMessageInput->mapToGlobal(ui->toolButtonEmoji->pos());
+        emojiWidget->adjustPosition(pos);
+        emojiWidget->show();
+    });
+
+    connect(emojiWidget,&EmojiWidget::sigChooseEmoji,this,[this](const QString & path){
+        QString src = QString("<img src='%1' width=28 height=28></img>").arg(path);
+        ui->textEditMessageInput->insertHtml(src);
     });
 }
 

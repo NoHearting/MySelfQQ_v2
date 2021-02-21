@@ -9,6 +9,7 @@
 
 #include "main/Frameless.h"
 #include "main/Data.h"
+#include "feature_widgets/EmojiWidget.h"
 
 namespace Ui {
 class ChatWidget;
@@ -101,6 +102,9 @@ private:
 
     /// 当前窗口的位置大小
     QRect windowGeometry;
+
+    /// 表情窗口
+    EmojiWidget * emojiWidget = nullptr;
 
 public slots:
 

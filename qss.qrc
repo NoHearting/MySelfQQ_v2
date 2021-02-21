@@ -7,5 +7,6 @@
         <file>css/userMenu.css</file>
         <file>css/dialog.css</file>
         <file>css/chat.css</file>
+        <file>css/emoji.css</file>
     </qresource>
 </RCC>
