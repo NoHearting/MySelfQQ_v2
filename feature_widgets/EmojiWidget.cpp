@@ -39,6 +39,18 @@ void EmojiWidget::adjustPosition(const QPoint &basePos)
     this->setGeometry(QRect(pos,this->size()));
 }
 
+void EmojiWidget::closeEvent(QCloseEvent *event)
+{
+    emit sigWindowClose();
+    QWidget::closeEvent(event);
+}
+
+void EmojiWidget::hideEvent(QHideEvent *event)
+{
+    emit sigWindowClose();
+    QWidget::hideEvent(event);
+}
+
 
 
 void EmojiWidget::initResourceAndForm()

@@ -10,6 +10,9 @@
 #include <QFileInfo>
 
 #include <QtGlobal>
+#include <QMap>
+#include <queue>
+#include <QPair>
 
 #include "main/ReadQStyleSheet.h"
 #include "utils/Util.h"
@@ -81,6 +84,12 @@ void Test::testGlobalMacroSystem()
     qDebug() << "linux";
 #endif
 }
+
+void Test::testQueue()
+{
+//    std::priority_queue<QPair<
+}
+
 
 }
 

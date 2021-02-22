@@ -20,6 +20,8 @@ private:
 
 
     void testGlobalMacroSystem();
+
+    void testQueue();
 };
 
 }

@@ -37,6 +37,12 @@ public:
      */
     void showEmoji(EmojiType type);
 
+    /**
+     * @brief 显示常用表情
+     * @param hotEmoji 常用表情列表
+     */
+    void showEmoji(const QVector<QString> & hotEmoji);
+
 private:
     /**
      * @brief 初始化表情容器

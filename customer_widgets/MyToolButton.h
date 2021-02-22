@@ -10,11 +10,21 @@ class MyToolButton : public QToolButton
 public:
     explicit MyToolButton(QWidget *parent = nullptr);
 
+protected:
+    /**
+     * @brief 进入时向上传递一个信号
+     */
+    void enterEvent(QEvent *);
 
-
+    /**
+     * @brief 离开时向上传递一个信号
+     */
+    void leaveEvent(QEvent *);
 
 
 signals:
+    void sigEnter();
+    void sigLeave();
 
 public slots:
 };

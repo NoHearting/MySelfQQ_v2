@@ -4,8 +4,15 @@
 
 MyToolButton::MyToolButton(QWidget *parent) : QToolButton(parent)
 {
-    //将子组件的鼠标事件向上传递
-//    this->setAttribute(Qt::WA_TransparentForMouseEvents);
 
-//    this->setMouseTracking(true);
+}
+
+void MyToolButton::enterEvent(QEvent *)
+{
+    emit sigEnter();
+}
+
+void MyToolButton::leaveEvent(QEvent *)
+{
+    emit sigLeave();
 }

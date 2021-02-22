@@ -56,7 +56,8 @@ SOURCES += main.cpp \
     feature_widgets/EmojiWidget.cpp \
     feature_widgets/EmojiTableWidget.cpp \
     main/EmojiInfo.cpp \
-    main/StringUserData.cpp
+    main/StringUserData.cpp \
+    feature_widgets/EmojiHotWidget.cpp
 
 
 
@@ -105,7 +106,8 @@ HEADERS  += ChatWidget.h \
     feature_widgets/EmojiWidget.h \
     feature_widgets/EmojiTableWidget.h \
     main/EmojiInfo.h \
-    main/StringUserData.h
+    main/StringUserData.h \
+    feature_widgets/EmojiHotWidget.h
 
 
 FORMS    +=     LoginWidget.ui \
@@ -121,7 +123,8 @@ FORMS    +=     LoginWidget.ui \
     item_widgets/ChatMessageItemObject.ui \
     item_widgets/ChatMessageItemSelf.ui \
     item_widgets/MessageItemWidget.ui \
-    feature_widgets/EmojiWidget.ui
+    feature_widgets/EmojiWidget.ui \
+    feature_widgets/EmojiHotWidget.ui
 
 
 

@@ -28,6 +28,10 @@ public:
      */
     void adjustPosition(const QPoint & basePos);
 
+protected:
+    void closeEvent(QCloseEvent *event);
+    void hideEvent(QHideEvent *event);
+
 private:
     /**
      * @brief 初始化资源和ui
@@ -53,6 +57,11 @@ signals:
      * @param emojiPath 表情的路径
      */
     void sigChooseEmoji(const QString & emojiPath);
+
+    /**
+     * @brief 窗口关闭或隐藏时发送
+     */
+    void sigWindowClose();
 };
 
 #endif // EMOJIWIDGET_H
