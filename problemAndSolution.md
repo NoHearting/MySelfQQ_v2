@@ -148,7 +148,110 @@
 
   只是简单的解决办法，还是会出现这个问题，只是出现的频率变小了。目前不知道什么原因
 
+### 9、表情功能
 
+#### 1、概要
+
+能够显示表情，并能选择表情。界面如QQ
+
+![image-20210221140115764](C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20210221140115764.png)
+
+#### 2、选择的容器
+
+**`QTableWidget`**+**`QLabel`**
+
+#### 3、实现方式
+
+* 由于当前文件夹内的表情的大小是`56x56`的，而实际需要显示的大小是`24x24`的，所以有两种解决办法：
+
+  1. 使用`QLabel`的`setPixmap`方法设置表情，但是在设置之前先将表情缩小到`24x24`。<font color=red>当前采用的方法</font>
+  2. 先将所有的表情都缩小到`24x24`，然后再直接使用`setPixmap`方法
+
+* 考虑到后续表情的数量会增加，所以需要动态的读取表情的个数
+
+  * 读取表情个数
+
+    1. ~~直接读取表情文件夹。虽然可以实时的改变表情的个数，但是可能会因为更改而出现问题。~~
+    2. ~~通过项目的资源文件夹中的读取。资源文件会编译到可执行文件，用户无法修改，如果需要添加表情则需要重新编译打包。~~
+    3. 通过`QDirIterator`读取当前项目下的所有目录和文件，找到同一前缀的所有表情。 <font color=red>当前采用的方法</font>
+    4. <font color=blue>1,2两个方法都不行,因为程序编译打包之后找不到qrc文件，所有的图片资源都已经被编译成二进制代码中了。绝对路径读取文件无移植性，不采用</font>
+
+  * 直接获取表情的qrc路径
+
+    ```c++
+    QVector<QString> EmojiTableWidget::readAllEmoji(QString pathPrefix)
+    {
+        QVector<QString> resultEmojiList;
+        QDirIterator it(":/" + pathPrefix, QDirIterator::Subdirectories);
+    
+        while (it.hasNext())
+        {
+            QString name = it.next();
+            QFileInfo fileInfo = it.fileInfo();
+            if (fileInfo.isFile()) // Do not add directories to the list
+            {
+                resultEmojiList.push_back(name);
+            }
+        }
+        return resultEmojiList;
+    }
+    ```
+
+  * **<font color=red>动态读取表情有一个大问题。就是没办法为每一个表情设置一个中文的`tooltip`。想要有的话就必须静态初始化所有的表情。</font>**这是个问题。
+
+  * 读取了表情的qrc路径之后就可以直接添加到容器中
+
+    ```c++
+    void EmojiTableWidget::showEmoji(EmojiType type)
+    {
+        EmojiInfo emojiInfo = loadEmoji(type);
+        qDebug() << emojiInfo.toString();
+    
+        int emojiRowCount = emojiInfo.getEmojiCount() / EmojiColCount;
+        if(emojiInfo.getEmojiCount() % EmojiColCount)
+        {
+            emojiRowCount++;
+        }
+        this->setRowCount(emojiRowCount);
+    
+        // 添加表情
+        int rowIndex = 0, colIndex = 0;
+        const auto & emojiVec = emojiInfo.getEmojiVector();
+        for(int i = 0; i < emojiVec.size(); i++)
+        {
+            rowIndex = i / EmojiColCount;
+            colIndex = i % EmojiColCount;
+            QLabel *emojiLabel = packageEmojiLabel(emojiVec.at(i));
+            if(emojiLabel)
+            {
+                this->setCellWidget(rowIndex, colIndex, emojiLabel);
+                this->setColumnWidth(colIndex,38);
+                this->setRowHeight(rowIndex,38);
+                emojiLabel->setUserData(rowIndex * EmojiColCount + colIndex,new StringUserData(emojiVec.at(i)));
+            }
+        }
+    }
+    ```
+
+#### 4、实现效果
+
+![image-20210222153226741](C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20210222153226741.png)
+
+#### 5、常用表情功能
+
+![image-20210222153322377](C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20210222153322377.png)
+
+* 需要离线保存常用的表情
+
+#### 6、bugs
+
+* 点击显示表情窗口的时候。点击一次按钮为显示，再点击一次还是一直显示，应该为关闭。
+
+![image-20210222120500092](C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20210222120500092.png)
+
+* 点击窗口其他位置使表情窗口隐藏时，表情按钮会有一个悬浮样式
+
+  ![image-20210222120628784](C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20210222120628784.png)
 
 
 
