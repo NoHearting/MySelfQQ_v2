@@ -20,10 +20,12 @@
 #include <QSize>
 #include <QSizePolicy>
 #include <QSplitter>
+#include <QFileDialog>
 
 #include <QDir>
 #include <QMimeData>
 #include <QClipboard>
+
 
 
 ChatWidget::ChatWidget(QWidget *parent) :
@@ -215,11 +217,6 @@ void ChatWidget::initSignalsAndSlots()
         ui->textEditMessageInput->insertHtml(src);
     });
 
-
-
-    connect(ui->toolButtonFile,&QToolButton::clicked,this,[this](){
-        emojiHotWidget->writeToFile();
-    });
 
 }
 
@@ -563,6 +560,30 @@ void ChatWidget::slotShowEmojiWidget()
         QPoint pos = ui->widgetMessageInput->mapToGlobal(ui->toolButtonEmoji->pos());
         emojiWidget->adjustPosition(pos);
         emojiWidget->show();
+    }
+}
+
+void ChatWidget::slotChooseImageFile()
+{
+    QString imageFile = QFileDialog::getOpenFileName(this,"打开",QDir::currentPath(),"图片文件(*.jpg *.gif *.png)");
+    if(!imageFile.isEmpty()){
+        QPixmap pix(imageFile);
+        QSize contentSize = zsj::Util::ScaledImageSize(pix.size());
+        QString imgUrl = QString("<img src='%1' width=%2 height=%3 ></img>")
+                         .arg(imageFile).arg(contentSize.width()).arg(contentSize.height());
+        ui->textEditMessageInput->insertHtml(imgUrl);
+    }
+}
+
+void ChatWidget::slotChooseImageFileGroup()
+{
+    QString imageFile = QFileDialog::getOpenFileName(this,"打开",QDir::currentPath(),"图片文件(*.jpg *.gif *.png)");
+    if(!imageFile.isEmpty()){
+        QPixmap pix(imageFile);
+        QSize contentSize = zsj::Util::ScaledImageSize(pix.size());
+        QString imgUrl = QString("<img src='%1' width=%2 height=%3 ></img>")
+                         .arg(imageFile).arg(contentSize.width()).arg(contentSize.height());
+        ui->textEditMessageInputGroup->insertHtml(imgUrl);
     }
 }
 

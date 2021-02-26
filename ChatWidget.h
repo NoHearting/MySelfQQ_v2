@@ -155,10 +155,17 @@ private slots:
     void slotScreenShot();
 
 
+
     /**
      * @brief 显示表情窗口
      */
     void slotShowEmojiWidget();
+
+    /**
+     * @brief 选择图片文件
+     */
+    void slotChooseImageFile();
+    void slotChooseImageFileGroup();
 
 };
 
