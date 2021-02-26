@@ -9,6 +9,8 @@
 
 #include "main/Frameless.h"
 #include "main/Data.h"
+#include "feature_widgets/EmojiWidget.h"
+#include "feature_widgets/EmojiHotWidget.h"
 
 namespace Ui {
 class ChatWidget;
@@ -32,6 +34,9 @@ protected:
 
     /// @brief 重写窗口大小改变事件
     void resizeEvent(QResizeEvent *event);
+
+
+    bool event(QEvent *event);
 
 private:
 
@@ -102,6 +107,12 @@ private:
     /// 当前窗口的位置大小
     QRect windowGeometry;
 
+    /// 表情窗口
+    EmojiWidget * emojiWidget = nullptr;
+
+    /// 常用表情窗口
+    EmojiHotWidget * emojiHotWidget = nullptr;
+
 public slots:
 
     /// @brief 选择Enter发送消息
@@ -144,6 +155,10 @@ private slots:
     void slotScreenShot();
 
 
+    /**
+     * @brief 显示表情窗口
+     */
+    void slotShowEmojiWidget();
 
 };
 

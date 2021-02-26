@@ -1,0 +1,121 @@
+
+QWidget#widget{
+    background: rgb(243,243,244);
+    border:none;
+}
+
+#widgetContainer,#widgetContainerSymbol{
+    background: white;
+}
+
+QTabWidget::pane { /* The tab widget frame */
+    border:none;
+}
+
+
+QTabWidget{
+    border:none;
+    padding: 5px;
+}
+
+QTabBar::tab {
+    background-color: rgb(243,243,244);
+    min-width: 8ex;
+    width: 60px;
+    min-height: 40px;
+    border:none;
+}
+
+QTabBar::tab:first{
+    background: center center no-repeat url(":/chat/res/emoji/normal-emoji.png");
+}
+
+QTabBar::tab:first:selected{
+    background-color: white;
+}
+
+QTabBar::tab:first:!selected{
+    background-color: rgb(243,243,244);
+}
+
+QTabBar::tab:first:!selected:hover{
+    background-color: rgb(225,225,226);
+}
+
+QTabBar::tab:last{
+    background: center center no-repeat url(":/chat/res/emoji/symbol-emoji.png");
+}
+
+QTabBar::tab:last:selected{
+    background-color: white;
+}
+
+QTabBar::tab:last:!selected{
+    background-color: rgb(243,243,244);
+}
+
+QTabBar::tab:last:!selected:hover{
+    background-color: rgb(225,225,226);
+}
+
+
+QToolButton{
+    border:none;
+    background: url(":/chat/res/emoji/setting1.png") no-repeat center;
+}
+
+QToolButton:hover{
+    background: url(":/chat/res/emoji/setting2.png") no-repeat center;
+}
+
+QPushButton{
+    border:none;
+    background: transparent;
+    color: rgb(0,155,219);
+    font-weight: bold;
+}
+
+QTableWidget{
+    border:none;
+    outline: none;
+}
+
+
+QTableWidget::item{
+    border:none;
+}
+
+QTableWidget::item:hover{
+    background-color: rgb(243,243,244);
+}
+
+
+QScrollBar:vertical{
+    background: transparent;
+    width:8px;
+    margin:0 0 0 2px;
+}
+
+QScrollBar::handle:vertical{
+    min-height:20px;
+    border-radius:3px;
+
+}
+
+QScrollBar::handle:vertiacl:hover{
+    background:rgba(0,0,0,0.2);
+}
+
+QScrollBar::add-line:vertical{
+    height:0px;
+    subcontrol-position:bottom;
+    subcontrol-origin:margin;
+
+}
+
+QScrollBar::sub-line:vertical{
+    height:0px;
+    subcontrol-position:top;
+    subcontrol-origin:margin;
+
+}

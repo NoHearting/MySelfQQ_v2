@@ -52,7 +52,12 @@ SOURCES += main.cpp \
     utils/Util.cpp \
     screen_shot/Amplifier.cpp \
     screen_shot/CommonHelper.cpp \
-    screen_shot/ScreenShot.cpp
+    screen_shot/ScreenShot.cpp \
+    feature_widgets/EmojiWidget.cpp \
+    feature_widgets/EmojiTableWidget.cpp \
+    main/EmojiInfo.cpp \
+    main/StringUserData.cpp \
+    feature_widgets/EmojiHotWidget.cpp
 
 
 
@@ -98,6 +103,11 @@ HEADERS  += ChatWidget.h \
     screen_shot/CommonHelper.h \
     screen_shot/ScreenShot.h \
     screen_shot/Amplifier.h \
+    feature_widgets/EmojiWidget.h \
+    feature_widgets/EmojiTableWidget.h \
+    main/EmojiInfo.h \
+    main/StringUserData.h \
+    feature_widgets/EmojiHotWidget.h
 
 
 FORMS    +=     LoginWidget.ui \
@@ -112,7 +122,9 @@ FORMS    +=     LoginWidget.ui \
     item_widgets/ChatObjectItem.ui \
     item_widgets/ChatMessageItemObject.ui \
     item_widgets/ChatMessageItemSelf.ui \
-    item_widgets/MessageItemWidget.ui
+    item_widgets/MessageItemWidget.ui \
+    feature_widgets/EmojiWidget.ui \
+    feature_widgets/EmojiHotWidget.ui
 
 
 

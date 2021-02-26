@@ -75,6 +75,26 @@ void ChatWidget::resizeEvent(QResizeEvent *event)
     QWidget::resizeEvent(event);
 }
 
+bool ChatWidget::event(QEvent *event)
+{
+
+    // 用于隐藏常用表情窗口
+    if(event->type() == QEvent::HoverMove){
+        if(emojiHotWidget->isVisible()){
+            QPoint pos = QCursor::pos();
+            QPoint posGlobal = ui->widgetMessageInput->mapToGlobal(ui->toolButtonEmoji->pos());
+            QRect rectButton = QRect(posGlobal,ui->toolButtonEmoji->size());
+            QRect rectEmojiWindow = emojiHotWidget->geometry();
+            if(!rectButton.contains(pos) && !rectEmojiWindow.contains(pos)){
+                emojiHotWidget->hide();
+            }
+        }
+    }
+
+    QWidget::event(event);
+}
+
+
 
 
 
@@ -86,13 +106,17 @@ void ChatWidget::initObjects()
 
     // 初始化所有菜单
     initMenus();
+
+
+    emojiWidget = new EmojiWidget(this);
+    emojiHotWidget = new EmojiHotWidget(this);
 }
 
 void ChatWidget::initResourceAndForm()
 {
     this->setWindowFlags(Qt::FramelessWindowHint);
     this->setAttribute(Qt::WA_TranslucentBackground);
-
+//    setMouseTracking(true);
 
     // ://css/chat.css
 //    this->setStyleSheet(zsj::ReadQStyleSheet::readQss("D:\\QT\\QtCode\\MySelfQQ_v2\\MySelfQQ_v2\\css\\chat.css"));
@@ -163,53 +187,38 @@ void ChatWidget::initSignalsAndSlots()
 
     connect(ui->toolButtonScreenShot, &QToolButton::clicked, this, &ChatWidget::slotScreenShot);
 
-    connect(ui->toolButtonWindowSetting, &QToolButton::clicked, this, [this]()
-    {
-        QClipboard *clipboard = QApplication::clipboard();
-        const QMimeData *mimeData = clipboard->mimeData();
-        if (mimeData->hasImage())
-        {
-//            setPixmap(qvariant_cast<QPixmap>(mimeData->imageData()));
-            QString processPath = zsj::SystemUtil::getProcessPath();
-
-            QString screenShotPath = processPath + "/" + "screen_shot/";
-            QString fileName = zsj::GetCurrentDateTime() + ".jpg";
-            QPixmap pix = qvariant_cast<QPixmap>(mimeData->imageData());
-
-            QSharedPointer<QDir> dir(new QDir);
-            if(!dir->exists(screenShotPath)){
-                dir->mkdir(screenShotPath);
-            }
-            QString imagePath = screenShotPath + fileName;
-            bool isOk = pix.save(imagePath,Q_NULLPTR,100);
-            if(isOk){
-
-                QString imgUrl = "<img src='"+imagePath+"'></img>";
-                qDebug() << imgUrl;
-                clipboard->setText(imgUrl);
-            }
-            else{
-                qDebug() << "save image failed";
-            }
-        }
-        else if (mimeData->hasHtml())
-        {
-//            setText(mimeData->html());
-//            setTextFormat(Qt::RichText);
-            qDebug() << mimeData->html();
-        }
-        else if (mimeData->hasText())
-        {
-//            setText(mimeData->text());
-//            setTextFormat(Qt::PlainText);
-            qDebug() << mimeData->text();
-        }
-        else
-        {
-//            setText(tr("Cannot display data"));
-            qDebug() << "no data";
-        }
+    connect(emojiWidget,&EmojiWidget::sigWindowClose,this,[this](){
+        ui->toolButtonEmoji->setChecked(false);
     });
+
+    connect(ui->toolButtonEmoji, &QToolButton::released, this, &ChatWidget::slotShowEmojiWidget);
+
+    connect(emojiWidget, &EmojiWidget::sigChooseEmoji, this, [this](const QString & path)
+    {
+        emojiHotWidget->recordHotEmoji(path);
+        QString src = QString("<img src='%1' width=28 height=28></img>").arg(path);
+        ui->textEditMessageInput->insertHtml(src);
+    });
+
+
+    connect(ui->toolButtonEmoji,&MyToolButton::sigEnter,this,[this](){
+        QPoint pos = ui->widgetMessageInput->mapToGlobal(ui->toolButtonEmoji->pos());
+        emojiHotWidget->adjustPosition(pos);
+        emojiHotWidget->show();
+    });
+
+    connect(emojiHotWidget,&EmojiHotWidget::sigChooseEmoji,this,[this](const QString &path){
+        emojiHotWidget->recordHotEmoji(path);
+        QString src = QString("<img src='%1' width=28 height=28></img>").arg(path);
+        ui->textEditMessageInput->insertHtml(src);
+    });
+
+
+
+    connect(ui->toolButtonFile,&QToolButton::clicked,this,[this](){
+        emojiHotWidget->writeToFile();
+    });
+
 }
 
 void ChatWidget::setChatObjListStyle()
@@ -543,5 +552,15 @@ void ChatWidget::slotMaxShowMessageListGroup()
 void ChatWidget::slotScreenShot()
 {
     zsj::ScreenShot::Instance();
+}
+
+void ChatWidget::slotShowEmojiWidget()
+{
+    if(ui->toolButtonEmoji->isChecked()){
+
+        QPoint pos = ui->widgetMessageInput->mapToGlobal(ui->toolButtonEmoji->pos());
+        emojiWidget->adjustPosition(pos);
+        emojiWidget->show();
+    }
 }
 
