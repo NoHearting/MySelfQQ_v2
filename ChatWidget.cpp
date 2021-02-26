@@ -160,31 +160,33 @@ void ChatWidget::initSignalsAndSlots()
 {
     connect(ui->toolButtonClose, &QToolButton::clicked, this, &ChatWidget::close);
     qInfo() << "connect toolButtonClose::clicked to ChatWidget::close";
-
     connect(ui->toolButtoMin, &QToolButton::clicked, this, &ChatWidget::showMinimized);
     qInfo() << "connect toolButtoMin::clicked to ChatWidget::showMinimized";
-
     connect(ui->toolButtonMax, &QToolButton::clicked, this, &ChatWidget::slotShowMaxWindow);
     qInfo() << "connect toolButtonMax::clicked to ChatWidget::showMaximized";
 
+    /// 聊天对象列表
+    // 左边聊天对象列表切换对象时
     connect(ui->listWidgetChatObjList, &MyListWidget::itemClicked, this, &ChatWidget::slotChangeChatObject);
     qInfo() << "connect listWidgetChatObjList::clicked to ChatWidget::changeChatObject";
-
+    // 聊天对象列表增加对象时
     connect(ui->listWidgetChatObjList, &MyListWidget::sigAddItem, this, &ChatWidget::slotItemAdd);
-//    connect(ui->listWidgetChatObjList, &MyListWidget::sigTakeItem, this, &ChatWidget::slotItemTake);
 
-
+    /// 发送消息按钮
     connect(ui->pushButtonSend, &QPushButton::clicked, this, &ChatWidget::slotButtonToSendMessage);
     connect(ui->pushButtonSendGroup, &QPushButton::clicked, this, &ChatWidget::slotButtonToSendMessageGroup);
     qInfo() << "connect pushButtonSend::clicked to ChatWidget::slotButtonToSendMessage";
 
+    // 消息输入框
     connect(ui->textEditMessageInput, &MyTextEdit::sigKeyToSendMsg, this, &ChatWidget::slotKeyToSendMessage);
     connect(ui->textEditMessageInputGroup, &MyTextEdit::sigKeyToSendMsg, this, &ChatWidget::slotKeyToSendMessageGroup);
     qInfo() << "connect textEditMessageInput::sigKeyToSendMsg to ChatWidget::slotKeyToSendMessage";
 
+    // 全屏按钮
     connect(ui->toolButtonFullScreen, &QToolButton::clicked, this, &ChatWidget::slotMaxShowMessageList);
     connect(ui->toolButtonFullScreenGroup, &QToolButton::clicked, this, &ChatWidget::slotMaxShowMessageListGroup);
 
+    // 截屏按钮
     connect(ui->toolButtonScreenShot, &QToolButton::clicked, this, &ChatWidget::slotScreenShot);
 
     connect(emojiWidget,&EmojiWidget::sigWindowClose,this,[this](){
