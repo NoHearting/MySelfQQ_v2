@@ -22,6 +22,8 @@ private:
     void testGlobalMacroSystem();
 
     void testQueue();
+
+    void testDebugColor();
 };
 
 }

@@ -4,6 +4,7 @@
 #include "test/Test.h"
 #include "MainWidget.h"
 #include "ChatWidget.h"
+#include "utils/Global.h"
 
 #include <QApplication>
 #include <QMutex>
@@ -21,6 +22,8 @@ void printAppInfo();
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+
+
 
 #ifdef DEBUG
     qsrand(QTime(0, 0, 0).secsTo(QTime::currentTime()));

@@ -28,7 +28,8 @@ void Test::test()
 {
 //    testQApplication();
 //    testFile();
-    testDir();
+//    testDir();
+    testDebugColor();
 }
 
 void Test::testQApplication()
@@ -87,7 +88,12 @@ void Test::testGlobalMacroSystem()
 
 void Test::testQueue()
 {
-//    std::priority_queue<QPair<
+    //    std::priority_queue<QPair<
+}
+
+void Test::testDebugColor()
+{
+    qDebug() << "\033[36m" << "hello";
 }
 
 
