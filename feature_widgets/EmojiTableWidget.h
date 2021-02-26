@@ -17,6 +17,9 @@ public:
     /// 表情容器每一行允许的最大表情数
     const static int EmojiColCount = 12;
 
+    /// 常用表情容器每一行允许的最大表情数
+    const static int EmojiHotColCount = 5;
+
     /// 每一个表情的大小 24 x 24
     const static int EmojiSize = 24;
 

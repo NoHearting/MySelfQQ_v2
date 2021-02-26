@@ -39,6 +39,12 @@ void EmojiWidget::adjustPosition(const QPoint &basePos)
     this->setGeometry(QRect(pos,this->size()));
 }
 
+void EmojiWidget::show(zsj::global::UiType type)
+{
+    this->type = type;
+    QWidget::show();
+}
+
 void EmojiWidget::closeEvent(QCloseEvent *event)
 {
     emit sigWindowClose();
@@ -72,7 +78,10 @@ void EmojiWidget::initSignalsAndSlots()
                                          label->userData(row * EmojiTableWidget::EmojiColCount + col));
         if(stringData){
             QString path = stringData->getData();
-            emit sigChooseEmoji(path);
+            emit sigChooseEmoji(type,path);
+        }
+        else{
+            qCritical() << "choose emoji failed!";
         }
     });
     connect(ui->tableWidgetSymbol, &EmojiTableWidget::cellClicked, this, [this](int row, int col)
@@ -82,7 +91,10 @@ void EmojiWidget::initSignalsAndSlots()
                                          label->userData(row * EmojiTableWidget::EmojiColCount + col));
         if(stringData){
             QString path = stringData->getData();
-            emit sigChooseEmoji(path);
+            emit sigChooseEmoji(type,path);
+        }
+        else{
+            qCritical() << "choose emoji failed!";
         }
     });
 }

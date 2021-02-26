@@ -100,7 +100,7 @@
 * 解决办法
   * 在Linux不用`Frameless`，通过重载移动事件来实现移动
 
-### 6、显示二级菜单有问题。二级菜单无法正确显示
+### 6、显示二级菜单有问题。二级菜单无法正确显示  *
 
 * 在消息列表下显示的二级菜单会出现无法点击的问题。
 
@@ -253,7 +253,11 @@
 
   ![image-20210222120628784](C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20210222120628784.png)
 
+### 10、聊天界面的QSplitter无法同步
 
+![image-20210226113815120](C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20210226113815120.png)
+
+用户聊天和群组聊天的`QSplitter`不能同步。
 
 # 坑
 

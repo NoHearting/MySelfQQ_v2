@@ -9,6 +9,8 @@
 
 #include <QWidget>
 #include <QPoint>
+#include "utils/Global.h"
+
 
 namespace Ui {
 class EmojiWidget;
@@ -28,6 +30,12 @@ public:
      */
     void adjustPosition(const QPoint & basePos);
 
+    /**
+     * @brief 显示窗口
+     * @param type 当前使用此窗口的ui的类型
+     * @note 当前窗口被两套不同的ui共享使用
+     */
+    void show(zsj::global::UiType type);
 protected:
     void closeEvent(QCloseEvent *event);
     void hideEvent(QHideEvent *event);
@@ -51,12 +59,16 @@ private:
 private:
     Ui::EmojiWidget *ui;
 
+    /// 当前窗口被用户和群组ui共享，type标识当前是哪一个ui在使用
+    zsj::global::UiType type;
+
 signals:
     /**
      * @brief 当点击表情时触发此信号
+     * @param type 使用此窗口的ui类型
      * @param emojiPath 表情的路径
      */
-    void sigChooseEmoji(const QString & emojiPath);
+    void sigChooseEmoji(zsj::global::UiType type,const QString & emojiPath);
 
     /**
      * @brief 窗口关闭或隐藏时发送

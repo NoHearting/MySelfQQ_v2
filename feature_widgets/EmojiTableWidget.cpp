@@ -65,7 +65,7 @@ void EmojiTableWidget::showEmoji(EmojiType type)
 void EmojiTableWidget::showEmoji(const QVector<QString> &hotEmoji)
 {
     const int emojiCount = hotEmoji.size();
-    const int hotEmojiColCount = 5;
+    const int hotEmojiColCount = EmojiHotColCount;
     int emojiRowCount = emojiCount / hotEmojiColCount;
     if(emojiCount % hotEmojiColCount){
         emojiRowCount++;
