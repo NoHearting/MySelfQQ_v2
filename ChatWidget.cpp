@@ -79,19 +79,27 @@ bool ChatWidget::event(QEvent *event)
 {
 
     // 用于隐藏常用表情窗口
-    if(event->type() == QEvent::HoverMove){
-        if(emojiHotWidget->isVisible()){
+    if(event->type() == QEvent::HoverMove)
+    {
+        if(emojiHotWidget->isVisible())
+        {
             QPoint pos = QCursor::pos();
+            // 用户聊天界面和群组界面按钮的位置可能不一样
             QPoint posGlobal = ui->widgetMessageInput->mapToGlobal(ui->toolButtonEmoji->pos());
-            QRect rectButton = QRect(posGlobal,ui->toolButtonEmoji->size());
+            QRect rectButton = QRect(posGlobal, ui->toolButtonEmoji->size());
+            QPoint posGlobalGroup = ui->widgetMessageInputGroup->mapToGlobal(ui->toolButtonEmojiGroup->pos());
+            QRect rectButtonGroup = QRect(posGlobalGroup, ui->toolButtonEmojiGroup->size());
             QRect rectEmojiWindow = emojiHotWidget->geometry();
-            if(!rectButton.contains(pos) && !rectEmojiWindow.contains(pos)){
+            if(!rectButton.contains(pos) && !rectButtonGroup.contains(pos) &&
+                    !rectEmojiWindow.contains(pos) )
+            {
                 emojiHotWidget->hide();
             }
+
         }
     }
 
-    QWidget::event(event);
+    return QWidget::event(event);
 }
 
 
@@ -188,36 +196,62 @@ void ChatWidget::initSignalsAndSlots()
 
     // 截屏按钮
     connect(ui->toolButtonScreenShot, &QToolButton::clicked, this, &ChatWidget::slotScreenShot);
+    connect(ui->toolButtonScreenShotGroup, &QToolButton::clicked, this, &ChatWidget::slotScreenShot);
+    qInfo() << "连接截屏的信号和槽";
 
-    connect(emojiWidget,&EmojiWidget::sigWindowClose,this,[this](){
-        ui->toolButtonEmoji->setChecked(false);
-    });
 
-    connect(ui->toolButtonEmoji, &QToolButton::released, this, &ChatWidget::slotShowEmojiWidget);
-
-    connect(emojiWidget, &EmojiWidget::sigChooseEmoji, this, [this](const QString & path)
+    /// 截屏按钮
+    // 当鼠标在截屏按钮上悬空
+    connect(ui->toolButtonEmoji, &MyToolButton::sigEnter, this, [this]()
     {
-        emojiHotWidget->recordHotEmoji(path);
-        QString src = QString("<img src='%1' width=28 height=28></img>").arg(path);
-        ui->textEditMessageInput->insertHtml(src);
-    });
-
-
-    connect(ui->toolButtonEmoji,&MyToolButton::sigEnter,this,[this](){
         QPoint pos = ui->widgetMessageInput->mapToGlobal(ui->toolButtonEmoji->pos());
         emojiHotWidget->adjustPosition(pos);
-        emojiHotWidget->show();
+        emojiHotWidget->show(zsj::global::UiType::USER);
+    });
+    connect(ui->toolButtonEmojiGroup, &MyToolButton::sigEnter, this, [this]()
+    {
+        qDebug() << "group enter";
+        QPoint pos = ui->widgetMessageInputGroup->mapToGlobal(ui->toolButtonEmojiGroup->pos());
+        emojiHotWidget->adjustPosition(pos);
+        emojiHotWidget->show(zsj::global::UiType::GROUP);
     });
 
-    connect(emojiHotWidget,&EmojiHotWidget::sigChooseEmoji,this,[this](const QString &path){
-        emojiHotWidget->recordHotEmoji(path);
-        QString src = QString("<img src='%1' width=28 height=28></img>").arg(path);
-        ui->textEditMessageInput->insertHtml(src);
+    // 松开表情按钮
+    connect(ui->toolButtonEmoji, &QToolButton::released, this,[this](){
+        if(ui->toolButtonEmoji->isChecked())
+        {
+
+            QPoint pos = ui->widgetMessageInput->mapToGlobal(ui->toolButtonEmoji->pos());
+            emojiWidget->adjustPosition(pos);
+            emojiWidget->show(zsj::global::UiType::USER);
+        }
+    });
+    connect(ui->toolButtonEmojiGroup, &QToolButton::released, this, [this](){
+        if(ui->toolButtonEmojiGroup->isChecked())
+        {
+
+            QPoint pos = ui->widgetMessageInputGroup->mapToGlobal(ui->toolButtonEmojiGroup->pos());
+            emojiWidget->adjustPosition(pos);
+            emojiWidget->show(zsj::global::UiType::GROUP);
+        }
     });
 
+    // 表情窗口关闭
+    connect(emojiWidget, &EmojiWidget::sigWindowClose, this, [this]()
+    {
+        ui->toolButtonEmoji->setChecked(false);
+        ui->toolButtonEmojiGroup->setChecked(false);
+    });
+
+    // 选择表情
+    connect(emojiWidget, &EmojiWidget::sigChooseEmoji, this, &ChatWidget::slotChooseEmoji);
+    connect(emojiHotWidget, &EmojiHotWidget::sigChooseEmoji, this, &ChatWidget::slotChooseEmoji);
 
 
-    connect(ui->toolButtonFile,&QToolButton::clicked,this,[this](){
+
+    // test
+    connect(ui->toolButtonFile, &QToolButton::clicked, this, [this]()
+    {
         emojiHotWidget->writeToFile();
     });
 
@@ -551,6 +585,18 @@ void ChatWidget::slotMaxShowMessageListGroup()
     ui->toolButtonFullScreen->setChecked(!ui->toolButtonFullScreen->isChecked());
 }
 
+void ChatWidget::slotChooseEmoji(zsj::global::UiType type, const QString &emojiPath)
+{
+    emojiHotWidget->recordHotEmoji(emojiPath);
+    QString src = QString("<img src='%1' width=28 height=28></img>").arg(emojiPath);
+    if(type == zsj::global::UiType::USER){
+        ui->textEditMessageInput->insertHtml(src);
+    }
+    else{
+        ui->textEditMessageInputGroup->insertHtml(src);
+    }
+}
+
 void ChatWidget::slotScreenShot()
 {
     zsj::ScreenShot::Instance();
@@ -558,11 +604,12 @@ void ChatWidget::slotScreenShot()
 
 void ChatWidget::slotShowEmojiWidget()
 {
-    if(ui->toolButtonEmoji->isChecked()){
+    if(ui->toolButtonEmoji->isChecked())
+    {
 
         QPoint pos = ui->widgetMessageInput->mapToGlobal(ui->toolButtonEmoji->pos());
         emojiWidget->adjustPosition(pos);
-        emojiWidget->show();
+        emojiWidget->show(zsj::global::UiType::USER);
     }
 }
 

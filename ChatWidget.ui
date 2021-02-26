@@ -410,7 +410,7 @@
           <item row="1" column="0">
            <widget class="QStackedWidget" name="stackedWidgetMain">
             <property name="currentIndex">
-             <number>0</number>
+             <number>1</number>
             </property>
             <widget class="QWidget" name="pageUser">
              <layout class="QGridLayout" name="gridLayout_16">
@@ -1357,7 +1357,7 @@
                                    <number>6</number>
                                   </property>
                                   <item row="0" column="0">
-                                   <widget class="QToolButton" name="toolButtonEmojiGroup">
+                                   <widget class="MyToolButton" name="toolButtonEmojiGroup">
                                     <property name="minimumSize">
                                      <size>
                                       <width>28</width>
@@ -1382,6 +1382,9 @@
                                       <width>20</width>
                                       <height>20</height>
                                      </size>
+                                    </property>
+                                    <property name="checkable">
+                                     <bool>true</bool>
                                     </property>
                                     <property name="autoRaise">
                                      <bool>true</bool>
