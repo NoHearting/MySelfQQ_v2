@@ -96,10 +96,13 @@ void EmojiHotWidget::initSignalsAndSlots()
     {
         QLabel *label = dynamic_cast<QLabel *>(ui->tableWidget->cellWidget(row, col));
         StringUserData *stringData = dynamic_cast<StringUserData *>(
-                                         label->userData(row * EmojiTableWidget::EmojiColCount + col));
+                                         label->userData(row * EmojiTableWidget::EmojiHotColCount + col));
         if(stringData){
             QString path = stringData->getData();
-            emit sigChooseEmoji(path);
+            emit sigChooseEmoji(type,path);
+        }
+        else{
+            qCritical() << "choose emoji failed!";
         }
     });
 }
@@ -154,4 +157,10 @@ void EmojiHotWidget::readFromFile()
     else{
         qCritical() << absolutPath << " create failed or not exist";
     }
+}
+
+void EmojiHotWidget::show(zsj::global::UiType type)
+{
+    this->type = type;
+    QWidget::show();
 }

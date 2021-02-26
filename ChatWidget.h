@@ -150,6 +150,12 @@ private slots:
     void slotMaxShowMessageListGroup();
 
     /**
+     * @brief 选择表情
+     * @param emojiPath 表情路径
+     */
+    void slotChooseEmoji(zsj::global::UiType type, const QString & emojiPath);
+
+    /**
      * @brief 截屏
      */
     void slotScreenShot();

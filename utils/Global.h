@@ -13,10 +13,23 @@ namespace zsj {
 
 namespace global {
 
+/**
+ * @brief 数据类型
+ */
 enum class DataType{
     USER_DATA = 0,
     GROUP_DATA = 1,
     SYSTEM_DATA = 2
+};
+
+/**
+ * @brief 消息输入窗口ui类型
+ * @note 消息输入窗口有两套UI，群组和用户
+ *  因为两套UI有共享的数据，所以在设置一些参数时需要分类
+ */
+enum class UiType{
+    USER = 0,
+    GROUP
 };
 
 

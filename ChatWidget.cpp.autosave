@@ -249,17 +249,6 @@ void ChatWidget::initSignalsAndSlots()
     connect(emojiWidget, &EmojiWidget::sigChooseEmoji, this, &ChatWidget::slotChooseEmoji);
     connect(emojiHotWidget, &EmojiHotWidget::sigChooseEmoji, this, &ChatWidget::slotChooseEmoji);
 
-
-<<<<<<< HEAD
-=======
-
-    // test
-    connect(ui->toolButtonFile, &QToolButton::clicked, this, [this]()
-    {
-        emojiHotWidget->writeToFile();
-    });
-
->>>>>>> 6f55ae5ef8f0cea9ed571c18fffaf083de9b5510
 }
 
 void ChatWidget::setChatObjListStyle()
