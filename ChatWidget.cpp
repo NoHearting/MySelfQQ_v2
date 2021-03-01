@@ -250,16 +250,9 @@ void ChatWidget::initSignalsAndSlots()
     connect(emojiHotWidget, &EmojiHotWidget::sigChooseEmoji, this, &ChatWidget::slotChooseEmoji);
 
 
-<<<<<<< HEAD
-=======
-
-    // test
-    connect(ui->toolButtonFile, &QToolButton::clicked, this, [this]()
-    {
-        emojiHotWidget->writeToFile();
-    });
-
->>>>>>> 6f55ae5ef8f0cea9ed571c18fffaf083de9b5510
+    // 选择图片
+    connect(ui->toolButtonImage,&QToolButton::clicked,this,&ChatWidget::slotChooseImageFile);
+    connect(ui->toolButtonImageGroup,&QToolButton::clicked,this,&ChatWidget::slotChooseImageFileGroup);
 }
 
 void ChatWidget::setChatObjListStyle()
@@ -621,6 +614,7 @@ void ChatWidget::slotShowEmojiWidget()
 void ChatWidget::slotChooseImageFile()
 {
     QString imageFile = QFileDialog::getOpenFileName(this,"打开",QDir::currentPath(),"图片文件(*.jpg *.gif *.png)");
+    qDebug() << imageFile;
     if(!imageFile.isEmpty()){
         QPixmap pix(imageFile);
         QSize contentSize = zsj::Util::ScaledImageSize(pix.size());
@@ -628,11 +622,15 @@ void ChatWidget::slotChooseImageFile()
                          .arg(imageFile).arg(contentSize.width()).arg(contentSize.height());
         ui->textEditMessageInput->insertHtml(imgUrl);
     }
+    else{
+        qCritical() << "选择图片失败";
+    }
 }
 
 void ChatWidget::slotChooseImageFileGroup()
 {
     QString imageFile = QFileDialog::getOpenFileName(this,"打开",QDir::currentPath(),"图片文件(*.jpg *.gif *.png)");
+    qDebug() << imageFile;
     if(!imageFile.isEmpty()){
         QPixmap pix(imageFile);
         QSize contentSize = zsj::Util::ScaledImageSize(pix.size());
@@ -640,5 +638,9 @@ void ChatWidget::slotChooseImageFileGroup()
                          .arg(imageFile).arg(contentSize.width()).arg(contentSize.height());
         ui->textEditMessageInputGroup->insertHtml(imgUrl);
     }
+    else{
+        qCritical() << "选择图片失败";
+    }
+
 }
 
