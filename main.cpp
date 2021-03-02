@@ -16,19 +16,25 @@
 #include <QtGlobal>
 #include <QTime>
 
+#define TEST 0
+
 void outputMessage(QtMsgType type, const QMessageLogContext &context, const QString &msg);
 void printAppInfo();
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
-
-
 
 #ifdef DEBUG
     qsrand(QTime(0, 0, 0).secsTo(QTime::currentTime()));
     // msg
 #endif
+#if TEST
+
+    zsj::Test().test();
+#else
+    QApplication a(argc, argv);
+
+
     //安装日志处理钩子函数
     qInstallMessageHandler(outputMessage);
 
@@ -43,9 +49,9 @@ int main(int argc, char *argv[])
     ChatWidget chatWidget;
     chatWidget.show();
 
-    zsj::Test().test();
+//    zsj::Test().test();
     return a.exec();
-
+#endif
 }
 
 void outputMessage(QtMsgType type, const QMessageLogContext &context, const QString &msg)

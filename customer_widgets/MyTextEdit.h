@@ -25,9 +25,20 @@ private:
     /// @brief 发送信号到父组件，进行发送消息
     void emitSigToSendMessage(bool EnterKeyFlag = true);
 
+
+    /**
+     * @brief 所有内容
+     * @return 返回HTML的body标签里面的数据
+     */
+    QString getContents();
+
 private:
     /// @brief 是否回车发送消息，默认为回车（Enter）发送，可以改为（Enter+Ctrl）发送
     bool isEnterSendMsg = true;
+
+
+    /// 是否还有图片或者emoji
+    bool hasImage = false;
 signals:
     /// @brief 按键发送消息
     void sigKeyToSendMsg(const QString & message);

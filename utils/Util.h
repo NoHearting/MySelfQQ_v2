@@ -12,6 +12,7 @@
 #include <QWidget>
 #include <utility>
 #include <QDebug>
+#include <QMap>
 
 #include "utils/Global.h"
 
@@ -33,6 +34,15 @@ public:
      * @note 主要用于截图后粘贴到输入框中
      */
     static QSize ScaledImageSize(const QSize & originSize,int max = 150 );
+
+    /**
+     * @brief 将文件路径打包为html中的<src>样式
+     * @param src 文件路径
+     * @param width 宽
+     * @param height 高
+     * @return <img src="#src" width=#width height=#height />
+     */
+    static QString PackageImageHtml(const QString & src,int width,int height);
 };
 
 struct HeadSize
@@ -125,6 +135,75 @@ public:
     static bool judgeAndMakeDir(const QString & dirPath);
 };
 
+
+
+
+
+/**
+ * @brief HTML标签枚举，用于移除其样式匹配所用
+ * @note 后续有需要继续添加
+ */
+enum TagType{
+    TAG_P           = 0x000001,         // p标签
+    TAG_IMG         = 0x000000,         // img标签
+    TAG_SPAN        = 0x000004,         // span标签
+    TAG_BODY        = 0x000008,         // body标签
+    TAG_H1          = 0x000010,         // h4
+    TAG_H2          = 0x000020,         // h4
+    TAG_H3          = 0x000040,         // h3
+    TAG_H4          = 0x000080,         // h4
+    TAG_H5          = 0x000100,         // h5
+    TAG_ALL_H       = 0x0001F0,         // 所有h标签
+    TAG_UL          = 0x000200,         // ul
+    TAG_OL          = 0x000400,         // ol
+    TAG_LI          = 0x000800,         // li
+    TAG_ALL_TABLE   = 0x000E00,         // 所有表格标签
+    TAG_ALL         = 0xFFFFFF          // 所有，用于运算
+};
+
+static const QMap<QString,TagType> TagName = {
+    {"p",TAG_P},
+    {"span",TAG_SPAN},
+    {"body",TAG_BODY},
+    {"h1",TAG_H1},{"h2",TAG_H2},{"h3",TAG_H3},{"h4",TAG_H4},{"h5",TAG_H5},
+    {"ul",TAG_UL},{"ol",TAG_OL},{"li",TAG_LI}
+};
+
+
+static const QMap<TagType,QString> NameTag = {
+    {TAG_P,"p"},
+    {TAG_SPAN,"span"},
+    {TAG_BODY,"body"},
+    {TAG_H1,"h1"},{TAG_H2,"h2"},{TAG_H3,"h3"},{TAG_H4,"h4"},{TAG_H5,"h5"},
+    {TAG_UL,"ul"},{TAG_OL,"ol"},{TAG_LI,"li"}
+};
+
+class HtmlUtil{
+public:
+    /**
+     * @brief 移除HTML标签中Qt自带的style样式
+     * @param originStr 原始字符串
+     * @param types 需要移除样式的标签
+     * @return
+     * @note 移除样式之后方便计算其宽度
+     */
+    static QString RemoveOriginTagStyle(const QString & originStr,TagType types);
+
+    /**
+     * @brief 获取html文档中的body内容
+     * @param html html文档
+     * @return
+     */
+    static QString GetHtmlBodyContent(const QString & html);
+
+private:
+    /**
+     * @brief 移除标签的内联样式
+     * @param types 需要移除的标签类型
+     * @param originStr
+     */
+    static void RemoveStyle(const QString & tag,QString & originStr);
+};
 
 
 /// @brief 将QPixmap转换为圆形

@@ -24,6 +24,19 @@ private:
     void testQueue();
 
     void testDebugColor();
+
+
+    void findSubString();
+
+    void testStringReplace();
+
+
+    void testRemoveStyle();
+
+
+    void testReg();
+
+    void testFontWidth();
 };
 
 }

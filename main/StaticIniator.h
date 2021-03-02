@@ -19,7 +19,7 @@ class StaticIniator : public QObject
 {
     Q_OBJECT
 public:
-    static StaticIniator * Instatcne();
+    static StaticIniator * Instance();
 public:
 
     void initFirendMenu(QMenu * menu,QWidget * owner);

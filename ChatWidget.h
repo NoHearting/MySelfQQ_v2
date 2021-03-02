@@ -6,6 +6,7 @@
 #include <QListWidget>
 
 #include <QRect>
+#include <QStringList>
 
 #include "main/Frameless.h"
 #include "main/Data.h"
@@ -19,6 +20,12 @@ class ChatWidget;
 class ChatWidget : public QWidget
 {
     Q_OBJECT
+public:
+    enum class InputMessageType{
+        PLAIN_TEXT = 0, // 只含文本
+        IMAGE,          // 只含文件
+        EMOJI_TEXT      // 包含表情和文本
+    };
 public:
     explicit ChatWidget(QWidget *parent = nullptr);
     ~ChatWidget();
@@ -37,6 +44,30 @@ protected:
 
 
     bool event(QEvent *event);
+
+private:
+
+
+    /**
+     * @brief 消息解析器
+     */
+    class MessageParser{
+    public:
+        /**
+         * @brief 解析消息
+         * @param originmessage 原生消息
+         * @return
+         */
+        QMap<InputMessageType,QStringList> parserMessage(QString originmessage);
+
+
+        /**
+         * @brief 判定当前消息内容是否为空
+         * @param content 内容
+         * @return
+         */
+        bool contentJudgeEmpty(const QString & content);
+    };
 
 private:
 
@@ -77,7 +108,20 @@ private:
     /// @param[in] listWidget 需要添加item的QListWidget
     /// @param[in] head 头像
     /// @param[in] message 聊天消息
+    /// @note 废弃，参数过少，使用下面一个。后续删除
     void addMessageItem(QListWidget * listWidget,QPixmap & head,const QString & message,bool isSelf = true);
+
+
+    /**
+     * @brief 添加信息item
+     * @param listWidget 需要添加item的QListWidget
+     * @param head 头像
+     * @param inputType 聊天信息的分类
+     * @param message 聊天消息
+     * @param isSelf 是否是自己所发信息
+     */
+    void addMessageItem(QListWidget * listWidget,QPixmap & head,InputMessageType inputType,
+                        const QString & message,bool isSelf = true);
 
 
     /// @brief 切换聊天对象
@@ -112,6 +156,10 @@ private:
 
     /// 常用表情窗口
     EmojiHotWidget * emojiHotWidget = nullptr;
+
+
+    /// 解析需要发送的消息
+    MessageParser parser;
 
 public slots:
 

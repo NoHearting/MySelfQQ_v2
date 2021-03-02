@@ -21,19 +21,28 @@ QSize Util::ScaledImageSize(const QSize &originSize, int max)
 {
     int realHeight = originSize.height();
     int realWidth = originSize.width();
-    if(originSize.height() > originSize.width()){
-        if(originSize.height() > max){
+    if(originSize.height() > originSize.width())
+    {
+        if(originSize.height() > max)
+        {
             realHeight = max;
             realWidth = max * 1.0 / originSize.height() * originSize.width();
         }
     }
-    else{
-        if(originSize.width() > max){
+    else
+    {
+        if(originSize.width() > max)
+        {
             realWidth = max;
             realHeight = max * 1.0 / originSize.width() * originSize.height();
         }
     }
-    return QSize(realWidth,realHeight);
+    return QSize(realWidth, realHeight);
+}
+
+QString Util::PackageImageHtml(const QString &src, int width, int height)
+{
+    return QString("<img src='%1' width=%2 height=%3 />").arg(src).arg(width).arg(height);
 }
 
 
@@ -184,6 +193,47 @@ bool FileUtil::judgeAndMakeDir(const QString &dirPath)
         }
     }
     return false;
+}
+
+QString HtmlUtil::RemoveOriginTagStyle(const QString &originStr, TagType types)
+{
+
+    QString result = originStr;
+    for(auto iter = TagName.begin(); iter != TagName.end(); ++iter)
+    {
+        if(types & iter.value())
+        {
+            RemoveStyle(iter.key(), result);
+        }
+    }
+    return result;
+}
+
+QString HtmlUtil::GetHtmlBodyContent(const QString &html)
+{
+    int begin = html.indexOf("<body");
+    int bodyEnd = html.indexOf("</body>", begin);
+    QString content = html.mid(begin, bodyEnd - begin + 7);
+    return content;
+}
+
+void HtmlUtil::RemoveStyle(const QString &tag, QString &originStr)
+{
+    int index = 0;
+    do
+    {
+        int begin = originStr.indexOf(QString("<%1 ").arg(tag), index);
+        if(-1 == begin)
+        {
+            break;
+        }
+        int offset = QString(tag).size() + 1;
+        int end = originStr.indexOf(">", begin + offset);
+        QString temp = originStr.mid(begin, end - begin + 1);
+        originStr.replace(temp, QString("<%1>").arg(tag));
+        index = end;
+    }
+    while(index < originStr.size());
 }
 
 

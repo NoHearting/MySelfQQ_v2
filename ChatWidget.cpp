@@ -9,7 +9,11 @@
 #include "main/StaticIniator.h"
 #include "item_widgets/ChatMessageItemObject.h"
 #include "item_widgets/ChatMessageItemSelf.h"
+#include "item_widgets/ChatMessageImageItemSelf.h"
+#include "item_widgets/ChatMessageImageItemObject.h"
 #include "screen_shot/ScreenShot.h"
+#include "main/ChatBubble.h"
+#include "main/CurrentWindow.h"
 
 #include <QDebug>
 #include <QAction>
@@ -21,6 +25,7 @@
 #include <QSizePolicy>
 #include <QSplitter>
 #include <QFileDialog>
+#include <QMap>
 
 #include <QDir>
 #include <QMimeData>
@@ -99,6 +104,14 @@ bool ChatWidget::event(QEvent *event)
             }
 
         }
+    }
+    else if(event->type() == QEvent::Resize)
+    {
+        zsj::CurrentWindow::Instance()->setWindowGeometry(this->geometry());
+    }
+    else if(event->type() == QEvent::Move)
+    {
+        zsj::CurrentWindow::Instance()->setWindowGeometry(this->geometry());
     }
 
     return QWidget::event(event);
@@ -186,6 +199,19 @@ void ChatWidget::initSignalsAndSlots()
     connect(ui->pushButtonSend, &QPushButton::clicked, this, &ChatWidget::slotButtonToSendMessage);
     connect(ui->pushButtonSendGroup, &QPushButton::clicked, this, &ChatWidget::slotButtonToSendMessageGroup);
     qInfo() << "connect pushButtonSend::clicked to ChatWidget::slotButtonToSendMessage";
+    connect(ui->pushButtonCloseGroup,&QPushButton::clicked,this,[this](){
+        QPixmap head(":/test/res/test/head1.jpg");
+        QString content = zsj::HtmlUtil::GetHtmlBodyContent(ui->textEditMessageInputGroup->toHtml());
+        QMap<InputMessageType, QStringList> messageMap = parser.parserMessage(content);
+        for(auto iter = messageMap.begin(); iter != messageMap.end(); ++iter)
+        {
+            addMessageItem(ui->listWidgetMessageListGroup, head,
+                           iter.key(), iter.value().at(0),false);
+        }
+        ui->textEditMessageInputGroup->clear();
+    });
+
+
 
     // 消息输入框
     connect(ui->textEditMessageInput, &MyTextEdit::sigKeyToSendMsg, this, &ChatWidget::slotKeyToSendMessage);
@@ -219,7 +245,8 @@ void ChatWidget::initSignalsAndSlots()
     });
 
     // 松开表情按钮
-    connect(ui->toolButtonEmoji, &QToolButton::released, this,[this](){
+    connect(ui->toolButtonEmoji, &QToolButton::released, this, [this]()
+    {
         if(ui->toolButtonEmoji->isChecked())
         {
 
@@ -228,7 +255,8 @@ void ChatWidget::initSignalsAndSlots()
             emojiWidget->show(zsj::global::UiType::USER);
         }
     });
-    connect(ui->toolButtonEmojiGroup, &QToolButton::released, this, [this](){
+    connect(ui->toolButtonEmojiGroup, &QToolButton::released, this, [this]()
+    {
         if(ui->toolButtonEmojiGroup->isChecked())
         {
 
@@ -251,8 +279,8 @@ void ChatWidget::initSignalsAndSlots()
 
 
     // 选择图片
-    connect(ui->toolButtonImage,&QToolButton::clicked,this,&ChatWidget::slotChooseImageFile);
-    connect(ui->toolButtonImageGroup,&QToolButton::clicked,this,&ChatWidget::slotChooseImageFileGroup);
+    connect(ui->toolButtonImage, &QToolButton::clicked, this, &ChatWidget::slotChooseImageFile);
+    connect(ui->toolButtonImageGroup, &QToolButton::clicked, this, &ChatWidget::slotChooseImageFileGroup);
 }
 
 void ChatWidget::setChatObjListStyle()
@@ -263,7 +291,7 @@ void ChatWidget::setChatObjListStyle()
 void ChatWidget::initMenus()
 {
     sendMenu = new QMenu();
-    zsj::StaticIniator::Instatcne()->initSendMenu(sendMenu, this);
+    zsj::StaticIniator::Instance()->initSendMenu(sendMenu, this);
 
 }
 
@@ -356,7 +384,8 @@ void ChatWidget::setCurrentData(zsj::Data::ptr data)
 
 }
 
-void ChatWidget::addMessageItem(QListWidget *listWidget, QPixmap &head, const QString &message, bool isSelf)
+void ChatWidget::addMessageItem(QListWidget *listWidget, QPixmap &head,
+                                const QString &message, bool isSelf)
 {
     QListWidgetItem *item = new QListWidgetItem(listWidget);
     listWidget->addItem(item);
@@ -375,6 +404,49 @@ void ChatWidget::addMessageItem(QListWidget *listWidget, QPixmap &head, const QS
     // 滚动到最底部
     listWidget->scrollToBottom();
 
+}
+
+void ChatWidget::addMessageItem(QListWidget *listWidget, QPixmap &head,
+                                ChatWidget::InputMessageType inputType,
+                                const QString &message, bool isSelf)
+{
+#define SWITCH(name) \
+    switch(inputType){ \
+        case InputMessageType::IMAGE: \
+            data.reset(new zsj::ChatMessageData(message,head)); \
+            widget = new ChatMessageImageItem##name(data, item, listWidget); \
+            break; \
+        case InputMessageType::EMOJI_TEXT: \
+            if(parser.contentJudgeEmpty(message)){ \
+                data->setHasEmoji(true); \
+                widget = new ChatMessageItem##name(data, item, listWidget); \
+                break; \
+            } \
+        case InputMessageType::PLAIN_TEXT: \
+            if(parser.contentJudgeEmpty(message)){ \
+                widget = new ChatMessageItem##name(data, item, listWidget); \
+                break; \
+            }\
+    }
+
+    QListWidgetItem *item = new QListWidgetItem(listWidget);
+    listWidget->addItem(item);
+    zsj::ChatMessageData::ptr data(new zsj::ChatMessageData(head, message));
+    QWidget *widget = nullptr;
+    if(isSelf)
+    {
+        SWITCH(Self);
+    }
+    else
+    {
+        SWITCH(Object);
+    }
+    listWidget->setItemWidget(item, widget);
+
+    // 滚动到最底部
+    listWidget->scrollToBottom();
+
+#undef SWITCH
 }
 
 
@@ -498,13 +570,11 @@ void ChatWidget::slotDeleteChatObject(QPoint point)
                 this->setCurrentData(chatObj->getData());
                 switchChatObj();
             }
-
             delete deleteItem;
             if(ui->listWidgetChatObjList->count() <= 1)
             {
                 setChatObjListStyle();
             }
-
         }
         else
         {
@@ -541,8 +611,12 @@ void ChatWidget::slotItemAdd(QListWidgetItem *item)
 void ChatWidget::slotButtonToSendMessage()
 {
     QPixmap head(":/test/res/test/head4.jpg");
-    QString msg = ui->textEditMessageInput->toPlainText();
-    addMessageItem(ui->listWidgetMessageList, head, msg);
+    QString content = zsj::HtmlUtil::GetHtmlBodyContent(ui->textEditMessageInput->toHtml());
+    QMap<InputMessageType, QStringList> messageMap = parser.parserMessage(content);
+    for(auto iter = messageMap.begin(); iter != messageMap.end(); ++iter)
+    {
+        addMessageItem(ui->listWidgetMessageList, head, iter.key(), iter.value().at(0));
+    }
     ui->textEditMessageInput->clear();
 
 }
@@ -550,8 +624,13 @@ void ChatWidget::slotButtonToSendMessage()
 void ChatWidget::slotButtonToSendMessageGroup()
 {
     QPixmap head(":/test/res/test/head1.jpg");
-    QString msg = ui->textEditMessageInputGroup->toPlainText();
-    addMessageItem(ui->listWidgetMessageListGroup, head, msg);
+    QString content = zsj::HtmlUtil::GetHtmlBodyContent(ui->textEditMessageInputGroup->toHtml());
+    qDebug() << "**************" << content;
+    QMap<InputMessageType, QStringList> messageMap = parser.parserMessage(content);
+    for(auto iter = messageMap.begin(); iter != messageMap.end(); ++iter)
+    {
+        addMessageItem(ui->listWidgetMessageListGroup, head, iter.key(), iter.value().at(0));
+    }
     ui->textEditMessageInputGroup->clear();
 }
 
@@ -559,7 +638,12 @@ void ChatWidget::slotButtonToSendMessageGroup()
 void ChatWidget::slotKeyToSendMessage(const QString &msg)
 {
     QPixmap head(":/test/res/test/head4.jpg");
-    addMessageItem(ui->listWidgetMessageList, head, msg);
+
+    QMap<InputMessageType, QStringList> messageMap = parser.parserMessage(msg);
+    for(auto iter = messageMap.begin(); iter != messageMap.end(); ++iter)
+    {
+        addMessageItem(ui->listWidgetMessageList, head, iter.key(), iter.value().at(0));
+    }
     ui->textEditMessageInput->clear();
 
 }
@@ -567,7 +651,11 @@ void ChatWidget::slotKeyToSendMessage(const QString &msg)
 void ChatWidget::slotKeyToSendMessageGroup(const QString &msg)
 {
     QPixmap head(":/test/res/test/head1.jpg");
-    addMessageItem(ui->listWidgetMessageListGroup, head, msg);
+    QMap<InputMessageType, QStringList> messageMap = parser.parserMessage(msg);
+    for(auto iter = messageMap.begin(); iter != messageMap.end(); ++iter)
+    {
+        addMessageItem(ui->listWidgetMessageListGroup, head, iter.key(), iter.value().at(0));
+    }
     ui->textEditMessageInputGroup->clear();
 }
 
@@ -586,13 +674,17 @@ void ChatWidget::slotMaxShowMessageListGroup()
 void ChatWidget::slotChooseEmoji(zsj::global::UiType type, const QString &emojiPath)
 {
     emojiHotWidget->recordHotEmoji(emojiPath);
-    QString src = QString("<img src='%1' width=28 height=28></img>").arg(emojiPath);
-    if(type == zsj::global::UiType::USER){
+    QString src = zsj::Util::PackageImageHtml(emojiPath, zsj::ChatBubble::EmojiInputSize,
+                  zsj::ChatBubble::EmojiInputSize);
+    if(type == zsj::global::UiType::USER)
+    {
         ui->textEditMessageInput->insertHtml(src);
     }
-    else{
+    else
+    {
         ui->textEditMessageInputGroup->insertHtml(src);
     }
+    qDebug() << "chooseEmoji: " << src;
 }
 
 void ChatWidget::slotScreenShot()
@@ -613,34 +705,103 @@ void ChatWidget::slotShowEmojiWidget()
 
 void ChatWidget::slotChooseImageFile()
 {
-    QString imageFile = QFileDialog::getOpenFileName(this,"打开",QDir::currentPath(),"图片文件(*.jpg *.gif *.png)");
+    QString imageFile = QFileDialog::getOpenFileName(this, "打开", QDir::currentPath(), "图片文件(*.jpg *.gif *.png)");
     qDebug() << imageFile;
-    if(!imageFile.isEmpty()){
+    if(!imageFile.isEmpty())
+    {
         QPixmap pix(imageFile);
         QSize contentSize = zsj::Util::ScaledImageSize(pix.size());
-        QString imgUrl = QString("<img src='%1' width=%2 height=%3 ></img>")
-                         .arg(imageFile).arg(contentSize.width()).arg(contentSize.height());
+        QString imgUrl = zsj::Util::PackageImageHtml(imageFile, contentSize.width(), contentSize.height());
         ui->textEditMessageInput->insertHtml(imgUrl);
     }
-    else{
+    else
+    {
         qCritical() << "选择图片失败";
     }
 }
 
 void ChatWidget::slotChooseImageFileGroup()
 {
-    QString imageFile = QFileDialog::getOpenFileName(this,"打开",QDir::currentPath(),"图片文件(*.jpg *.gif *.png)");
+    QString imageFile = QFileDialog::getOpenFileName(this, "打开", QDir::currentPath(), "图片文件(*.jpg *.gif *.png)");
     qDebug() << imageFile;
-    if(!imageFile.isEmpty()){
+    if(!imageFile.isEmpty())
+    {
         QPixmap pix(imageFile);
         QSize contentSize = zsj::Util::ScaledImageSize(pix.size());
-        QString imgUrl = QString("<img src='%1' width=%2 height=%3 ></img>")
-                         .arg(imageFile).arg(contentSize.width()).arg(contentSize.height());
+        QString imgUrl = zsj::Util::PackageImageHtml(imageFile, contentSize.width(), contentSize.height());
         ui->textEditMessageInputGroup->insertHtml(imgUrl);
     }
-    else{
+    else
+    {
         qCritical() << "选择图片失败";
     }
 
 }
 
+
+QMap<ChatWidget::InputMessageType, QStringList> ChatWidget::MessageParser::parserMessage(QString originmessage)
+{
+    //去掉第一个QTextedit自带的换行\n
+    int begin = originmessage.indexOf("\n");
+    qDebug() << begin;
+    originmessage = originmessage.remove(begin, 1);
+    qDebug() << originmessage;
+
+    QMap<ChatWidget::InputMessageType, QStringList> messageMap;
+    bool hasEmoji = false;
+    int index = 0;
+    do
+    {
+        int begin = originmessage.indexOf("<img", index);
+        if(begin == -1)
+        {
+            break;
+        }
+        int end = originmessage.indexOf(">", begin + 1);
+        if(-1 == end)
+        {
+            break;
+        }
+        QString tag = originmessage.mid(begin, end - begin + 1);
+        if(!tag.contains("emoji"))
+        {
+            originmessage.replace(tag, "");
+            messageMap[InputMessageType::IMAGE].append(tag);
+        }
+        else
+        {
+            hasEmoji = true;
+        }
+        index = end;
+    }
+    while(index < originmessage.size());
+
+    if(hasEmoji)
+    {
+        messageMap[InputMessageType::EMOJI_TEXT].append(originmessage);
+    }
+    else
+    {
+        messageMap[InputMessageType::PLAIN_TEXT].append(originmessage);
+    }
+
+    return messageMap;
+}
+
+bool ChatWidget::MessageParser::contentJudgeEmpty(const QString &content)
+{
+    QString newContent = zsj::HtmlUtil::RemoveOriginTagStyle(content, (zsj::TagType)(zsj::TAG_BODY | zsj::TAG_SPAN | zsj::TAG_P));
+    if(newContent == "<body></body>" || newContent == "<p></p>" ||
+            newContent == "<span></span>" ||
+            newContent == "<p><span></span><p>" ||
+            newContent == "<body><p></p></body>" ||
+            newContent == "<body><span></span></body>" ||
+            newContent == "<body><p><span></span></p></body>")
+    {
+        return false;
+    }
+    else
+    {
+        return true;
+    }
+}
