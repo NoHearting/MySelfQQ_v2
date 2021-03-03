@@ -1,3 +1,9 @@
+/**
+  * @file ChatMessageItem.h
+  * @brief 显示聊天单条记录的item的基类。主要是处理自适应内容
+  * @author zsj
+  * @date 2021年3月3日09:48:30
+  */
 #ifndef CHATMESSAGEITEM_H
 #define CHATMESSAGEITEM_H
 
@@ -10,22 +16,24 @@ namespace zsj {
 class ChatMessageItem
 {
 public:
-    /**
-     * @brief HTML标签枚举，用于移除其样式匹配所用
-     * @note 后续有需要继续添加
-     */
-    enum TagType{
-        TAG_P = 0x0001,  // p标签
-        TAG_IMG = 0x0002, // img标签
-        TAG_SPAN = 0x0004, // span标签
-        TAG_BODY = 0x008,   //body标签
-        TAG_ALL = 0x1111    // 所有，用于运算
-    };
-public:
     ChatMessageItem();
 
+    /**
+     * @brief 计算内容容器（放置消息内容）的Size。
+     * @return
+     */
     virtual QSize calculateMessageWidgetSize() = 0;
+
+    /**
+     * @brief 获取布局容器（包含内容容器）的Size
+     * @return
+     * @note 需要先计算出内容容器的Size
+     */
     virtual QSize getWidgetSize() = 0;
+
+    /**
+     * @brief 设置布局容器的位置
+     */
     virtual void adjustWidgetsPosition() = 0;
 
     /**

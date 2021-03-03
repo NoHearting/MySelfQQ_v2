@@ -9,7 +9,9 @@
 
 ChatMessageImageItemSelf::ChatMessageImageItemSelf(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::ChatMessageImageItemSelf)
+    ui(new Ui::ChatMessageImageItemSelf),
+    item(nullptr),
+    chatMessageData(nullptr)
 {
     ui->setupUi(this);
     initResourceAndForm();
@@ -20,8 +22,9 @@ ChatMessageImageItemSelf::ChatMessageImageItemSelf(zsj::ChatMessageData::ptr dat
         QWidget *parent):
     QWidget(parent),
     ui(new Ui::ChatMessageImageItemSelf),
-    chatMessageData(data),
-    item(item)
+    item(item),
+    chatMessageData(data)
+
 {
     ui->setupUi(this);
     initResourceAndForm();
@@ -127,14 +130,16 @@ QSize ChatMessageImageItemSelf::currentEnableImageSize(QSize windowSize)
 
 QString ChatMessageImageItemSelf::seprateImageSrc(const QString &imgTag)
 {
-    if(imgTag.contains("<img")){
+    if(imgTag.contains("<img"))
+    {
         int begin = imgTag.indexOf("src=\"");
-        int end = imgTag.indexOf("\"",begin+6);
-        QString path = imgTag.mid(begin + 5,end-begin - 5);
+        int end = imgTag.indexOf("\"", begin + 6);
+        QString path = imgTag.mid(begin + 5, end - begin - 5);
         chatMessageData->setImagePath(path);
         return path;
     }
-    else{
+    else
+    {
         return imgTag;
     }
 

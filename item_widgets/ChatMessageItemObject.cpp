@@ -7,8 +7,9 @@
 ChatMessageItemObject::ChatMessageItemObject(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::ChatMessageItemObject),
-    chatMessageData(nullptr),
-    item(nullptr)
+    item(nullptr),
+    chatMessageData(nullptr)
+
 {
     ui->setupUi(this);
     initResourceAndForm();
@@ -18,8 +19,9 @@ ChatMessageItemObject::ChatMessageItemObject(zsj::ChatMessageData::ptr data,
         QListWidgetItem *item, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::ChatMessageItemObject),
-    chatMessageData(data),
-    item(item)
+    item(item),
+    chatMessageData(data)
+
 {
     ui->setupUi(this);
     initResourceAndForm();

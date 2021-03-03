@@ -2,7 +2,12 @@
 #define CHATMESSAGEITEMSELF_H
 
 #include <QWidget>
-
+/**
+  * @file ChatMessageItemSelf.h
+  * @brief 消息列表中的消息类型，显示消息和Emoji。显示在右边
+  * @author zsj
+  * @date 2021年3月3日09:57:18
+  */
 #include <QListWidgetItem>
 #include <QSize>
 
@@ -31,6 +36,10 @@ public:
     QSize getWidgetSize()override;
 
 protected:
+    /**
+     * @brief 每次触发这个信号时，需要重新设置各个widget的大小和位置
+     * @param event
+     */
     void resizeEvent(QResizeEvent *event);
 
 private:

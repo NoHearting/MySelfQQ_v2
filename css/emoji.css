@@ -90,6 +90,8 @@ QTableWidget::item:hover{
 }
 
 
+
+/* QScrollBar */
 QScrollBar:vertical{
     background: transparent;
     width:8px;

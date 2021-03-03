@@ -199,14 +199,15 @@ void ChatWidget::initSignalsAndSlots()
     connect(ui->pushButtonSend, &QPushButton::clicked, this, &ChatWidget::slotButtonToSendMessage);
     connect(ui->pushButtonSendGroup, &QPushButton::clicked, this, &ChatWidget::slotButtonToSendMessageGroup);
     qInfo() << "connect pushButtonSend::clicked to ChatWidget::slotButtonToSendMessage";
-    connect(ui->pushButtonCloseGroup,&QPushButton::clicked,this,[this](){
+    connect(ui->pushButtonCloseGroup, &QPushButton::clicked, this, [this]()
+    {
         QPixmap head(":/test/res/test/head1.jpg");
         QString content = zsj::HtmlUtil::GetHtmlBodyContent(ui->textEditMessageInputGroup->toHtml());
         QMap<InputMessageType, QStringList> messageMap = parser.parserMessage(content);
         for(auto iter = messageMap.begin(); iter != messageMap.end(); ++iter)
         {
             addMessageItem(ui->listWidgetMessageListGroup, head,
-                           iter.key(), iter.value().at(0),false);
+                           iter.key(), iter.value().at(0), false);
         }
         ui->textEditMessageInputGroup->clear();
     });
@@ -420,13 +421,13 @@ void ChatWidget::addMessageItem(QListWidget *listWidget, QPixmap &head,
             if(parser.contentJudgeEmpty(message)){ \
                 data->setHasEmoji(true); \
                 widget = new ChatMessageItem##name(data, item, listWidget); \
-                break; \
             } \
+            break; \
         case InputMessageType::PLAIN_TEXT: \
             if(parser.contentJudgeEmpty(message)){ \
                 widget = new ChatMessageItem##name(data, item, listWidget); \
-                break; \
             }\
+            break; \
     }
 
     QListWidgetItem *item = new QListWidgetItem(listWidget);
@@ -743,9 +744,7 @@ QMap<ChatWidget::InputMessageType, QStringList> ChatWidget::MessageParser::parse
 {
     //去掉第一个QTextedit自带的换行\n
     int begin = originmessage.indexOf("\n");
-    qDebug() << begin;
     originmessage = originmessage.remove(begin, 1);
-    qDebug() << originmessage;
 
     QMap<ChatWidget::InputMessageType, QStringList> messageMap;
     bool hasEmoji = false;

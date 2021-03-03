@@ -1,3 +1,9 @@
+/**
+  * @file ChatObjectItem.h
+  * @brief 聊天窗口左边的聊天对象列表中的item对象。
+  * @author zsj
+  * @date 2021年3月3日09:58:35
+  */
 #ifndef CHATOBJECTITEM_H
 #define CHATOBJECTITEM_H
 
@@ -25,8 +31,6 @@ public:
     /// @return QRect
     QRect getDeleteButtonPosition() const;
 
-    int getIndex() const;
-
 protected:
 
     void resizeEvent(QResizeEvent *);
@@ -50,6 +54,7 @@ private:
 private:
     Ui::ChatObjectItem *ui;
 
+    /// 聊天对象的数据
     zsj::Data::ptr data;
 
 public slots:

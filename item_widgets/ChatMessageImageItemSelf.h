@@ -1,6 +1,6 @@
 /**
   * @file ChatMessageImageItemSelf.h
-  * @brief 消息列表中的消息类型。纯图片类型，用于显示图片
+  * @brief 消息列表中的消息类型。纯图片类型，用于显示图片。显示在右边
   * @author zsj
   * @date 2021年3月2日09:22:59
   * @note 只用于显示图片。后续可以改进

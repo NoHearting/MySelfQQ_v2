@@ -10,8 +10,9 @@
 ChatMessageItemSelf::ChatMessageItemSelf(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::ChatMessageItemSelf),
-    chatMessageData(nullptr),
-    item(nullptr)
+    item(nullptr),
+    chatMessageData(nullptr)
+
 {
     ui->setupUi(this);
     initResourceAndForm();
@@ -23,8 +24,8 @@ ChatMessageItemSelf::ChatMessageItemSelf(zsj::ChatMessageData::ptr data,
         QListWidgetItem *item, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::ChatMessageItemSelf),
-    chatMessageData(data),
-    item(item)
+    item(item),
+    chatMessageData(data)
 {
     ui->setupUi(this);
     initResourceAndForm();
@@ -47,7 +48,7 @@ void ChatMessageItemSelf::initResourceAndForm()
                                   QString::number(zsj::ChatBubble::EmojiChatSize)));
 
     // 清楚所有标签内联样式
-    QString clearMessage = zsj::HtmlUtil::RemoveOriginTagStyle(chatMessageData->getMessage(),static_cast<zsj::TagType>(zsj::TAG_ALL));
+    QString clearMessage = zsj::HtmlUtil::RemoveOriginTagStyle(chatMessageData->getMessage(), static_cast<zsj::TagType>(zsj::TAG_ALL));
     chatMessageData->setMessage(clearMessage);
 
 
