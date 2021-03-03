@@ -93,8 +93,7 @@ QToolButton,QToolButton:!checked,QToolButton:!selected{
 #toolButtonScreenShot:checked,
 #toolButtonWindowShake:checked{
 	background: rgba(0,0,0,0.1);
-	border:1px solid red;
-	margin-left:0px;
+	margin-left: 0px;
 	margin-top: 0px;
 }
 

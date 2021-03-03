@@ -1,6 +1,7 @@
 #include "ChatMessageData.h"
 
-namespace zsj {
+namespace zsj
+{
 
 
 
@@ -9,9 +10,16 @@ ChatMessageData::ChatMessageData()
 
 }
 
-ChatMessageData::ChatMessageData(QPixmap &head, const QString &message) :
+ChatMessageData::ChatMessageData(const QString &imagePath, QPixmap &head):
+    head(head), imagePath(imagePath)
+{
+
+}
+
+ChatMessageData::ChatMessageData(QPixmap &head, const QString &message, bool hasEmoji) :
     head(head),
-    message(message)
+    message(message),
+    hasEmoji(hasEmoji)
 {
 
 }
@@ -35,4 +43,25 @@ void ChatMessageData::setMessage(const QString &value)
 {
     message = value;
 }
+
+bool ChatMessageData::getHasEmoji() const
+{
+    return hasEmoji;
+}
+
+void ChatMessageData::setHasEmoji(bool value)
+{
+    hasEmoji = value;
+}
+
+QString ChatMessageData::getImagePath() const
+{
+    return imagePath;
+}
+
+void ChatMessageData::setImagePath(const QString &value)
+{
+    imagePath = value;
+}
+
 }

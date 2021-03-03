@@ -72,9 +72,7 @@ bool MyTextEdit::eventFilter(QObject *, QEvent *event)
                 if(isOk)
                 {
                     QSize pasteSize = zsj::Util::ScaledImageSize(pix.size());
-                    QString imgUrl = QString("<img src='%1' width=%2 height=%3 ></img>")
-                                     .arg(imagePath).arg(pasteSize.width()).arg(pasteSize.height());
-                    qDebug() << imgUrl;
+                    QString imgUrl = zsj::Util::PackageImageHtml(imagePath,pasteSize.width(),pasteSize.height());
                     this->insertHtml(imgUrl);
                 }
                 else
@@ -91,6 +89,7 @@ bool MyTextEdit::eventFilter(QObject *, QEvent *event)
         }
     }
     return false;
+
 }
 
 
@@ -98,18 +97,27 @@ void MyTextEdit::emitSigToSendMessage(bool EnterKeyFlag)
 {
     if(EnterKeyFlag)
     {
-        QString msg = this->toPlainText();
-        if(msg.isEmpty())
+        QString content = getContents();
+        if(content.isEmpty())
         {
             emit sigMsgEmpty();
             return;
         }
-        emit sigKeyToSendMsg(msg);
+        emit sigKeyToSendMsg(content);
     }
     else
     {
         // 如果当前按键并不是发送消息的按钮，则在文本框添加一个 \n
         this->insertPlainText("\n");
     }
+}
+
+QString MyTextEdit::getContents()
+{
+    QString html = toHtml();
+    int begin = html.indexOf("<body");
+    int bodyEnd = html.indexOf("</body>",begin);
+    QString content = html.mid(begin,bodyEnd-begin+7);
+    return content;
 }
 

@@ -242,27 +242,27 @@ void MainWidget::initMessageList()
 void MainWidget::initMenus()
 {
     userMenu = new QMenu();
-    zsj::StaticIniator::Instatcne()->initFirendMenu(userMenu, this);
+    zsj::StaticIniator::Instance()->initFirendMenu(userMenu, this);
 
     sectionMenu = new QMenu();
-    zsj::StaticIniator::Instatcne()->initFirendSectionMenu(sectionMenu, this);
+    zsj::StaticIniator::Instance()->initFirendSectionMenu(sectionMenu, this);
 
     groupMenu = new QMenu();
-    zsj::StaticIniator::Instatcne()->initGroupMenu(groupMenu, this);
+    zsj::StaticIniator::Instance()->initGroupMenu(groupMenu, this);
 
     groupSectionMenu = new QMenu();
-    zsj::StaticIniator::Instatcne()->initGroupSectionMenu(groupSectionMenu, this);
+    zsj::StaticIniator::Instance()->initGroupSectionMenu(groupSectionMenu, this);
 
     moveSubMenuFriend = new QMenu();
     moveSubMenuFriend->setObjectName("moveSubMenuFriend");
     connect(moveSubMenuFriend, &QMenu::triggered, this, &MainWidget::moveItem);
-    zsj::StaticIniator::Instatcne()->initMenusStyle(moveSubMenuFriend);
+    zsj::StaticIniator::Instance()->initMenusStyle(moveSubMenuFriend);
 
 
     moveSubMenuGroup = new QMenu();
     moveSubMenuGroup->setObjectName("moveSubMenuGroup");
     connect(moveSubMenuGroup, &QMenu::triggered, this, &MainWidget::moveItem);
-    zsj::StaticIniator::Instatcne()->initMenusStyle(moveSubMenuGroup);
+    zsj::StaticIniator::Instance()->initMenusStyle(moveSubMenuGroup);
 
 
 }

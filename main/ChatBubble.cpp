@@ -12,8 +12,8 @@ QScopedPointer<ChatBubble> ChatBubble::chatBubble;
 ChatBubble::ChatBubble()
 {
     bubblePadding = 9;
-    bubbleFont = QFont("微软雅黑",14);
-    bubbleFont.setPixelSize(14);
+    bubbleFont = QFont("微软雅黑",FontSize);
+    bubbleFont.setPixelSize(FontSize);
 }
 
 QFont ChatBubble::getBubbleFont() const

@@ -148,19 +148,62 @@
 
   只是简单的解决办法，还是会出现这个问题，只是出现的频率变小了。目前不知道什么原因
 
-### 9、表情功能
+### 9
 
-#### 1、概要
+### 10、聊天界面的QSplitter无法同步
+
+![image-20210226113815120](C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20210226113815120.png)
+
+用户聊天和群组聊天的`QSplitter`不能同步。
+
+# 坑
+
+### 1、读取CSS文件
+
+* 使用以下代码读取QSS文件，如果文件中出现中文则会解析出错，不能正确设置css
+
+  ```c++
+  QString ReadQStyleSheet::readQss(QString filePath)
+  {
+      QFile file(filePath);
+      QString qss;
+      if(file.open(QIODevice::ReadOnly))
+      {
+          QStringList list;
+          QTextStream in(&file);
+          while(!in.atEnd()){
+              QString line;
+              in >> line;
+              list << line;
+          }
+          qss  = list.join("\n");
+  //        qDebug() << qss;
+          file.close();
+          return qss;
+      }
+      else{
+          qCritical() << "style file:" << filePath << "not exist";
+  
+      }
+      return QString("");
+  }
+  ```
+
+# 二、功能模块
+
+## 1、表情功能
+
+### （1）概要
 
 能够显示表情，并能选择表情。界面如QQ
 
 ![image-20210221140115764](C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20210221140115764.png)
 
-#### 2、选择的容器
+### （2）选择的容器
 
 **`QTableWidget`**+**`QLabel`**
 
-#### 3、实现方式
+### （3）实现方式
 
 * 由于当前文件夹内的表情的大小是`56x56`的，而实际需要显示的大小是`24x24`的，所以有两种解决办法：
 
@@ -233,17 +276,17 @@
     }
     ```
 
-#### 4、实现效果
+### （4）实现效果
 
 ![image-20210222153226741](C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20210222153226741.png)
 
-#### 5、常用表情功能
+### （5）常用表情功能
 
 ![image-20210222153322377](C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20210222153322377.png)
 
 * 需要离线保存常用的表情
 
-#### 6、bugs
+### （6）bugs
 
 * 点击显示表情窗口的时候。点击一次按钮为显示，再点击一次还是一直显示，应该为关闭。
 
@@ -253,43 +296,112 @@
 
   ![image-20210222120628784](C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20210222120628784.png)
 
-### 10、聊天界面的QSplitter无法同步
+## 2、消息展示模块
 
-![image-20210226113815120](C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20210226113815120.png)
+### （1）概要
 
-用户聊天和群组聊天的`QSplitter`不能同步。
+由于整体的聊天消息列表使用的是`QListWidget`+`QListWidgetItem`和一些自定义的内容`QWidget`,自定义的`QWidget`包括下列几种：
 
-# 坑
+```c++
+ChatMessageItem  				// 展示聊天记录的基类
+ChatMessageItemObject			// 展示文字和表情的item，位于消息列表左边
+ChatMessageItemSelf				// 展示文字和表情的item，位于消息列表右边
+ChatMessageImageItemObject		// 展示图片的item，位于消息列表左边	
+ChatMessageImageItemSelf		// 展示图片的item，位于消息列表右边
+```
 
-### 1、读取CSS文件
+### （2）选择的容器
 
-* 使用以下代码读取QSS文件，如果文件中出现中文则会解析出错，不能正确设置css
+容器选择的`QListWidget`,添加时使用一个`QListWidgetItem`,同时使用`QListWidgetItem`的`setItemWidget`函数设置其独特的`QWidget`。例如：
 
-  ```c++
-  QString ReadQStyleSheet::readQss(QString filePath)
-  {
-      QFile file(filePath);
-      QString qss;
-      if(file.open(QIODevice::ReadOnly))
-      {
-          QStringList list;
-          QTextStream in(&file);
-          while(!in.atEnd()){
-              QString line;
-              in >> line;
-              list << line;
-          }
-          qss  = list.join("\n");
-  //        qDebug() << qss;
-          file.close();
-          return qss;
-      }
-      else{
-          qCritical() << "style file:" << filePath << "not exist";
-  
-      }
-      return QString("");
-  }
-  ```
+```c++
+void ChatWidget::addMessageItem(QListWidget *listWidget, QPixmap &head,
+                                const QString &message, bool isSelf)
+{
+    QListWidgetItem *item = new QListWidgetItem(listWidget);
+    listWidget->addItem(item);
+    zsj::ChatMessageData::ptr data(new zsj::ChatMessageData(head, message));
+    QWidget *widget = nullptr;
+    if(isSelf)
+    {
+        widget = new ChatMessageItemSelf(data, item, listWidget);
+    }
+    else
+    {
+        widget = new ChatMessageItemObject(data, item, listWidget);
+    }
+    listWidget->setItemWidget(item, widget);
 
-  
+    // 滚动到最底部
+    listWidget->scrollToBottom();
+
+}
+```
+
+### （3）实现方式
+
+* 在添加item的时候需要判断显示聊天记录是显示在左边还是右边，显示在不同的位置设置的`QWidget`类是不同的。
+
+* 显示的`QWidget`类目前只有三个子`widget`.一个`QLabel`用于展示头像，一个`QWidget`用于做布局容器，里面包含一个`QLabel`用于显示消息内容或者展示图片。
+
+* 每个用于展示的`QWidget`类在`resize`时都会重新计算三个`widget`的位置，以便随着外部容器的变化而变化。同时`QWidget`内部的`QLabel`还会根据内容重新计算长度和宽度，自适应内容大小。
+
+### （4）实现效果
+
+![image-20210303091335328](C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20210303091335328.png)
+
+### （5）可以优化的地方
+
+* 展示内容到消息列表左右两边的类有两个，实质上两个类中不同的地方只有`void adjustWidgetsPosition()override;`函数中内容不同。可以只使用一个类，使用一个标志位来指明显示的位置，即根据标志位来设置该函数体内的内容
+
+## 3、聊天气泡功能
+
+### （1）概要
+
+* 由于聊天记录列表是用`QListWidget`+`QListWidgetItem`+`QWidget`做的，所以气泡的功能就在`QWidget`的子类中实现。主要需要显示气泡的是`QWidget`中的`QLabel`,所以`QLabel`需要自适应内容的大小。
+
+* 当前聊天气泡`QLabel`支持显示`html2`的内容，所以可以用于直接显示markdown内容。
+
+* 显示的时候是直接把消息输入框`QTextedit`的内容拿出来经过处理之后直接设置到`QLabel`里，所以`QLabel`的内容会带有`QTextEdit`文本的`html`内联样式，因为`QTextEdit`支持`html2`,而取出来的时候又是调用的`QTextedit`	的`toHtml`函数。
+
+### （2）选择的容器
+
+需要承载聊天记录（消息、表情和图片）的容器`QLabel`,气泡是设置在其外层的布局容器`QWidget`上的。
+
+### （3）实现方式
+
+* 气泡的样式当前是直接使用`QSS`,设置在内容容器`QLabel`的外部布局容器`QWidget`上
+
+* 内容容器的宽高自适应
+
+  * 宽度自适应
+
+    观察输入的内容，根据内容中的`\n`来分段，然后使用`QFontMetrics`来获取内容的水平宽度。如下：
+
+    ```c++
+    QFont font = QFont("微软雅黑",18);
+    QFont newFont(font.family(), font.pixelSize());
+    QFontMetrics fm(newFont);
+    QString testStr = "[测试字符]";
+    int pixWidth = fm.horizontalAdvance(testStr);
+    ```
+
+    * 这样可以计算到每行的确定宽度，但是由于计算的字符串中含有`html`的一些标签，比如`<body><p></p>`等等，所以计算真实内容的时候需要减去这些标签的宽度，如果里面含有`<img>`标签则需要减去`<img>`的长度再加上一个表情的宽度才能得出真实长度。
+    * 得出真实长度之后需要和当前行的最大宽度进行比较，大于当前最大值，小于当前消息列表的宽度减去一个偏移量，更新最大值。因为有时候消息内容少的时候，内容容器的长度不需要太大，同样内容太多的时候，内容容器的长度不能大于某一个值。
+
+  * 高度自适应
+
+    * 根据内容中的`\n`来分段，有多少个换行就使用当前`字体高度 * 换行个数`,如果当前行的内容宽度大于当前界面允许的最大宽度，则需要换行，依次增加一个换行的高度
+    * 当内容的行数过于大的时候，高度自适应出现问题。会矮一些，所以在换行个数大于30的时候，增加一个修正高度`0.07 * 换行个数`
+
+### （4）实现效果
+
+![image-20210303091335328](C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20210303091335328.png)
+
+### （5）bugs
+
+* 当输入的内容为英文符号时，自适应宽度会出现问题，会短一截，显示不全
+
+![image-20210303094255422](C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20210303094255422.png) 
+
+第一个符号显示完全，第二个和第三个就有显示问题了。

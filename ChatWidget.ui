@@ -410,7 +410,7 @@
           <item row="1" column="0">
            <widget class="QStackedWidget" name="stackedWidgetMain">
             <property name="currentIndex">
-             <number>1</number>
+             <number>0</number>
             </property>
             <widget class="QWidget" name="pageUser">
              <layout class="QGridLayout" name="gridLayout_16">
@@ -970,7 +970,7 @@
                             <widget class="MyTextEdit" name="textEditMessageInput">
                              <property name="font">
                               <font>
-                               <pointsize>9</pointsize>
+                               <pointsize>16</pointsize>
                               </font>
                              </property>
                              <property name="tabChangesFocus">
@@ -1715,6 +1715,11 @@
                                   </property>
                                   <item row="0" column="0">
                                    <widget class="MyTextEdit" name="textEditMessageInputGroup">
+                                    <property name="font">
+                                     <font>
+                                      <pointsize>16</pointsize>
+                                     </font>
+                                    </property>
                                     <property name="tabChangesFocus">
                                      <bool>true</bool>
                                     </property>

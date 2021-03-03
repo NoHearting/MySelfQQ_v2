@@ -13,7 +13,7 @@ namespace zsj {
 
 QScopedPointer<StaticIniator> StaticIniator::staticIniator;
 
-StaticIniator *StaticIniator::Instatcne()
+StaticIniator *StaticIniator::Instance()
 {
     if(staticIniator.isNull()){
         static QMutex mutex;

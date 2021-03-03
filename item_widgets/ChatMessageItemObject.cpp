@@ -7,18 +7,21 @@
 ChatMessageItemObject::ChatMessageItemObject(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::ChatMessageItemObject),
-    chatMessageData(nullptr),
-    item(nullptr)
+    item(nullptr),
+    chatMessageData(nullptr)
+
 {
     ui->setupUi(this);
+    initResourceAndForm();
 }
 
 ChatMessageItemObject::ChatMessageItemObject(zsj::ChatMessageData::ptr data,
         QListWidgetItem *item, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::ChatMessageItemObject),
-    chatMessageData(data),
-    item(item)
+    item(item),
+    chatMessageData(data)
+
 {
     ui->setupUi(this);
     initResourceAndForm();
@@ -36,7 +39,10 @@ void ChatMessageItemObject::initResourceAndForm()
     QPixmap localHead = zsj::adjustToHead(ori, 32);
     ui->labelHead->setPixmap(localHead);
 
-    ui->labelMessage->setText(chatMessageData->getMessage());
+    ui->labelMessage->setText(chatMessageData->getMessage()
+                              .replace(
+                                  QString::number(zsj::ChatBubble::EmojiInputSize),
+                                  QString::number(zsj::ChatBubble::EmojiChatSize)));
 
     int fontSize = zsj::ChatBubble::Instance()->getBubbleFontSize();
 
@@ -56,17 +62,15 @@ void ChatMessageItemObject::adjustWidgetsPosition()
 QSize ChatMessageItemObject::calculateMessageWidgetSize()
 {
     QFont font = zsj::ChatBubble::Instance()->getBubbleFont();
-    QFont newFont(font.family(),font.pixelSize());
+    QFont newFont(font.family(), font.pixelSize());
     QFontMetrics fm(newFont);
     QString message = chatMessageData->getMessage();
-    int pixWidth = fm.horizontalAdvance(message);
-    int count = message.size();
-    int offset = (abs((pixWidth / count) - font.pixelSize())) * count;
-    pixWidth = pixWidth - offset;
-    int pixHeight = fm.height();
 
-    int col = (pixWidth / (this->width() - 90)) + 1;
-    int width  = col > 1 ? this->width() - 90 : pixWidth + 10;
+    // 去掉html标签中可能存在的内联样式。因为需要通过html来计算气泡的自适应宽度
+    message = zsj::HtmlUtil::RemoveOriginTagStyle(message, static_cast<zsj::TagType>(zsj::TAG_P | zsj::TAG_BODY | zsj::TAG_SPAN));
+    int pixHeight = fm.height();
+    int col = 0;
+    int width = getContentMaxWidth(message, this->width(), col, fm);
     int height = pixHeight * col - (pixHeight - font.pixelSize()) * col / 2;
 
     return QSize(width, height);
