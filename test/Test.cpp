@@ -8,6 +8,7 @@
 #include <QFile>
 #include <QDir>
 #include <QFileInfo>
+#include <QTextStream>
 
 #include <QtGlobal>
 #include <QMap>
@@ -15,11 +16,15 @@
 #include <QPair>
 
 #include <QRegExp>
+#include <QJsonDocument>
+#include <QJsonObject>
 
 #include <QFile>
 
 #include "main/ReadQStyleSheet.h"
 #include "utils/Util.h"
+
+#include <utils/Util.h>
 
 namespace zsj
 {
@@ -39,7 +44,9 @@ void Test::test()
 //    testStringReplace();
 //    testRemoveStyle();
 //    testReg();
-    testFontWidth();
+//    testFontWidth();
+//    testJson();
+    testChatMessageRecord();
 }
 
 void Test::testQApplication()
@@ -152,7 +159,8 @@ void Test::testReg()
     QStringList list;
     int pos = 0;
 
-    while ((pos = rx.indexIn(origin, pos)) != -1) {
+    while ((pos = rx.indexIn(origin, pos)) != -1)
+    {
         list << rx.cap(1);
         pos += rx.matchedLength();
     }
@@ -161,7 +169,7 @@ void Test::testReg()
 
 void Test::testFontWidth()
 {
-    QFont font = QFont("微软雅黑",18);
+    QFont font = QFont("微软雅黑", 18);
     QFont newFont(font.family(), font.pixelSize());
     QFontMetrics fm(newFont);
     QString testStr = "[测试字符]";
@@ -177,6 +185,53 @@ void Test::testFontWidth()
     int pixWidth = fm.horizontalAdvance(testStr);
     qDebug() << "sizeWidth: " << sizeWidth << "  "
              << "pixWidth: " << pixWidth; //126  74
+}
+
+void Test::testJson()
+{
+    QString jsonStr = "{\"name\":\"zsj\",\"age\":12}";
+    QJsonDocument doc = QJsonDocument::fromJson(jsonStr.toLatin1());
+    if(!doc.isNull() && !doc.isEmpty())
+    {
+        QJsonObject obj = doc.object();
+        qDebug() << "name: " << obj.value("name").toString()
+                 << "age : " << obj.value("age").toInt();
+        qDebug() << doc.toJson().data();
+    }
+    else
+    {
+        qCritical() << "doc is null";
+    }
+}
+
+void Test::testChatMessageRecord()
+{
+    zsj::ChatMessageRecord chatMessageRecord(QDateTime::currentDateTime(),"111","222",MessageBodyPtr(new TextMessageBody("hello world")));
+    qDebug() << chatMessageRecord.serializeToJson();
+
+    QString tempPath = "/record/temp/";
+    QString fileName = "record.txt";
+
+    QString currenPath = SystemUtil::getProcessPath();
+    QString path = currenPath + tempPath;
+    bool isOk = FileUtil::judgeAndMakeDir(path);
+    if(isOk){
+        qDebug() << __LINE__ <<  " create " << path << " success";
+    }
+    else{
+        qCritical() << "create " << path << " failed!";
+        return;
+    }
+    QString filePath = path + fileName;
+    QFile file(filePath);
+    if(!file.open(QIODevice::Append | QIODevice::WriteOnly)){
+        qCritical() << "open " << filePath << " failed!";
+        return;
+    }
+//    QTextStream out(&file);
+    file.write(chatMessageRecord.serializeToJson().toStdString().data());
+    file.write("\n");
+    file.close();
 }
 
 

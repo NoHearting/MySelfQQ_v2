@@ -8,8 +8,6 @@
 #include "item_widgets/ChatObjectItem.h"
 #include "main/StaticIniator.h"
 #include "item_widgets/ChatMessageItemObject.h"
-#include "item_widgets/ChatMessageItemSelf.h"
-#include "item_widgets/ChatMessageImageItemSelf.h"
 #include "item_widgets/ChatMessageImageItemObject.h"
 #include "screen_shot/ScreenShot.h"
 #include "main/ChatBubble.h"
@@ -48,6 +46,10 @@ ChatWidget::ChatWidget(QWidget *parent) :
 ChatWidget::~ChatWidget()
 {
     delete ui;
+    for(auto iter = chatObjInfo.begin(); iter != chatObjInfo.end(); ++iter)
+    {
+        qDebug() << iter.value().size();
+    }
 }
 
 void ChatWidget::showMaximizedWindow()
@@ -133,17 +135,15 @@ void ChatWidget::initObjects()
 
     emojiWidget = new EmojiWidget(this);
     emojiHotWidget = new EmojiHotWidget(this);
+
+    QPixmap head(":/global/res/global/water-tray.png");
+    selfData.reset(new zsj::UserData(head, "无心", "1762861794", "", ""));
 }
 
 void ChatWidget::initResourceAndForm()
 {
     this->setWindowFlags(Qt::FramelessWindowHint);
     this->setAttribute(Qt::WA_TranslucentBackground);
-//    setMouseTracking(true);
-
-    // ://css/chat.css
-//    this->setStyleSheet(zsj::ReadQStyleSheet::readQss("D:\\QT\\QtCode\\MySelfQQ_v2\\MySelfQQ_v2\\css\\chat.css"));
-
 
     zsj::WidgetUtil::setWidgetBoxShadow(ui->widgetBody);
 
@@ -154,7 +154,6 @@ void ChatWidget::initResourceAndForm()
     localGeometry = ui->widgetMessageList->geometry();
     localGeometry.setHeight(600);
     ui->widgetMessageList->setGeometry(localGeometry);
-//    qDebug() << localGeometry;
 
     // 初始化搜索框的搜索图标
     QAction *action = new QAction(ui->lineEditSearch);
@@ -201,13 +200,14 @@ void ChatWidget::initSignalsAndSlots()
     qInfo() << "connect pushButtonSend::clicked to ChatWidget::slotButtonToSendMessage";
     connect(ui->pushButtonCloseGroup, &QPushButton::clicked, this, [this]()
     {
-        QPixmap head(":/test/res/test/head1.jpg");
+//        QPixmap head(":/test/res/test/head1.jpg");
+        QPixmap head = currentData->getHead();
         QString content = zsj::HtmlUtil::GetHtmlBodyContent(ui->textEditMessageInputGroup->toHtml());
-        QMap<InputMessageType, QStringList> messageMap = parser.parserMessage(content);
+        QMap<zsj::global::MessageType, QStringList> messageMap = parser.parserMessage(content);
         for(auto iter = messageMap.begin(); iter != messageMap.end(); ++iter)
         {
             addMessageItem(ui->listWidgetMessageListGroup, head,
-                           iter.key(), iter.value().at(0), false);
+                           iter.key(), iter.value().at(0), true);
         }
         ui->textEditMessageInputGroup->clear();
     });
@@ -328,47 +328,47 @@ void ChatWidget::initTestChatObjs()
 
 void ChatWidget::initTestMessageList()
 {
-    QString msg1 = "阿斯达记录卡开发及时三等奖阿斯达垃圾啊施蒂利克";
-    QString msg2 = "asldkjasjdlkasjdlakjflkajsfl遇kajskfajlksfja遇lsfja遇lksjfl遇akfjlkajfl遇kajsflk遇"
-                   "asldkjasjdlkasjdlakjflk遇ajsflk遇ajskf遇a遇jlks遇fjalsfj遇alksjflak遇fjlkajflkajsflk遇";
+//    QString msg1 = "阿斯达记录卡开发及时三等奖阿斯达垃圾啊施蒂利克";
+//    QString msg2 = "asldkjasjdlkasjdlakjflkajsfl遇kajskfajlksfja遇lsfja遇lksjfl遇akfjlkajfl遇kajsflk遇"
+//                   "asldkjasjdlkasjdlakjflk遇ajsflk遇ajskf遇a遇jlks遇fjalsfj遇alksjflak遇fjlkajflkajsflk遇";
 
-    QString msg3 = "第一类人，生下来就又一种使命感，在成年之前的各种经历，尤其是不幸的遭遇，都是为了强化这个使命，所谓“天降大任于斯人也，必先苦其心志，劳其筋骨”。究其一生，都在为这个使命而奋斗，什么功名利禄，什么困难屈辱，在他的眼里都是过眼烟云。这个使命可以非常具体，也可以非常抽象，但一生专注于这一件事，做到极致； "
-                   "第二类人，成年之前，可谓一帆风顺，沿着社会和家庭安排好的线路，系统的学得一身本领和知识。他人生的目的不是非常明确，但学习和成长是其生活中很重要的部分，他比较在乎自己的名声和名节，有些清高和矜持，如同出世的贤人。他的很多目标是阶段性的，实现了之后，就有一段闲云野鹤的日子，总之不想被束缚；";
+//    QString msg3 = "第一类人，生下来就又一种使命感，在成年之前的各种经历，尤其是不幸的遭遇，都是为了强化这个使命，所谓“天降大任于斯人也，必先苦其心志，劳其筋骨”。究其一生，都在为这个使命而奋斗，什么功名利禄，什么困难屈辱，在他的眼里都是过眼烟云。这个使命可以非常具体，也可以非常抽象，但一生专注于这一件事，做到极致； "
+//                   "第二类人，成年之前，可谓一帆风顺，沿着社会和家庭安排好的线路，系统的学得一身本领和知识。他人生的目的不是非常明确，但学习和成长是其生活中很重要的部分，他比较在乎自己的名声和名节，有些清高和矜持，如同出世的贤人。他的很多目标是阶段性的，实现了之后，就有一段闲云野鹤的日子，总之不想被束缚；";
 
-    for(int i = 0; i < 7; i++)
-    {
-        QListWidgetItem *item = new QListWidgetItem(ui->listWidgetMessageList);
-//        item->setSizeHint(QSize(ui->listWidget->width(),100));
-        ui->listWidgetMessageList->addItem(item);
+//    for(int i = 0; i < 7; i++)
+//    {
+//        QListWidgetItem *item = new QListWidgetItem(ui->listWidgetMessageList);
+////        item->setSizeHint(QSize(ui->listWidget->width(),100));
+//        ui->listWidgetMessageList->addItem(item);
 
 
-        QPixmap pic("Z:\\default\\Pictures\\head\\head0.jpg");
-        QString msg;
-        switch(i % 3 + 1)
-        {
-            case 1:
-                msg = msg1;
-                break;
-            case 2:
-                msg = msg2;
-                break;
-            case 3:
-                msg = msg3;
-                break;
-        }
-        zsj::ChatMessageData::ptr data(new zsj::ChatMessageData(pic, msg));
-        if(i % 2)
-        {
-            auto *cmio = new ChatMessageItemObject(data, item, ui->listWidgetMessageList);
-            ui->listWidgetMessageList->setItemWidget(item, cmio);
-        }
-        else
-        {
-            auto *cmio = new ChatMessageItemSelf(data, item, ui->listWidgetMessageList);
-            ui->listWidgetMessageList->setItemWidget(item, cmio);
-        }
+//        QPixmap pic("Z:\\default\\Pictures\\head\\head0.jpg");
+//        QString msg;
+//        switch(i % 3 + 1)
+//        {
+//            case 1:
+//                msg = msg1;
+//                break;
+//            case 2:
+//                msg = msg2;
+//                break;
+//            case 3:
+//                msg = msg3;
+//                break;
+//        }
+//        zsj::ChatMessageData::ptr data(new zsj::ChatMessageData(pic, msg));
+//        if(i % 2)
+//        {
+//            auto *cmio = new ChatMessageItemObject(data, item, ui->listWidgetMessageList);
+//            ui->listWidgetMessageList->setItemWidget(item, cmio);
+//        }
+//        else
+//        {
+//            auto *cmio = new ChatMessageItemSelf(data, item, ui->listWidgetMessageList);
+//            ui->listWidgetMessageList->setItemWidget(item, cmio);
+//        }
 
-    }
+//    }
 }
 
 void ChatWidget::setCurrentData(zsj::Data::ptr data)
@@ -386,68 +386,54 @@ void ChatWidget::setCurrentData(zsj::Data::ptr data)
 }
 
 void ChatWidget::addMessageItem(QListWidget *listWidget, QPixmap &head,
-                                const QString &message, bool isSelf)
+                                zsj::global::MessageType inputType,
+                                const QString &message, bool isLeft)
 {
+    if(parser.contentJudgeEmpty(message))
+    {
+        return;
+    }
+
     QListWidgetItem *item = new QListWidgetItem(listWidget);
     listWidget->addItem(item);
-    zsj::ChatMessageData::ptr data(new zsj::ChatMessageData(head, message));
+    zsj::MessageBodyPtr msgBody;
+    zsj::ChatMessageRecord msgRecord(QDateTime::currentDateTime(),
+                                     selfData->getAccount(),
+                                     currentData->getAccount());
+    zsj::ChatMessageData::ptr data;
     QWidget *widget = nullptr;
-    if(isSelf)
+    switch(inputType)
     {
-        widget = new ChatMessageItemSelf(data, item, listWidget);
-    }
-    else
-    {
-        widget = new ChatMessageItemObject(data, item, listWidget);
+        case zsj::global::MessageType::TEXT:
+            msgBody.reset(new zsj::TextMessageBody(message));
+            msgRecord.setMessageBody(msgBody);
+            data.reset(new zsj::ChatMessageData(head, msgRecord));
+            widget = new ChatMessageItemObject(isLeft, data, item, listWidget);
+            break;
+        case zsj::global::MessageType::IMAGE:
+            msgBody.reset(new zsj::ImageMessageBody(message));
+            msgRecord.setMessageBody(msgBody);
+            data.reset(new zsj::ChatMessageData(head, msgRecord));
+            widget = new ChatMessageImageItemObject(isLeft, data, item, listWidget);
+            break;
+        case zsj::global::MessageType::FILE:
+            msgBody.reset(new zsj::FileMessageBody("test.txt", "test.txt", 512));
+            break;
+        case zsj::global::MessageType::AUDIO:
+        case zsj::global::MessageType::VIDEO:
+        default:
+            break;
     }
     listWidget->setItemWidget(item, widget);
 
     // 滚动到最底部
     listWidget->scrollToBottom();
 
-}
-
-void ChatWidget::addMessageItem(QListWidget *listWidget, QPixmap &head,
-                                ChatWidget::InputMessageType inputType,
-                                const QString &message, bool isSelf)
-{
-#define SWITCH(name) \
-    switch(inputType){ \
-        case InputMessageType::IMAGE: \
-            data.reset(new zsj::ChatMessageData(message,head)); \
-            widget = new ChatMessageImageItem##name(data, item, listWidget); \
-            break; \
-        case InputMessageType::EMOJI_TEXT: \
-            if(parser.contentJudgeEmpty(message)){ \
-                data->setHasEmoji(true); \
-                widget = new ChatMessageItem##name(data, item, listWidget); \
-            } \
-            break; \
-        case InputMessageType::PLAIN_TEXT: \
-            if(parser.contentJudgeEmpty(message)){ \
-                widget = new ChatMessageItem##name(data, item, listWidget); \
-            }\
-            break; \
-    }
-
-    QListWidgetItem *item = new QListWidgetItem(listWidget);
-    listWidget->addItem(item);
-    zsj::ChatMessageData::ptr data(new zsj::ChatMessageData(head, message));
-    QWidget *widget = nullptr;
-    if(isSelf)
+    chatObjInfo[currentItem].enqueue(msgRecord);
+    if(chatObjInfo[currentItem].size() > 100)
     {
-        SWITCH(Self);
+        /// 持久化
     }
-    else
-    {
-        SWITCH(Object);
-    }
-    listWidget->setItemWidget(item, widget);
-
-    // 滚动到最底部
-    listWidget->scrollToBottom();
-
-#undef SWITCH
 }
 
 
@@ -505,21 +491,27 @@ void ChatWidget::switchChatObj()
     switch(currentData->getDataType())
     {
         case zsj::global::DataType::GROUP_DATA:
-            ui->stackedWidgetMain->setCurrentIndex(1);
-            qDebug() << "更改到群组的界面";
+            {
+                ui->stackedWidgetMain->setCurrentIndex(1);
+                ui->listWidgetMessageListGroup->clear();
+                QQueue<zsj::ChatMessageRecord> queue = chatObjInfo[currentItem];
+                loadChatMessageRecord(ui->listWidgetMessageListGroup, queue);
+            }
             break;
         case zsj::global::DataType::USER_DATA:
-            ui->stackedWidgetMain->setCurrentIndex(0);
-            qDebug() << "执行用户类型的逻辑";
+            {
+
+                ui->stackedWidgetMain->setCurrentIndex(0);
+//            qDebug() << "执行用户类型的逻辑";
+                ui->listWidgetMessageList->clear();
+                QQueue<zsj::ChatMessageRecord> queue = chatObjInfo[currentItem];
+                loadChatMessageRecord(ui->listWidgetMessageList, queue);
+            }
             break;
         case zsj::global::DataType::SYSTEM_DATA:
             qDebug() << "执行系统类型的逻辑";
             break;
     }
-
-    // 设置数据
-    // 目前只有一个简单的数据
-    ui->labelCurrentObjName->setText(currentData->getName());
 }
 
 void ChatWidget::changeMessageInput()
@@ -550,6 +542,62 @@ void ChatWidget::changeMessageInput()
     }
 }
 
+void ChatWidget::addMessageToList(const QString &content,
+                                  QListWidget *listWidget,
+                                  QTextEdit *textEdit)
+{
+    QPixmap head = selfData->getHead();
+    addMessageToList(head, content, listWidget, textEdit);
+}
+
+void ChatWidget::addMessageToList(QPixmap &head,
+                                  const QString &content,
+                                  QListWidget *listWidget, QTextEdit *textEdit)
+{
+    QMap<zsj::global::MessageType, QStringList> messageMap = parser.parserMessage(content);
+    for(auto iter = messageMap.begin(); iter != messageMap.end(); ++iter)
+    {
+        addMessageItem(listWidget, head, iter.key(), iter.value().at(0));
+    }
+    textEdit->clear();
+}
+
+void ChatWidget::loadChatMessageRecord(QListWidget *listWidget, const QQueue<zsj::ChatMessageRecord> records)
+{
+    for(const auto &record : records)
+    {
+        QListWidgetItem *item = new QListWidgetItem(listWidget);
+        listWidget->addItem(item);
+        zsj::ChatMessageData::ptr data(nullptr);
+        QWidget *widget = nullptr;
+        bool isLeft = (record.getSender() != selfData->getAccount());
+        QPixmap head = isLeft ? currentData->getHead() : selfData->getHead();
+        switch (record.getMessageBody()->getType())
+        {
+            case zsj::global::MessageType::TEXT:
+                data.reset(new zsj::ChatMessageData(head, record));
+                widget = new ChatMessageItemObject(isLeft, data, item, listWidget);
+                break;
+            case zsj::global::MessageType::IMAGE:
+                data.reset(new zsj::ChatMessageData(head, record));
+                widget = new ChatMessageImageItemObject(isLeft, data, item, listWidget);
+                break;
+            case zsj::global::MessageType::FILE:
+                /// todo
+                break;
+            case zsj::global::MessageType::AUDIO:
+            case zsj::global::MessageType::VIDEO:
+            default:
+                break;
+        }
+        listWidget->setItemWidget(item, widget);
+
+        // 滚动到最底部
+        listWidget->scrollToBottom();
+    }
+}
+
+
 void ChatWidget::slotDeleteChatObject(QPoint point)
 {
     QPoint localPos = ui->listWidgetChatObjList->mapFromGlobal(point);
@@ -560,7 +608,7 @@ void ChatWidget::slotDeleteChatObject(QPoint point)
                                    QListWidget, QListWidgetItem, ChatObjectItem > (ui->listWidgetChatObjList, item);
         if(chatItem)
         {
-            auto deleteItem = ui->listWidgetChatObjList->takeItem(ui->listWidgetChatObjList->row(item));
+            QListWidgetItem *deleteItem = ui->listWidgetChatObjList->takeItem(ui->listWidgetChatObjList->row(item));
 
             if(chatItem->getData() == currentData)
             {
@@ -600,6 +648,10 @@ void ChatWidget::slotItemAdd(QListWidgetItem *item)
         currentItem = item;
         setCurrentData(chatObj->getData());
         switchChatObj();
+        if(!chatObjInfo.contains(item))
+        {
+            chatObjInfo.insert(currentItem, QQueue<zsj::ChatMessageRecord>());
+        }
     }
     else
     {
@@ -611,53 +663,28 @@ void ChatWidget::slotItemAdd(QListWidgetItem *item)
 
 void ChatWidget::slotButtonToSendMessage()
 {
-    QPixmap head(":/test/res/test/head4.jpg");
     QString content = zsj::HtmlUtil::GetHtmlBodyContent(ui->textEditMessageInput->toHtml());
-    QMap<InputMessageType, QStringList> messageMap = parser.parserMessage(content);
-    for(auto iter = messageMap.begin(); iter != messageMap.end(); ++iter)
-    {
-        addMessageItem(ui->listWidgetMessageList, head, iter.key(), iter.value().at(0));
-    }
-    ui->textEditMessageInput->clear();
+    addMessageToList(content, ui->listWidgetMessageList, ui->textEditMessageInput);
 
 }
 
 void ChatWidget::slotButtonToSendMessageGroup()
 {
-    QPixmap head(":/test/res/test/head1.jpg");
+
     QString content = zsj::HtmlUtil::GetHtmlBodyContent(ui->textEditMessageInputGroup->toHtml());
-    qDebug() << "**************" << content;
-    QMap<InputMessageType, QStringList> messageMap = parser.parserMessage(content);
-    for(auto iter = messageMap.begin(); iter != messageMap.end(); ++iter)
-    {
-        addMessageItem(ui->listWidgetMessageListGroup, head, iter.key(), iter.value().at(0));
-    }
-    ui->textEditMessageInputGroup->clear();
+    addMessageToList(content, ui->listWidgetMessageListGroup, ui->textEditMessageInputGroup);
 }
 
 
 void ChatWidget::slotKeyToSendMessage(const QString &msg)
 {
-    QPixmap head(":/test/res/test/head4.jpg");
-
-    QMap<InputMessageType, QStringList> messageMap = parser.parserMessage(msg);
-    for(auto iter = messageMap.begin(); iter != messageMap.end(); ++iter)
-    {
-        addMessageItem(ui->listWidgetMessageList, head, iter.key(), iter.value().at(0));
-    }
-    ui->textEditMessageInput->clear();
+    addMessageToList(msg, ui->listWidgetMessageList, ui->textEditMessageInput);
 
 }
 
 void ChatWidget::slotKeyToSendMessageGroup(const QString &msg)
 {
-    QPixmap head(":/test/res/test/head1.jpg");
-    QMap<InputMessageType, QStringList> messageMap = parser.parserMessage(msg);
-    for(auto iter = messageMap.begin(); iter != messageMap.end(); ++iter)
-    {
-        addMessageItem(ui->listWidgetMessageListGroup, head, iter.key(), iter.value().at(0));
-    }
-    ui->textEditMessageInputGroup->clear();
+    addMessageToList(msg, ui->listWidgetMessageListGroup, ui->textEditMessageInputGroup);
 }
 
 void ChatWidget::slotMaxShowMessageList()
@@ -740,13 +767,13 @@ void ChatWidget::slotChooseImageFileGroup()
 }
 
 
-QMap<ChatWidget::InputMessageType, QStringList> ChatWidget::MessageParser::parserMessage(QString originmessage)
+QMap<zsj::global::MessageType, QStringList> ChatWidget::MessageParser::parserMessage(QString originmessage)
 {
     //去掉第一个QTextedit自带的换行\n
     int begin = originmessage.indexOf("\n");
     originmessage = originmessage.remove(begin, 1);
 
-    QMap<ChatWidget::InputMessageType, QStringList> messageMap;
+    QMap<zsj::global::MessageType, QStringList> messageMap;
     bool hasEmoji = false;
     int index = 0;
     do
@@ -765,7 +792,7 @@ QMap<ChatWidget::InputMessageType, QStringList> ChatWidget::MessageParser::parse
         if(!tag.contains("emoji"))
         {
             originmessage.replace(tag, "");
-            messageMap[InputMessageType::IMAGE].append(tag);
+            messageMap[zsj::global::MessageType::IMAGE].append(tag);
         }
         else
         {
@@ -777,11 +804,11 @@ QMap<ChatWidget::InputMessageType, QStringList> ChatWidget::MessageParser::parse
 
     if(hasEmoji)
     {
-        messageMap[InputMessageType::EMOJI_TEXT].append(originmessage);
+        messageMap[zsj::global::MessageType::TEXT].append(originmessage);
     }
     else
     {
-        messageMap[InputMessageType::PLAIN_TEXT].append(originmessage);
+        messageMap[zsj::global::MessageType::TEXT].append(originmessage);
     }
 
     return messageMap;
@@ -797,10 +824,10 @@ bool ChatWidget::MessageParser::contentJudgeEmpty(const QString &content)
             newContent == "<body><span></span></body>" ||
             newContent == "<body><p><span></span></p></body>")
     {
-        return false;
+        return true;
     }
     else
     {
-        return true;
+        return false;
     }
 }

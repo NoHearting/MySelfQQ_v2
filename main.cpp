@@ -5,6 +5,7 @@
 #include "MainWidget.h"
 #include "ChatWidget.h"
 #include "utils/Global.h"
+#include "test/TestWidget.h"
 
 #include <QApplication>
 #include <QMutex>
@@ -29,8 +30,12 @@ int main(int argc, char *argv[])
     // msg
 #endif
 #if TEST
+    QApplication a(argc, argv);
+//    zsj::Test().test();
 
-    zsj::Test().test();
+    TestWidget testWidget;
+    testWidget.show();
+    return a.exec();
 #else
     QApplication a(argc, argv);
 

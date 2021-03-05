@@ -7,11 +7,17 @@
 
 #include <QRect>
 #include <QStringList>
+#include <QVector>
+#include <QMap>
+#include <QTextEdit>
+#include <QQueue>
 
 #include "main/Frameless.h"
 #include "main/Data.h"
 #include "feature_widgets/EmojiWidget.h"
 #include "feature_widgets/EmojiHotWidget.h"
+#include "utils/Global.h"
+#include "main/ChatMessageRecord.h"
 
 namespace Ui {
 class ChatWidget;
@@ -21,11 +27,7 @@ class ChatWidget : public QWidget
 {
     Q_OBJECT
 public:
-    enum class InputMessageType{
-        PLAIN_TEXT = 0, // 只含文本
-        IMAGE,          // 只含文件
-        EMOJI_TEXT      // 包含表情和文本
-    };
+
 public:
     explicit ChatWidget(QWidget *parent = nullptr);
     ~ChatWidget();
@@ -58,7 +60,7 @@ private:
          * @param originmessage 原生消息
          * @return
          */
-        QMap<InputMessageType,QStringList> parserMessage(QString originmessage);
+        QMap<zsj::global::MessageType,QStringList> parserMessage(QString originmessage);
 
 
         /**
@@ -104,14 +106,6 @@ private:
     /// @param[in] data 设置数据
     void setCurrentData(zsj::Data::ptr data);
 
-    /// @brief 添加消息item
-    /// @param[in] listWidget 需要添加item的QListWidget
-    /// @param[in] head 头像
-    /// @param[in] message 聊天消息
-    /// @note 废弃，参数过少，使用下面一个。后续删除
-    void addMessageItem(QListWidget * listWidget,QPixmap & head,const QString & message,bool isSelf = true);
-
-
     /**
      * @brief 添加信息item
      * @param listWidget 需要添加item的QListWidget
@@ -120,8 +114,8 @@ private:
      * @param message 聊天消息
      * @param isSelf 是否是自己所发信息
      */
-    void addMessageItem(QListWidget * listWidget,QPixmap & head,InputMessageType inputType,
-                        const QString & message,bool isSelf = true);
+    void addMessageItem(QListWidget * listWidget,QPixmap & head,zsj::global::MessageType inputType,
+                        const QString & message,bool isLeft = false);
 
 
     /// @brief 切换聊天对象
@@ -131,6 +125,36 @@ private:
     /// @brief 改变消息输入框的大小
     void changeMessageInput();
 
+
+    /**
+     * @brief 添加消息到消息列表
+     * @param content   内容
+     * @param listWidget
+     * @param item
+     */
+    void addMessageToList(const QString & content,
+                          QListWidget * listWidget,QTextEdit * textEdit);
+
+    /**
+     * @brief 添加消息到消息列表
+     * @param head 头像
+     * @param content 内容
+     * @param listWidget
+     * @param textEdit
+     */
+    void addMessageToList(QPixmap & head,
+                          const QString &content,
+                          QListWidget *listWidget,
+                          QTextEdit *textEdit);
+
+
+    /**
+     * @brief 加载聊天记录
+     * @param listWidget 聊天记录加载的容器
+     * @param records 聊天记录
+     */
+    void loadChatMessageRecord(QListWidget * listWidget,
+                               const QQueue<zsj::ChatMessageRecord> records);
 private:
     Ui::ChatWidget *ui;
 
@@ -139,6 +163,8 @@ private:
 
     /// 当前聊天对象数据
     zsj::Data::ptr currentData = nullptr;
+
+    zsj::Data::ptr selfData = nullptr;
 
     /// 当前选择聊天对象的item
     QListWidgetItem * currentItem = nullptr;
@@ -160,6 +186,9 @@ private:
 
     /// 解析需要发送的消息
     MessageParser parser;
+
+    /// 聊天对象的信息。临时保存聊天记录
+    QMap<QListWidgetItem*,QQueue<zsj::ChatMessageRecord>> chatObjInfo;
 
 public slots:
 

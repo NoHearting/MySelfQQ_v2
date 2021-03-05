@@ -25,7 +25,7 @@ class ChatMessageImageItemObject : public QWidget,public zsj::ChatMessageItem
 
 public:
     explicit ChatMessageImageItemObject(QWidget *parent = nullptr);
-    ChatMessageImageItemObject(zsj::ChatMessageData::ptr data,QListWidgetItem * item,
+    ChatMessageImageItemObject(bool isLeft,zsj::ChatMessageData::ptr data,QListWidgetItem * item,
                                QWidget * parent = nullptr);
     ~ChatMessageImageItemObject();
 
@@ -68,6 +68,9 @@ private:
 
     /// 显示的图片呢
     QPixmap image;
+
+    /// 是否显示在左边
+    bool isLeft;
 };
 
 #endif // CHATMESSAGEIMAGEITEMOBJECT_H

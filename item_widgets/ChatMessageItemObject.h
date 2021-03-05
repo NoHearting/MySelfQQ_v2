@@ -26,7 +26,7 @@ class ChatMessageItemObject : public QWidget, public zsj::ChatMessageItem
 
 public:
     explicit ChatMessageItemObject(QWidget *parent = nullptr);
-    ChatMessageItemObject(zsj::ChatMessageData::ptr data, QListWidgetItem *item, QWidget *parent = nullptr);
+    ChatMessageItemObject(bool isLeft,zsj::ChatMessageData::ptr data, QListWidgetItem *item, QWidget *parent = nullptr);
     ~ChatMessageItemObject();
 
 
@@ -47,6 +47,8 @@ private:
 
     /// 聊天对象的数据  包括聊天信息、头像
     zsj::ChatMessageData::ptr chatMessageData;
+
+    bool isLeft;
 
 
 };

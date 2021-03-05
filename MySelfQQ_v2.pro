@@ -32,7 +32,6 @@ SOURCES += main.cpp \
     feature_widgets/WarnDialog.cpp \
     item_widgets/ChatMessageItem.cpp \
     item_widgets/ChatMessageItemObject.cpp \
-    item_widgets/ChatMessageItemSelf.cpp \
     item_widgets/ChatObjectItem.cpp \
     item_widgets/ComboBoxItemWidget.cpp \
     item_widgets/LinkmanGroupItemWidget.cpp \
@@ -58,9 +57,10 @@ SOURCES += main.cpp \
     main/EmojiInfo.cpp \
     main/StringUserData.cpp \
     feature_widgets/EmojiHotWidget.cpp \
-    item_widgets/ChatMessageImageItemSelf.cpp \
     main/CurrentWindow.cpp \
-    item_widgets/ChatMessageImageItemObject.cpp
+    item_widgets/ChatMessageImageItemObject.cpp \
+    main/ChatMessageRecord.cpp \
+    test/TestWidget.cpp
 
 
 
@@ -82,7 +82,6 @@ HEADERS  += ChatWidget.h \
     feature_widgets/WarnDialog.h \
     item_widgets/ChatMessageItem.h \
     item_widgets/ChatMessageItemObject.h \
-    item_widgets/ChatMessageItemSelf.h \
     item_widgets/ChatObjectItem.h \
     item_widgets/ComboBoxItemWidget.h \
     item_widgets/LinkmanGroupItemWidget.h \
@@ -111,9 +110,10 @@ HEADERS  += ChatWidget.h \
     main/EmojiInfo.h \
     main/StringUserData.h \
     feature_widgets/EmojiHotWidget.h \
-    item_widgets/ChatMessageImageItemSelf.h \
     main/CurrentWindow.h \
-    item_widgets/ChatMessageImageItemObject.h
+    item_widgets/ChatMessageImageItemObject.h \
+    main/ChatMessageRecord.h \
+    test/TestWidget.h
 
 
 FORMS    +=     LoginWidget.ui \
@@ -132,7 +132,8 @@ FORMS    +=     LoginWidget.ui \
     feature_widgets/EmojiWidget.ui \
     feature_widgets/EmojiHotWidget.ui \
     item_widgets/ChatMessageImageItemSelf.ui \
-    item_widgets/ChatMessageImageItemObject.ui
+    item_widgets/ChatMessageImageItemObject.ui \
+    test/TestWidget.ui
 
 
 

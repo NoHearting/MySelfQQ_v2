@@ -32,7 +32,16 @@ enum class UiType{
     GROUP
 };
 
-
+/**
+ * @brief 消息的类型
+ */
+enum class MessageType{
+    TEXT = 0,       /// 文本
+    IMAGE,          /// 图片
+    FILE,           /// 文件
+    AUDIO,          /// 音频
+    VIDEO           /// 视频
+};
 
 
 

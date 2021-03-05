@@ -8,6 +8,7 @@
 #include <QGraphicsDropShadowEffect>
 #include <QThread>
 #include <QDir>
+#include <QRegExp>
 
 namespace zsj
 {
@@ -43,6 +44,13 @@ QSize Util::ScaledImageSize(const QSize &originSize, int max)
 QString Util::PackageImageHtml(const QString &src, int width, int height)
 {
     return QString("<img src='%1' width=%2 height=%3 />").arg(src).arg(width).arg(height);
+}
+
+QString Util::RemoveEnterReturn(const QString &origin)
+{
+    QString temp = origin;
+//    return temp.replace("[\r\n]","");
+    return temp.replace(QRegExp("[\r\n]"),"");
 }
 
 
@@ -163,6 +171,7 @@ bool FileUtil::judgeAndMakeDir(const QString &dirPath)
     QDir dir(dirPath);
     if(dir.exists(dirPath))
     {
+        qDebug() << dirPath << " exist";
         return true;
     }
     QString parentDir = dirPath.mid(0, dirPath.lastIndexOf('/'));
@@ -182,17 +191,13 @@ bool FileUtil::judgeAndMakeDir(const QString &dirPath)
     if(!dirname.isEmpty())
     {
         bool isOk = parentPath.mkpath(dirname);
-        if(isOk)
-        {
-            return true;
-        }
-        else
+        if(!isOk)
         {
             qDebug() << "create dir failed";
             return false;
         }
     }
-    return false;
+    return true;
 }
 
 QString HtmlUtil::RemoveOriginTagStyle(const QString &originStr, TagType types)

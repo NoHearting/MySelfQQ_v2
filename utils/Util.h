@@ -43,6 +43,14 @@ public:
      * @return <img src="#src" width=#width height=#height />
      */
     static QString PackageImageHtml(const QString & src,int width,int height);
+
+
+    /**
+     * @brief 去掉字符串中的回车换行
+     * @param origin
+     * @return
+     */
+    static QString RemoveEnterReturn(const QString & origin);
 };
 
 struct HeadSize
