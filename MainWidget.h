@@ -13,12 +13,14 @@
 #include <QMenu>
 #include <map>
 #include <list>
+#include <QSharedPointer>
 
 
 #include "main/Frameless.h"
 #include "feature_widgets/SystemTray.h"
 #include "main/Linkman.h"
 #include "feature_widgets/WarnDialog.h"
+#include "ChatWidget.h"
 
 namespace Ui
 {
@@ -183,6 +185,9 @@ private:
     mapTreeItem dataFriend;
     mapTreeItem dataGroup;
 
+
+    /// 聊天窗口
+    QSharedPointer<ChatWidget> chatWidgetPtr;
 private slots:
 
     // ------- 最顶部功能按钮 ---------
@@ -224,6 +229,13 @@ private slots:
     void showContextMenuGroup(const QPoint &);
     void showContextMenuMessage(const QPoint &);
 
+
+    /**
+     * @brief 打开聊天窗口
+     * @param index 当前聊天对象在聊天列表中的坐标
+     */
+    void slotOpenChatWindow(const QModelIndex &index);
+    void slotOpenChatWindowGroup(const QModelIndex &index);
 public slots:
     /// @brief 好友管理
     void friendManager() {}

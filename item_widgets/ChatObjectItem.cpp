@@ -39,7 +39,6 @@ void ChatObjectItem::resizeEvent(QResizeEvent *e)
     }
     else{
         ui->labelDate->show();
-//        ui->toolButtonClose->show();
         adjustLabelPostion();
     }
 

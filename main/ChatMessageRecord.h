@@ -163,6 +163,12 @@ public:
     global::MessageType getType() const override;
     void setType(const global::MessageType &value) override;
 
+    QString getFileName() const;
+
+    QString getFilePath() const;
+
+    int getFileSize() const;
+
 private:
     QString fileName;       /// 文件名
     QString filePath;       /// 文件路径

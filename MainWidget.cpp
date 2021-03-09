@@ -45,6 +45,8 @@ void MainWidget::initObjects()
     friendDialog = new WarnDialog(this);
     groupDialog = new WarnDialog(this);
     initMenus();
+
+    chatWidgetPtr.reset(new ChatWidget);
 }
 
 
@@ -130,7 +132,7 @@ void MainWidget::initSignalsAndSlots()
     connect(ui->pushButtonSpace, &QPushButton::clicked, this, &MainWidget::switchToSpaceWidget);
     qInfo() << "connect ui->pushButtonSpace::clicked to MainWidget::switchToSpaceWidget";
 
-    // 内部容器的点击 QTreeWidget
+    /// 内部容器的点击 QTreeWidget
     connect(ui->treeWidgetFriend, &QTreeWidget::itemClicked, this, &MainWidget::treeWidgetItemClick);
     connect(ui->treeWidgetGroup, &QTreeWidget::itemClicked, this, &MainWidget::treeWidgetItemClick);
     qInfo() << "connect ui->treeWidgetGroup,ui->treeWidgetFriend::itemClicked to MainWidget::treeWidgetItemClick";
@@ -148,6 +150,10 @@ void MainWidget::initSignalsAndSlots()
 
     connect(ui->listWidgetMessage, &MyListWidget::customContextMenuRequested, this, &MainWidget::showContextMenuMessage);
     qInfo() << "connect listWidgetMessage::customContextMenuRequested to MainWidget::showContextMenuMessage";
+
+    connect(ui->treeWidgetFriend,&MyTreeWidget::doubleClicked,this,&MainWidget::slotOpenChatWindow);
+    connect(ui->treeWidgetGroup,&MyTreeWidget::doubleClicked,this,&MainWidget::slotOpenChatWindowGroup);
+
 }
 
 void MainWidget::initManlinkFriend()
@@ -179,7 +185,7 @@ void MainWidget::initManlinkFriend()
     {
         QPixmap head3(QString(":/test/res/test/head%1.jpg").arg(i % 5));
         zsj::UserData::ptr user3(new zsj::UserData(head3, QString("狗头%1").arg(i),
-                                 "1231231", QString("签名%1").arg(i), QString("备注%1").arg(i)));
+                                 QString("123123%1").arg(i), QString("签名%1").arg(i), QString("备注%1").arg(i)));
         this->addTreeWidgetChildNode(ui->treeWidgetFriend, rootFriends, user3);
     }
 }
@@ -861,6 +867,40 @@ void MainWidget::showContextMenuMessage(const QPoint &point)
     else
     {
         qCritical() << "invalid QListWidgetItem";
+    }
+}
+
+void MainWidget::slotOpenChatWindow(const QModelIndex &index)
+{
+    QWidget *widget = ui->treeWidgetFriend->indexWidget(index);
+    if(!widget){
+        qCritical() << "choose chat object failed!";
+    }
+    LinkmanItemWidget * linkman = dynamic_cast<LinkmanItemWidget*>(widget);
+    if(linkman){
+        zsj::Data::ptr data = linkman->getUserData();
+        chatWidgetPtr->addChatObjItem(data);
+        if(!chatWidgetPtr->isVisible())
+        {
+            chatWidgetPtr->show();
+        }
+    }
+}
+
+void MainWidget::slotOpenChatWindowGroup(const QModelIndex &index)
+{
+    QWidget *widget = ui->treeWidgetGroup->indexWidget(index);
+    if(!widget){
+        qCritical() << "choose chat object failed!";
+    }
+    LinkmanGroupItemWidget * linkman = dynamic_cast<LinkmanGroupItemWidget*>(widget);
+    if(linkman){
+        zsj::Data::ptr data = linkman->getGroupData();
+        chatWidgetPtr->addChatObjItem(data);
+        if(!chatWidgetPtr->isVisible())
+        {
+            chatWidgetPtr->show();
+        }
     }
 }
 

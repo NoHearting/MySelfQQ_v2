@@ -95,6 +95,12 @@ public:
             if(obj){
                 return obj;
             }
+            else{
+                qCritical() << "dynamic cast failed!";
+            }
+        }
+        else{
+            qCritical() << "no item widget!";
         }
         return nullptr;
 
@@ -229,6 +235,15 @@ QPixmap pixmapToRound(QPixmap &src, int radius);
 /// @param[in] height 目标图片的高
 /// @return QPixmap
 QPixmap scaledPixmap(QPixmap &src, int width, int height);
+
+/**
+ * @brief 非等比缩放图片
+ * @param src
+ * @param width
+ * @param height
+ * @return
+ */
+QPixmap ScaledPixmapNoKeepAspectRatio(QPixmap &src, int width, int height);
 
 /// @brief 直接缩放为适应头像大小
 ///     主要是先缩放，在变为圆形

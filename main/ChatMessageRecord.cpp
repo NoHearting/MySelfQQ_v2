@@ -326,6 +326,21 @@ void FileMessageBody::setType(const global::MessageType &value)
     type = value;
 }
 
+QString FileMessageBody::getFileName() const
+{
+    return fileName;
+}
+
+QString FileMessageBody::getFilePath() const
+{
+    return filePath;
+}
+
+int FileMessageBody::getFileSize() const
+{
+    return fileSize;
+}
+
 
 
 }

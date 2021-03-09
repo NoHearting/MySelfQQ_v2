@@ -11,6 +11,7 @@
 #include <QMap>
 #include <QTextEdit>
 #include <QQueue>
+#include <QFileInfo>
 
 #include "main/Frameless.h"
 #include "main/Data.h"
@@ -39,6 +40,13 @@ public:
     /// @brief 显示普通大小窗口
     void showNormalWindow();
 
+
+    /**
+     * @brief 添加聊天列表对象
+     * @param data 聊天对象的数据
+     */
+    void addChatObjItem(zsj::Data::ptr data);
+
 protected:
 
     /// @brief 重写窗口大小改变事件
@@ -46,6 +54,12 @@ protected:
 
 
     bool event(QEvent *event);
+
+    /**
+     * @brief 当窗口隐藏时，清空已有的数据
+     * @param event
+     */
+    void hideEvent(QHideEvent *event);
 
 private:
 
@@ -106,6 +120,11 @@ private:
     /// @param[in] data 设置数据
     void setCurrentData(zsj::Data::ptr data);
 
+
+    void addFileMessageItem(QListWidget * listWidget,QPixmap & head,const QString & fileName,
+                            const QString & filePath,int fileSize,
+                            bool isLeft = false);
+
     /**
      * @brief 添加信息item
      * @param listWidget 需要添加item的QListWidget
@@ -155,6 +174,18 @@ private:
      */
     void loadChatMessageRecord(QListWidget * listWidget,
                                const QQueue<zsj::ChatMessageRecord> records);
+
+
+    /**
+     * @brief 清除所有需要发送的文件。
+     */
+    void clearAllToBeSendFiles(QListWidget * listWidget);
+
+    /**
+     * @brief 设置MQ秀
+     * @param mqImage MQ秀图片
+     */
+    void setMQshow(const QString & mqImage);
 private:
     Ui::ChatWidget *ui;
 
@@ -188,8 +219,14 @@ private:
     MessageParser parser;
 
     /// 聊天对象的信息。临时保存聊天记录
-    QMap<QListWidgetItem*,QQueue<zsj::ChatMessageRecord>> chatObjInfo;
+//    QMap<QListWidgetItem*,QQueue<zsj::ChatMessageRecord>> chatObjInfo;
+    // id : 消息记录
+    QMap<QString,QQueue<zsj::ChatMessageRecord>> chatObjInfo;
 
+
+
+    /// 待发送的文件数据
+    QQueue<QFileInfo> toBeSendfiles;
 public slots:
 
     /// @brief 选择Enter发送消息
@@ -245,11 +282,17 @@ private slots:
     void slotShowEmojiWidget();
 
     /**
-     * @brief 选择图片文件
+     * @brief 选择图片
      */
     void slotChooseImageFile();
     void slotChooseImageFileGroup();
 
+
+    /**
+     * @brief 选择文件
+     */
+    void slotChooseFile();
+    void slotChooseFileGroup();
 };
 
 #endif // CHATWIDGET_H

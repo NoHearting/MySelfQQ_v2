@@ -43,7 +43,8 @@ void ChatMessageImageItemObject::initResourceAndForm()
 
     int fontSize = zsj::ChatBubble::Instance()->getBubbleFontSize();
 
-    this->setStyleSheet(QString("#labelHead{border-radius:16px;border:none;}"
+    this->setStyleSheet(QString(
+                                "#labelHead{border-radius:16px;border:none;}"
                                 "#labelMessage{font-size:%1px;}"
                                 "#widget{border-radius:5px;border:1px solid green;}").arg(fontSize)
                        );

@@ -82,6 +82,12 @@ QPixmap scaledPixmap(QPixmap &src, int width, int height)
     return src.scaled(width, height, Qt::KeepAspectRatio, Qt::SmoothTransformation);
 }
 
+
+QPixmap ScaledPixmapNoKeepAspectRatio(QPixmap &src, int width, int height)
+{
+    return src.scaled(width, height, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+}
+
 void openUrl(const QString &url)
 {
     QDesktopServices::openUrl(QUrl(url));
@@ -240,6 +246,8 @@ void HtmlUtil::RemoveStyle(const QString &tag, QString &originStr)
     }
     while(index < originStr.size());
 }
+
+
 
 
 

@@ -60,7 +60,8 @@ SOURCES += main.cpp \
     main/CurrentWindow.cpp \
     item_widgets/ChatMessageImageItemObject.cpp \
     main/ChatMessageRecord.cpp \
-    test/TestWidget.cpp
+    test/TestWidget.cpp \
+    item_widgets/ChatMessageFileItemObject.cpp
 
 
 
@@ -113,7 +114,8 @@ HEADERS  += ChatWidget.h \
     main/CurrentWindow.h \
     item_widgets/ChatMessageImageItemObject.h \
     main/ChatMessageRecord.h \
-    test/TestWidget.h
+    test/TestWidget.h \
+    item_widgets/ChatMessageFileItemObject.h
 
 
 FORMS    +=     LoginWidget.ui \
@@ -127,13 +129,12 @@ FORMS    +=     LoginWidget.ui \
     item_widgets/LinkmanGroupItemWidget.ui \
     item_widgets/ChatObjectItem.ui \
     item_widgets/ChatMessageItemObject.ui \
-    item_widgets/ChatMessageItemSelf.ui \
     item_widgets/MessageItemWidget.ui \
     feature_widgets/EmojiWidget.ui \
     feature_widgets/EmojiHotWidget.ui \
-    item_widgets/ChatMessageImageItemSelf.ui \
     item_widgets/ChatMessageImageItemObject.ui \
-    test/TestWidget.ui
+    test/TestWidget.ui \
+    item_widgets/ChatMessageFileItemObject.ui
 
 
 

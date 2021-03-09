@@ -1128,7 +1128,24 @@
                      <height>16777215</height>
                     </size>
                    </property>
-                   <widget class="QWidget" name="page_3"/>
+                   <widget class="QWidget" name="widgetMQShow">
+                    <widget class="QLabel" name="labelMQShow">
+                     <property name="geometry">
+                      <rect>
+                       <x>0</x>
+                       <y>30</y>
+                       <width>130</width>
+                       <height>330</height>
+                      </rect>
+                     </property>
+                     <property name="text">
+                      <string/>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignCenter</set>
+                     </property>
+                    </widget>
+                   </widget>
                    <widget class="QWidget" name="page_4"/>
                   </widget>
                  </item>

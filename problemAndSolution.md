@@ -405,3 +405,6 @@ void ChatWidget::addMessageItem(QListWidget *listWidget, QPixmap &head,
 ![image-20210303094255422](C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20210303094255422.png) 
 
 第一个符号显示完全，第二个和第三个就有显示问题了。
+
+## 4、聊天对象列表和聊天记录
+

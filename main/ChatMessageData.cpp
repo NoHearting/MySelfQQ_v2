@@ -1,5 +1,9 @@
 #include "ChatMessageData.h"
 
+#include <memory>
+
+#include <QDebug>
+
 namespace zsj
 {
 
@@ -11,7 +15,7 @@ ChatMessageData::ChatMessageData()
 }
 
 ChatMessageData::ChatMessageData(QPixmap &head, const ChatMessageRecord &chatMessageRecord) :
-    head(head),chatMessageRecord(chatMessageRecord)
+    head(head), chatMessageRecord(chatMessageRecord)
 {
 
 }
@@ -79,6 +83,72 @@ zsj::ChatMessageRecord ChatMessageData::getChatMessageRecord() const
 void ChatMessageData::setChatMessageRecord(const zsj::ChatMessageRecord &value)
 {
     chatMessageRecord = value;
+}
+
+QString ChatMessageData::getFilePath() const
+{
+    if(chatMessageRecord.getMessageBody()->getType() ==
+            zsj::global::MessageType::FILE)
+    {
+        FileMessageBody *fileBody = dynamic_cast<FileMessageBody *>(chatMessageRecord.getMessageBody().get());
+        if(fileBody)
+        {
+            return fileBody->getFilePath();
+        }
+        else
+        {
+            qCritical() << "MessageBody dynamic cast to FileMessageBody failed!";
+        }
+    }
+    else
+    {
+        return "";
+    }
+}
+
+QString ChatMessageData::getFileName() const
+{
+    if(chatMessageRecord.getMessageBody()->getType() ==
+            zsj::global::MessageType::FILE)
+    {
+//        QSharedPointer<FileMessageBody> fileBody =
+//                std::dynamic_pointer_cast<FileMessageBody>(chatMessageRecord.getMessageBody());
+        FileMessageBody *fileBody = dynamic_cast<FileMessageBody *>(chatMessageRecord.getMessageBody().get());
+        if(fileBody)
+        {
+            return fileBody->getFileName();
+        }
+        else
+        {
+            qCritical() << "MessageBody dynamic cast to FileMessageBody failed!";
+        }
+
+    }
+    else
+    {
+        return "";
+    }
+}
+
+int ChatMessageData::getFileSize() const
+{
+    if(chatMessageRecord.getMessageBody()->getType() ==
+            zsj::global::MessageType::FILE)
+    {
+        FileMessageBody *fileBody = dynamic_cast<FileMessageBody *>(chatMessageRecord.getMessageBody().get());
+        if(fileBody)
+        {
+            return fileBody->getFileSize();
+        }
+        else
+        {
+            qCritical() << "MessageBody dynamic cast to FileMessageBody failed!";
+        }
+    }
+    else
+    {
+        return -1;
+    }
 }
 
 

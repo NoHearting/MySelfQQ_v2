@@ -12,6 +12,7 @@
 #include "screen_shot/ScreenShot.h"
 #include "main/ChatBubble.h"
 #include "main/CurrentWindow.h"
+#include "item_widgets/ChatMessageFileItemObject.h"
 
 #include <QDebug>
 #include <QAction>
@@ -24,6 +25,7 @@
 #include <QSplitter>
 #include <QFileDialog>
 #include <QMap>
+#include <QFileInfo>
 
 #include <QDir>
 #include <QMimeData>
@@ -46,17 +48,11 @@ ChatWidget::ChatWidget(QWidget *parent) :
 ChatWidget::~ChatWidget()
 {
     delete ui;
-    for(auto iter = chatObjInfo.begin(); iter != chatObjInfo.end(); ++iter)
-    {
-        qDebug() << iter.value().size();
-    }
 }
 
 void ChatWidget::showMaximizedWindow()
 {
     windowGeometry = this->geometry();
-
-//    QSize desktopSize = zsj::SystemUtil::getDesktopSize();
     QRect desktopGeometry = zsj::SystemUtil::getAvailableGeometry();
 
     int padding = zsj::global::TopLayoutPadding;
@@ -67,6 +63,32 @@ void ChatWidget::showMaximizedWindow()
 void ChatWidget::showNormalWindow()
 {
     this->setGeometry(windowGeometry);
+}
+
+void ChatWidget::addChatObjItem(zsj::Data::ptr data)
+{
+    if(!chatObjInfo.contains(data->getAccount()))
+    {
+        QListWidgetItem *item = new QListWidgetItem(ui->listWidgetChatObjList);
+        item->setSizeHint(QSize(ui->widgetContentLeftBottom->width(), 60));
+//    zsj::Data::ptr data = nullptr;
+        ChatObjectItem *chatObjsItem = new ChatObjectItem(data, ui->listWidgetChatObjList);
+        ui->listWidgetChatObjList->setItemWidget(item, chatObjsItem);
+        ui->listWidgetChatObjList->addItem(item);
+        connect(chatObjsItem, &ChatObjectItem::sigDeleteItem, this, &ChatWidget::slotDeleteChatObject);
+
+        ui->listWidgetChatObjList->setCurrentItem(item);
+        currentItem = item;
+        setCurrentData(data);
+        switchChatObj();
+        chatObjInfo.insert(currentData->getAccount(), QQueue<zsj::ChatMessageRecord>());
+        setChatObjListStyle();
+
+    }
+    else
+    {
+        qDebug() << "不同添加同一对象聊天";
+    }
 }
 
 void ChatWidget::resizeEvent(QResizeEvent *event)
@@ -119,8 +141,12 @@ bool ChatWidget::event(QEvent *event)
     return QWidget::event(event);
 }
 
-
-
+void ChatWidget::hideEvent(QHideEvent *event)
+{
+    chatObjInfo.clear();
+    ui->listWidgetChatObjList->clear();
+    QWidget::hideEvent(event);
+}
 
 
 void ChatWidget::initObjects()
@@ -180,7 +206,10 @@ void ChatWidget::initResourceAndForm()
 
 void ChatWidget::initSignalsAndSlots()
 {
-    connect(ui->toolButtonClose, &QToolButton::clicked, this, &ChatWidget::close);
+    connect(ui->toolButtonClose, &QToolButton::clicked, this, [this]()
+    {
+        this->hide();
+    });
     qInfo() << "connect toolButtonClose::clicked to ChatWidget::close";
     connect(ui->toolButtoMin, &QToolButton::clicked, this, &ChatWidget::showMinimized);
     qInfo() << "connect toolButtoMin::clicked to ChatWidget::showMinimized";
@@ -192,7 +221,7 @@ void ChatWidget::initSignalsAndSlots()
     connect(ui->listWidgetChatObjList, &MyListWidget::itemClicked, this, &ChatWidget::slotChangeChatObject);
     qInfo() << "connect listWidgetChatObjList::clicked to ChatWidget::changeChatObject";
     // 聊天对象列表增加对象时
-    connect(ui->listWidgetChatObjList, &MyListWidget::sigAddItem, this, &ChatWidget::slotItemAdd);
+//    connect(ui->listWidgetChatObjList, &MyListWidget::sigAddItem, this, &ChatWidget::slotItemAdd);
 
     /// 发送消息按钮
     connect(ui->pushButtonSend, &QPushButton::clicked, this, &ChatWidget::slotButtonToSendMessage);
@@ -282,11 +311,24 @@ void ChatWidget::initSignalsAndSlots()
     // 选择图片
     connect(ui->toolButtonImage, &QToolButton::clicked, this, &ChatWidget::slotChooseImageFile);
     connect(ui->toolButtonImageGroup, &QToolButton::clicked, this, &ChatWidget::slotChooseImageFileGroup);
+
+
+    /// 选择文件
+    connect(ui->toolButtonFile, &QToolButton::clicked, this, &ChatWidget::slotChooseFile);
+    connect(ui->toolButtonFileGroup, &QToolButton::clicked, this, &ChatWidget::slotChooseFileGroup);
 }
 
 void ChatWidget::setChatObjListStyle()
 {
-    ui->widgetContentLeft->setVisible(false);
+
+    if(ui->listWidgetChatObjList->count() <= 1)
+    {
+        ui->widgetContentLeft->setVisible(false);
+    }
+    else
+    {
+        ui->widgetContentLeft->setVisible(true);
+    }
 }
 
 void ChatWidget::initMenus()
@@ -304,7 +346,7 @@ void ChatWidget::initTestData()
 
 void ChatWidget::initTestChatObjs()
 {
-    int count = 15;
+    int count = 1;
     for(int i = 0; i < count; i++)
     {
         QListWidgetItem *item = new QListWidgetItem(ui->listWidgetChatObjList);
@@ -385,6 +427,37 @@ void ChatWidget::setCurrentData(zsj::Data::ptr data)
 
 }
 
+void ChatWidget::addFileMessageItem(QListWidget *listWidget,
+                                    QPixmap &head,
+                                    const QString &fileName,
+                                    const QString &filePath,
+                                    int fileSize,
+                                    bool isLeft)
+{
+    QListWidgetItem *item = new QListWidgetItem(listWidget);
+    listWidget->addItem(item);
+    zsj::MessageBodyPtr msgBody;
+    zsj::ChatMessageRecord msgRecord(QDateTime::currentDateTime(),
+                                     selfData->getAccount(),
+                                     currentData->getAccount());
+    msgBody.reset(new zsj::FileMessageBody(fileName, filePath, fileSize));
+    msgRecord.setMessageBody(msgBody);
+
+    zsj::ChatMessageData::ptr data(new zsj::ChatMessageData(head, msgRecord));
+    QWidget *widget = new ChatMessageFileItemObject(isLeft, data, item, listWidget);
+
+    listWidget->setItemWidget(item, widget);
+
+    // 滚动到最底部
+    listWidget->scrollToBottom();
+
+    chatObjInfo[currentData->getAccount()].enqueue(msgRecord);
+    if(chatObjInfo[currentData->getAccount()].size() > 100)
+    {
+        /// 持久化
+    }
+}
+
 void ChatWidget::addMessageItem(QListWidget *listWidget, QPixmap &head,
                                 zsj::global::MessageType inputType,
                                 const QString &message, bool isLeft)
@@ -429,8 +502,8 @@ void ChatWidget::addMessageItem(QListWidget *listWidget, QPixmap &head,
     // 滚动到最底部
     listWidget->scrollToBottom();
 
-    chatObjInfo[currentItem].enqueue(msgRecord);
-    if(chatObjInfo[currentItem].size() > 100)
+    chatObjInfo[currentData->getAccount()].enqueue(msgRecord);
+    if(chatObjInfo[currentData->getAccount()].size() > 100)
     {
         /// 持久化
     }
@@ -494,18 +567,21 @@ void ChatWidget::switchChatObj()
             {
                 ui->stackedWidgetMain->setCurrentIndex(1);
                 ui->listWidgetMessageListGroup->clear();
-                QQueue<zsj::ChatMessageRecord> queue = chatObjInfo[currentItem];
+                QQueue<zsj::ChatMessageRecord> queue = chatObjInfo[currentData->getAccount()];
                 loadChatMessageRecord(ui->listWidgetMessageListGroup, queue);
+
             }
             break;
         case zsj::global::DataType::USER_DATA:
             {
 
                 ui->stackedWidgetMain->setCurrentIndex(0);
-//            qDebug() << "执行用户类型的逻辑";
                 ui->listWidgetMessageList->clear();
-                QQueue<zsj::ChatMessageRecord> queue = chatObjInfo[currentItem];
+                QQueue<zsj::ChatMessageRecord> queue = chatObjInfo[currentData->getAccount()];
                 loadChatMessageRecord(ui->listWidgetMessageList, queue);
+
+                QString mqImage = QString(":/test/res/test/mq%1.png").arg((ui->listWidgetChatObjList->count()) % 5 + 1);
+                setMQshow(mqImage);
             }
             break;
         case zsj::global::DataType::SYSTEM_DATA:
@@ -597,6 +673,41 @@ void ChatWidget::loadChatMessageRecord(QListWidget *listWidget, const QQueue<zsj
     }
 }
 
+void ChatWidget::clearAllToBeSendFiles(QListWidget *listWidget)
+{
+    qDebug() << "清空所有待发送的文件";
+    QPixmap head = selfData->getHead();
+    for(const auto &item : toBeSendfiles)
+    {
+        addFileMessageItem(listWidget,
+                           head,
+                           item.fileName(),
+                           item.filePath(), item.size());
+    }
+    toBeSendfiles.clear();
+}
+
+void ChatWidget::setMQshow(const QString &mqImage)
+{
+    QSize bgSize = ui->labelMQShow->size();
+    QSize widgetSize = ui->stackedWidgetInfo->size();
+    QPixmap pix(mqImage);
+    qDebug() << "bgSize: " << bgSize << "\t"
+             << "widgetSize: " << widgetSize << "\t"
+             << "pixSize: " << pix.size();
+    if(!pix.isNull())
+    {
+        QPixmap result = zsj::scaledPixmap(pix, bgSize.width(), bgSize.height());
+//        ui->labelMQShow->setFixedSize(result.size());
+        ui->labelMQShow->setPixmap(result);
+        qDebug() << "resultSize: " << result.size();
+    }
+    else
+    {
+        qDebug() << mqImage << " is null";
+    }
+}
+
 
 void ChatWidget::slotDeleteChatObject(QPoint point)
 {
@@ -608,6 +719,24 @@ void ChatWidget::slotDeleteChatObject(QPoint point)
                                    QListWidget, QListWidgetItem, ChatObjectItem > (ui->listWidgetChatObjList, item);
         if(chatItem)
         {
+
+
+            // 删除数据
+            auto index = chatObjInfo.find(chatItem->getData()->getAccount());
+            if(index != chatObjInfo.end())
+            {
+                auto ret = chatObjInfo.erase(index);
+                if(ret == chatObjInfo.end())
+                {
+                    qCritical() << "remove chat object failed!";
+                }
+                else
+                {
+                    qDebug() << "删除聊天对象： " << chatItem->getData()->getName();
+                }
+            }
+
+            // 删除样式
             QListWidgetItem *deleteItem = ui->listWidgetChatObjList->takeItem(ui->listWidgetChatObjList->row(item));
 
             if(chatItem->getData() == currentData)
@@ -620,12 +749,12 @@ void ChatWidget::slotDeleteChatObject(QPoint point)
                 switchChatObj();
             }
             delete deleteItem;
-            if(ui->listWidgetChatObjList->count() <= 1)
-            {
-                setChatObjListStyle();
-            }
+
+            setChatObjListStyle();
+
         }
         else
+
         {
             qCritical() << "dynamic_cast QWidget to ChatObjectItem failed";
         }
@@ -648,10 +777,16 @@ void ChatWidget::slotItemAdd(QListWidgetItem *item)
         currentItem = item;
         setCurrentData(chatObj->getData());
         switchChatObj();
-        if(!chatObjInfo.contains(item))
+
+        if(!chatObjInfo.contains(currentData->getAccount()))
         {
-            chatObjInfo.insert(currentItem, QQueue<zsj::ChatMessageRecord>());
+            qDebug() << "account id: " << currentData->getAccount();
+            chatObjInfo.insert(currentData->getAccount(), QQueue<zsj::ChatMessageRecord>());
         }
+
+        setChatObjListStyle();
+
+
     }
     else
     {
@@ -665,7 +800,7 @@ void ChatWidget::slotButtonToSendMessage()
 {
     QString content = zsj::HtmlUtil::GetHtmlBodyContent(ui->textEditMessageInput->toHtml());
     addMessageToList(content, ui->listWidgetMessageList, ui->textEditMessageInput);
-
+    clearAllToBeSendFiles(ui->listWidgetMessageList);
 }
 
 void ChatWidget::slotButtonToSendMessageGroup()
@@ -673,18 +808,20 @@ void ChatWidget::slotButtonToSendMessageGroup()
 
     QString content = zsj::HtmlUtil::GetHtmlBodyContent(ui->textEditMessageInputGroup->toHtml());
     addMessageToList(content, ui->listWidgetMessageListGroup, ui->textEditMessageInputGroup);
+    clearAllToBeSendFiles(ui->listWidgetMessageListGroup);
 }
 
 
 void ChatWidget::slotKeyToSendMessage(const QString &msg)
 {
     addMessageToList(msg, ui->listWidgetMessageList, ui->textEditMessageInput);
-
+    clearAllToBeSendFiles(ui->listWidgetMessageList);
 }
 
 void ChatWidget::slotKeyToSendMessageGroup(const QString &msg)
 {
     addMessageToList(msg, ui->listWidgetMessageListGroup, ui->textEditMessageInputGroup);
+    clearAllToBeSendFiles(ui->listWidgetMessageListGroup);
 }
 
 void ChatWidget::slotMaxShowMessageList()
@@ -766,6 +903,64 @@ void ChatWidget::slotChooseImageFileGroup()
 
 }
 
+void ChatWidget::slotChooseFile()
+{
+    QString file = QFileDialog::getOpenFileName(this, "打开", QDir::currentPath(), "文件(*.*)");
+    qDebug() << file;
+    if(!file.isEmpty())
+    {
+        QFileInfo fileInfo(file);
+        QString suffix = file.mid(file.indexOf(".") + 1);
+        qDebug() << suffix;
+        QString logoUrl = QString(":/chat/res/chat/%1.png").arg(suffix);
+        QPixmap pix(logoUrl);
+        if(pix.isNull())
+        {
+            qDebug() << logoUrl << "is null";
+            pix.load(":/chat/res/chat/other.png");
+        }
+        QSize contentSize = zsj::Util::ScaledImageSize(pix.size());
+        QString imgUrl = zsj::Util::PackageImageHtml(logoUrl, contentSize.width(), contentSize.height());
+        ui->textEditMessageInput->insertHtml(imgUrl);
+        toBeSendfiles.enqueue(fileInfo);
+    }
+    else
+    {
+
+        qCritical() << "选择文件失败";
+    }
+}
+
+void ChatWidget::slotChooseFileGroup()
+{
+    QString file = QFileDialog::getOpenFileName(this, "打开", QDir::currentPath(), "文件(*.*)");
+    qDebug() << file;
+    if(!file.isEmpty())
+    {
+        QFileInfo fileInfo(file);
+        QString suffix = file.mid(file.indexOf(".") + 1);
+        qDebug() << suffix;
+        QString logoUrl = QString(":/chat/res/chat/%1.png").arg(suffix);
+        QPixmap pix(logoUrl);
+        if(pix.isNull())
+        {
+            qDebug() << logoUrl << "is null";
+            pix.load(":/chat/res/chat/other.png");
+            logoUrl = ":/chat/res/chat/other.png";
+        }
+        QSize contentSize = zsj::Util::ScaledImageSize(pix.size());
+        QString imgUrl = zsj::Util::PackageImageHtml(logoUrl, contentSize.width(), contentSize.height());
+        ui->textEditMessageInputGroup->insertHtml(imgUrl);
+        qDebug() << imgUrl;
+        toBeSendfiles.enqueue(fileInfo);
+    }
+    else
+    {
+
+        qCritical() << "选择文件失败";
+    }
+}
+
 
 QMap<zsj::global::MessageType, QStringList> ChatWidget::MessageParser::parserMessage(QString originmessage)
 {
@@ -789,10 +984,15 @@ QMap<zsj::global::MessageType, QStringList> ChatWidget::MessageParser::parserMes
             break;
         }
         QString tag = originmessage.mid(begin, end - begin + 1);
+        // 判断不是一张表情图片
         if(!tag.contains("emoji"))
         {
             originmessage.replace(tag, "");
-            messageMap[zsj::global::MessageType::IMAGE].append(tag);
+            // 判断不是一张文件图片
+            if(!tag.contains(":/chat/res/"))
+            {
+                messageMap[zsj::global::MessageType::IMAGE].append(tag);
+            }
         }
         else
         {
