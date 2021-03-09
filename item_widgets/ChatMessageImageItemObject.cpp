@@ -53,13 +53,15 @@ void ChatMessageImageItemObject::initResourceAndForm()
 void ChatMessageImageItemObject::adjustWidgetsPosition()
 {
     QSize size = calculateMessageWidgetSize();
+    qDebug() << "calculate size: " << size;
     int padding = zsj::ChatBubble::Instance()->getBubblePadding();
     if(isLeft){
-        ui->widget->setGeometry(QRect(50, 9, size.width() + 2 * padding, size.height() + 2 * padding));
+        ui->widget->setGeometry(QRect(50, 9, size.width(), size.height()));
     }
     else{
         ui->labelHead->setGeometry(this->width() - 41, 9, ui->labelHead->width(), ui->labelHead->height());
-        ui->widget->setGeometry(QRect(this->width() - size.width() - 2 * padding - 50, 9, size.width() + 2 * padding, size.height() + 2 * padding));
+        ui->widget->setGeometry(QRect(this->width() - size.width() - 50, 9,
+                                      size.width(), size.height()));
     }
 }
 
@@ -73,8 +75,8 @@ QSize ChatMessageImageItemObject::calculateMessageWidgetSize()
 QSize ChatMessageImageItemObject::getWidgetSize()
 {
     int padding = zsj::ChatBubble::Instance()->getBubblePadding();
-    return QSize(ui->labelMessage->width() + 18 + 2 * padding,
-                 ui->labelMessage->height() + 18 + 2 * padding);
+    return QSize(ui->widget->width()  + 2 * padding,
+                 ui->widget->height()  + 2 * padding);
 }
 
 void ChatMessageImageItemObject::adjustImage()

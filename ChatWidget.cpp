@@ -482,12 +482,14 @@ void ChatWidget::addMessageItem(QListWidget *listWidget, QPixmap &head,
             msgRecord.setMessageBody(msgBody);
             data.reset(new zsj::ChatMessageData(head, msgRecord));
             widget = new ChatMessageItemObject(isLeft, data, item, listWidget);
+            qDebug() << "Text type";
             break;
         case zsj::global::MessageType::IMAGE:
             msgBody.reset(new zsj::ImageMessageBody(message));
             msgRecord.setMessageBody(msgBody);
             data.reset(new zsj::ChatMessageData(head, msgRecord));
             widget = new ChatMessageImageItemObject(isLeft, data, item, listWidget);
+            qDebug() << "Image type";
             break;
         case zsj::global::MessageType::FILE:
             msgBody.reset(new zsj::FileMessageBody("test.txt", "test.txt", 512));
@@ -633,6 +635,7 @@ void ChatWidget::addMessageToList(QPixmap &head,
     QMap<zsj::global::MessageType, QStringList> messageMap = parser.parserMessage(content);
     for(auto iter = messageMap.begin(); iter != messageMap.end(); ++iter)
     {
+
         addMessageItem(listWidget, head, iter.key(), iter.value().at(0));
     }
     textEdit->clear();
