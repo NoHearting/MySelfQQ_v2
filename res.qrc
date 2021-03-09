@@ -96,6 +96,9 @@
         <file>res/chat/xls.png</file>
         <file>res/chat/xlsx.png</file>
         <file>res/chat/upload_success.png</file>
+        <file>res/chat/more.png</file>
+        <file>res/chat/video.png</file>
+        <file>res/chat/phone.png</file>
     </qresource>
     <qresource prefix="/normal">
         <file>res/emoji/normal/biq.png</file>

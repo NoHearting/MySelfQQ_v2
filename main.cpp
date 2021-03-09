@@ -49,10 +49,10 @@ int main(int argc, char *argv[])
 //    w.show();
 
 
-//    MainWidget mainWidget;
-//    mainWidget.show();
-    ChatWidget chatWidget;
-    chatWidget.show();
+    MainWidget mainWidget;
+    mainWidget.show();
+//    ChatWidget chatWidget;
+//    chatWidget.show();
 
 //    zsj::Test().test();
     return a.exec();

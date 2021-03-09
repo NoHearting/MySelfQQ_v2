@@ -42,7 +42,7 @@ ChatWidget::ChatWidget(QWidget *parent) :
     initResourceAndForm();
     initSignalsAndSlots();
 
-    initTestData();
+//    initTestData();
 }
 
 ChatWidget::~ChatWidget()
@@ -173,19 +173,16 @@ void ChatWidget::initResourceAndForm()
 
     zsj::WidgetUtil::setWidgetBoxShadow(ui->widgetBody);
 
-
-    QRect localGeometry = ui->widgetContentLeft->geometry();
-    localGeometry.setWidth(200);
-    ui->widgetContentLeft->setGeometry(localGeometry);
-    localGeometry = ui->widgetMessageList->geometry();
-    localGeometry.setHeight(600);
-    ui->widgetMessageList->setGeometry(localGeometry);
-
     // 初始化搜索框的搜索图标
     QAction *action = new QAction(ui->lineEditSearch);
     action->setIcon(QIcon(":/main/res/main/search.png"));
     ui->lineEditSearch->addAction(action, QLineEdit::LeadingPosition);
 
+//    ui->widgetContentLeft->setFixedWidth(120);
+    ui->widgetContentLeft->setMaximumWidth(200);
+    ui->widgetMessageInput->setMaximumHeight(150);
+    ui->widgetMessageInputGroup->setMaximumHeight(150);
+//    ui->widgetContentLeft->setMaximumWidth(246);
 
     // 设置消息发送选项菜单
     ui->toolButtonSendMenu->setPopupMode(QToolButton::InstantPopup);
@@ -195,10 +192,6 @@ void ChatWidget::initResourceAndForm()
 
     // 滚动条设置按照像素滚动
     ui->listWidgetMessageList->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
-
-
-
-//    ui->textEditMessageList->insertHtml("<div style='color:red;width:50px;height:50px;border:1px solid blue;background-color:green;'>hello</div>");
 
     this->setStyleSheet(zsj::ReadQStyleSheet::readQss("://css/chat.css"));
     qDebug() << "load chat.css";
@@ -220,8 +213,6 @@ void ChatWidget::initSignalsAndSlots()
     // 左边聊天对象列表切换对象时
     connect(ui->listWidgetChatObjList, &MyListWidget::itemClicked, this, &ChatWidget::slotChangeChatObject);
     qInfo() << "connect listWidgetChatObjList::clicked to ChatWidget::changeChatObject";
-    // 聊天对象列表增加对象时
-//    connect(ui->listWidgetChatObjList, &MyListWidget::sigAddItem, this, &ChatWidget::slotItemAdd);
 
     /// 发送消息按钮
     connect(ui->pushButtonSend, &QPushButton::clicked, this, &ChatWidget::slotButtonToSendMessage);
@@ -316,6 +307,59 @@ void ChatWidget::initSignalsAndSlots()
     /// 选择文件
     connect(ui->toolButtonFile, &QToolButton::clicked, this, &ChatWidget::slotChooseFile);
     connect(ui->toolButtonFileGroup, &QToolButton::clicked, this, &ChatWidget::slotChooseFileGroup);
+
+
+    /// 群组切换页面
+    connect(ui->pushButtonChat, &MyPushButton::clicked, this, [ = ]()
+    {
+        ui->pushButtonChat->setChecked(true);
+        ui->stackedWidgetGroup->setCurrentIndex(0);
+    });
+
+    connect(ui->pushButtonNotice, &MyPushButton::clicked, this, [ = ]()
+    {
+        ui->pushButtonNotice->setChecked(true);
+        ui->stackedWidgetGroup->setCurrentIndex(1);
+    });
+
+    connect(ui->pushButtonPhoto, &MyPushButton::clicked, this, [ = ]()
+    {
+        ui->pushButtonPhoto->setChecked(true);
+        ui->stackedWidgetGroup->setCurrentIndex(2);
+    });
+
+    connect(ui->pushButtonFile, &MyPushButton::clicked, this, [ = ]()
+    {
+        ui->pushButtonFile->setChecked(true);
+        ui->stackedWidgetGroup->setCurrentIndex(3);
+    });
+
+    connect(ui->pushButtonActive, &MyPushButton::clicked, this, [ = ]()
+    {
+        ui->pushButtonActive->setChecked(true);
+        ui->stackedWidgetGroup->setCurrentIndex(4);
+    });
+
+    connect(ui->pushButtonSetting, &MyPushButton::clicked, this, [ = ]()
+    {
+        ui->pushButtonSetting->setChecked(true);
+        ui->stackedWidgetGroup->setCurrentIndex(5);
+    });
+
+
+    /// splitter
+    connect(ui->splitter, &QSplitter::splitterMoved, this, [ = ]()
+    {
+        ui->widgetContentLeft->setMaximumWidth(246);
+    });
+    connect(ui->splitterContent, &MySplitter::splitterMoved, this, [ = ]()
+    {
+        ui->widgetMessageInput->setMaximumHeight(330);
+    });
+    connect(ui->splitterContentGroup, &MySplitter::splitterMoved, this, [ = ]()
+    {
+        ui->widgetMessageInputGroup->setMaximumHeight(330);
+    });
 }
 
 void ChatWidget::setChatObjListStyle()
@@ -663,6 +707,8 @@ void ChatWidget::loadChatMessageRecord(QListWidget *listWidget, const QQueue<zsj
                 break;
             case zsj::global::MessageType::FILE:
                 /// todo
+                data.reset(new zsj::ChatMessageData(head, record));
+                widget = new ChatMessageFileItemObject(isLeft, data, item, listWidget);
                 break;
             case zsj::global::MessageType::AUDIO:
             case zsj::global::MessageType::VIDEO:
@@ -693,17 +739,11 @@ void ChatWidget::clearAllToBeSendFiles(QListWidget *listWidget)
 void ChatWidget::setMQshow(const QString &mqImage)
 {
     QSize bgSize = ui->labelMQShow->size();
-    QSize widgetSize = ui->stackedWidgetInfo->size();
     QPixmap pix(mqImage);
-    qDebug() << "bgSize: " << bgSize << "\t"
-             << "widgetSize: " << widgetSize << "\t"
-             << "pixSize: " << pix.size();
     if(!pix.isNull())
     {
         QPixmap result = zsj::scaledPixmap(pix, bgSize.width(), bgSize.height());
-//        ui->labelMQShow->setFixedSize(result.size());
         ui->labelMQShow->setPixmap(result);
-        qDebug() << "resultSize: " << result.size();
     }
     else
     {
@@ -722,8 +762,6 @@ void ChatWidget::slotDeleteChatObject(QPoint point)
                                    QListWidget, QListWidgetItem, ChatObjectItem > (ui->listWidgetChatObjList, item);
         if(chatItem)
         {
-
-
             // 删除数据
             auto index = chatObjInfo.find(chatItem->getData()->getAccount());
             if(index != chatObjInfo.end())

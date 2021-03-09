@@ -61,7 +61,8 @@ SOURCES += main.cpp \
     item_widgets/ChatMessageImageItemObject.cpp \
     main/ChatMessageRecord.cpp \
     test/TestWidget.cpp \
-    item_widgets/ChatMessageFileItemObject.cpp
+    item_widgets/ChatMessageFileItemObject.cpp \
+    customer_widgets/MyPushButton.cpp
 
 
 
@@ -115,7 +116,8 @@ HEADERS  += ChatWidget.h \
     item_widgets/ChatMessageImageItemObject.h \
     main/ChatMessageRecord.h \
     test/TestWidget.h \
-    item_widgets/ChatMessageFileItemObject.h
+    item_widgets/ChatMessageFileItemObject.h \
+    customer_widgets/MyPushButton.h
 
 
 FORMS    +=     LoginWidget.ui \
