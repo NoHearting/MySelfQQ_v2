@@ -13,6 +13,7 @@
 #include <utility>
 #include <QDebug>
 #include <QMap>
+#include <QSharedPointer>
 
 #include "utils/Global.h"
 
@@ -20,6 +21,20 @@
 
 namespace zsj
 {
+
+
+template<typename OUT,typename IN>
+inline QSharedPointer<OUT>
+dynamic_shared_pointer_cast(const QSharedPointer<IN> & pointer){
+    qDebug() << "into";
+//    pointer->show();
+    using Sp = QSharedPointer<OUT>;
+    if(auto * out = dynamic_cast<typename Sp::element_type*>(pointer.get())){
+        qDebug() << "cast success";
+        return Sp(out);
+    }
+    return Sp();
+}
 
 
 class Util
@@ -51,6 +66,8 @@ public:
      * @return
      */
     static QString RemoveEnterReturn(const QString & origin);
+
+
 };
 
 struct HeadSize

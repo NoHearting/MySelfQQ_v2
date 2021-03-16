@@ -1,20 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>LinkmanGroupWidget</class>
- <widget class="QWidget" name="LinkmanGroupWidget">
+ <class>LinkmanSection</class>
+ <widget class="QWidget" name="LinkmanSection">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>257</width>
+    <width>400</width>
     <height>36</height>
    </rect>
-  </property>
-  <property name="sizePolicy">
-   <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-    <horstretch>0</horstretch>
-    <verstretch>0</verstretch>
-   </sizepolicy>
   </property>
   <property name="minimumSize">
    <size>
@@ -31,6 +25,24 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <widget class="QLabel" name="labelGroupName">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>12</y>
+     <width>211</width>
+     <height>12</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>微软雅黑</family>
+    </font>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
   <widget class="QLabel" name="labelIcon">
    <property name="geometry">
     <rect>
@@ -51,24 +63,6 @@
      <width>12</width>
      <height>12</height>
     </size>
-   </property>
-   <property name="font">
-    <font>
-     <family>微软雅黑</family>
-    </font>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-  </widget>
-  <widget class="QLabel" name="labelGroupName">
-   <property name="geometry">
-    <rect>
-     <x>30</x>
-     <y>12</y>
-     <width>211</width>
-     <height>12</height>
-    </rect>
    </property>
    <property name="font">
     <font>

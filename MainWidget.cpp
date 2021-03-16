@@ -3,6 +3,7 @@
 #include "main/ReadQStyleSheet.h"
 #include "utils/Util.h"
 #include "item_widgets/MessageItemWidget.h"
+#include "item_widgets/LinkmanUserItem.h"
 #include "main/UserData.h"
 #include "main/GroupData.h"
 #include "main/StaticIniator.h"
@@ -16,11 +17,14 @@
 #include <utility>
 #include <QMouseEvent>
 
+#include <memory>
+#include <cstdio>
 
 
-MainWidget::MainWidget(QWidget *parent) :
+MainWidget::MainWidget(zsj::Data::ptr data, QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::MainWidget)
+    ui(new Ui::MainWidget),
+    selfData(data)
 {
     ui->setupUi(this);
     initObjects();
@@ -34,6 +38,7 @@ MainWidget::MainWidget(QWidget *parent) :
 
 MainWidget::~MainWidget()
 {
+    deleteObjects();
     delete ui;
 }
 
@@ -41,12 +46,35 @@ MainWidget::~MainWidget()
 void MainWidget::initObjects()
 {
     frameless = new zsj::Frameless(this);
-    systemTray = new zsj::SystemTray(this);
-    friendDialog = new WarnDialog(this);
-    groupDialog = new WarnDialog(this);
+    systemTray = new zsj::SystemTray();
+    friendDialog = new WarnDialog();
+    groupDialog = new WarnDialog();
     initMenus();
 
-    chatWidgetPtr.reset(new ChatWidget);
+    chatWidget = new ChatWidget(selfData);
+}
+
+void MainWidget::deleteObjects()
+{
+    // 聊天窗口
+    chatWidget->hide();
+    delete chatWidget;
+    chatWidget = nullptr;
+
+    // 系统托盘
+    systemTray->closeTray();
+    delete systemTray;
+    systemTray = nullptr;
+
+    // 好友警告窗口
+    delete friendDialog;
+    friendDialog = nullptr;
+
+    // 好友警告窗口
+    delete groupDialog;
+    groupDialog = nullptr;
+
+
 }
 
 
@@ -56,6 +84,7 @@ void MainWidget::initResourceAndForm()
     // Qt::WindowStaysOnTopHint 设置窗口在最顶层
     this->setWindowFlags(Qt::Tool | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
     this->setAttribute(Qt::WA_TranslucentBackground);
+    this->setAttribute(Qt::WA_QuitOnClose);
     frameless->setPadding(2);
     frameless->setWidget(this);      //设置窗口可移动，可扩展
 
@@ -91,7 +120,7 @@ void MainWidget::initResourceAndForm()
     ui->listWidgetMessage->setContextMenuPolicy(Qt::CustomContextMenu);
 
     // 添加测试数据
-    initMessageList();
+//    initMessageList();
 
     // 初始化搜索框的搜索图标
     QAction *action = new QAction(ui->lineEditSearch);
@@ -117,9 +146,9 @@ void MainWidget::initSignalsAndSlots()
     // 系统托盘
     connect(systemTray, &zsj::SystemTray::sigOpenWindow, this, &MainWidget::show);
     qInfo() << "connect systemTray::sigOpenWindow to MainWidget::show";
-    connect(systemTray,&zsj::SystemTray::sigDefaultQuit,this,&MainWidget::closeWindow);
+    connect(systemTray, &zsj::SystemTray::sigDefaultQuit, this, &MainWidget::closeWindow);
     qInfo() << "connect systemTray::sigDefaultQuit to MainWidget::closeWindow";
-    connect(systemTray,&zsj::SystemTray::sigDefaultOpen,this,&MainWidget::show);
+    connect(systemTray, &zsj::SystemTray::sigDefaultOpen, this, &MainWidget::show);
     qInfo() << "connect systemTray::sigDefaultOpen to MainWidget::show";
 
     // 三个主要菜单
@@ -151,8 +180,13 @@ void MainWidget::initSignalsAndSlots()
     connect(ui->listWidgetMessage, &MyListWidget::customContextMenuRequested, this, &MainWidget::showContextMenuMessage);
     qInfo() << "connect listWidgetMessage::customContextMenuRequested to MainWidget::showContextMenuMessage";
 
-    connect(ui->treeWidgetFriend,&MyTreeWidget::doubleClicked,this,&MainWidget::slotOpenChatWindow);
-    connect(ui->treeWidgetGroup,&MyTreeWidget::doubleClicked,this,&MainWidget::slotOpenChatWindowGroup);
+    /// 双击打开聊天窗口
+    connect(ui->treeWidgetFriend, &MyTreeWidget::doubleClicked, this, &MainWidget::slotOpenChatWindow);
+    connect(ui->treeWidgetGroup, &MyTreeWidget::doubleClicked, this, &MainWidget::slotOpenChatWindowGroup);
+    connect(ui->listWidgetMessage, &MyListWidget::doubleClicked, this, &MainWidget::slotOpenChatWindowMessage);
+
+    /// 有窗口发送消息
+    connect(chatWidget, &ChatWidget::sigSendMessage, this, &MainWidget::slotChangeMessageListItemInfo);
 
 }
 
@@ -273,7 +307,7 @@ void MainWidget::initMenus()
 
 }
 
-QTreeWidgetItem *MainWidget::addTreeWidgetRootNode(QTreeWidget *treeWidget, LinkmanGroupWidget *group)
+QTreeWidgetItem *MainWidget::addTreeWidgetRootNode(QTreeWidget *treeWidget, LinkmanSection *group)
 {
     if(nullptr != treeWidget && nullptr != group)
     {
@@ -286,7 +320,7 @@ QTreeWidgetItem *MainWidget::addTreeWidgetRootNode(QTreeWidget *treeWidget, Link
     }
     else
     {
-        qCritical() << "QTreeWidget Object or LinkmanGroupWidget Object is nullptr!";
+        qCritical() << "QTreeWidget Object or LinkmanSection Object is nullptr!";
         return nullptr;
     }
 }
@@ -299,7 +333,7 @@ QTreeWidgetItem *MainWidget::addTreeWidgetRootNode(QTreeWidget *treeWidget, cons
         QTreeWidgetItem *rootNode = new QTreeWidgetItem(treeWidget);
         rootNode->setData(0, Qt::UserRole, 0);
         QPixmap icon(":/main/res/main/arrow-right.png");
-        LinkmanGroupWidget *item = new LinkmanGroupWidget(icon, groupName, active, total, treeWidget);
+        LinkmanSection *item = new LinkmanSection(icon, groupName, active, total, treeWidget);
         treeWidget->addTopLevelItem(rootNode);
         treeWidget->setItemWidget(rootNode, 0, item);
 
@@ -313,7 +347,7 @@ QTreeWidgetItem *MainWidget::addTreeWidgetRootNode(QTreeWidget *treeWidget, cons
 }
 
 QTreeWidgetItem *MainWidget::addTreeWidgetChildNode(QTreeWidget *treeWidget, QTreeWidgetItem *rootNode,
-        LinkmanItemWidget *item)
+        LinkmanUserItem *item)
 {
     if(nullptr != treeWidget && nullptr != rootNode && nullptr != item )
     {
@@ -326,7 +360,7 @@ QTreeWidgetItem *MainWidget::addTreeWidgetChildNode(QTreeWidget *treeWidget, QTr
     }
     else
     {
-        qCritical() << "QTreeWidget,QTreeWidgetItem,LinkmanItemWidget Object is nullptr!";
+        qCritical() << "QTreeWidget,QTreeWidgetItem,LinkmanUserItem Object is nullptr!";
         return nullptr;
     }
 
@@ -339,7 +373,7 @@ QTreeWidgetItem *MainWidget::addTreeWidgetChildNode(QTreeWidget *treeWidget, QTr
     {
         QTreeWidgetItem *child = new QTreeWidgetItem(rootNode);
         child->setData(0, Qt::UserRole, 1);
-        LinkmanItemWidget *item = new LinkmanItemWidget(userData, treeWidget);
+        LinkmanUserItem *item = new LinkmanUserItem(userData, treeWidget);
         rootNode->addChild(child);
         treeWidget->setItemWidget(child, 0, item);
         dataFriend[rootNode].push_back(child);
@@ -359,7 +393,7 @@ QTreeWidgetItem *MainWidget::addTreeWidgetChildNode(QTreeWidget *treeWidget, QTr
     {
         QTreeWidgetItem *child = new QTreeWidgetItem(rootNode);
         child->setData(0, Qt::UserRole, 1);
-        LinkmanGroupItemWidget *item = new LinkmanGroupItemWidget(groupData, date, treeWidget);
+        LinkmanGroupItem *item = new LinkmanGroupItem(groupData, date, treeWidget);
         rootNode->addChild(child);
         treeWidget->setItemWidget(child, 0, item);
         dataGroup[rootNode].push_back(child);
@@ -370,6 +404,17 @@ QTreeWidgetItem *MainWidget::addTreeWidgetChildNode(QTreeWidget *treeWidget, QTr
         qCritical() << "QTreeWidget,QTreeWidgetItem- Object is nullptr!";
         return nullptr;
     }
+}
+
+void MainWidget::addMessageListItem(QListWidget *listWidget, zsj::Data::ptr data, const QString &message, const QDateTime &dateTime)
+{
+    QListWidgetItem *item = new QListWidgetItem(listWidget);
+    listWidget->addItem(item);
+    item->setSizeHint(QSize(ui->widgetMiddle->width(), 60));
+    MessageItemWidget *msgItem = new MessageItemWidget(data, listWidget);
+    msgItem->setMessage(message);
+    msgItem->setDateTime(dateTime);
+    listWidget->setItemWidget(item, msgItem);
 }
 
 void MainWidget::setHead(QPixmap &pixmap)
@@ -517,7 +562,8 @@ void MainWidget::showGroupMenu()
         {
             item->setVisible(false);
         }
-        else if(item->text() == "移动群至"){
+        else if(item->text() == "移动群至")
+        {
             // 添加子菜单
             qDebug() << item->text();
             if(item->menu() == nullptr)
@@ -544,7 +590,8 @@ void MainWidget::showMessageListGroupMenu()
         {
             item->setVisible(true);
         }
-        else if(item->text() == "移动群至"){
+        else if(item->text() == "移动群至")
+        {
             // 添加子菜单
             if(item->menu() == nullptr)
             {
@@ -593,7 +640,7 @@ void MainWidget::updateSubMenu(QMenu *menu, QTreeWidget *treeWidget, std::map<QT
     for(auto &item : data)
     {
         QWidget *widget = treeWidget->itemWidget(item.first, 0);
-        LinkmanGroupWidget *itemSection = dynamic_cast<LinkmanGroupWidget *>(widget);
+        LinkmanSection *itemSection = dynamic_cast<LinkmanSection *>(widget);
         if(itemSection != nullptr)
         {
             menu->addAction(itemSection->getGrouoName());
@@ -635,7 +682,11 @@ void MainWidget::changePage(int currentIndex, int targetIndex)
 
 void MainWidget::closeWindow()
 {
-    qApp->quit();
+    if(chatWidget->isVisible()){
+        chatWidget->hide();
+    }
+    close();
+//    qApp->quit();
 }
 
 void MainWidget::minWindow()
@@ -696,7 +747,7 @@ void MainWidget::collasped(QTreeWidgetItem *item)
             QWidget *itemWidget = treeWidget->itemWidget(item, 0);
             if(nullptr != itemWidget)
             {
-                LinkmanGroupWidget *groupWidget = dynamic_cast<LinkmanGroupWidget *>(itemWidget);
+                LinkmanSection *groupWidget = dynamic_cast<LinkmanSection *>(itemWidget);
                 if(groupWidget != nullptr)
                 {
                     groupWidget->setIcon(":/main/res/main/arrow-right.png");
@@ -730,7 +781,7 @@ void MainWidget::expanded(QTreeWidgetItem *item)
             QWidget *itemWidget = treeWidget->itemWidget(item, 0);
             if(nullptr != itemWidget)
             {
-                LinkmanGroupWidget *groupWidget = dynamic_cast<LinkmanGroupWidget *>(itemWidget);
+                LinkmanSection *groupWidget = dynamic_cast<LinkmanSection *>(itemWidget);
                 if(groupWidget != nullptr)
                 {
                     groupWidget->setIcon(":/main/res/main/arrow-down.png");
@@ -771,7 +822,7 @@ void MainWidget::showContextMenuFriend(const QPoint &point)
         else
         {
             QWidget *widget = ui->treeWidgetFriend->itemWidget(item, 0);
-            LinkmanGroupWidget *itemWidget = dynamic_cast<LinkmanGroupWidget *>(widget);
+            LinkmanSection *itemWidget = dynamic_cast<LinkmanSection *>(widget);
 
             // 默认分组名称可以变，这里的判别手段需要后期加上数据之后用其他的
             // 标志来判断是否该分组是否为默认分组
@@ -811,7 +862,7 @@ void MainWidget::showContextMenuGroup(const QPoint &point)
         else
         {
             QWidget *widget = ui->treeWidgetGroup->itemWidget(item, 0);
-            LinkmanGroupWidget *itemWidget = dynamic_cast<LinkmanGroupWidget *>(widget);
+            LinkmanSection *itemWidget = dynamic_cast<LinkmanSection *>(widget);
             // 默认分组名称可以变，这里的判别手段需要后期加上数据之后用其他的
             // 标志来判断是否该分组是否为默认分组
             if(itemWidget->getGrouoName() == "我的群聊")
@@ -873,40 +924,140 @@ void MainWidget::showContextMenuMessage(const QPoint &point)
 void MainWidget::slotOpenChatWindow(const QModelIndex &index)
 {
     QWidget *widget = ui->treeWidgetFriend->indexWidget(index);
-    if(!widget){
+    if(!widget)
+    {
         qCritical() << "choose chat object failed!";
     }
-    LinkmanItemWidget * linkman = dynamic_cast<LinkmanItemWidget*>(widget);
-    if(linkman){
-        zsj::Data::ptr data = linkman->getUserData();
-        chatWidgetPtr->addChatObjItem(data);
-        if(!chatWidgetPtr->isVisible())
+    LinkmanUserItem *linkman = dynamic_cast<LinkmanUserItem *>(widget);
+    if(linkman)
+    {
+        zsj::Data::ptr data = linkman->getData();
+        chatWidget->addChatObjItem(data);
+        if(!chatWidget->isVisible())
         {
-            chatWidgetPtr->show();
+            chatWidget->show();
         }
     }
 }
 
 void MainWidget::slotOpenChatWindowGroup(const QModelIndex &index)
 {
+
     QWidget *widget = ui->treeWidgetGroup->indexWidget(index);
-    if(!widget){
+    if(!widget)
+    {
         qCritical() << "choose chat object failed!";
+        return;
     }
-    LinkmanGroupItemWidget * linkman = dynamic_cast<LinkmanGroupItemWidget*>(widget);
-    if(linkman){
-        zsj::Data::ptr data = linkman->getGroupData();
-        chatWidgetPtr->addChatObjItem(data);
-        if(!chatWidgetPtr->isVisible())
+    LinkmanGroupItem *linkman = dynamic_cast<LinkmanGroupItem *>(widget);
+    if(linkman)
+    {
+        zsj::Data::ptr data = linkman->getData();
+        chatWidget->addChatObjItem(data);
+        if(!chatWidget->isVisible())
         {
-            chatWidgetPtr->show();
+            chatWidget->show();
         }
+    }
+}
+
+void MainWidget::slotOpenChatWindowMessage(const QModelIndex &index)
+{
+    qDebug() << "double click";
+    QWidget *widget = ui->listWidgetMessage->indexWidget(index);
+    if(!widget)
+    {
+        qCritical() << "choose chat object failed!";
+        return;
+    }
+    MessageItemWidget *msgItem = dynamic_cast<MessageItemWidget *>(widget);
+    if(msgItem)
+    {
+        zsj::Data::ptr data = msgItem->getData();
+        chatWidget->addChatObjItem(data);
+        if(!chatWidget->isVisible())
+        {
+            chatWidget->show();
+        }
+    }
+    else
+    {
+        qDebug() << "dynamic cast failed!";
+    }
+}
+
+void MainWidget::slotChangeMessageListItemInfo(zsj::Data::ptr data,
+        const QString &fromId,
+        const QString &toId,
+        const QString &content,
+        zsj::global::MessageType msgType)
+{
+    qDebug() << "content: " << content;
+    bool exist = false;
+    for(int i = 0; i < ui->listWidgetMessage->count(); i++)
+    {
+        QListWidgetItem *localItem = ui->listWidgetMessage->item(i);
+        QWidget *widget = ui->listWidgetMessage->itemWidget(localItem);
+        if(widget)
+        {
+            MessageItemWidget *msgItem = dynamic_cast<MessageItemWidget *>(widget);
+            if(msgItem)
+            {
+                QString id = (fromId == selfData->getAccount()) ? toId : fromId;
+                if(msgItem->getData()->getAccount() == id)
+                {
+                    msgItem->setDateTime();
+                    QString msg;
+                    if(msgType == zsj::global::MessageType::FILE)
+                    {
+                        msg = "[文件]";
+                    }
+                    else if(msgType == zsj::global::MessageType::IMAGE)
+                    {
+                        msg = "[图片]";
+                    }
+                    else
+                    {
+                        msg = content;
+                    }
+                    msgItem->setMessage(msg);
+                    exist = true;
+                    break;
+                }
+            }
+            else
+            {
+                qCritical() << "widget dynamic cast to MessageItemWidget failed!";
+            }
+        }
+        else
+        {
+            qCritical() << "item no widget!";
+        }
+    }
+    if(!exist)
+    {
+        QString msg;
+        if(msgType == zsj::global::MessageType::FILE)
+        {
+            msg = "[文件]";
+        }
+        else if(msgType == zsj::global::MessageType::IMAGE)
+        {
+            msg = "[图片]";
+        }
+        else
+        {
+            msg = content;
+        }
+        addMessageListItem(ui->listWidgetMessage, data, msg);
     }
 }
 
 void MainWidget::moveItem(QAction *action)
 {
-    if(isMsgList){
+    if(isMsgList)
+    {
         qDebug() << "Message list move logic to do";
         return;
     }
@@ -940,7 +1091,7 @@ void MainWidget::moveItem(QAction *action)
     for(auto &treeItem : *data)
     {
         QWidget *widget = treeWidget->itemWidget(treeItem.first, 0);
-        LinkmanGroupWidget *itemWidget = dynamic_cast<LinkmanGroupWidget *>(widget);
+        LinkmanSection *itemWidget = dynamic_cast<LinkmanSection *>(widget);
         if(targetSectionName == itemWidget->getGrouoName())
         {
             targetSection = treeItem.first;
@@ -959,25 +1110,25 @@ void MainWidget::moveItem(QAction *action)
     {
         if(itemUser)
         {
-            LinkmanItemWidget *itemWidget = dynamic_cast<LinkmanItemWidget *>(widget);
+            LinkmanUserItem *itemWidget = dynamic_cast<LinkmanUserItem *>(widget);
             if(itemWidget == nullptr)
             {
-                qDebug() << "QWidget* to LinkmanItemWidget* faild";
+                qDebug() << "QWidget* to LinkmanUserItem* faild";
                 return;
             }
-            zsj::UserData::ptr userData = itemWidget->getUserData();
+            zsj::UserData::ptr userData = std::dynamic_pointer_cast<zsj::UserData>(itemWidget->getData());
             newItem = addTreeWidgetChildNode(treeWidget, targetSection, userData);
         }
         else
         {
-            LinkmanGroupItemWidget *itemWidget = dynamic_cast<LinkmanGroupItemWidget *>(widget);
+            LinkmanGroupItem *itemWidget = dynamic_cast<LinkmanGroupItem *>(widget);
             if(itemWidget == nullptr)
             {
-                qDebug() << "QWidget* to LinkmanGroupItemWidget* faild";
+                qDebug() << "QWidget* to LinkmanGroupItem* faild";
                 return;
             }
-            zsj::GroupData::ptr groupData = itemWidget->getGroupData();
-            newItem = addTreeWidgetChildNode(treeWidget, targetSection, groupData,QDateTime::currentDateTime().toString("yyyy-MM-dd"));
+            zsj::GroupData::ptr groupData = std::dynamic_pointer_cast<zsj::GroupData>(itemWidget->getData());
+            newItem = addTreeWidgetChildNode(treeWidget, targetSection, groupData, QDateTime::currentDateTime().toString("yyyy-MM-dd"));
         }
     }
     else

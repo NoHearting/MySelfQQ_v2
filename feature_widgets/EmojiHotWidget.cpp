@@ -10,7 +10,7 @@
 #include <QByteArray>
 #include <QList>
 
-QVector<QPair<QString,uint>> EmojiHotWidget::hotEmojiTimesVec;
+QVector<QPair<QString, uint>> EmojiHotWidget::hotEmojiTimesVec;
 QSet<QString> EmojiHotWidget::hotEmojiSet;
 
 EmojiHotWidget::EmojiHotWidget(QWidget *parent) :
@@ -25,15 +25,18 @@ EmojiHotWidget::EmojiHotWidget(QWidget *parent) :
 
 EmojiHotWidget::~EmojiHotWidget()
 {
-    delete ui;
+    qInfo() << "deconstruct EmojiHotWidget";
     writeToFile();
+    delete ui;
+
 }
 
 QVector<QString> EmojiHotWidget::topTotEmoji(int count)
 {
-    std::sort(hotEmojiTimesVec.begin(),hotEmojiTimesVec.end(),Compare());
+    std::sort(hotEmojiTimesVec.begin(), hotEmojiTimesVec.end(), Compare());
     QVector<QString> result;
-    for(int i = 0;i<hotEmojiSet.size() && i < count;i++){
+    for(int i = 0; i < hotEmojiSet.size() && i < count; i++)
+    {
         result.push_back(hotEmojiTimesVec.at(i).first);
     }
     return result;
@@ -41,36 +44,42 @@ QVector<QString> EmojiHotWidget::topTotEmoji(int count)
 
 void EmojiHotWidget::recordHotEmoji(const QString &emoji)
 {
-    if(hotEmojiSet.contains(emoji)){
-        for(auto & item : hotEmojiTimesVec){
-            if(item.first == emoji){
+    if(hotEmojiSet.contains(emoji))
+    {
+        for(auto &item : hotEmojiTimesVec)
+        {
+            if(item.first == emoji)
+            {
                 item.second++;
                 return;
             }
         }
     }
-    else{
+    else
+    {
         hotEmojiSet.insert(emoji);
-        hotEmojiTimesVec.push_back(PAIR(emoji,1));
+        hotEmojiTimesVec.push_back(PAIR(emoji, 1));
     }
 }
 
 void EmojiHotWidget::adjustPosition(const QPoint &basePos)
 {
     const int padding = 10;
-    QPoint pos = basePos - QPoint(padding,this->height());
+    QPoint pos = basePos - QPoint(padding, this->height());
     const int toolBatHeight = 40;
 
     QSize windowSize = zsj::SystemUtil::getDesktopSize();
 
     // 顶部
-    if(pos.y() < 0){
-        pos = basePos + QPoint(-padding,toolBatHeight);
+    if(pos.y() < 0)
+    {
+        pos = basePos + QPoint(-padding, toolBatHeight);
     }
-    if(pos.x() + this->width() > windowSize.width()){
-        pos -= QPoint(pos.x() + this->width() - windowSize.width(),0);
+    if(pos.x() + this->width() > windowSize.width())
+    {
+        pos -= QPoint(pos.x() + this->width() - windowSize.width(), 0);
     }
-    this->setGeometry(QRect(pos,this->size()));
+    this->setGeometry(QRect(pos, this->size()));
 }
 
 void EmojiHotWidget::showEvent(QShowEvent *event)
@@ -97,11 +106,13 @@ void EmojiHotWidget::initSignalsAndSlots()
         QLabel *label = dynamic_cast<QLabel *>(ui->tableWidget->cellWidget(row, col));
         StringUserData *stringData = dynamic_cast<StringUserData *>(
                                          label->userData(row * EmojiTableWidget::EmojiHotColCount + col));
-        if(stringData){
+        if(stringData)
+        {
             QString path = stringData->getData();
-            emit sigChooseEmoji(type,path);
+            emit sigChooseEmoji(type, path);
         }
-        else{
+        else
+        {
             qCritical() << "choose emoji failed!";
         }
     });
@@ -111,52 +122,65 @@ void EmojiHotWidget::writeToFile()
 {
     QString hotEmojiPath = "/data/hot_emoji/";
     QString absolutPath = zsj::SystemUtil::getProcessPath() + hotEmojiPath;
+    qDebug() << absolutPath;
     bool isOk = zsj::FileUtil::judgeAndMakeDir(absolutPath);
     absolutPath += "hot_emoji.txt";
-    if(isOk){
+    if(isOk)
+    {
         QFile file(absolutPath);
-        if(file.open(QIODevice::WriteOnly)){
+        if(file.open(QIODevice::WriteOnly))
+        {
 
-            for(const auto & item : hotEmojiTimesVec){
+            for(const auto &item : hotEmojiTimesVec)
+            {
                 file.write(QString("%1 %2\n").arg(item.first).arg(item.second).toStdString().data());
             }
             qDebug() << "write to file ok";
         }
-        else{
+        else
+        {
             qCritical() << file.errorString();
         }
     }
-    else{
+    else
+    {
         qCritical() << absolutPath << " create failed or not exist";
     }
 }
 
 void EmojiHotWidget::readFromFile()
 {
+
     QString hotEmojiPath = "/data/hot_emoji/";
     QString absolutPath = zsj::SystemUtil::getProcessPath() + hotEmojiPath;
     bool isOk = zsj::FileUtil::judgeAndMakeDir(absolutPath);
     absolutPath += "hot_emoji.txt";
-    if(isOk){
+    if(isOk)
+    {
         QFile file(absolutPath);
-        if(file.open(QIODevice::ReadOnly)){
+        if(file.open(QIODevice::ReadOnly))
+        {
 
-            while(!file.atEnd()){
-               QList<QByteArray> data = file.readLine().split(' ');
-               QString path = QString(data.at(0).toStdString().data());
-               int times = data.at(1).toInt();
-               hotEmojiTimesVec.push_back(PAIR(path,times));
-               hotEmojiSet.insert(path);
+            while(!file.atEnd())
+            {
+                QList<QByteArray> data = file.readLine().split(' ');
+                QString path = QString(data.at(0).toStdString().data());
+                int times = data.at(1).toInt();
+                hotEmojiTimesVec.push_back(PAIR(path, times));
+                hotEmojiSet.insert(path);
             }
             qDebug() << "read from file ok";
         }
-        else{
+        else
+        {
             qCritical() << file.errorString();
         }
     }
-    else{
+    else
+    {
         qCritical() << absolutPath << " create failed or not exist";
     }
+    qInfo() << "read from file ok";
 }
 
 void EmojiHotWidget::show(zsj::global::UiType type)

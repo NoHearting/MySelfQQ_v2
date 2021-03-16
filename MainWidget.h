@@ -22,6 +22,10 @@
 #include "feature_widgets/WarnDialog.h"
 #include "ChatWidget.h"
 
+#include "main/Data.h"
+#include "main/UserData.h"
+#include "main/GroupData.h"
+
 namespace Ui
 {
 class MainWidget;
@@ -33,7 +37,7 @@ class MainWidget : public QWidget
 
 public:
     typedef std::map<QTreeWidgetItem *, std::list<QTreeWidgetItem *>> mapTreeItem;
-    explicit MainWidget(QWidget *parent = 0);
+    MainWidget(zsj::Data::ptr data,QWidget *parent = 0);
     ~MainWidget();
 
 protected:
@@ -47,6 +51,11 @@ private:
 
     /// @brief 初始化成员堆对象
     void initObjects();
+
+    /**
+     * @brief 删除成员对象
+     */
+    void deleteObjects();
 
 
     /// @brief 初始化联系人好友列表
@@ -68,7 +77,7 @@ private:
     ///
     /// @param treeWidget 好友列表
     /// @param group 根节点
-    QTreeWidgetItem *addTreeWidgetRootNode(QTreeWidget *treeWidget, LinkmanGroupWidget *group);
+    QTreeWidgetItem *addTreeWidgetRootNode(QTreeWidget *treeWidget, LinkmanSection *group);
     QTreeWidgetItem *addTreeWidgetRootNode(QTreeWidget *treeWidget, const QString &groupName, int active, int total);
 
     /// @brief 添加好友列表的子节点
@@ -76,12 +85,18 @@ private:
     /// @param[in] 好友列表
     /// @param[in] 根节点
     /// @param[in] 子节点
-    QTreeWidgetItem *addTreeWidgetChildNode(QTreeWidget *treeWidget, QTreeWidgetItem *rootNode, LinkmanItemWidget *item);
+    QTreeWidgetItem *addTreeWidgetChildNode(QTreeWidget *treeWidget, QTreeWidgetItem *rootNode, LinkmanUserItem *item);
     QTreeWidgetItem *addTreeWidgetChildNode(QTreeWidget *treeWidget, QTreeWidgetItem *rootNode,
                                             zsj::UserData::ptr userData);
     QTreeWidgetItem *addTreeWidgetChildNode(QTreeWidget *treeWidget, QTreeWidgetItem *rootNode,
                                             zsj::GroupData::ptr groupData, const QString &date);
 
+
+
+
+    void addMessageListItem(QListWidget * listWidget,zsj::Data::ptr data,
+                            const QString & message,
+                            const QDateTime & dateTime = QDateTime::currentDateTime());
 
     /// 设置头像
     void setHead(QPixmap &pixmap);
@@ -140,9 +155,6 @@ private:
 private:
     Ui::MainWidget *ui;
 
-#ifdef Q_OS_LINUX
-    QPoint offset;      /// 鼠标位移值
-#endif
 
 
     /// 设置窗口可拉伸和移动
@@ -187,7 +199,10 @@ private:
 
 
     /// 聊天窗口
-    QSharedPointer<ChatWidget> chatWidgetPtr;
+    ChatWidget * chatWidget;
+
+    /// 自己的信息
+    zsj::Data::ptr selfData;
 private slots:
 
     // ------- 最顶部功能按钮 ---------
@@ -234,8 +249,20 @@ private slots:
      * @brief 打开聊天窗口
      * @param index 当前聊天对象在聊天列表中的坐标
      */
-    void slotOpenChatWindow(const QModelIndex &index);
-    void slotOpenChatWindowGroup(const QModelIndex &index);
+    void slotOpenChatWindow(const QModelIndex &index);          // 好友列表
+    void slotOpenChatWindowGroup(const QModelIndex &index);     // 群组列表
+    void slotOpenChatWindowMessage(const QModelIndex &index);   // 消息列表
+
+    /**
+     * @brief 根据信号改变消息列表item显示的日期和消息信息
+     * @param data
+     * @param fromId
+     * @param toId
+     * @param content
+     * @param msgType
+     */
+    void slotChangeMessageListItemInfo(zsj::Data::ptr data,const QString &fromId, const QString &toId,
+                                       const QString &content, zsj::global::MessageType msgType);
 public slots:
     /// @brief 好友管理
     void friendManager() {}

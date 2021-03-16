@@ -33,6 +33,14 @@ public:
 
     /// @brief 显示系统托盘
     void showSystemTray();
+
+    /**
+     * @brief 关闭系统托盘
+     */
+    void closeTray();
+
+private:
+    void deleteObjects();
 private:
     QSystemTrayIcon * tray;     //系统托盘
     QMenu * systemTrayMenu;     //系统托盘菜单

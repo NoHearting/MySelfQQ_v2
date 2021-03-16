@@ -20,19 +20,6 @@ ChatMessageData::ChatMessageData(QPixmap &head, const ChatMessageRecord &chatMes
 
 }
 
-//ChatMessageData::ChatMessageData(const QString &imagePath, QPixmap &head):
-//    head(head), imagePath(imagePath)
-//{
-
-//}
-
-//ChatMessageData::ChatMessageData(QPixmap &head, const QString &message, bool hasEmoji) :
-//    head(head),
-//    message(message),
-//    hasEmoji(hasEmoji)
-//{
-
-//}
 
 QPixmap ChatMessageData::getHead() const
 {
@@ -98,6 +85,7 @@ QString ChatMessageData::getFilePath() const
         else
         {
             qCritical() << "MessageBody dynamic cast to FileMessageBody failed!";
+            return "";
         }
     }
     else
@@ -121,6 +109,7 @@ QString ChatMessageData::getFileName() const
         else
         {
             qCritical() << "MessageBody dynamic cast to FileMessageBody failed!";
+            return "";
         }
 
     }
@@ -143,6 +132,7 @@ int ChatMessageData::getFileSize() const
         else
         {
             qCritical() << "MessageBody dynamic cast to FileMessageBody failed!";
+            return -1;
         }
     }
     else

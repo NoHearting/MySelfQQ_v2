@@ -44,6 +44,10 @@ private:
 
 
     void testChatMessageRecord();
+
+    void testQSharedPointer();
+
+    void testCode();
 };
 
 }

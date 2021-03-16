@@ -4,24 +4,24 @@
   * @author zsj
   * @date 2020年12月23日20:04:17
   */
-#ifndef LINKMANGROUPWIDGET_H
-#define LINKMANGROUPWIDGET_H
+#ifndef LINKMANSECTION_H
+#define LINKMANSECTION_H
 
 #include <QWidget>
 
 namespace Ui {
-class LinkmanGroupWidget;
+class LinkmanSection;
 }
 
-class LinkmanGroupWidget : public QWidget
+class LinkmanSection : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit LinkmanGroupWidget(QWidget *parent = 0);
+    explicit LinkmanSection(QWidget *parent = 0);
 
-    LinkmanGroupWidget(const QPixmap & icon,const QString & groupName,int active,int total,QWidget * parent = 0);
-    ~LinkmanGroupWidget();
+    LinkmanSection(const QPixmap & icon,const QString & groupName,int active,int total,QWidget * parent = 0);
+    ~LinkmanSection();
 
 
     /// @brief 设置分组项的前置图标
@@ -35,10 +35,10 @@ public:
 
     QString getGrouoName()const;
 private:
-    Ui::LinkmanGroupWidget *ui;
+    Ui::LinkmanSection *ui;
 
 
     QString groupName;
 };
 
-#endif // LINKMANGROUPWIDGET_H
+#endif // LINKMANSECTION_H

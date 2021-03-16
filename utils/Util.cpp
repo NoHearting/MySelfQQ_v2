@@ -10,6 +10,9 @@
 #include <QDir>
 #include <QRegExp>
 
+
+#include "main/ApplicationInfo.h"
+
 namespace zsj
 {
 
@@ -147,13 +150,15 @@ QString SystemUtil::getCurrentThreadId()
 
 QString SystemUtil::getProcessPath()
 {
-    return qApp->applicationDirPath();
+//    return qApp->applicationDirPath();
+    return zsj::ApplicationInfo::Instance()->getAppAbsoluteDir();
 }
 
 
 int SystemUtil::getCurrentProcessId()
 {
-    return qApp->applicationPid();
+//    return qApp->applicationPid();
+    return zsj::ApplicationInfo::Instance()->getAppPid();
 }
 
 QSize SystemUtil::getDesktopSize()
@@ -185,7 +190,7 @@ bool FileUtil::judgeAndMakeDir(const QString &dirPath)
 #ifdef Q_OS_WIN
     // window下创建文件夹因为是绝对路径有磁盘标识，如D:,C:,所以需要判断一下
     // 防止无限递归
-    if(parentDir[parentDir.size() - 1] != ':')
+    if((!parentDir.isEmpty() && !parentDir.isNull()) && parentDir[parentDir.size() - 1] != ':')
     {
         judgeAndMakeDir(parentDir);
     }

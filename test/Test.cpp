@@ -14,10 +14,15 @@
 #include <QMap>
 #include <queue>
 #include <QPair>
+#include <QVector>
+#include <utility>
+#include <vector>
+#include <iostream>
 
 #include <QRegExp>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QSharedPointer>
 
 #include <QFile>
 
@@ -25,6 +30,8 @@
 #include "utils/Util.h"
 
 #include <utils/Util.h>
+
+#include <memory>
 
 namespace zsj
 {
@@ -36,7 +43,7 @@ Test::Test()
 
 void Test::test()
 {
-//    testQApplication();
+    testQApplication();
 //    testFile();
 //    testDir();
 //    testDebugColor();
@@ -46,18 +53,22 @@ void Test::test()
 //    testReg();
 //    testFontWidth();
 //    testJson();
-    testChatMessageRecord();
+//    testChatMessageRecord();
+//    testQSharedPointer();
+
+//    testCode();
 }
 
 void Test::testQApplication()
 {
-    QString appName = qApp->applicationName();
-    quint64 pid = qApp->applicationPid();
-    QWidget *screen = qApp->desktop()->screen();
-    qDebug() << appName;
-    qDebug() << pid;
-    qDebug() << screen->width() << ":" << screen->height();
-    qDebug() << "availableGeometry: " << qApp->desktop()->availableGeometry();
+    qDebug() << "applicationName : " << qApp->applicationName();
+    qDebug() << "applicationPid : " << qApp->applicationPid();
+    qDebug() << "applicationDirPath : " << qApp->applicationDirPath();
+    qDebug() << "applicationDisplayName : " << qApp->applicationDisplayName();
+    qDebug() << "applicationFilePath : " << qApp->applicationFilePath();
+    qDebug() << "applicationState : " << qApp->applicationState();
+    qDebug() << "applicationVersion : " << qApp->applicationVersion();
+
 }
 
 void Test::testFile()
@@ -206,7 +217,7 @@ void Test::testJson()
 
 void Test::testChatMessageRecord()
 {
-    zsj::ChatMessageRecord chatMessageRecord(QDateTime::currentDateTime(),"111","222",MessageBodyPtr(new TextMessageBody("hello world")));
+    zsj::ChatMessageRecord chatMessageRecord(QDateTime::currentDateTime(), "111", "222", MessageBodyPtr(new TextMessageBody("hello world")));
     qDebug() << chatMessageRecord.serializeToJson();
 
     QString tempPath = "/record/temp/";
@@ -215,16 +226,19 @@ void Test::testChatMessageRecord()
     QString currenPath = SystemUtil::getProcessPath();
     QString path = currenPath + tempPath;
     bool isOk = FileUtil::judgeAndMakeDir(path);
-    if(isOk){
+    if(isOk)
+    {
         qDebug() << __LINE__ <<  " create " << path << " success";
     }
-    else{
+    else
+    {
         qCritical() << "create " << path << " failed!";
         return;
     }
     QString filePath = path + fileName;
     QFile file(filePath);
-    if(!file.open(QIODevice::Append | QIODevice::WriteOnly)){
+    if(!file.open(QIODevice::Append | QIODevice::WriteOnly))
+    {
         qCritical() << "open " << filePath << " failed!";
         return;
     }
@@ -232,6 +246,48 @@ void Test::testChatMessageRecord()
     file.write(chatMessageRecord.serializeToJson().toStdString().data());
     file.write("\n");
     file.close();
+}
+
+class Base
+{
+public:
+    virtual ~Base() {}
+    virtual void show()
+    {
+        qDebug() << "base";
+    }
+};
+
+class Derive : public Base
+{
+public:
+    void show()override
+    {
+        qDebug() << "Derive";
+    }
+};
+
+void Test::testQSharedPointer()
+{
+//    std::shared_ptr<>();
+//    QSharedPointer()
+
+    std::shared_ptr<Base> base(new Base);
+    qDebug() << "base";
+    std::shared_ptr<Derive> derive = std::dynamic_pointer_cast<Derive>(base);
+    qDebug() << "cast and assign success";
+    if(!derive)
+    {
+        derive->show();
+    }
+
+
+    //    std::dynamic_pointer_cast
+}
+
+void Test::testCode()
+{
+//    Qt::Key_A
 }
 
 

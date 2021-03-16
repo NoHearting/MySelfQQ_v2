@@ -33,9 +33,10 @@
 
 
 
-ChatWidget::ChatWidget(QWidget *parent) :
+ChatWidget::ChatWidget(zsj::Data::ptr data, QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::ChatWidget)
+    ui(new Ui::ChatWidget),
+    selfData(data)
 {
     ui->setupUi(this);
     initObjects();
@@ -47,6 +48,10 @@ ChatWidget::ChatWidget(QWidget *parent) :
 
 ChatWidget::~ChatWidget()
 {
+    delete emojiHotWidget;
+
+    delete emojiWidget;
+    qInfo() << "deconstruct ChatWidget";
     delete ui;
 }
 
@@ -159,11 +164,20 @@ void ChatWidget::initObjects()
     initMenus();
 
 
-    emojiWidget = new EmojiWidget(this);
-    emojiHotWidget = new EmojiHotWidget(this);
+    emojiWidget = new EmojiWidget();
+    emojiHotWidget = new EmojiHotWidget();
 
-    QPixmap head(":/global/res/global/water-tray.png");
-    selfData.reset(new zsj::UserData(head, "无心", "1762861794", "", ""));
+//    QPixmap head(":/global/res/global/water-tray.png");
+    //    selfData.reset(new zsj::UserData(head, "无心", "1762861794", "", ""));
+}
+
+void ChatWidget::deleteObjects()
+{
+    delete emojiHotWidget;
+    emojiHotWidget = nullptr;
+
+    delete emojiWidget;
+    emojiWidget  = nullptr;
 }
 
 void ChatWidget::initResourceAndForm()
@@ -360,6 +374,10 @@ void ChatWidget::initSignalsAndSlots()
     {
         ui->widgetMessageInputGroup->setMaximumHeight(330);
     });
+
+
+    /// 发送消息时触发
+    connect(this, &ChatWidget::sigSendMessage, this, &ChatWidget::slotChangeChatObjectInfo);
 }
 
 void ChatWidget::setChatObjListStyle()
@@ -490,6 +508,8 @@ void ChatWidget::addFileMessageItem(QListWidget *listWidget,
     zsj::ChatMessageData::ptr data(new zsj::ChatMessageData(head, msgRecord));
     QWidget *widget = new ChatMessageFileItemObject(isLeft, data, item, listWidget);
 
+    emitSigSendMessage(isLeft, "", zsj::global::MessageType::FILE);
+
     listWidget->setItemWidget(item, widget);
 
     // 滚动到最底部
@@ -547,6 +567,8 @@ void ChatWidget::addMessageItem(QListWidget *listWidget, QPixmap &head,
 
     // 滚动到最底部
     listWidget->scrollToBottom();
+
+    emitSigSendMessage(isLeft, message, inputType);
 
     chatObjInfo[currentData->getAccount()].enqueue(msgRecord);
     if(chatObjInfo[currentData->getAccount()].size() > 100)
@@ -748,6 +770,20 @@ void ChatWidget::setMQshow(const QString &mqImage)
     else
     {
         qDebug() << mqImage << " is null";
+    }
+}
+
+void ChatWidget::emitSigSendMessage(bool isLeft, const QString &content, zsj::global::MessageType type)
+{
+    if(isLeft)
+    {
+        emit sigSendMessage(currentData, currentData->getAccount(),
+                            selfData->getAccount(), content, type);
+    }
+    else
+    {
+        emit sigSendMessage(currentData, selfData->getAccount(),
+                            currentData->getAccount(), content, type);
     }
 }
 
@@ -999,6 +1035,37 @@ void ChatWidget::slotChooseFileGroup()
     {
 
         qCritical() << "选择文件失败";
+    }
+}
+
+void ChatWidget::slotChangeChatObjectInfo(zsj::Data::ptr data,
+        const QString &fromId,
+        const QString &toId,
+        const QString &content,
+        zsj::global::MessageType msgType)
+{
+    ChatObjectItem  * objItem = zsj::WidgetUtil::widgetCast<
+            QListWidget,QListWidgetItem,ChatObjectItem>
+            (ui->listWidgetChatObjList,currentItem);
+    if(objItem){
+        objItem->setDateTime(QDateTime::currentDateTime());
+        QString msg;
+        if(msgType == zsj::global::MessageType::FILE)
+        {
+            msg = "[文件]";
+        }
+        else if(msgType == zsj::global::MessageType::IMAGE)
+        {
+            msg = "[图片]";
+        }
+        else
+        {
+            msg = content;
+        }
+        objItem->setMessage(msg);
+    }
+    else{
+        qCritical() << "QListWidgetItem * to ChatObjectItem *";
     }
 }
 

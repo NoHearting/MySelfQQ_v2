@@ -15,6 +15,9 @@ public:
     explicit TestWidget(QWidget *parent = nullptr);
     ~TestWidget();
 
+protected:
+    void closeEvent(QCloseEvent *event);
+
 private slots:
     void on_pushButton_clicked();
 
@@ -22,6 +25,8 @@ private slots:
 
 private:
     Ui::TestWidget *ui;
+
+    QString * string;
 };
 
 #endif // TESTWIDGET_H

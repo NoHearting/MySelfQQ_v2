@@ -12,6 +12,8 @@
 #include <QTextEdit>
 #include <QQueue>
 #include <QFileInfo>
+#include <functional>
+#include <QScopedPointer>
 
 #include "main/Frameless.h"
 #include "main/Data.h"
@@ -20,7 +22,8 @@
 #include "utils/Global.h"
 #include "main/ChatMessageRecord.h"
 
-namespace Ui {
+namespace Ui
+{
 class ChatWidget;
 }
 
@@ -30,7 +33,7 @@ class ChatWidget : public QWidget
 public:
 
 public:
-    explicit ChatWidget(QWidget *parent = nullptr);
+    explicit ChatWidget(zsj::Data::ptr data, QWidget *parent = nullptr);
     ~ChatWidget();
 
 
@@ -67,14 +70,15 @@ private:
     /**
      * @brief 消息解析器
      */
-    class MessageParser{
+    class MessageParser
+    {
     public:
         /**
          * @brief 解析消息
          * @param originmessage 原生消息
          * @return
          */
-        QMap<zsj::global::MessageType,QStringList> parserMessage(QString originmessage);
+        QMap<zsj::global::MessageType, QStringList> parserMessage(QString originmessage);
 
 
         /**
@@ -82,13 +86,17 @@ private:
          * @param content 内容
          * @return
          */
-        bool contentJudgeEmpty(const QString & content);
+        bool contentJudgeEmpty(const QString &content);
     };
 
 private:
 
     /// @brief 初始化成员堆对象
     void initObjects();
+    /**
+     * @brief 删除对象
+     */
+    void deleteObjects();
 
     /// @brief 初始化窗口资源和窗口布局
     void initResourceAndForm();
@@ -121,8 +129,17 @@ private:
     void setCurrentData(zsj::Data::ptr data);
 
 
-    void addFileMessageItem(QListWidget * listWidget,QPixmap & head,const QString & fileName,
-                            const QString & filePath,int fileSize,
+    /**
+     * @brief 添加文件消息
+     * @param listWidget 需要添加item的QListWidget
+     * @param head 头像
+     * @param fileName 文件名
+     * @param filePath  文件路径
+     * @param fileSize 文件大小
+     * @param isLeft 是否位于左边
+     */
+    void addFileMessageItem(QListWidget *listWidget, QPixmap &head, const QString &fileName,
+                            const QString &filePath, int fileSize,
                             bool isLeft = false);
 
     /**
@@ -133,8 +150,8 @@ private:
      * @param message 聊天消息
      * @param isSelf 是否是自己所发信息
      */
-    void addMessageItem(QListWidget * listWidget,QPixmap & head,zsj::global::MessageType inputType,
-                        const QString & message,bool isLeft = false);
+    void addMessageItem(QListWidget *listWidget, QPixmap &head, zsj::global::MessageType inputType,
+                        const QString &message, bool isLeft = false);
 
 
     /// @brief 切换聊天对象
@@ -151,8 +168,8 @@ private:
      * @param listWidget
      * @param item
      */
-    void addMessageToList(const QString & content,
-                          QListWidget * listWidget,QTextEdit * textEdit);
+    void addMessageToList(const QString &content,
+                          QListWidget *listWidget, QTextEdit *textEdit);
 
     /**
      * @brief 添加消息到消息列表
@@ -161,7 +178,7 @@ private:
      * @param listWidget
      * @param textEdit
      */
-    void addMessageToList(QPixmap & head,
+    void addMessageToList(QPixmap &head,
                           const QString &content,
                           QListWidget *listWidget,
                           QTextEdit *textEdit);
@@ -172,20 +189,30 @@ private:
      * @param listWidget 聊天记录加载的容器
      * @param records 聊天记录
      */
-    void loadChatMessageRecord(QListWidget * listWidget,
+    void loadChatMessageRecord(QListWidget *listWidget,
                                const QQueue<zsj::ChatMessageRecord> records);
 
 
     /**
      * @brief 清除所有需要发送的文件。
      */
-    void clearAllToBeSendFiles(QListWidget * listWidget);
+    void clearAllToBeSendFiles(QListWidget *listWidget);
 
     /**
      * @brief 设置MQ秀
      * @param mqImage MQ秀图片
      */
-    void setMQshow(const QString & mqImage);
+    void setMQshow(const QString &mqImage);
+
+
+    /**
+     * @brief 发送信号，当消息发送时
+     * @param isLeft 是否位于左边，用于判断发送者和接受者
+     * @param content   内容
+     * @param type 内容类型
+     */
+    void emitSigSendMessage(bool isLeft,const QString & content,
+                            zsj::global::MessageType type);
 private:
     Ui::ChatWidget *ui;
 
@@ -198,21 +225,21 @@ private:
     zsj::Data::ptr selfData = nullptr;
 
     /// 当前选择聊天对象的item
-    QListWidgetItem * currentItem = nullptr;
+    QListWidgetItem *currentItem = nullptr;
 
 
     /// 消息发送菜单
-    QMenu * sendMenu = nullptr;
+    QMenu *sendMenu = nullptr;
 
 
     /// 当前窗口的位置大小
     QRect windowGeometry;
 
     /// 表情窗口
-    EmojiWidget * emojiWidget = nullptr;
+    EmojiWidget *emojiWidget = nullptr;
 
     /// 常用表情窗口
-    EmojiHotWidget * emojiHotWidget = nullptr;
+    EmojiHotWidget *emojiHotWidget = nullptr;
 
 
     /// 解析需要发送的消息
@@ -221,12 +248,24 @@ private:
     /// 聊天对象的信息。临时保存聊天记录
 //    QMap<QListWidgetItem*,QQueue<zsj::ChatMessageRecord>> chatObjInfo;
     // id : 消息记录
-    QMap<QString,QQueue<zsj::ChatMessageRecord>> chatObjInfo;
+    QMap<QString, QQueue<zsj::ChatMessageRecord>> chatObjInfo;
 
 
 
     /// 待发送的文件数据
     QQueue<QFileInfo> toBeSendfiles;
+
+signals:
+    /**
+     * @brief 发送消息时发送的信号
+     * @param data 对象数据
+     * @param fromId 从哪发送
+     * @param toId  发送到哪
+     * @param content   消息内容
+     * @param msgType   消息类型
+     */
+    void sigSendMessage(zsj::Data::ptr data, const QString &fromId, const QString &toId,
+                        const QString &content, zsj::global::MessageType msgType);
 public slots:
 
     /// @brief 选择Enter发送消息
@@ -248,7 +287,7 @@ private slots:
     void slotDeleteChatObject(QPoint point);
 
     /// @brief 添加item时触发
-    void slotItemAdd(QListWidgetItem * item);
+    void slotItemAdd(QListWidgetItem *item);
 
     /// @brief 点击按钮发送消息
     void slotButtonToSendMessage();
@@ -256,7 +295,7 @@ private slots:
 
     /// @brief 按键发送消息
     /// @param QString 发送的消息
-    void slotKeyToSendMessage(const QString & msg);
+    void slotKeyToSendMessage(const QString &msg);
     void slotKeyToSendMessageGroup(const QString &msg);
 
     /// @brief 最大化聊天框
@@ -267,7 +306,7 @@ private slots:
      * @brief 选择表情
      * @param emojiPath 表情路径
      */
-    void slotChooseEmoji(zsj::global::UiType type, const QString & emojiPath);
+    void slotChooseEmoji(zsj::global::UiType type, const QString &emojiPath);
 
     /**
      * @brief 截屏
@@ -293,6 +332,13 @@ private slots:
      */
     void slotChooseFile();
     void slotChooseFileGroup();
+
+
+    /**
+     * @brief 改变聊天对象列表中的item的信息，主要是日期和显示的消息
+     */
+    void slotChangeChatObjectInfo(zsj::Data::ptr data, const QString &fromId, const QString &toId,
+                                  const QString &content, zsj::global::MessageType msgType);
 };
 
 #endif // CHATWIDGET_H
