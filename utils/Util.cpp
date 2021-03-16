@@ -86,11 +86,6 @@ QPixmap scaledPixmap(QPixmap &src, int width, int height)
 }
 
 
-QPixmap ScaledPixmapNoKeepAspectRatio(QPixmap &src, int width, int height)
-{
-    return src.scaled(width, height, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-}
-
 void openUrl(const QString &url)
 {
     QDesktopServices::openUrl(QUrl(url));

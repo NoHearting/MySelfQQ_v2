@@ -30,7 +30,7 @@ public:
 
     QPixmap getHead()const{
         if(head.isNull()){
-            return QPixmap(global::defaultHead);
+            return QPixmap(global::DefaultHead);
         }
         return head;
     }

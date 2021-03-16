@@ -22,21 +22,6 @@
 namespace zsj
 {
 
-
-template<typename OUT,typename IN>
-inline QSharedPointer<OUT>
-dynamic_shared_pointer_cast(const QSharedPointer<IN> & pointer){
-    qDebug() << "into";
-//    pointer->show();
-    using Sp = QSharedPointer<OUT>;
-    if(auto * out = dynamic_cast<typename Sp::element_type*>(pointer.get())){
-        qDebug() << "cast success";
-        return Sp(out);
-    }
-    return Sp();
-}
-
-
 class Util
 {
 public:
@@ -253,14 +238,6 @@ QPixmap pixmapToRound(QPixmap &src, int radius);
 /// @return QPixmap
 QPixmap scaledPixmap(QPixmap &src, int width, int height);
 
-/**
- * @brief 非等比缩放图片
- * @param src
- * @param width
- * @param height
- * @return
- */
-QPixmap ScaledPixmapNoKeepAspectRatio(QPixmap &src, int width, int height);
 
 /// @brief 直接缩放为适应头像大小
 ///     主要是先缩放，在变为圆形

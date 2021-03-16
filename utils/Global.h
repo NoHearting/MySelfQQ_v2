@@ -48,16 +48,16 @@ enum class MessageType{
 
 /// 默认的菜单项的透明icon的路径，为了对齐菜单项
 /// 如果一些菜单有icon，一些没有，则菜单项文字对不齐
-const static QString transparentMenuIconPath =":/main/res/main/transparent.png";
+const static QString TransparentMenuIconPath =":/main/res/main/transparent.png";
 
 /// 默认头像路径
-const static QString defaultHead = ":/global/res/global/default-head.png";
+const static QString DefaultHead = ":/global/res/global/default-head.png";
 
 /// 最外层窗口和内层内容窗口之间的padding
 const static int TopLayoutPadding = 9;
 
 /// 截屏保存的文件夹名称
-const static QString sScreenShotDirName = "screen_shot";
+const static QString ScreenShotDirName = "screen_shot";
 
 
 }

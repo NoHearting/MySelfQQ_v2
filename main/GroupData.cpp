@@ -14,7 +14,7 @@ GroupData::GroupData(const QPixmap &groupHead, const QString &groupName,
       userCountMax(groupUserCountMax)
 {
     QPixmap head = getHead();
-    zsj::checkAndSetPixmap(head, zsj::global::defaultHead);
+    zsj::checkAndSetPixmap(head, zsj::global::DefaultHead);
 }
 
 QString GroupData::toString()

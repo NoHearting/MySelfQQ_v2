@@ -127,8 +127,8 @@ void LoginWidget::initResourceAndForm()
 
         item->setFixedSize(235,50);
         QListWidgetItem * widgetItem = new QListWidgetItem(comboBoxListWidget);
-        connect(item,&ComboBoxItemWidget::click,this,&LoginWidget::setAccountAndPassword);
-        qInfo() << "connect ComboBoxItemWidget click to LoginWidget::setAccountAndPassword";
+        connect(item,&ComboBoxItemWidget::click,this,&LoginWidget::slotSetAccountAndPassword);
+        qInfo() << "connect ComboBoxItemWidget click to LoginWidget::slotSetAccountAndPassword";
         comboBoxListWidget->setItemWidget(widgetItem,item);
         widgetItem->setSizeHint(QSize(235,50));
     }
@@ -139,13 +139,13 @@ void LoginWidget::initResourceAndForm()
 
 void LoginWidget::initSignalsAndSlots()
 {
-    connect(ui->toolButtonClose,&QToolButton::clicked,this,&LoginWidget::closeWindow);
-    connect(ui->toolButtonCloseLogin,&QToolButton::clicked,this,&LoginWidget::closeWindow);
-    connect(ui->toolButtonCloseLoginError,&QToolButton::clicked,this,&LoginWidget::closeWindow);
-    qInfo() << "connect toolButtonClose clicked to LoginWidget::closeWindow";
+    connect(ui->toolButtonClose,&QToolButton::clicked,this,&LoginWidget::slotCloseWindow);
+    connect(ui->toolButtonCloseLogin,&QToolButton::clicked,this,&LoginWidget::slotCloseWindow);
+    connect(ui->toolButtonCloseLoginError,&QToolButton::clicked,this,&LoginWidget::slotCloseWindow);
+    qInfo() << "connect toolButtonClose clicked to LoginWidget::slotCloseWindow";
 
-    connect(ui->pushButtonDropDown,&QPushButton::clicked,this,&LoginWidget::showComboBoxPopus);
-    qInfo() << "connect QPushButton cliecked to LoginWidget::showComboBoxPopus";
+    connect(ui->pushButtonDropDown,&QPushButton::clicked,this,&LoginWidget::slotShowComboBoxPopus);
+    qInfo() << "connect QPushButton cliecked to LoginWidget::slotShowComboBoxPopus";
 
     connect(ui->comboBoxAccount,&MyComboBox::setLineEditCssOn,this,[=](){
         ui->lineEditOuterInput->setStyleSheet("#lineEditOuterInput{border-bottom:1px solid rgb(18,183,245);"
@@ -168,12 +168,12 @@ void LoginWidget::initSignalsAndSlots()
     qInfo() << "connect MyComboBox::setLineEditCssOff to lambda func to set css";
 
 
-    connect(ui->toolButtonMin,&QToolButton::clicked,this,&LoginWidget::minWindow);
-    connect(ui->toolButtonMinLogin,&QToolButton::clicked,this,&LoginWidget::minWindow);
-    connect(ui->toolButtonMinLoginError,&QToolButton::clicked,this,&LoginWidget::minWindow);
-    qInfo() << "connect QToolButton::clicked to LoginWidget::minWindow";
+    connect(ui->toolButtonMin,&QToolButton::clicked,this,&LoginWidget::slotMinWindow);
+    connect(ui->toolButtonMinLogin,&QToolButton::clicked,this,&LoginWidget::slotMinWindow);
+    connect(ui->toolButtonMinLoginError,&QToolButton::clicked,this,&LoginWidget::slotMinWindow);
+    qInfo() << "connect QToolButton::clicked to LoginWidget::slotMinWindow";
 
-    connect(ui->pushButtonLogin,&QPushButton::clicked,this,&LoginWidget::login);
+    connect(ui->pushButtonLogin,&QPushButton::clicked,this,&LoginWidget::slotLogin);
     qInfo() << "connect QPushButton::clicked to LoginWidget::login";
 
     // 系统托盘
@@ -184,33 +184,33 @@ void LoginWidget::initSignalsAndSlots()
     connect(systemTray,&zsj::SystemTray::sigOpenWindow,this,&LoginWidget::show);
     qInfo() << "connect zsj::SystemTray::sigOpenWindow to LoginWidget::show";
 
-    connect(ui->pushButtonLoginCancel,&QPushButton::clicked,this,&LoginWidget::cancelLogin);
-    connect(ui->pushButtonCancelLogin,&QPushButton::clicked,this,&LoginWidget::cancelLogin);
+    connect(ui->pushButtonLoginCancel,&QPushButton::clicked,this,&LoginWidget::slotCancelLogin);
+    connect(ui->pushButtonCancelLogin,&QPushButton::clicked,this,&LoginWidget::slotCancelLogin);
     qInfo() << "connect QPushButton::clicked to LoginWidget::cancelLogin";
 
 
-    connect(ui->toolButtonFindPwd,&QToolButton::clicked,this,&LoginWidget::findPassword);
-    connect(ui->pushButtonFindPwd2,&QPushButton::clicked,this,&LoginWidget::findPassword);
-    connect(ui->pushButtonFindPwd,&QPushButton::clicked,this,&LoginWidget::findPassword);
-    qInfo() << "connect QPushButton::clicked to LoginWidget::findPassword";
+    connect(ui->toolButtonFindPwd,&QToolButton::clicked,this,&LoginWidget::slotFindPassword);
+    connect(ui->pushButtonFindPwd2,&QPushButton::clicked,this,&LoginWidget::slotFindPassword);
+    connect(ui->pushButtonFindPwd,&QPushButton::clicked,this,&LoginWidget::slotFindPassword);
+    qInfo() << "connect QPushButton::clicked to LoginWidget::slotFindPassword";
 
 }
 
 
 
-void LoginWidget::closeWindow()
+void LoginWidget::slotCloseWindow()
 {
 //    qApp->quit();
 //    deleteObjects();
     close();
 }
 
-void LoginWidget::minWindow()
+void LoginWidget::slotMinWindow()
 {
     this->hide();
 }
 
-void LoginWidget::setAccountAndPassword(const QPixmap &head, const QString & accountNum, const QString &password)
+void LoginWidget::slotSetAccountAndPassword(const QPixmap &head, const QString & accountNum, const QString &password)
 {
     ui->labelHeadImage->setPixmap(head);
     ui->lineEditOuterInput->setText(accountNum);
@@ -218,12 +218,12 @@ void LoginWidget::setAccountAndPassword(const QPixmap &head, const QString & acc
     ui->lineEditPwd->setText(password);
 }
 
-void LoginWidget::showComboBoxPopus()
+void LoginWidget::slotShowComboBoxPopus()
 {
     ui->comboBoxAccount->showPopup();
 }
 
-void LoginWidget::login()
+void LoginWidget::slotLogin()
 {
     QString account = ui->lineEditOuterInput->text();
     QString password = ui->lineEditPwd->text();
@@ -258,14 +258,14 @@ void LoginWidget::login()
     });
 }
 
-void LoginWidget::cancelLogin()
+void LoginWidget::slotCancelLogin()
 {
     if(ui->stackedWidget->currentIndex() != 0){
         ui->stackedWidget->setCurrentIndex(0);
     }
 }
 
-void LoginWidget::findPassword()
+void LoginWidget::slotFindPassword()
 {
     zsj::openUrl();
 }

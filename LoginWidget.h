@@ -14,7 +14,6 @@
 #include <QMenu>
 #include <QSystemTrayIcon>
 #include <QAction>
-#include <functional>
 #include <QScopedPointer>
 
 #include "item_widgets/ComboBoxItemWidget.h"
@@ -36,8 +35,6 @@ public:
     ~LoginWidget();
 
 
-    /// @brief 关闭窗口
-    void closeWindow();
 
 private:
     /// @brief 初始化窗口资源和窗口布局
@@ -72,33 +69,41 @@ private:
 
 
 signals:
+    /**
+     * @brief 登录成功时发送信号
+     * @param data 当前用户的数据
+     */
     void sigLoginSuccess(zsj::Data::ptr data);
+public slots:
+
+    /// @brief 关闭窗口
+    void slotCloseWindow();
 private slots:
 
 
     /// @brief 最小化窗口
-    void minWindow();
+    void slotMinWindow();
 
     /// @brief 根据下拉框选择的值设置账号和密码
     ///
     /// @param[in] head 头像
     /// @param[in] accountNum 账号
     /// @param[in] password 密码
-    void setAccountAndPassword(const QPixmap &head,
+    void slotSetAccountAndPassword(const QPixmap &head,
                                const QString &accountNum, const QString &password);
 
 
     /// @brief 显示下拉框
-    void showComboBoxPopus();
+    void slotShowComboBoxPopus();
 
     /// @brief 登录
-    void login();
+    void slotLogin();
 
     /// @brief 取消登录
-    void cancelLogin();
+    void slotCancelLogin();
 
     /// @brief 找回密码，打开一个网页，执行找回密码
-    void findPassword();
+    void slotFindPassword();
 };
 
 #endif // LOGINWIDGET_H

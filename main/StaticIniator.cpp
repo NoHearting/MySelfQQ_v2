@@ -55,7 +55,7 @@ void zsj::StaticIniator::initFirendMenu(QMenu *menu,QWidget * owner)
 
     MainWidget * ownerChild = dynamic_cast<MainWidget*>(owner);
     menu->setObjectName("userMenu");
-    QIcon icon = QIcon(zsj::global::transparentMenuIconPath);
+    QIcon icon = QIcon(zsj::global::TransparentMenuIconPath);
     QAction * sendMessage = new QAction(icon, "发送即时消息",menu);
     QAction * sendEmail = new QAction(icon, "发送电子邮件",menu);
     QAction * showInfo = new QAction(icon, "查看资料",menu);
@@ -91,8 +91,8 @@ void zsj::StaticIniator::initFirendMenu(QMenu *menu,QWidget * owner)
 
     initMenusStyle(menu);
 
-    connect(removeFromList,&QAction::triggered,ownerChild,&MainWidget::deleteItemFromMessageList);
-    connect(deleteFriend,&QAction::triggered,ownerChild,&MainWidget::deleteFriend);
+    connect(removeFromList,&QAction::triggered,ownerChild,&MainWidget::slotDeleteItemFromMessageList);
+    connect(deleteFriend,&QAction::triggered,ownerChild,&MainWidget::slotDeleteFriend);
 }
 
 void StaticIniator::initFirendSectionMenu(QMenu *menu,QWidget * owner)
@@ -100,7 +100,7 @@ void StaticIniator::initFirendSectionMenu(QMenu *menu,QWidget * owner)
     MainWidget * ownerChild = dynamic_cast<MainWidget*>(owner);
     menu->setObjectName("sectionMenu");
 
-    QIcon icon = QIcon(zsj::global::transparentMenuIconPath);
+    QIcon icon = QIcon(zsj::global::TransparentMenuIconPath);
     QAction * updateFriendList = new QAction(icon, "刷新好友列表",menu);
     QAction * showOnline = new QAction(icon, "显示在线联系人",menu);
     QAction * hideToShowTheSection = new QAction(icon, "隐身对该分组可见",menu);
@@ -124,16 +124,16 @@ void StaticIniator::initFirendSectionMenu(QMenu *menu,QWidget * owner)
 
     initMenusStyle(menu);
 
-    connect(deleteFriendSection,&QAction::triggered,ownerChild,&MainWidget::deleteFriendSection);
-    connect(addSection,&QAction::triggered,ownerChild,&MainWidget::addSection);
-    connect(renameSection,&QAction::triggered,ownerChild,&MainWidget::renameSection);
+    connect(deleteFriendSection,&QAction::triggered,ownerChild,&MainWidget::slotDeleteFriendSection);
+    connect(addSection,&QAction::triggered,ownerChild,&MainWidget::slotAddSection);
+    connect(renameSection,&QAction::triggered,ownerChild,&MainWidget::slotRenameSection);
 }
 
 void StaticIniator::initGroupMenu(QMenu *menu,QWidget * owner)
 {
     MainWidget * ownerChild = dynamic_cast<MainWidget*>(owner);
     menu->setObjectName("groupMenu");
-    QIcon icon = QIcon(zsj::global::transparentMenuIconPath);
+    QIcon icon = QIcon(zsj::global::TransparentMenuIconPath);
     QAction * sendGroupMessage = new QAction(icon, "发送群消息",menu);
     QAction * showGroupInfo = new QAction(QIcon(":/main/res/main/group-data.png"),"查看群资料",menu);
     QAction * groupMessageSet = new QAction(icon, "群消息设置",menu);
@@ -163,10 +163,10 @@ void StaticIniator::initGroupMenu(QMenu *menu,QWidget * owner)
     initMenusStyle(menu);
 
 
-    connect(sendGroupMessage,&QAction::triggered,ownerChild,&MainWidget::sendGroupMessage);
-    connect(updateRemark,&QAction::triggered,ownerChild,&MainWidget::updateGroupRemark);
-    connect(moveGroup,&QAction::triggered,ownerChild,&MainWidget::moveGroupTo);
-    connect(removeFromList,&QAction::triggered,ownerChild,&MainWidget::deleteItemFromMessageList);
+    connect(sendGroupMessage,&QAction::triggered,ownerChild,&MainWidget::slotSendGroupMessage);
+    connect(updateRemark,&QAction::triggered,ownerChild,&MainWidget::slotUpdateGroupRemark);
+    connect(moveGroup,&QAction::triggered,ownerChild,&MainWidget::slotMoveGroupTo);
+    connect(removeFromList,&QAction::triggered,ownerChild,&MainWidget::slotDeleteItemFromMessageList);
 }
 
 void StaticIniator::initGroupSectionMenu(QMenu *menu,QWidget * owner)
@@ -174,7 +174,7 @@ void StaticIniator::initGroupSectionMenu(QMenu *menu,QWidget * owner)
     MainWidget * ownerChild = dynamic_cast<MainWidget*>(owner);
     menu->setObjectName("groupSectionMenu");
 
-    QIcon icon = QIcon(zsj::global::transparentMenuIconPath);
+    QIcon icon = QIcon(zsj::global::TransparentMenuIconPath);
     QAction * logoShow = new QAction(icon, "图标显示",menu);
     QAction * listShow = new QAction(icon, "列表显示",menu);
     QAction * visitWeb = new QAction(icon, "访问MQ官网",menu);
@@ -198,11 +198,11 @@ void StaticIniator::initGroupSectionMenu(QMenu *menu,QWidget * owner)
 
     initMenusStyle(menu);
 
-    connect(addGroup,&QAction::triggered,ownerChild,&MainWidget::findAndAddGroup);
-    connect(createGroup,&QAction::triggered,ownerChild,&MainWidget::createGroup);
-    connect(addGroupSection,&QAction::triggered,ownerChild,&MainWidget::addGroupSection);
-    connect(renameGroupSection,&QAction::triggered,ownerChild,&MainWidget::renameGroupSection);
-    connect(deleteGroupSection,&QAction::triggered,ownerChild,&MainWidget::deleteGroupSection);
+    connect(addGroup,&QAction::triggered,ownerChild,&MainWidget::slotFindAndAddGroup);
+    connect(createGroup,&QAction::triggered,ownerChild,&MainWidget::slotCreateGroup);
+    connect(addGroupSection,&QAction::triggered,ownerChild,&MainWidget::slotAddGroupSection);
+    connect(renameGroupSection,&QAction::triggered,ownerChild,&MainWidget::slotRenameGroupSection);
+    connect(deleteGroupSection,&QAction::triggered,ownerChild,&MainWidget::slotDeleteGroupSection);
 }
 
 
@@ -218,7 +218,7 @@ void StaticIniator::initSendMenu(QMenu *menu, QWidget *owner)
 {
     ChatWidget * ownerChild = dynamic_cast<ChatWidget*>(owner);
     menu->setObjectName("sendMenu");
-    QIcon icon = QIcon(zsj::global::transparentMenuIconPath);
+    QIcon icon = QIcon(zsj::global::TransparentMenuIconPath);
     QActionGroup * actionGroup = new QActionGroup(ownerChild);
     actionGroup->setExclusive(true);
 
