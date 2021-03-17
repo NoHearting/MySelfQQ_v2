@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui sql
 CONFIG += C++11
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
@@ -66,7 +66,11 @@ SOURCES += main.cpp \
     item_widgets/LinkmanUserItem.cpp \
     item_widgets/LinkmanGroupItem.cpp \
     item_widgets/LinkmanItem.cpp \
-    main/ApplicationInfo.cpp
+    main/ApplicationInfo.cpp \
+    dao/LoginInfoDao.cpp \
+    database/DataBase.cpp \
+    database/SQLiteDataBase.cpp \
+    main/LoginInfo.cpp
 
 
 
@@ -123,7 +127,11 @@ HEADERS  += ChatWidget.h \
     item_widgets/LinkmanGroupItem.h \
     item_widgets/LinkmanItem.h \
     main/CurrentWindow.h \
-    main/ApplicationInfo.h
+    main/ApplicationInfo.h \
+    dao/LoginInfoDao.h \
+    database/DataBase.h \
+    database/SQLiteDataBase.h \
+    main/LoginInfo.h
 
 
 FORMS    +=     LoginWidget.ui \

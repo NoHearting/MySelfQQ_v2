@@ -59,6 +59,7 @@ const static int TopLayoutPadding = 9;
 /// 截屏保存的文件夹名称
 const static QString ScreenShotDirName = "screen_shot";
 
+const static QString LoginInfoDir = "/data/login_info";
 
 }
 

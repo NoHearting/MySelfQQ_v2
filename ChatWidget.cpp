@@ -160,6 +160,7 @@ void ChatWidget::initObjects()
     frameless->setPadding(17);
 
 
+
     // 初始化所有菜单
     initMenus();
 
@@ -178,6 +179,9 @@ void ChatWidget::deleteObjects()
 
     delete emojiWidget;
     emojiWidget  = nullptr;
+
+    delete infoDao;
+    infoDao = nullptr;
 }
 
 void ChatWidget::initResourceAndForm()

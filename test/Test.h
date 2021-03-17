@@ -48,6 +48,12 @@ private:
     void testQSharedPointer();
 
     void testCode();
+
+
+    void testSqlite();
+
+    void testDao();
+
 };
 
 }

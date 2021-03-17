@@ -200,8 +200,6 @@ void LoginWidget::initSignalsAndSlots()
 
 void LoginWidget::slotCloseWindow()
 {
-//    qApp->quit();
-//    deleteObjects();
     close();
 }
 
@@ -249,7 +247,6 @@ void LoginWidget::slotLogin()
             if(account == "123"){
                 qDebug() << "登录成功";
                 emit sigLoginSuccess(zsj::Data::ptr(new zsj::UserData));
-//                loginCb();
             }
             else{
                 ui->stackedWidget->setCurrentIndex(2);

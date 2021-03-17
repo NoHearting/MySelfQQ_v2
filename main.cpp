@@ -25,7 +25,7 @@
 QScopedPointer<MainWidget> mainWidget;
 QScopedPointer<LoginWidget> loginWidget;
 
-#define TEST 0
+#define TEST 1
 
 /**
  * @brief 打印日志的钩子函数
@@ -55,8 +55,9 @@ int main(int argc, char *argv[])
     //安装日志处理钩子函数
     qInstallMessageHandler(outputMessage);
 
-    TestWidget testWidget;
-    testWidget.show();
+    printAppInfo();
+//    TestWidget testWidget;
+//    testWidget.show();
     zsj::Test().test();
     return a.exec();
 #else

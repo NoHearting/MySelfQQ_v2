@@ -21,6 +21,7 @@
 #include "feature_widgets/EmojiHotWidget.h"
 #include "utils/Global.h"
 #include "main/ChatMessageRecord.h"
+#include "dao/LoginInfoDao.h"
 
 namespace Ui
 {
@@ -254,6 +255,10 @@ private:
 
     /// 待发送的文件数据
     QQueue<QFileInfo> toBeSendfiles;
+
+
+    /// 存储登录信息
+    zsj::LoginInfoDao * infoDao;
 
 signals:
     /**

@@ -24,10 +24,17 @@
 #include <QJsonObject>
 #include <QSharedPointer>
 
+#include <QSqlDatabase>
+#include <QSqlError>
+#include <QSqlQuery>
+
 #include <QFile>
 
 #include "main/ReadQStyleSheet.h"
 #include "utils/Util.h"
+#include "dao/LoginInfoDao.h"
+#include "main/LoginInfo.h"
+#include "main/ApplicationInfo.h"
 
 #include <utils/Util.h>
 
@@ -43,7 +50,7 @@ Test::Test()
 
 void Test::test()
 {
-    testQApplication();
+//    testQApplication();
 //    testFile();
 //    testDir();
 //    testDebugColor();
@@ -57,6 +64,7 @@ void Test::test()
 //    testQSharedPointer();
 
 //    testCode();
+    testSqlite();
 }
 
 void Test::testQApplication()
@@ -287,7 +295,58 @@ void Test::testQSharedPointer()
 
 void Test::testCode()
 {
-//    Qt::Key_A
+    //    Qt::Key_A
+}
+
+void Test::testSqlite()
+{
+//    QSqlDatabase database;
+//    database = QSqlDatabase::addDatabase("QSQLITE");
+//    database.setDatabaseName("./data/test.db");
+//    if (!database.open())
+//    {
+//        qDebug() << "Error: Failed to connect database." << database.lastError();
+//        return;
+//    }
+//    else
+//    {
+//        qDebug() << "Succeed to connect database." ;
+//    }
+//    QSqlQuery query(database);
+//    query.prepare("select * from login_info");
+////    bool ret = query.exec("select * from login_info");
+//    bool ret = query.exec();
+//    if(ret){
+//        while(query.next()){
+//            qDebug() << query.value(0).toInt();
+//            qDebug() << query.value(1).toString();
+//        }
+//    }
+//    else{
+//        qCritical() << query.lastError();
+//    }
+
+    testDao();
+}
+
+void Test::testDao()
+{
+//    zsj::LoginInfoDao dao;
+//    QVector<zsj::LoginInfo> infos = dao.listLoginInfo();
+//    for(const auto &item : infos)
+//    {
+//        qDebug() << item.toString();
+//    }
+//    qDebug() << infos.size();
+    zsj::LoginInfoDao dao;
+    LoginInfo info(0,"head","昵称",1235123,"zsj",false,false);
+    bool ret = dao.insertLoginInfo(info);
+    if(!ret){
+        qDebug() << "insert Data failed!";
+    }
+    else{
+        qDebug() << "isnert data success!";
+    }
 }
 
 
