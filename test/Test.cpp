@@ -225,7 +225,7 @@ void Test::testJson()
 
 void Test::testChatMessageRecord()
 {
-    zsj::ChatMessageRecord chatMessageRecord(QDateTime::currentDateTime(), "111", "222", MessageBodyPtr(new TextMessageBody("hello world")));
+    zsj::ChatMessageRecord chatMessageRecord(QDateTime::currentDateTime(), 111, 222, MessageBodyPtr(new TextMessageBody("hello world")));
     qDebug() << chatMessageRecord.serializeToJson();
 
     QString tempPath = "/record/temp/";
@@ -339,7 +339,7 @@ void Test::testDao()
 //    }
 //    qDebug() << infos.size();
     zsj::LoginInfoDao dao;
-    LoginInfo info(0,"head","昵称",1235123,"zsj",false,false);
+    LoginInfo info(0,"head","昵称",1235123,"zsj",false,false,123);
     bool ret = dao.insertLoginInfo(info);
     if(!ret){
         qDebug() << "insert Data failed!";

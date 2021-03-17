@@ -204,14 +204,14 @@ void MainWidget::initManlinkFriend()
     QTreeWidgetItem *rootNull = this->addTreeWidgetRootNode(ui->treeWidgetFriend, "", 0, 0);
     dataFriend.insert(std::make_pair(rootNull, std::list<QTreeWidgetItem *>()));
     QPixmap head(":/test/res/test/head2.jpg");
-    zsj::UserData::ptr user1(new zsj::UserData(head, "猪123123123头1", "1231231", "签名1", "备注1"));
-    zsj::UserData::ptr user2(new zsj::UserData(head, "狗头1", "1231231", "签名2", "备注2"));
+    zsj::UserData::ptr user1(new zsj::UserData(head, "猪123123123头1", 1231231, "签名1", "备注1"));
+    zsj::UserData::ptr user2(new zsj::UserData(head, "狗头1", 1231231, "签名2", "备注2"));
     this->addTreeWidgetChildNode(ui->treeWidgetFriend, rootFriends, user1);
     this->addTreeWidgetChildNode(ui->treeWidgetFriend, rootFriends, user2);
 
     QPixmap head2(":/test/res/test/head3.jpg");
-    zsj::UserData::ptr user3(new zsj::UserData(head2, "陌生人1", "1231231", "签名1", "备注1"));
-    zsj::UserData::ptr user4(new zsj::UserData(head2, "陌生人2", "1231231", "签名2", "备注2"));
+    zsj::UserData::ptr user3(new zsj::UserData(head2, "陌生人1", 1231231, "签名1", "备注1"));
+    zsj::UserData::ptr user4(new zsj::UserData(head2, "陌生人2", 1231231, "签名2", "备注2"));
     this->addTreeWidgetChildNode(ui->treeWidgetFriend, rootStangers, user3);
     this->addTreeWidgetChildNode(ui->treeWidgetFriend, rootStangers, user4);
 
@@ -219,7 +219,7 @@ void MainWidget::initManlinkFriend()
     {
         QPixmap head3(QString(":/test/res/test/head%1.jpg").arg(i % 5));
         zsj::UserData::ptr user3(new zsj::UserData(head3, QString("狗头%1").arg(i),
-                                 QString("123123%1").arg(i), QString("签名%1").arg(i), QString("备注%1").arg(i)));
+                                 QString("123123%1").arg(i).toInt(), QString("签名%1").arg(i), QString("备注%1").arg(i)));
         this->addTreeWidgetChildNode(ui->treeWidgetFriend, rootFriends, user3);
     }
 }
@@ -240,26 +240,26 @@ void MainWidget::initManlinkGroup()
 
     qDebug() << "init root";
     QPixmap head1(":/test/res/test/head4.jpg");
-    zsj::GroupData::ptr group1(new zsj::GroupData(head1, "富婆交流会所", "123", "群介绍", 0, 0));
-    zsj::GroupData::ptr group2(new zsj::GroupData(head1, "2017级计科专业", "123", "群介绍", 0, 0));
-    zsj::GroupData::ptr group3(new zsj::GroupData(head1, "星耀2020，信服起航！", "123", "群介绍", 0, 0));
+    zsj::GroupData::ptr group1(new zsj::GroupData(head1, "富婆交流会所", 123, "群介绍", 0, 0));
+    zsj::GroupData::ptr group2(new zsj::GroupData(head1, "2017级计科专业", 123, "群介绍", 0, 0));
+    zsj::GroupData::ptr group3(new zsj::GroupData(head1, "星耀2020，信服起航！", 123, "群介绍", 0, 0));
     this->addTreeWidgetChildNode(ui->treeWidgetGroup, rootTop, group1, "昨天");
     this->addTreeWidgetChildNode(ui->treeWidgetGroup, rootTop, group2, "7:30");
     this->addTreeWidgetChildNode(ui->treeWidgetGroup, rootTop, group3, "12-15");
 
     QPixmap head2(":/test/res/test/head4.jpg");
-    zsj::GroupData::ptr group4(new zsj::GroupData(head2, "老污群", "123", "群介绍", 0, 0));
-    zsj::GroupData::ptr group5(new zsj::GroupData(head2, "2017级计科专业", "123", "群介绍", 0, 0));
-    zsj::GroupData::ptr group6(new zsj::GroupData(head2, "sylar技术群", "123", "群介绍", 0, 0));
+    zsj::GroupData::ptr group4(new zsj::GroupData(head2, "老污群", 123, "群介绍", 0, 0));
+    zsj::GroupData::ptr group5(new zsj::GroupData(head2, "2017级计科专业", 123, "群介绍", 0, 0));
+    zsj::GroupData::ptr group6(new zsj::GroupData(head2, "sylar技术群", 123, "群介绍", 0, 0));
     this->addTreeWidgetChildNode(ui->treeWidgetGroup, rootMy, group4, "11-28");
     this->addTreeWidgetChildNode(ui->treeWidgetGroup, rootMy, group5, "7:30");
     this->addTreeWidgetChildNode(ui->treeWidgetGroup, rootMy, group6, "16:17");
 
     QPixmap head3(":/test/res/test/head3.jpg");
     QPixmap headNull;
-    zsj::GroupData::ptr group7(new zsj::GroupData(headNull, "项管-鲁嘉嘉、无心", "123", "群介绍", 0, 0));
-    zsj::GroupData::ptr group8(new zsj::GroupData(head3, "张家豪、中秋、无心", "123", "群介绍", 0, 0));
-    zsj::GroupData::ptr group9(new zsj::GroupData(head3, "无心", "123", "群介绍", 0, 0));
+    zsj::GroupData::ptr group7(new zsj::GroupData(headNull, "项管-鲁嘉嘉、无心", 123, "群介绍", 0, 0));
+    zsj::GroupData::ptr group8(new zsj::GroupData(head3, "张家豪、中秋、无心", 123, "群介绍", 0, 0));
+    zsj::GroupData::ptr group9(new zsj::GroupData(head3, "无心", 123, "群介绍", 0, 0));
     this->addTreeWidgetChildNode(ui->treeWidgetGroup, rootMultile, group7, "2017-12-1");
     this->addTreeWidgetChildNode(ui->treeWidgetGroup, rootMultile, group8, "201711-11");
     this->addTreeWidgetChildNode(ui->treeWidgetGroup, rootMultile, group9, "2017-6-3");
@@ -987,8 +987,8 @@ void MainWidget::slotOpenChatWindowMessage(const QModelIndex &index)
 }
 
 void MainWidget::slotChangeMessageListItemInfo(zsj::Data::ptr data,
-        const QString &fromId,
-        const QString &toId,
+        quint64 fromId,
+        quint64 toId,
         const QString &content,
         zsj::global::MessageType msgType)
 {
@@ -1003,7 +1003,7 @@ void MainWidget::slotChangeMessageListItemInfo(zsj::Data::ptr data,
             MessageItemWidget *msgItem = dynamic_cast<MessageItemWidget *>(widget);
             if(msgItem)
             {
-                QString id = (fromId == selfData->getAccount()) ? toId : fromId;
+                quint64 id = (fromId == selfData->getAccount()) ? toId : fromId;
                 if(msgItem->getData()->getAccount() == id)
                 {
                     msgItem->setDateTime();

@@ -17,7 +17,7 @@ ComboBoxItemWidget::ComboBoxItemWidget(QWidget *parent) :
 }
 
 ComboBoxItemWidget::ComboBoxItemWidget(const QPixmap &head, const QString &nickname,
-                                       const QString &accountNum, const QString &password, QWidget *parent)
+                                       quint64 accountNum, const QString &password, QWidget *parent)
     : QWidget(parent),
       ui(new Ui::ComboBoxItemWidget),
       head(head), nickname(nickname), accountNum(accountNum), password(password)
@@ -33,7 +33,17 @@ void ComboBoxItemWidget::initResourceAndForm()
     QPixmap result = zsj::adjustToHead(head, zsj::HeadSize::loginItemDiameter);
     ui->labelHead->setPixmap(result);
     ui->labelNickname->setText(nickname);
-    ui->labelAccount->setText(accountNum);
+    ui->labelAccount->setText(QString::number(accountNum));
+}
+
+quint64 ComboBoxItemWidget::getAccountNum() const
+{
+    return accountNum;
+}
+
+void ComboBoxItemWidget::setAccountNum(const quint64 &value)
+{
+    accountNum = value;
 }
 
 ComboBoxItemWidget::~ComboBoxItemWidget()
@@ -80,15 +90,6 @@ void ComboBoxItemWidget::setNickname(const QString &value)
     nickname = value;
 }
 
-QString ComboBoxItemWidget::getAccountNum() const
-{
-    return accountNum;
-}
-
-void ComboBoxItemWidget::setAccountNum(const QString &value)
-{
-    accountNum = value;
-}
 
 QString ComboBoxItemWidget::getPassword() const
 {

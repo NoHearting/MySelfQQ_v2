@@ -261,7 +261,7 @@ private slots:
      * @param content
      * @param msgType
      */
-    void slotChangeMessageListItemInfo(zsj::Data::ptr data,const QString &fromId, const QString &toId,
+    void slotChangeMessageListItemInfo(zsj::Data::ptr data,quint64 fromId, quint64 toId,
                                        const QString &content, zsj::global::MessageType msgType);
 public slots:
     /// @brief 好友管理

@@ -25,7 +25,7 @@
 QScopedPointer<MainWidget> mainWidget;
 QScopedPointer<LoginWidget> loginWidget;
 
-#define TEST 1
+#define TEST 0
 
 /**
  * @brief 打印日志的钩子函数

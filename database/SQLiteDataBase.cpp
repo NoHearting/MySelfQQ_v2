@@ -85,7 +85,8 @@ QString SQLiteDataBase::CreateTableCmd()
                    "account integer not null, "
                    "password text, "
                    "auto_login bool not null, "
-                   "save_password bool not null "
+                   "save_password bool not null,"
+                   "last_update integer not null "
                    ");");
 }
 

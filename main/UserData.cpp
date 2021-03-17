@@ -8,14 +8,14 @@ namespace zsj
 
 
 UserData::UserData() :
-    Data(zsj::global::DataType::SYSTEM_DATA,QPixmap(""),"","","",false),
+    Data(zsj::global::DataType::SYSTEM_DATA,QPixmap(""),"",0,"",false),
     remark(""),level(-1)
 {
 
 }
 
 UserData::UserData(const QPixmap &head, const QString &nickname,
-                   const QString &account, const QString &signature,
+                   quint64 account, const QString &signature,
                    const QString &remark, bool isVip, quint8 level)
     : Data(zsj::global::DataType::USER_DATA, head,
            nickname, account, signature, isVip),

@@ -19,6 +19,11 @@ DataBase::DataBase():
 
 }
 
+DataBase::~DataBase()
+{
+
+}
+
 bool DataBase::exec(QSqlQuery &query, const QString &dbName)
 {
 

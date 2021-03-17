@@ -33,7 +33,7 @@ void TestWidget::closeEvent(QCloseEvent *event)
 
 void outToFile()
 {
-    zsj::ChatMessageRecord chatMessageRecord(QDateTime::currentDateTime(), "111", "222", zsj::MessageBodyPtr(new zsj::TextMessageBody("hello world")));
+    zsj::ChatMessageRecord chatMessageRecord(QDateTime::currentDateTime(), 111, 222, zsj::MessageBodyPtr(new zsj::TextMessageBody("hello world")));
     qDebug() << __LINE__ << "     " << chatMessageRecord.getMessageBody()->serializeToJson();
 
     QString tempPath = "/record/temp/";

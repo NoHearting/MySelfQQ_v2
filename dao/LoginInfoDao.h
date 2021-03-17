@@ -23,6 +23,7 @@ public:
     typedef QScopedPointer<LoginInfoDao> LIDao;
 
     LoginInfoDao();
+    ~LoginInfoDao();
 public:
     QVector<LoginInfo> listLoginInfo();
 

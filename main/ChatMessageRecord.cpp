@@ -9,14 +9,14 @@ namespace zsj
 
 ChatMessageRecord::ChatMessageRecord() :
     dateTime(QDateTime::currentDateTime()),
-    sender(""), receiver(""), messageBody(nullptr)
+    sender(0), receiver(0), messageBody(nullptr)
 {
 
 }
 
 ChatMessageRecord::ChatMessageRecord(QDateTime dateTime,
-                                     const QString &sender,
-                                     const QString &receiver,
+                                     quint64 sender,
+                                     quint64 receiver,
                                      MessageBodyPtr messageBody):
     dateTime(dateTime), sender(sender), receiver(receiver),
     messageBody(messageBody)
@@ -25,8 +25,8 @@ ChatMessageRecord::ChatMessageRecord(QDateTime dateTime,
 }
 
 ChatMessageRecord::ChatMessageRecord(QDateTime dateTime,
-                                     const QString &sender,
-                                     const QString &receiver):
+                                     quint64 sender,
+                                     quint64 receiver):
     dateTime(dateTime), sender(sender), receiver(receiver),
     messageBody(nullptr)
 {
@@ -42,8 +42,8 @@ ChatMessageRecord ChatMessageRecord::DeserializationFromJson(
         QJsonObject obj = doc.object();
         QDateTime dateTime = QDateTime::fromString(obj.value("dateTime").toString(),
                              "yyyy-MM-dd hh:mm:ss");
-        QString sender = obj.value("sender").toString();
-        QString receiver = obj.value("receiver").toString();
+        quint64 sender = obj.value("sender").toInt();
+        quint64 receiver = obj.value("receiver").toInt();
         QJsonObject msgObj = obj.value("msgBody").toObject();
         QString msgBodyStr(QJsonDocument(msgObj).toJson().data());
         MessageBodyPtr messageBody =
@@ -63,8 +63,8 @@ QString ChatMessageRecord::serializeToJson()
 {
     QJsonObject obj;
     obj.insert("dateTime", QJsonValue(dateTime.toString("yyyy-MM-dd hh:mm:ss")));
-    obj.insert("sender", QJsonValue(sender));
-    obj.insert("receiver", QJsonValue(receiver));
+    obj.insert("sender", QJsonValue(static_cast<qint64>(sender)));
+    obj.insert("receiver", QJsonValue(static_cast<qint64>(receiver)));
     QJsonObject msgObj;
     if(!messageBody.isNull())
     {
@@ -94,22 +94,22 @@ void ChatMessageRecord::setDateTime(const QDateTime &value)
     dateTime = value;
 }
 
-QString ChatMessageRecord::getSender() const
+quint64 ChatMessageRecord::getSender() const
 {
     return sender;
 }
 
-void ChatMessageRecord::setSender(const QString &value)
+void ChatMessageRecord::setSender(const quint64 &value)
 {
     sender = value;
 }
 
-QString ChatMessageRecord::getReceiver() const
+quint64 ChatMessageRecord::getReceiver() const
 {
     return receiver;
 }
 
-void ChatMessageRecord::setReceiver(const QString &value)
+void ChatMessageRecord::setReceiver(const quint64 &value)
 {
     receiver = value;
 }

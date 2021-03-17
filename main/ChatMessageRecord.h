@@ -36,10 +36,10 @@ public:
     static ChatMessageRecord DeserializationFromJson(const QString &jsonString);
 public:
     ChatMessageRecord();
-    ChatMessageRecord(QDateTime dateTime, const QString &sender,
-                      const QString &receiver, MessageBodyPtr messageBody);
-    ChatMessageRecord(QDateTime dateTime, const QString &sender,
-                      const QString &receiver);
+    ChatMessageRecord(QDateTime dateTime, quint64 sender,
+                      quint64 receiver, MessageBodyPtr messageBody);
+    ChatMessageRecord(QDateTime dateTime, quint64 sender,
+                      quint64 receiver);
 
     /**
      * @brief 序列化为Json字符串
@@ -53,16 +53,17 @@ public:
     QDateTime getDateTime() const;
     void setDateTime(const QDateTime &value);
 
-    QString getSender() const;
-    void setSender(const QString &value);
 
-    QString getReceiver() const;
-    void setReceiver(const QString &value);
+    quint64 getSender() const;
+    void setSender(const quint64 &value);
+
+    quint64 getReceiver() const;
+    void setReceiver(const quint64 &value);
 
 private:
     QDateTime dateTime;     /// 发送时间
-    QString sender;     /// 发送者
-    QString receiver;   /// 接收者
+    quint64 sender;     /// 发送者
+    quint64 receiver;   /// 接收者
 
     MessageBodyPtr messageBody;     /// 消息体
 

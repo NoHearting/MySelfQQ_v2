@@ -15,7 +15,7 @@ class Data
 public:
     typedef std::shared_ptr<Data> ptr;
     Data(global::DataType dataType,const QPixmap & head,
-         const QString & nickname,const QString & id,
+         const QString & nickname,quint64 id,
          const QString & explain = "",bool vip = false);
     virtual ~Data() = 0;
 
@@ -24,7 +24,7 @@ public:
         return nickname;
     }
 
-    const QString getAccount()const{
+    quint64 getAccount()const{
         return id;
     }
 
@@ -53,7 +53,7 @@ private:
     QString nickname;
 
     /// 账号id
-    QString id;
+    quint64 id;
 
     /// 签名/说明
     QString explain;

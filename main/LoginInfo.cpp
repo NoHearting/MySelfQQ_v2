@@ -1,24 +1,27 @@
 #include "LoginInfo.h"
 
-namespace zsj {
+namespace zsj
+{
 
 LoginInfo::LoginInfo() :
-    id(0),head(""),nickname(""),account(-1),password(""),
-    autoLogin(false),savePassword(false)
+    id(0), head(""), nickname(""), account(-1), password(""),
+    autoLogin(false), savePassword(false),lastUpdate(0)
 {
 
 }
 
 
 
-LoginInfo::LoginInfo(quint64 id,const QString &head,
-                          const QString &nickname,
-                          quint64 account,
-                          const QString &password,
-                          bool autoLogin,
-                          bool savePassword) :
-    id(id),head(head),nickname(nickname),account(account),
-    password(password),autoLogin(autoLogin),savePassword(savePassword)
+LoginInfo::LoginInfo(quint64 id, const QString &head,
+                     const QString &nickname,
+                     quint64 account,
+                     const QString &password,
+                     bool autoLogin,
+                     bool savePassword,
+                     quint64 lastUpdate) :
+    id(id), head(head), nickname(nickname), account(account),
+    password(password), autoLogin(autoLogin), savePassword(savePassword),
+    lastUpdate(lastUpdate)
 {
 
 }
@@ -27,8 +30,8 @@ QString LoginInfo::toString() const
 {
     return QString("LoginInfo{id:%1,head:%2,nickname:%3,account:%4,"
                    "password:%5,autoLogin:%6,savePassword:%7}").arg(id).
-            arg(head).arg(nickname).arg(account).arg(password).
-            arg(autoLogin).arg(savePassword);
+           arg(head).arg(nickname).arg(account).arg(password).
+           arg(autoLogin).arg(savePassword);
 }
 
 QString LoginInfo::getHead() const
@@ -99,6 +102,16 @@ quint64 LoginInfo::getId() const
 void LoginInfo::setId(const quint64 &value)
 {
     id = value;
+}
+
+quint64 LoginInfo::getLastUpdate() const
+{
+    return lastUpdate;
+}
+
+void LoginInfo::setLastUpdate(const quint64 &value)
+{
+    lastUpdate = value;
 }
 
 

@@ -23,7 +23,7 @@ public:
     typedef std::shared_ptr<GroupData> ptr;
 
     GroupData(const QPixmap & groupHead,const QString & groupName,
-              const QString & groupAccount,const QString & groupIntroduce,
+              quint64 groupAccount,const QString & groupIntroduce,
               quint16 groupUserCount,quint16 groupCountMax,bool vip = false);
 
     QString toString();

@@ -47,7 +47,7 @@ public:
      */
     virtual bool changeDataBase(const QString & dbName) = 0;
 
-    virtual ~DataBase() {}
+    virtual ~DataBase();
 
     virtual bool selectQuery(QSqlQuery &query, const QString &dbName = "");
 

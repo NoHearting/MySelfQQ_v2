@@ -6,7 +6,7 @@ namespace zsj {
 Data::Data(global::DataType dataType,
            const QPixmap &head,
            const QString &nickname,
-           const QString &id,
+           quint64 id,
            const QString &explain, bool vip) :
     dataType(dataType),
     head(head),

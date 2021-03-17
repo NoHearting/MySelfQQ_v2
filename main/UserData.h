@@ -21,7 +21,7 @@ class UserData : public Data
 public:
     typedef std::shared_ptr<UserData> ptr;
     UserData();
-    UserData(const QPixmap & head,const QString & nickname,const QString & account,
+    UserData(const QPixmap & head,const QString & nickname,quint64 account,
              const QString & signature,const QString & remark,
              bool isVip = false,quint8 level = 0);
 

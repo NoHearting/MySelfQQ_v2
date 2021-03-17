@@ -18,7 +18,7 @@ public:
 
     LoginInfo(quint64 id,const QString & head,const QString & nickname,
               quint64 account,const QString & password,bool autoLogin,
-              bool savePassword);
+              bool savePassword,quint64 lastUpdate);
 
     LoginInfo();
 
@@ -46,6 +46,9 @@ public:
     quint64 getId() const;
     void setId(const quint64 &value);
 
+    quint64 getLastUpdate() const;
+    void setLastUpdate(const quint64 &value);
+
 private:
     quint64 id;
     QString head;
@@ -54,6 +57,7 @@ private:
     QString password;
     bool autoLogin;
     bool savePassword;
+    quint64 lastUpdate;
 };
 
 } // namespace zsj

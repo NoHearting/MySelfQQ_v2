@@ -249,7 +249,7 @@ private:
     /// 聊天对象的信息。临时保存聊天记录
 //    QMap<QListWidgetItem*,QQueue<zsj::ChatMessageRecord>> chatObjInfo;
     // id : 消息记录
-    QMap<QString, QQueue<zsj::ChatMessageRecord>> chatObjInfo;
+    QMap<quint64, QQueue<zsj::ChatMessageRecord>> chatObjInfo;
 
 
 
@@ -257,8 +257,7 @@ private:
     QQueue<QFileInfo> toBeSendfiles;
 
 
-    /// 存储登录信息
-    zsj::LoginInfoDao * infoDao;
+
 
 signals:
     /**
@@ -269,7 +268,7 @@ signals:
      * @param content   消息内容
      * @param msgType   消息类型
      */
-    void sigSendMessage(zsj::Data::ptr data, const QString &fromId, const QString &toId,
+    void sigSendMessage(zsj::Data::ptr data, quint64 fromId, quint64 toId,
                         const QString &content, zsj::global::MessageType msgType);
 public slots:
 
@@ -342,7 +341,7 @@ private slots:
     /**
      * @brief 改变聊天对象列表中的item的信息，主要是日期和显示的消息
      */
-    void slotChangeChatObjectInfo(zsj::Data::ptr data, const QString &fromId, const QString &toId,
+    void slotChangeChatObjectInfo(zsj::Data::ptr data, quint64 fromId, quint64 toId,
                                   const QString &content, zsj::global::MessageType msgType);
 };
 

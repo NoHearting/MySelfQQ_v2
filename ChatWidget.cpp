@@ -43,14 +43,12 @@ ChatWidget::ChatWidget(zsj::Data::ptr data, QWidget *parent) :
     initResourceAndForm();
     initSignalsAndSlots();
 
-//    initTestData();
 }
 
 ChatWidget::~ChatWidget()
 {
-    delete emojiHotWidget;
 
-    delete emojiWidget;
+    deleteObjects();
     qInfo() << "deconstruct ChatWidget";
     delete ui;
 }
@@ -179,9 +177,6 @@ void ChatWidget::deleteObjects()
 
     delete emojiWidget;
     emojiWidget  = nullptr;
-
-    delete infoDao;
-    infoDao = nullptr;
 }
 
 void ChatWidget::initResourceAndForm()
@@ -421,11 +416,11 @@ void ChatWidget::initTestChatObjs()
         QPixmap head(QString(":/test/res/test/head%1.jpg").arg(i % 5));
         if(i % 2)
         {
-            data.reset(new zsj::UserData(head, QString("userName-%1").arg(i), "1111", "签名", "备注"));
+            data.reset(new zsj::UserData(head, QString("userName-%1").arg(i), 1111, "签名", "备注"));
         }
         else
         {
-            data.reset(new zsj::GroupData(head, QString("groupName-%1").arg(i), "222", "群介绍", 10, 100));
+            data.reset(new zsj::GroupData(head, QString("groupName-%1").arg(i), 222, "群介绍", 10, 100));
         }
         ChatObjectItem *chatObjsItem = new ChatObjectItem(data, ui->listWidgetChatObjList);
         ui->listWidgetChatObjList->setItemWidget(item, chatObjsItem);
@@ -1043,8 +1038,8 @@ void ChatWidget::slotChooseFileGroup()
 }
 
 void ChatWidget::slotChangeChatObjectInfo(zsj::Data::ptr data,
-        const QString &fromId,
-        const QString &toId,
+        quint64 fromId,
+        quint64 toId,
         const QString &content,
         zsj::global::MessageType msgType)
 {

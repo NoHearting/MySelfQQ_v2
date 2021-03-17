@@ -23,7 +23,7 @@ class ComboBoxItemWidget : public QWidget
 public:
     explicit ComboBoxItemWidget(QWidget *parent = 0);
     ComboBoxItemWidget(const QPixmap & head,const QString & nickname,
-                       const QString & accountNum,const QString & password,
+                       quint64 accountNum,const QString & password,
                        QWidget *parent = 0);
     ~ComboBoxItemWidget();
 
@@ -39,11 +39,12 @@ public:
     QString getNickname() const;
     void setNickname(const QString &value);
 
-    QString getAccountNum() const;
-    void setAccountNum(const QString &value);
 
     QString getPassword() const;
     void setPassword(const QString &value);
+
+    quint64 getAccountNum() const;
+    void setAccountNum(const quint64 &value);
 
 protected:
     /// @brief 鼠标松开时发送点击信号
@@ -52,7 +53,7 @@ protected:
 
 signals:
     /// @brief 当鼠标点击然后松开之后发送此信号
-    void click(const QPixmap & head,const QString & accountNum,const QString & password);
+    void click(const QPixmap & head,quint64 accountNum,const QString & password);
 
 private:
     /// @brief 初始化窗口资源和窗口布局
@@ -62,7 +63,7 @@ private:
 
     QPixmap head;
     QString nickname;
-    QString accountNum;
+    quint64 accountNum;
     QString password;
 };
 

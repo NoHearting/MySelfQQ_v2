@@ -6,7 +6,7 @@ namespace zsj
 {
 
 GroupData::GroupData(const QPixmap &groupHead, const QString &groupName,
-                     const QString &groupAccount, const QString &groupIntroduce,
+                     quint64 groupAccount, const QString &groupIntroduce,
                      quint16 groupUserCount, quint16 groupUserCountMax, bool vip)
     : Data(zsj::global::DataType::GROUP_DATA, groupHead,
            groupName, groupAccount, groupIntroduce, vip),

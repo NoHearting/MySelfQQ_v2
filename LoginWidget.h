@@ -21,6 +21,7 @@
 #include "feature_widgets/ToolTipWidget.h"
 #include "main/Frameless.h"
 #include "main/Data.h"
+#include "dao/LoginInfoDao.h"
 
 namespace Ui
 {
@@ -50,6 +51,16 @@ private:
      */
     void deleteObjects();
 
+    /**
+     * @brief 加载并设置登录信息
+     */
+    void loadAndSetLoginInfo();
+
+    /**
+     * @brief 持久化登录数据
+     */
+    void persistenceLoginInfo(const zsj::LoginInfo & info);
+
 private:
     Ui::LoginWidget *ui;
 
@@ -67,7 +78,11 @@ private:
 
     zsj::Frameless * frameless;
 
+    /// 存储登录信息
+    zsj::LoginInfoDao * infoDao;
 
+    /// 当前登录用户的信息
+    QVector<zsj::LoginInfo> infos;
 signals:
     /**
      * @brief 登录成功时发送信号
@@ -90,7 +105,7 @@ private slots:
     /// @param[in] accountNum 账号
     /// @param[in] password 密码
     void slotSetAccountAndPassword(const QPixmap &head,
-                               const QString &accountNum, const QString &password);
+                               quint64 accountNum, const QString &password);
 
 
     /// @brief 显示下拉框
