@@ -116,7 +116,7 @@ void outputMessage(QtMsgType type, const QMessageLogContext &context, const QStr
     QString date = zsj::GetCurrentDateTime("yyyy-MM-dd hh:mm:ss");
 
     //format : category pid tid file line date message
-    QString content = QString("%2 [%3:%4] [%6:%7] %8%1%9")
+    QString content = QString("%2 [%3:%4] [%5:%6] %7%1%8")
                       .arg(tab)
                       .arg(category)
                       .arg(pid)

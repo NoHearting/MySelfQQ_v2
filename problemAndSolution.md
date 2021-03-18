@@ -1,4 +1,4 @@
-# 问题与解决方案
+# 一、问题与解决方案
 
 ### 1、设置`QComboBox`的下拉框背景透明
 
@@ -148,15 +148,15 @@
 
   只是简单的解决办法，还是会出现这个问题，只是出现的频率变小了。目前不知道什么原因
 
-### 9
-
 ### 10、聊天界面的QSplitter无法同步
 
 ![image-20210226113815120](C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20210226113815120.png)
 
 用户聊天和群组聊天的`QSplitter`不能同步。
 
-# 坑
+
+
+# 二、坑
 
 ### 1、读取CSS文件
 
@@ -189,7 +189,7 @@
   }
   ```
 
-# 二、功能模块
+# 三、功能模块
 
 ## 1、表情功能
 
@@ -408,3 +408,48 @@ void ChatWidget::addMessageItem(QListWidget *listWidget, QPixmap &head,
 
 ## 4、聊天对象列表和聊天记录
 
+# 四、编码规范
+
+## 1、命名规范
+
+## 2、禁止
+
+### （1）析构函数中禁止使用`qDebug()、qCritical()、qInfo()`打印日志
+
+* 因为当前日志系统是通过加载日志钩子函数加上一个单例类实现的。如果在类的析构函数中使用了上述的几个日志打印函数，则日志会被钩子函数检测到，同时调用日之类进行输出，但是此时如果日志类已经被析构，则会出现下面的错误信息：
+
+```c++
+pure virtual method called
+terminate called without an active exception
+```
+
+* 解决办法：
+
+  使用以下宏代替：
+
+  ```c++
+  #define DESTRUCT_LOG(level,info) \
+      {   \
+          QTextStream out(stdout); \
+          QString tab = "\t"; \
+          QString category; \
+          category.sprintf("[%10s]",qPrintable(#level)); \
+          QString content = QString("%2 [%3:%4] [%5:%6] %7%1%8") \
+                            .arg(tab) \
+                            .arg(category) \
+                            .arg(zsj::SystemUtil::getCurrentProcessId()) \
+                            .arg(zsj::SystemUtil::getCurrentThreadId()) \
+                            .arg(__FILE__) \
+                            .arg(__LINE__) \
+                            .arg(zsj::GetCurrentDateTime("yyyy-MM-dd hh:mm:ss")) \
+                            .arg(#info); \
+          out << content << "\n"; \
+          out.flush(); \
+      }
+  
+  #define DESTRUCT_LOG_DEBUG(info) DESTRUCT_LOG(Debug,info)
+  #define DESTRUCT_LOG_INFO(info) DESTRUCT_LOG(Info,info)
+  #define DESTRUCT_LOG_CRITICAL(info) DESTRUCT_LOG(Critical,info)
+  ```
+
+  缺点就是使用此方法无法对日志进行持久化，无法写入文件。

@@ -30,6 +30,9 @@ public:
      */
     virtual bool changeDataBase(const QString &dbName);
 
+
+    ~SQLiteDataBase();
+
 private:
     SQLiteDataBase();
     SQLiteDataBase(const QString &driverName,

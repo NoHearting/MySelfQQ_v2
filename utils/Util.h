@@ -22,6 +22,32 @@
 namespace zsj
 {
 
+// 用于析构函数打印日志
+#define DESTRUCT_LOG(level,info) \
+    {   \
+        QTextStream out(stdout); \
+        QString tab = "\t"; \
+        QString category; \
+        category.sprintf("[%10s]",qPrintable(#level)); \
+        QString content = QString("%2 [%3:%4] [%5:%6] %7%1%8") \
+                          .arg(tab) \
+                          .arg(category) \
+                          .arg(zsj::SystemUtil::getCurrentProcessId()) \
+                          .arg(zsj::SystemUtil::getCurrentThreadId()) \
+                          .arg(__FILE__) \
+                          .arg(__LINE__) \
+                          .arg(zsj::GetCurrentDateTime("yyyy-MM-dd hh:mm:ss")) \
+                          .arg(#info); \
+        out << content << "\n"; \
+        out.flush(); \
+    }
+
+#define DESTRUCT_LOG_DEBUG(info) DESTRUCT_LOG(Debug,info)
+#define DESTRUCT_LOG_INFO(info) DESTRUCT_LOG(Info,info)
+#define DESTRUCT_LOG_CRITICAL(info) DESTRUCT_LOG(Critical,info)
+
+
+
 class Util
 {
 public:
@@ -33,7 +59,7 @@ public:
      * @return 适应后的Size
      * @note 主要用于截图后粘贴到输入框中
      */
-    static QSize ScaledImageSize(const QSize & originSize,int max = 150 );
+    static QSize ScaledImageSize(const QSize &originSize, int max = 150 );
 
     /**
      * @brief 将文件路径打包为html中的<src>样式
@@ -42,7 +68,7 @@ public:
      * @param height 高
      * @return <img src="#src" width=#width height=#height />
      */
-    static QString PackageImageHtml(const QString & src,int width,int height);
+    static QString PackageImageHtml(const QString &src, int width, int height);
 
 
     /**
@@ -50,7 +76,7 @@ public:
      * @param origin
      * @return
      */
-    static QString RemoveEnterReturn(const QString & origin);
+    static QString RemoveEnterReturn(const QString &origin);
 
 
 };
@@ -84,24 +110,30 @@ public:
     static void setWidgetBoxShadow(QWidget *widget, int offsetX = 0, int offsetY = 0,
                                    const QColor &color = Qt::black, int radius = 5);
 
-    template<typename originParent,typename originItem,typename target>
-    static target * widgetCast(originParent * parentWidget,originItem * item){
+    template<typename originParent, typename originItem, typename target>
+    static target *widgetCast(originParent *parentWidget, originItem *item)
+    {
 
-        if(!parentWidget || !item){
+        if(!parentWidget || !item)
+        {
             qCritical() << "paramter is nullptr";
             return nullptr;
         }
-        QWidget * widget = parentWidget->itemWidget(item);
-        if(widget){
-            target * obj = dynamic_cast<target*>(widget);
-            if(obj){
+        QWidget *widget = parentWidget->itemWidget(item);
+        if(widget)
+        {
+            target *obj = dynamic_cast<target *>(widget);
+            if(obj)
+            {
                 return obj;
             }
-            else{
+            else
+            {
                 qCritical() << "dynamic cast failed!";
             }
         }
-        else{
+        else
+        {
             qCritical() << "no item widget!";
         }
         return nullptr;
@@ -141,14 +173,15 @@ public:
 };
 
 
-class FileUtil{
+class FileUtil
+{
 public:
     /**
      * @brief 判断目录是否存在，不存在就创建
      * @param dirPath 需要判断的目录
      * @return 目录存在和创建成功返回true，否则返回false
      */
-    static bool judgeAndMakeDir(const QString & dirPath);
+    static bool judgeAndMakeDir(const QString &dirPath);
 };
 
 
@@ -159,7 +192,8 @@ public:
  * @brief HTML标签枚举，用于移除其样式匹配所用
  * @note 后续有需要继续添加
  */
-enum TagType{
+enum TagType
+{
     TAG_P           = 0x000001,         // p标签
     TAG_IMG         = 0x000000,         // img标签
     TAG_SPAN        = 0x000004,         // span标签
@@ -177,24 +211,27 @@ enum TagType{
     TAG_ALL         = 0xFFFFFF          // 所有，用于运算
 };
 
-static const QMap<QString,TagType> TagName = {
-    {"p",TAG_P},
-    {"span",TAG_SPAN},
-    {"body",TAG_BODY},
-    {"h1",TAG_H1},{"h2",TAG_H2},{"h3",TAG_H3},{"h4",TAG_H4},{"h5",TAG_H5},
-    {"ul",TAG_UL},{"ol",TAG_OL},{"li",TAG_LI}
+static const QMap<QString, TagType> TagName =
+{
+    {"p", TAG_P},
+    {"span", TAG_SPAN},
+    {"body", TAG_BODY},
+    {"h1", TAG_H1}, {"h2", TAG_H2}, {"h3", TAG_H3}, {"h4", TAG_H4}, {"h5", TAG_H5},
+    {"ul", TAG_UL}, {"ol", TAG_OL}, {"li", TAG_LI}
 };
 
 
-static const QMap<TagType,QString> NameTag = {
-    {TAG_P,"p"},
-    {TAG_SPAN,"span"},
-    {TAG_BODY,"body"},
-    {TAG_H1,"h1"},{TAG_H2,"h2"},{TAG_H3,"h3"},{TAG_H4,"h4"},{TAG_H5,"h5"},
-    {TAG_UL,"ul"},{TAG_OL,"ol"},{TAG_LI,"li"}
+static const QMap<TagType, QString> NameTag =
+{
+    {TAG_P, "p"},
+    {TAG_SPAN, "span"},
+    {TAG_BODY, "body"},
+    {TAG_H1, "h1"}, {TAG_H2, "h2"}, {TAG_H3, "h3"}, {TAG_H4, "h4"}, {TAG_H5, "h5"},
+    {TAG_UL, "ul"}, {TAG_OL, "ol"}, {TAG_LI, "li"}
 };
 
-class HtmlUtil{
+class HtmlUtil
+{
 public:
     /**
      * @brief 移除HTML标签中Qt自带的style样式
@@ -203,14 +240,14 @@ public:
      * @return
      * @note 移除样式之后方便计算其宽度
      */
-    static QString RemoveOriginTagStyle(const QString & originStr,TagType types);
+    static QString RemoveOriginTagStyle(const QString &originStr, TagType types);
 
     /**
      * @brief 获取html文档中的body内容
      * @param html html文档
      * @return
      */
-    static QString GetHtmlBodyContent(const QString & html);
+    static QString GetHtmlBodyContent(const QString &html);
 
 private:
     /**
@@ -218,7 +255,7 @@ private:
      * @param types 需要移除的标签类型
      * @param originStr
      */
-    static void RemoveStyle(const QString & tag,QString & originStr);
+    static void RemoveStyle(const QString &tag, QString &originStr);
 };
 
 
@@ -252,7 +289,7 @@ QPixmap adjustToHead(QPixmap &src, int diameter);
 /// @return QString
 inline QString GetCurrentDateTime(const QString &format = "yyyy-MM-dd")
 {
-    return qPrintable(QDateTime::currentDateTime().toString(format));
+    return QDateTime::currentDateTime().toString(format);
 }
 
 

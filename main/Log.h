@@ -37,6 +37,7 @@ public:
     }
     ~StdoutLogAppender(){
         delete stream;
+        stream = nullptr;
     }
 
     virtual void log(QtMsgType level, const QString &content)override;
@@ -66,7 +67,7 @@ class Logger
 public:
     typedef std::shared_ptr<Logger> ptr;
 
-    static Logger::ptr Instance();
+    static Logger* Instance();
 
 
     void log(QtMsgType level,const QString & content);
@@ -74,6 +75,8 @@ public:
     void addAppender(LogAppender::ptr appender);
     void delAppender(LogAppender::ptr appender);
     void clearAppenders(){appenders.clear();}
+
+    ~Logger();
 private:
     Logger(QtMsgType level = QtDebugMsg);
     Logger(const Logger &);

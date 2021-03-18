@@ -4,6 +4,8 @@
 #include <QMutexLocker>
 #include <QDebug>
 
+#include "utils/Util.h"
+
 namespace zsj
 {
 
@@ -33,12 +35,13 @@ SQLiteDataBase::SQLiteDataBase(const QString &driverName,
         qInfo() << "Success to connect databse.";
         connected = true;
         QSqlQuery query(database);
-        bool ret = query.exec(CreateTableCmd());
+        bool ret = query.exec(/*CreateTableCmd()*/);
         if(!ret)
         {
             qCritical() << query.lastError();
         }
-        else{
+        else
+        {
             qDebug() << "exec success";
         }
     }
@@ -103,13 +106,20 @@ bool SQLiteDataBase::changeDataBase(const QString &dbName)
         qCritical() << "Error: Failed to connect database."
                     << database.lastError();
         connected = false;
+        return false;
     }
     else
     {
         qInfo() << "Success to connect databse.";
         connected = true;
         setCurrentDbName(dbName);
+        return true;
     }
+}
+
+SQLiteDataBase::~SQLiteDataBase()
+{
+    DESTRUCT_LOG_CRITICAL("deconstruct SQLiteDataBase");
 }
 
 

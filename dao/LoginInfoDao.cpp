@@ -27,8 +27,6 @@ LoginInfoDao::LoginInfoDao()
 
 LoginInfoDao::~LoginInfoDao()
 {
-    delete db;
-    db = nullptr;
 }
 
 QVector<LoginInfo> LoginInfoDao::listLoginInfo()

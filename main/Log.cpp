@@ -12,7 +12,7 @@ namespace zsj
 {
 
 Logger::ptr Logger::logger;
-Logger::ptr Logger::Instance()
+Logger* Logger::Instance()
 {
     if(!logger)
     {
@@ -23,7 +23,7 @@ Logger::ptr Logger::Instance()
             logger.reset(new Logger(QtDebugMsg));
         }
     }
-    return logger;
+    return logger.get();
 }
 
 void Logger::log(QtMsgType level, const QString &content)
@@ -52,6 +52,13 @@ void Logger::addAppender(LogAppender::ptr appender)
 void Logger::delAppender(LogAppender::ptr appender)
 {
     appenders.removeOne(appender);
+}
+
+Logger::~Logger()
+{
+    QTextStream stream(stdout);
+    stream << "Logger deconstruct\n";
+//    qDebug() << "xxxxx";
 }
 
 Logger::Logger(QtMsgType level)

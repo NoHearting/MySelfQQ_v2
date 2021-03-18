@@ -36,7 +36,9 @@ LoginWidget::LoginWidget(QWidget *parent) :
 
 LoginWidget::~LoginWidget()
 {
-    qInfo() << "deconstruct LoginWidget";
+//    qInfo() << "deconstruct LoginWidget";
+    QTextStream stream(stdout);
+    stream << "deconstruct LoginWidget\n";
     deleteObjects();
     delete ui;
 }
@@ -181,27 +183,27 @@ void LoginWidget::initResourceAndForm()
     ui->comboBoxAccount->view()->parentWidget()->setAttribute(Qt::WA_TranslucentBackground);
 
 
-    for(int i = 0; i < 5; i++)
-    {
-        QString head = QString(":/test/res/test/head%1.jpg").arg(i);
-        QPixmap origin(head);
-        QPixmap scaled = zsj::scaledPixmap(origin, 40, 40);
-        QPixmap round = zsj::pixmapToRound(scaled, 20);
-        ComboBoxItemWidget *item = new ComboBoxItemWidget(round,
-                QString("无心-%1").arg(i),
-                123512341,
-                "asda123", this);
+//    for(int i = 0; i < 5; i++)
+//    {
+//        QString head = QString(":/test/res/test/head%1.jpg").arg(i);
+//        QPixmap origin(head);
+//        QPixmap scaled = zsj::scaledPixmap(origin, 40, 40);
+//        QPixmap round = zsj::pixmapToRound(scaled, 20);
+//        ComboBoxItemWidget *item = new ComboBoxItemWidget(round,
+//                QString("无心-%1").arg(i),
+//                123512341,
+//                "asda123", this);
 
-        item->setFixedSize(235, 50);
-        QListWidgetItem *widgetItem = new QListWidgetItem(comboBoxListWidget);
-        connect(item, &ComboBoxItemWidget::click, this, &LoginWidget::slotSetAccountAndPassword);
-        qInfo() << "connect ComboBoxItemWidget click to LoginWidget::slotSetAccountAndPassword";
-        comboBoxListWidget->setItemWidget(widgetItem, item);
-        widgetItem->setSizeHint(QSize(235, 50));
-    }
+//        item->setFixedSize(235, 50);
+//        QListWidgetItem *widgetItem = new QListWidgetItem(comboBoxListWidget);
+//        connect(item, &ComboBoxItemWidget::click, this, &LoginWidget::slotSetAccountAndPassword);
+//        qInfo() << "connect ComboBoxItemWidget click to LoginWidget::slotSetAccountAndPassword";
+//        comboBoxListWidget->setItemWidget(widgetItem, item);
+//        widgetItem->setSizeHint(QSize(235, 50));
+//    }
 
-    ui->lineEditOuterInput->setText("123");
-    ui->lineEditPwd->setText("123");
+//    ui->lineEditOuterInput->setText("123");
+//    ui->lineEditPwd->setText("123");
 }
 
 void LoginWidget::initSignalsAndSlots()

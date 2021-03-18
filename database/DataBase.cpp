@@ -29,7 +29,7 @@ bool DataBase::exec(QSqlQuery &query, const QString &dbName)
 
     if(!dbName.isEmpty())
     {
-        changeDataBase(dbName);
+//        changeDataBase(dbName);
     }
     if(connected){
         return query.exec();
