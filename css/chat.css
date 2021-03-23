@@ -29,10 +29,10 @@ QSplitter::handle:pressed {
 }
 
 
-/*#stackedWidgetInfo,
-#stackedWidgetGroupInfo{
-	border-left: 1px solid black;
-}*/
+QToolButton,QToolButton:!checked,QToolButton:!selected{
+	background: transparent;
+	border:none;
+}
 
 #toolButtonClose,
 #toolButtoMin,
@@ -52,16 +52,16 @@ QSplitter::handle:pressed {
 	background: rgba(0,0,0,0.1);
 }
 
-#toolButtonEmoji:hover,
-#toolButtonFile:hover,
-#toolButtonFullScreen:hover,
-#toolButtonGif:hover,
-#toolButtonImage:hover,
-#toolButtonMQFile:hover,
-#toolButtonMessageRecord:hover,
-#toolButtonMore:hover,
-#toolButtonScreenShot:hover,
-#toolButtonWindowShake:hover,
+#toolButtonEmoji:!checked:hover,
+#toolButtonFile:!checked:hover,
+#toolButtonFullScreen:!checked:hover,
+#toolButtonGif:!checked:hover,
+#toolButtonImage:!checked:hover,
+#toolButtonMQFile:!checked:hover,
+#toolButtonMessageRecord:!checked:hover,
+#toolButtonMore:!checked:hover,
+#toolButtonScreenShot:!checked:hover,
+#toolButtonWindowShake:!checked:hover,
 #toolButtonEmojiGroup:hover,
 #toolButtonFileGroup:hover,
 #toolButtonFullScreenGroup:hover,
@@ -74,17 +74,36 @@ QSplitter::handle:pressed {
 #toolButtonWindowShakeGroup:hover{
 	background: rgba(0,0,0,0.1);
 	border:none;
+	border-radius: 3px;
 }
+
+#toolButtonEmoji:checked,
+#toolButtonFile:checked,
+#toolButtonFullScreen:checked,
+#toolButtonGif:checked,
+#toolButtonImage:checked,
+#toolButtonMQFile:checked,
+#toolButtonMessageRecord:checked,
+#toolButtonMore:checked,
+#toolButtonScreenShot:checked,
+#toolButtonWindowShake:checked{
+	background: rgba(0,0,0,0.1);
+	margin-left: 0px;
+	margin-top: 0px;
+}
+
+
+
 
 
 
 #widgetMessageBody,
 #widgetContentGroup{
-	border-right: 1px solid black;
+	border-right: 1px solid rgb(136,136,136);
 }
 
 #widgetMessageListToolsGroup{
-	border-bottom: 1px solid black;
+	border-bottom: 1px solid rgb(136,136,136);
 }
 
 #pushButtonClose,
@@ -221,6 +240,25 @@ QListView#listWidgetMessageListGroup::item:selected{
 
 #stackedWidgetMain{
 	background: transparent;
+}
+
+
+#widgetMessageListToolsGroup QPushButton:!checked{
+	border:none;
+	background: transparent;
+	color:rgb(136,136,136);
+	/*margin: 0 10px 0;*/
+}
+#widgetMessageListToolsGroup QPushButton:!checked:hover{
+	color: rgb(25,25,25);
+}
+
+#widgetMessageListToolsGroup QPushButton:checked{
+
+	color: rgb(25,25,25);
+	border:none;
+	background: transparent;
+	border-bottom: 2px solid rgb(25,25,25);
 }
 
 /* test */

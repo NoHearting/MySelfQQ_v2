@@ -16,7 +16,6 @@ AnimationStackedWidget::AnimationStackedWidget(QWidget *parent ) : QStackedWidge
 
 void AnimationStackedWidget::valueChangedAnimation(QVariant value)
 {
-    qDebug() << "valueChanged";
     currentValue = value;
     update();
 }

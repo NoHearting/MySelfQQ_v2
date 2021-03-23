@@ -1,3 +1,9 @@
+/**
+  * @file ChatObjectItem.h
+  * @brief 聊天窗口左边的聊天对象列表中的item对象。
+  * @author zsj
+  * @date 2021年3月3日09:58:35
+  */
 #ifndef CHATOBJECTITEM_H
 #define CHATOBJECTITEM_H
 
@@ -5,6 +11,7 @@
 #include <QResizeEvent>
 #include <QPoint>
 #include <QRect>
+#include <QDateTime>
 
 #include "main/Data.h"
 
@@ -25,7 +32,9 @@ public:
     /// @return QRect
     QRect getDeleteButtonPosition() const;
 
-    int getIndex() const;
+
+    void setDateTime(const QDateTime & dateTime = QDateTime::currentDateTime());
+    void setMessage(const QString  & message);
 
 protected:
 
@@ -47,9 +56,12 @@ private:
     void initStyleSheet();
 
 
+
+
 private:
     Ui::ChatObjectItem *ui;
 
+    /// 聊天对象的数据
     zsj::Data::ptr data;
 
 public slots:

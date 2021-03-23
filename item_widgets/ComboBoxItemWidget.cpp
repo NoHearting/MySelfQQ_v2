@@ -17,7 +17,7 @@ ComboBoxItemWidget::ComboBoxItemWidget(QWidget *parent) :
 }
 
 ComboBoxItemWidget::ComboBoxItemWidget(const QPixmap &head, const QString &nickname,
-                                       const QString &accountNum, const QString &password, QWidget *parent)
+                                       quint64 accountNum, const QString &password, QWidget *parent)
     : QWidget(parent),
       ui(new Ui::ComboBoxItemWidget),
       head(head), nickname(nickname), accountNum(accountNum), password(password)
@@ -27,13 +27,42 @@ ComboBoxItemWidget::ComboBoxItemWidget(const QPixmap &head, const QString &nickn
 
 }
 
+ComboBoxItemWidget::ComboBoxItemWidget(zsj::LoginInfo::ptr info, QWidget *parent) :
+    QWidget(parent),
+    ui(new Ui::ComboBoxItemWidget),
+    info(info)
+{
+    ui->setupUi(this);
+    initResourceAndForm();
+}
+
 
 void ComboBoxItemWidget::initResourceAndForm()
 {
-    QPixmap result = zsj::adjustToHead(head, zsj::HeadSize::loginItemDiameter);
+    QPixmap pix(info->getHead());
+    QPixmap result = zsj::adjustToHead(pix, zsj::HeadSize::loginItemDiameter);
     ui->labelHead->setPixmap(result);
-    ui->labelNickname->setText(nickname);
-    ui->labelAccount->setText(accountNum);
+    ui->labelNickname->setText(info->getNickname());
+    ui->labelAccount->setText(QString::number(info->getAccount()));
+    ui->toolButtonDelete->hide();
+
+
+    connect(ui->toolButtonDelete,&QToolButton::clicked,this,&ComboBoxItemWidget::slotDeleteItem);
+}
+
+zsj::LoginInfo::ptr ComboBoxItemWidget::getInfo() const
+{
+    return info;
+}
+
+quint64 ComboBoxItemWidget::getAccountNum() const
+{
+    return accountNum;
+}
+
+void ComboBoxItemWidget::setAccountNum(const quint64 &value)
+{
+    accountNum = value;
 }
 
 ComboBoxItemWidget::~ComboBoxItemWidget()
@@ -80,15 +109,6 @@ void ComboBoxItemWidget::setNickname(const QString &value)
     nickname = value;
 }
 
-QString ComboBoxItemWidget::getAccountNum() const
-{
-    return accountNum;
-}
-
-void ComboBoxItemWidget::setAccountNum(const QString &value)
-{
-    accountNum = value;
-}
 
 QString ComboBoxItemWidget::getPassword() const
 {
@@ -102,10 +122,27 @@ void ComboBoxItemWidget::setPassword(const QString &value)
 
 void ComboBoxItemWidget::mouseReleaseEvent(QMouseEvent *e)
 {
-    QPixmap origin = zsj::scaledPixmap(head, zsj::HeadSize::loginMainDiameter,
-                                       zsj::HeadSize::loginMainDiameter);
-    emit click(origin, accountNum, password);
+    emit sigClick(info);
     QWidget::mouseReleaseEvent(e);
+}
+
+void ComboBoxItemWidget::enterEvent(QEvent *event)
+{
+    ui->toolButtonDelete->show();
+    QWidget::enterEvent(event);
+}
+
+void ComboBoxItemWidget::leaveEvent(QEvent *event)
+{
+    ui->toolButtonDelete->hide();
+    QWidget::leaveEvent(event);
+}
+
+void ComboBoxItemWidget::slotDeleteItem()
+{
+    QPoint globalPos= this->mapToGlobal(ui->toolButtonDelete->pos());
+    emit sigDeleteItem(globalPos);
+
 }
 
 

@@ -5,6 +5,7 @@
 
 #include <memory>
 #include <QPixmap>
+#include <QSharedPointer>
 
 namespace zsj
 {
@@ -13,26 +14,52 @@ class Data
 {
 public:
     typedef std::shared_ptr<Data> ptr;
-    Data(zsj::global::DataType dataType = zsj::global::DataType::USER_DATA);
+    Data(global::DataType dataType,const QPixmap & head,
+         const QString & nickname,quint64 id,
+         const QString & explain = "",bool vip = false);
     virtual ~Data() = 0;
 
-    virtual const QString getName()const
+    const QString getName()const
     {
-        return "origin name";
+        return nickname;
     }
 
-    virtual const QString getAccount()const{
-        return "origin account";
+    quint64 getAccount()const{
+        return id;
     }
 
-    virtual const QPixmap getHead()const{
-        return QPixmap(global::defaultHead);
+    QPixmap getHead()const{
+        if(head.isNull()){
+            return QPixmap(global::DefaultHead);
+        }
+        return head;
     }
     global::DataType getDataType() const;
 
+    QString  getExplain()const{return explain;}
+
+    bool getVip()const{return vip;}
+
+
+    virtual QString toString();
 private:
+    /// 数据类型
     global::DataType dataType;
 
+    /// 头像
+    QPixmap head;
+
+    /// 昵称
+    QString nickname;
+
+    /// 账号id
+    quint64 id;
+
+    /// 签名/说明
+    QString explain;
+
+    /// 是否vip
+    bool vip;
 };
 
 }

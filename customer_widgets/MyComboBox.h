@@ -18,6 +18,8 @@ class MyComboBox : public QComboBox
 public:
     explicit MyComboBox(QWidget *parent = 0);
 
+    ~MyComboBox();
+
     /// @brief 显示下拉框
     void showPopup();
 

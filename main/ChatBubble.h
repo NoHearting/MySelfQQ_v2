@@ -13,6 +13,13 @@ class ChatBubble
 {
 public:
     static ChatBubble * Instance();
+
+    /// 气泡、聊天输入框字体大小
+    static const uint FontSize = 18;
+    /// 聊天输入框的表情大小
+    static const uint EmojiInputSize = 28;
+    /// 消息列表的表情大小
+    static const uint EmojiChatSize = 22;
 public:
     uint getBubblePadding() const;
     void setBubblePadding(const uint &value);

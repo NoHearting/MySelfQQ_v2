@@ -13,12 +13,18 @@
 #include <QMenu>
 #include <map>
 #include <list>
+#include <QSharedPointer>
 
 
 #include "main/Frameless.h"
 #include "feature_widgets/SystemTray.h"
 #include "main/Linkman.h"
 #include "feature_widgets/WarnDialog.h"
+#include "ChatWidget.h"
+
+#include "main/Data.h"
+#include "main/UserData.h"
+#include "main/GroupData.h"
 
 namespace Ui
 {
@@ -31,7 +37,7 @@ class MainWidget : public QWidget
 
 public:
     typedef std::map<QTreeWidgetItem *, std::list<QTreeWidgetItem *>> mapTreeItem;
-    explicit MainWidget(QWidget *parent = 0);
+    MainWidget(zsj::Data::ptr data,QWidget *parent = 0);
     ~MainWidget();
 
 protected:
@@ -45,6 +51,11 @@ private:
 
     /// @brief 初始化成员堆对象
     void initObjects();
+
+    /**
+     * @brief 删除成员对象
+     */
+    void deleteObjects();
 
 
     /// @brief 初始化联系人好友列表
@@ -66,7 +77,7 @@ private:
     ///
     /// @param treeWidget 好友列表
     /// @param group 根节点
-    QTreeWidgetItem *addTreeWidgetRootNode(QTreeWidget *treeWidget, LinkmanGroupWidget *group);
+    QTreeWidgetItem *addTreeWidgetRootNode(QTreeWidget *treeWidget, LinkmanSection *group);
     QTreeWidgetItem *addTreeWidgetRootNode(QTreeWidget *treeWidget, const QString &groupName, int active, int total);
 
     /// @brief 添加好友列表的子节点
@@ -74,12 +85,18 @@ private:
     /// @param[in] 好友列表
     /// @param[in] 根节点
     /// @param[in] 子节点
-    QTreeWidgetItem *addTreeWidgetChildNode(QTreeWidget *treeWidget, QTreeWidgetItem *rootNode, LinkmanItemWidget *item);
+    QTreeWidgetItem *addTreeWidgetChildNode(QTreeWidget *treeWidget, QTreeWidgetItem *rootNode, LinkmanUserItem *item);
     QTreeWidgetItem *addTreeWidgetChildNode(QTreeWidget *treeWidget, QTreeWidgetItem *rootNode,
                                             zsj::UserData::ptr userData);
     QTreeWidgetItem *addTreeWidgetChildNode(QTreeWidget *treeWidget, QTreeWidgetItem *rootNode,
                                             zsj::GroupData::ptr groupData, const QString &date);
 
+
+
+
+    void addMessageListItem(QListWidget * listWidget,zsj::Data::ptr data,
+                            const QString & message,
+                            const QDateTime & dateTime = QDateTime::currentDateTime());
 
     /// 设置头像
     void setHead(QPixmap &pixmap);
@@ -138,9 +155,6 @@ private:
 private:
     Ui::MainWidget *ui;
 
-#ifdef Q_OS_LINUX
-    QPoint offset;      /// 鼠标位移值
-#endif
 
 
     /// 设置窗口可拉伸和移动
@@ -183,110 +197,135 @@ private:
     mapTreeItem dataFriend;
     mapTreeItem dataGroup;
 
+
+    /// 聊天窗口
+    ChatWidget * chatWidget;
+
+    /// 自己的信息
+    zsj::Data::ptr selfData;
 private slots:
 
     // ------- 最顶部功能按钮 ---------
     /// @brief 关闭窗口
-    void closeWindow();
+    void slotCloseWindow();
 
     /// @brief 最小化窗口
-    void minWindow();
+    void slotMinWindow();
 
     /// @brief 界面管理器
-    void interfaceManager();
+    void slotInterfaceManager();
 
 
     /// @brief 切换到消息界面
-    void switchToMessageWidget();
+    void slotSwitchToMessageWidget();
 
     /// @brief 切换到联系人界面
-    void switchToLinkmanWidget();
+    void slotSwitchToLinkmanWidget();
 
     /// @brief 切换到空间界面
-    void switchToSpaceWidget();
+    void slotSwitchToSpaceWidget();
 
 
     /// @brief 子项目点击，
     /// 如果为根节点则不变化背景颜色,并且展开内容
-    void treeWidgetItemClick(QTreeWidgetItem *item, int );
+    void slotTreeWidgetItemClick(QTreeWidgetItem *item, int );
 
     /// @brief 子项目收缩时
     /// 设置分组的图标
-    void collasped(QTreeWidgetItem *item);
+    void slotCollasped(QTreeWidgetItem *item);
 
     /// @brief 子项目展开时
     /// 设置分组的图标
-    void expanded(QTreeWidgetItem *item);
+    void slotExpanded(QTreeWidgetItem *item);
 
     // ------------- 菜单槽函数 -------------
     /// @brief 显示菜单
-    void showContextMenuFriend(const QPoint &);
-    void showContextMenuGroup(const QPoint &);
-    void showContextMenuMessage(const QPoint &);
+    void slotShowContextMenuFriend(const QPoint &);
+    void slotShowContextMenuGroup(const QPoint &);
+    void slotShowContextMenuMessage(const QPoint &);
 
+
+    /**
+     * @brief 打开聊天窗口
+     * @param index 当前聊天对象在聊天列表中的坐标
+     */
+    void slotOpenChatWindow(const QModelIndex &index);          // 好友列表
+    void slotOpenChatWindowGroup(const QModelIndex &index);     // 群组列表
+    void slotOpenChatWindowMessage(const QModelIndex &index);   // 消息列表
+
+    /**
+     * @brief 根据信号改变消息列表item显示的日期和消息信息
+     * @param data
+     * @param fromId
+     * @param toId
+     * @param content
+     * @param msgType
+     */
+    void slotChangeMessageListItemInfo(zsj::Data::ptr data,quint64 fromId, quint64 toId,
+                                       const QString &content, zsj::global::MessageType msgType);
 public slots:
     /// @brief 好友管理
-    void friendManager() {}
+    void slotFriendManager() {}
 
     /// @brief 消息记录
-    void messageRecord() {}
+    void slotMessageRecord() {}
 
     /// @brief 移动联系人和群组
-    void moveItem(QAction * action);
+    void slotMoveItem(QAction * action);
 
     // ========= userMenu槽函数 ==============
     /// @brief 发送即时消息
-    void sendMessage() {}
+    void slotSendMessage() {}
 
     /// @brief 删除好友
-    void deleteFriend();
+    void slotDeleteFriend();
 
     /// @brief 更新好友备注
-    void updateRemark() {}
+    void slotUpdateRemark() {}
 
     /// @brief 移动好友
-    void moveFriend() {}
+    void slotMoveFriend() {}
 
     // ========== sectionMenu槽函数 =============
     /// @brief 添加分组
-    void addSection() {}
+    void slotAddSection() {}
 
     /// @brief 重命名分组
-    void renameSection() {}
+    void slotRenameSection() {}
 
     /// @brief 删除分组
-    void deleteFriendSection();
+    void slotDeleteFriendSection();
 
     // ========== groupMenu槽函数 =================
     /// @brief 发送群消息
-    void sendGroupMessage() {}
+    void slotSendGroupMessage() {}
 
     /// @brief 修改群备注
-    void updateGroupRemark() {}
+    void slotUpdateGroupRemark() {}
 
     /// @brief 移动群聊
-    void moveGroupTo() {}
+    void slotMoveGroupTo() {}
 
 
     // ============= groupSectionMenu =============
     /// @brief 查找添加群
-    void findAndAddGroup() {}
+    void slotFindAndAddGroup() {}
 
     /// @brief 创建一个群
-    void createGroup() {}
+    void slotCreateGroup() {}
 
     /// @brief 添加群分组
-    void addGroupSection() {}
+    void slotAddGroupSection() {}
 
     /// @brief 重命名群分组
-    void renameGroupSection() {}
+    void slotRenameGroupSection() {}
 
     /// @brief 删除群分组
-    void deleteGroupSection();
+    void slotDeleteGroupSection();
 
     // ============= list**Menu ==============
     /// @brief 从会话列表移除
-    void deleteItemFromMessageList();
+    void slotDeleteItemFromMessageList();
 
 };
 

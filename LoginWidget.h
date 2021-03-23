@@ -14,41 +14,27 @@
 #include <QMenu>
 #include <QSystemTrayIcon>
 #include <QAction>
+#include <QScopedPointer>
 
 #include "item_widgets/ComboBoxItemWidget.h"
 #include "feature_widgets/SystemTray.h"
 #include "feature_widgets/ToolTipWidget.h"
+#include "feature_widgets/PopupWidget.h"
 #include "main/Frameless.h"
+#include "main/Data.h"
+#include "dao/LoginInfoDao.h"
 
-namespace Ui {
+namespace Ui
+{
 class LoginWidget;
 }
 
 class LoginWidget : public QWidget
 {
     Q_OBJECT
-
 public:
     explicit LoginWidget(QWidget *parent = 0);
     ~LoginWidget();
-
-protected:
-//    //无边框窗口需要重写鼠标点击和移动时间
-//    /// @brief 重写mouseMoveEvent函数
-//    ///
-//    ///     用户点击有可能点击登录页面之上的小部件然后拖动
-//    ///会出现抖动，此函数解决此问题
-//    void mouseMoveEvent(QMouseEvent *);
-
-//    /// @brief 重写mousePressEvent函数
-//    ///
-//    ///  鼠标按下事件，按下就获取当前鼠标坐标并计算出当前坐标和窗口左上角的差值
-//    void mousePressEvent(QMouseEvent *);
-
-//    /// @brief 重写mouseReleaseEvent函数
-//    void mouseReleaseEvent(QMouseEvent *);
-
-
 
 
 private:
@@ -60,13 +46,25 @@ private:
 
     /// @brief 初始化成员堆对象
     void initObjects();
+    /**
+     * @brief 释放成员对象数据
+     */
+    void deleteObjects();
+
+    /**
+     * @brief 加载并设置登录信息
+     */
+    void loadAndSetLoginInfo();
+
+    /**
+     * @brief 持久化登录数据
+     */
+    void persistenceLoginInfo(const zsj::LoginInfo & info);
 
 private:
     Ui::LoginWidget *ui;
 
-    QPoint offset;       ///鼠标点击位置和窗口左上角的差值
-
-    QListWidget * comboBoxListWidget;       ///下拉组合框
+    QListWidget *comboBoxListWidget;        ///下拉组合框
 
     QPixmap head;       /// 头像
 
@@ -78,36 +76,55 @@ private:
     // 提示窗口
     ToolTipWidget * toolTip;
 
-    zsj::Frameless * frameless = nullptr;
+    zsj::Frameless * frameless;
+
+    /// 存储登录信息
+    zsj::LoginInfoDao * infoDao;
+
+    /// 当前登录用户的信息
+    QVector<zsj::LoginInfo> infos;
 
 
-private slots:
+    /// 下拉框  账号输入框的下拉框
+    PopupWidget * popupWidget;
+signals:
+    /**
+     * @brief 登录成功时发送信号
+     * @param data 当前用户的数据
+     */
+    void sigLoginSuccess(zsj::Data::ptr data);
+public slots:
+
     /// @brief 关闭窗口
-    void closeWindow();
+    void slotCloseWindow();
+private slots:
+
 
     /// @brief 最小化窗口
-    void minWindow();
+    void slotMinWindow();
 
     /// @brief 根据下拉框选择的值设置账号和密码
     ///
     /// @param[in] head 头像
     /// @param[in] accountNum 账号
     /// @param[in] password 密码
-    void setAccountAndPassword(const QPixmap & head,
-                               const QString & accountNum,const QString & password);
+    void slotSetAccountAndPassword(zsj::LoginInfo::ptr info);
 
 
     /// @brief 显示下拉框
-    void showComboBoxPopus();
+    void slotShowComboBoxPopus();
 
     /// @brief 登录
-    void login();
+    void slotLogin();
 
     /// @brief 取消登录
-    void cancelLogin();
+    void slotCancelLogin();
 
     /// @brief 找回密码，打开一个网页，执行找回密码
-    void findPassword();
+    void slotFindPassword();
+
+
+
 };
 
 #endif // LOGINWIDGET_H

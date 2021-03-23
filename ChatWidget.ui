@@ -410,7 +410,7 @@
           <item row="1" column="0">
            <widget class="QStackedWidget" name="stackedWidgetMain">
             <property name="currentIndex">
-             <number>1</number>
+             <number>0</number>
             </property>
             <widget class="QWidget" name="pageUser">
              <layout class="QGridLayout" name="gridLayout_16">
@@ -504,6 +504,132 @@
                             <height>45</height>
                            </size>
                           </property>
+                          <layout class="QGridLayout" name="gridLayout_28">
+                           <property name="leftMargin">
+                            <number>10</number>
+                           </property>
+                           <property name="topMargin">
+                            <number>0</number>
+                           </property>
+                           <property name="rightMargin">
+                            <number>10</number>
+                           </property>
+                           <property name="bottomMargin">
+                            <number>0</number>
+                           </property>
+                           <property name="spacing">
+                            <number>0</number>
+                           </property>
+                           <item row="0" column="0">
+                            <spacer name="horizontalSpacer_7">
+                             <property name="orientation">
+                              <enum>Qt::Horizontal</enum>
+                             </property>
+                             <property name="sizeHint" stdset="0">
+                              <size>
+                               <width>537</width>
+                               <height>20</height>
+                              </size>
+                             </property>
+                            </spacer>
+                           </item>
+                           <item row="0" column="1">
+                            <widget class="QToolButton" name="toolButtonPhone">
+                             <property name="minimumSize">
+                              <size>
+                               <width>45</width>
+                               <height>45</height>
+                              </size>
+                             </property>
+                             <property name="maximumSize">
+                              <size>
+                               <width>45</width>
+                               <height>45</height>
+                              </size>
+                             </property>
+                             <property name="text">
+                              <string/>
+                             </property>
+                             <property name="icon">
+                              <iconset resource="res.qrc">
+                               <normaloff>:/chat/res/chat/phone.png</normaloff>:/chat/res/chat/phone.png</iconset>
+                             </property>
+                             <property name="iconSize">
+                              <size>
+                               <width>24</width>
+                               <height>24</height>
+                              </size>
+                             </property>
+                             <property name="autoRaise">
+                              <bool>true</bool>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="0" column="2">
+                            <widget class="QToolButton" name="toolButtonVideo">
+                             <property name="minimumSize">
+                              <size>
+                               <width>45</width>
+                               <height>45</height>
+                              </size>
+                             </property>
+                             <property name="maximumSize">
+                              <size>
+                               <width>45</width>
+                               <height>45</height>
+                              </size>
+                             </property>
+                             <property name="text">
+                              <string/>
+                             </property>
+                             <property name="icon">
+                              <iconset resource="res.qrc">
+                               <normaloff>:/chat/res/chat/video.png</normaloff>:/chat/res/chat/video.png</iconset>
+                             </property>
+                             <property name="iconSize">
+                              <size>
+                               <width>24</width>
+                               <height>24</height>
+                              </size>
+                             </property>
+                             <property name="autoRaise">
+                              <bool>true</bool>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="0" column="3">
+                            <widget class="QToolButton" name="toolButtonToolMore">
+                             <property name="minimumSize">
+                              <size>
+                               <width>45</width>
+                               <height>45</height>
+                              </size>
+                             </property>
+                             <property name="maximumSize">
+                              <size>
+                               <width>45</width>
+                               <height>45</height>
+                              </size>
+                             </property>
+                             <property name="text">
+                              <string/>
+                             </property>
+                             <property name="icon">
+                              <iconset resource="res.qrc">
+                               <normaloff>:/chat/res/chat/more.png</normaloff>:/chat/res/chat/more.png</iconset>
+                             </property>
+                             <property name="iconSize">
+                              <size>
+                               <width>24</width>
+                               <height>24</height>
+                              </size>
+                             </property>
+                             <property name="autoRaise">
+                              <bool>true</bool>
+                             </property>
+                            </widget>
+                           </item>
+                          </layout>
                          </widget>
                         </item>
                         <item row="1" column="0">
@@ -607,7 +733,7 @@
                             <number>6</number>
                            </property>
                            <item row="0" column="0">
-                            <widget class="QToolButton" name="toolButtonEmoji">
+                            <widget class="MyToolButton" name="toolButtonEmoji">
                              <property name="minimumSize">
                               <size>
                                <width>28</width>
@@ -632,6 +758,12 @@
                                <width>20</width>
                                <height>20</height>
                               </size>
+                             </property>
+                             <property name="checkable">
+                              <bool>true</bool>
+                             </property>
+                             <property name="checked">
+                              <bool>false</bool>
                              </property>
                              <property name="autoRaise">
                               <bool>true</bool>
@@ -964,7 +1096,7 @@
                             <widget class="MyTextEdit" name="textEditMessageInput">
                              <property name="font">
                               <font>
-                               <pointsize>9</pointsize>
+                               <pointsize>16</pointsize>
                               </font>
                              </property>
                              <property name="tabChangesFocus">
@@ -1122,7 +1254,24 @@
                      <height>16777215</height>
                     </size>
                    </property>
-                   <widget class="QWidget" name="page_3"/>
+                   <widget class="QWidget" name="widgetMQShow">
+                    <widget class="QLabel" name="labelMQShow">
+                     <property name="geometry">
+                      <rect>
+                       <x>0</x>
+                       <y>30</y>
+                       <width>130</width>
+                       <height>330</height>
+                      </rect>
+                     </property>
+                     <property name="text">
+                      <string/>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignCenter</set>
+                     </property>
+                    </widget>
+                   </widget>
                    <widget class="QWidget" name="page_4"/>
                   </widget>
                  </item>
@@ -1198,10 +1347,307 @@
                         <height>45</height>
                        </size>
                       </property>
+                      <layout class="QGridLayout" name="gridLayout_29">
+                       <property name="leftMargin">
+                        <number>10</number>
+                       </property>
+                       <property name="topMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="rightMargin">
+                        <number>10</number>
+                       </property>
+                       <property name="bottomMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="horizontalSpacing">
+                        <number>8</number>
+                       </property>
+                       <property name="verticalSpacing">
+                        <number>0</number>
+                       </property>
+                       <item row="0" column="6">
+                        <spacer name="horizontalSpacer_8">
+                         <property name="orientation">
+                          <enum>Qt::Horizontal</enum>
+                         </property>
+                         <property name="sizeHint" stdset="0">
+                          <size>
+                           <width>235</width>
+                           <height>20</height>
+                          </size>
+                         </property>
+                        </spacer>
+                       </item>
+                       <item row="0" column="1">
+                        <widget class="MyPushButton" name="pushButtonNotice">
+                         <property name="minimumSize">
+                          <size>
+                           <width>60</width>
+                           <height>45</height>
+                          </size>
+                         </property>
+                         <property name="maximumSize">
+                          <size>
+                           <width>60</width>
+                           <height>16777215</height>
+                          </size>
+                         </property>
+                         <property name="font">
+                          <font>
+                           <pointsize>12</pointsize>
+                          </font>
+                         </property>
+                         <property name="text">
+                          <string>公告</string>
+                         </property>
+                         <property name="checkable">
+                          <bool>true</bool>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="0" column="2">
+                        <widget class="MyPushButton" name="pushButtonPhoto">
+                         <property name="minimumSize">
+                          <size>
+                           <width>60</width>
+                           <height>45</height>
+                          </size>
+                         </property>
+                         <property name="maximumSize">
+                          <size>
+                           <width>60</width>
+                           <height>16777215</height>
+                          </size>
+                         </property>
+                         <property name="font">
+                          <font>
+                           <pointsize>12</pointsize>
+                          </font>
+                         </property>
+                         <property name="text">
+                          <string>相册</string>
+                         </property>
+                         <property name="checkable">
+                          <bool>true</bool>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="0" column="9">
+                        <widget class="QToolButton" name="toolButtonToolMoreGroup">
+                         <property name="minimumSize">
+                          <size>
+                           <width>45</width>
+                           <height>45</height>
+                          </size>
+                         </property>
+                         <property name="maximumSize">
+                          <size>
+                           <width>45</width>
+                           <height>45</height>
+                          </size>
+                         </property>
+                         <property name="text">
+                          <string/>
+                         </property>
+                         <property name="icon">
+                          <iconset resource="res.qrc">
+                           <normaloff>:/chat/res/chat/more.png</normaloff>:/chat/res/chat/more.png</iconset>
+                         </property>
+                         <property name="iconSize">
+                          <size>
+                           <width>24</width>
+                           <height>24</height>
+                          </size>
+                         </property>
+                         <property name="autoRaise">
+                          <bool>true</bool>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="0" column="3">
+                        <widget class="MyPushButton" name="pushButtonFile">
+                         <property name="minimumSize">
+                          <size>
+                           <width>60</width>
+                           <height>45</height>
+                          </size>
+                         </property>
+                         <property name="maximumSize">
+                          <size>
+                           <width>60</width>
+                           <height>16777215</height>
+                          </size>
+                         </property>
+                         <property name="font">
+                          <font>
+                           <pointsize>12</pointsize>
+                          </font>
+                         </property>
+                         <property name="text">
+                          <string>文件</string>
+                         </property>
+                         <property name="checkable">
+                          <bool>true</bool>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="0" column="7">
+                        <widget class="QToolButton" name="toolButtonPhoneGroup">
+                         <property name="minimumSize">
+                          <size>
+                           <width>45</width>
+                           <height>45</height>
+                          </size>
+                         </property>
+                         <property name="maximumSize">
+                          <size>
+                           <width>45</width>
+                           <height>45</height>
+                          </size>
+                         </property>
+                         <property name="text">
+                          <string/>
+                         </property>
+                         <property name="icon">
+                          <iconset resource="res.qrc">
+                           <normaloff>:/chat/res/chat/phone.png</normaloff>:/chat/res/chat/phone.png</iconset>
+                         </property>
+                         <property name="iconSize">
+                          <size>
+                           <width>24</width>
+                           <height>24</height>
+                          </size>
+                         </property>
+                         <property name="autoRaise">
+                          <bool>true</bool>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="0" column="0">
+                        <widget class="MyPushButton" name="pushButtonChat">
+                         <property name="minimumSize">
+                          <size>
+                           <width>60</width>
+                           <height>45</height>
+                          </size>
+                         </property>
+                         <property name="maximumSize">
+                          <size>
+                           <width>60</width>
+                           <height>16777215</height>
+                          </size>
+                         </property>
+                         <property name="font">
+                          <font>
+                           <pointsize>12</pointsize>
+                          </font>
+                         </property>
+                         <property name="text">
+                          <string>聊天</string>
+                         </property>
+                         <property name="checkable">
+                          <bool>true</bool>
+                         </property>
+                         <property name="checked">
+                          <bool>true</bool>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="0" column="8">
+                        <widget class="QToolButton" name="toolButtonVideoGroup">
+                         <property name="minimumSize">
+                          <size>
+                           <width>45</width>
+                           <height>45</height>
+                          </size>
+                         </property>
+                         <property name="maximumSize">
+                          <size>
+                           <width>45</width>
+                           <height>45</height>
+                          </size>
+                         </property>
+                         <property name="text">
+                          <string/>
+                         </property>
+                         <property name="icon">
+                          <iconset resource="res.qrc">
+                           <normaloff>:/chat/res/chat/video.png</normaloff>:/chat/res/chat/video.png</iconset>
+                         </property>
+                         <property name="iconSize">
+                          <size>
+                           <width>24</width>
+                           <height>24</height>
+                          </size>
+                         </property>
+                         <property name="autoRaise">
+                          <bool>true</bool>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="0" column="4">
+                        <widget class="MyPushButton" name="pushButtonActive">
+                         <property name="minimumSize">
+                          <size>
+                           <width>60</width>
+                           <height>45</height>
+                          </size>
+                         </property>
+                         <property name="maximumSize">
+                          <size>
+                           <width>60</width>
+                           <height>16777215</height>
+                          </size>
+                         </property>
+                         <property name="font">
+                          <font>
+                           <pointsize>12</pointsize>
+                          </font>
+                         </property>
+                         <property name="text">
+                          <string>活动</string>
+                         </property>
+                         <property name="checkable">
+                          <bool>true</bool>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="0" column="5">
+                        <widget class="MyPushButton" name="pushButtonSetting">
+                         <property name="minimumSize">
+                          <size>
+                           <width>60</width>
+                           <height>45</height>
+                          </size>
+                         </property>
+                         <property name="maximumSize">
+                          <size>
+                           <width>60</width>
+                           <height>16777215</height>
+                          </size>
+                         </property>
+                         <property name="font">
+                          <font>
+                           <pointsize>12</pointsize>
+                          </font>
+                         </property>
+                         <property name="text">
+                          <string>设置</string>
+                         </property>
+                         <property name="checkable">
+                          <bool>true</bool>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
                      </widget>
                     </item>
                     <item row="1" column="0">
                      <widget class="QStackedWidget" name="stackedWidgetGroup">
+                      <property name="currentIndex">
+                       <number>0</number>
+                      </property>
                       <widget class="QWidget" name="pageChat">
                        <layout class="QGridLayout" name="gridLayout_26">
                         <property name="leftMargin">
@@ -1351,7 +1797,7 @@
                                    <number>6</number>
                                   </property>
                                   <item row="0" column="0">
-                                   <widget class="QToolButton" name="toolButtonEmojiGroup">
+                                   <widget class="MyToolButton" name="toolButtonEmojiGroup">
                                     <property name="minimumSize">
                                      <size>
                                       <width>28</width>
@@ -1376,6 +1822,9 @@
                                       <width>20</width>
                                       <height>20</height>
                                      </size>
+                                    </property>
+                                    <property name="checkable">
+                                     <bool>true</bool>
                                     </property>
                                     <property name="autoRaise">
                                      <bool>true</bool>
@@ -1706,6 +2155,11 @@
                                   </property>
                                   <item row="0" column="0">
                                    <widget class="MyTextEdit" name="textEditMessageInputGroup">
+                                    <property name="font">
+                                     <font>
+                                      <pointsize>16</pointsize>
+                                     </font>
+                                    </property>
                                     <property name="tabChangesFocus">
                                      <bool>true</bool>
                                     </property>
@@ -1870,7 +2324,136 @@
                         </item>
                        </layout>
                       </widget>
-                      <widget class="QWidget" name="page_2"/>
+                      <widget class="QWidget" name="pageNotice">
+                       <widget class="QLabel" name="label">
+                        <property name="geometry">
+                         <rect>
+                          <x>180</x>
+                          <y>120</y>
+                          <width>351</width>
+                          <height>161</height>
+                         </rect>
+                        </property>
+                        <property name="font">
+                         <font>
+                          <pointsize>24</pointsize>
+                         </font>
+                        </property>
+                        <property name="styleSheet">
+                         <string notr="true">background:#f8e1c3;</string>
+                        </property>
+                        <property name="text">
+                         <string>公告</string>
+                        </property>
+                        <property name="alignment">
+                         <set>Qt::AlignCenter</set>
+                        </property>
+                       </widget>
+                      </widget>
+                      <widget class="QWidget" name="pagePhoto">
+                       <widget class="QLabel" name="label_2">
+                        <property name="geometry">
+                         <rect>
+                          <x>260</x>
+                          <y>200</y>
+                          <width>351</width>
+                          <height>161</height>
+                         </rect>
+                        </property>
+                        <property name="font">
+                         <font>
+                          <pointsize>24</pointsize>
+                         </font>
+                        </property>
+                        <property name="styleSheet">
+                         <string notr="true">background:#f8e1c3;</string>
+                        </property>
+                        <property name="text">
+                         <string>相册</string>
+                        </property>
+                        <property name="alignment">
+                         <set>Qt::AlignCenter</set>
+                        </property>
+                       </widget>
+                      </widget>
+                      <widget class="QWidget" name="pageFile">
+                       <widget class="QLabel" name="label_3">
+                        <property name="geometry">
+                         <rect>
+                          <x>250</x>
+                          <y>180</y>
+                          <width>351</width>
+                          <height>161</height>
+                         </rect>
+                        </property>
+                        <property name="font">
+                         <font>
+                          <pointsize>24</pointsize>
+                         </font>
+                        </property>
+                        <property name="styleSheet">
+                         <string notr="true">background:#f8e1c3;</string>
+                        </property>
+                        <property name="text">
+                         <string>文件</string>
+                        </property>
+                        <property name="alignment">
+                         <set>Qt::AlignCenter</set>
+                        </property>
+                       </widget>
+                      </widget>
+                      <widget class="QWidget" name="pageActive">
+                       <widget class="QLabel" name="label_4">
+                        <property name="geometry">
+                         <rect>
+                          <x>220</x>
+                          <y>170</y>
+                          <width>351</width>
+                          <height>161</height>
+                         </rect>
+                        </property>
+                        <property name="font">
+                         <font>
+                          <pointsize>24</pointsize>
+                         </font>
+                        </property>
+                        <property name="styleSheet">
+                         <string notr="true">background:#f8e1c3;</string>
+                        </property>
+                        <property name="text">
+                         <string>活动</string>
+                        </property>
+                        <property name="alignment">
+                         <set>Qt::AlignCenter</set>
+                        </property>
+                       </widget>
+                      </widget>
+                      <widget class="QWidget" name="pageSetting">
+                       <widget class="QLabel" name="label_5">
+                        <property name="geometry">
+                         <rect>
+                          <x>170</x>
+                          <y>150</y>
+                          <width>351</width>
+                          <height>161</height>
+                         </rect>
+                        </property>
+                        <property name="font">
+                         <font>
+                          <pointsize>24</pointsize>
+                         </font>
+                        </property>
+                        <property name="styleSheet">
+                         <string notr="true">background:#f8e1c3;</string>
+                        </property>
+                        <property name="text">
+                         <string>设置</string>
+                        </property>
+                        <property name="alignment">
+                         <set>Qt::AlignCenter</set>
+                        </property>
+                       </widget>
+                      </widget>
                      </widget>
                     </item>
                    </layout>
@@ -1908,6 +2491,16 @@
    <extends>QSplitter</extends>
    <header>customer_widgets/MySplitter.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>MyToolButton</class>
+   <extends>QToolButton</extends>
+   <header>customer_widgets/MyToolButton.h</header>
+  </customwidget>
+  <customwidget>
+   <class>MyPushButton</class>
+   <extends>QPushButton</extends>
+   <header>customer_widgets/MyPushButton.h</header>
   </customwidget>
  </customwidgets>
  <resources>
