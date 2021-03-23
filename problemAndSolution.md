@@ -2,6 +2,8 @@
 
 ### 1、设置`QComboBox`的下拉框背景透明
 
+* <font color=red>**该功能实现方式已经修改。修改时间：2021年3月23日20:52:52。上述问题在后续不会存在**</font>
+
 * 此处`QComboBox`为了很好的美化，方便如QQ一样显示头像和账号等信息，使用了`model/view`,在项目中使用的是`QListWidget`作为其模型和视图。设置代码如下
 
   ```c++
@@ -63,6 +65,8 @@
     ![image-20201213230708401](C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20201213230708401.png)
 
 ### 2、`QComboBox`设置了代理的`model/view`后其原来的函数`setCurrentText`失效
+
+* <font color=red>**该功能实现方式已经修改。修改时间：2021年3月23日20:52:52。后面不会出现上述问题**</font>
 
 * 如第一个问题所诉，此处使用了`QListWidget`，以至于`QComboBox`的基本函数失效，**所以在点击下拉框的选项时，无法将账号数据设置到上面的`QComboBox`中**，经过很多尝试之后，发现目前**无法正面解决这个问题**.
 
