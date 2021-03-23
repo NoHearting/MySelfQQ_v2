@@ -8,18 +8,37 @@
 #include <QFile>
 #include <QDir>
 #include <QFileInfo>
+#include <QTextStream>
 
 #include <QtGlobal>
 #include <QMap>
 #include <queue>
 #include <QPair>
+#include <QVector>
+#include <utility>
+#include <vector>
+#include <iostream>
 
 #include <QRegExp>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QSharedPointer>
+
+#include <QSqlDatabase>
+#include <QSqlError>
+#include <QSqlQuery>
 
 #include <QFile>
 
 #include "main/ReadQStyleSheet.h"
 #include "utils/Util.h"
+#include "dao/LoginInfoDao.h"
+#include "main/LoginInfo.h"
+#include "main/ApplicationInfo.h"
+
+#include <utils/Util.h>
+
+#include <memory>
 
 namespace zsj
 {
@@ -39,18 +58,25 @@ void Test::test()
 //    testStringReplace();
 //    testRemoveStyle();
 //    testReg();
-    testFontWidth();
+//    testFontWidth();
+//    testJson();
+//    testChatMessageRecord();
+//    testQSharedPointer();
+
+//    testCode();
+    testSqlite();
 }
 
 void Test::testQApplication()
 {
-    QString appName = qApp->applicationName();
-    quint64 pid = qApp->applicationPid();
-    QWidget *screen = qApp->desktop()->screen();
-    qDebug() << appName;
-    qDebug() << pid;
-    qDebug() << screen->width() << ":" << screen->height();
-    qDebug() << "availableGeometry: " << qApp->desktop()->availableGeometry();
+    qDebug() << "applicationName : " << qApp->applicationName();
+    qDebug() << "applicationPid : " << qApp->applicationPid();
+    qDebug() << "applicationDirPath : " << qApp->applicationDirPath();
+    qDebug() << "applicationDisplayName : " << qApp->applicationDisplayName();
+    qDebug() << "applicationFilePath : " << qApp->applicationFilePath();
+    qDebug() << "applicationState : " << qApp->applicationState();
+    qDebug() << "applicationVersion : " << qApp->applicationVersion();
+
 }
 
 void Test::testFile()
@@ -152,7 +178,8 @@ void Test::testReg()
     QStringList list;
     int pos = 0;
 
-    while ((pos = rx.indexIn(origin, pos)) != -1) {
+    while ((pos = rx.indexIn(origin, pos)) != -1)
+    {
         list << rx.cap(1);
         pos += rx.matchedLength();
     }
@@ -161,7 +188,7 @@ void Test::testReg()
 
 void Test::testFontWidth()
 {
-    QFont font = QFont("微软雅黑",18);
+    QFont font = QFont("微软雅黑", 18);
     QFont newFont(font.family(), font.pixelSize());
     QFontMetrics fm(newFont);
     QString testStr = "[测试字符]";
@@ -177,6 +204,149 @@ void Test::testFontWidth()
     int pixWidth = fm.horizontalAdvance(testStr);
     qDebug() << "sizeWidth: " << sizeWidth << "  "
              << "pixWidth: " << pixWidth; //126  74
+}
+
+void Test::testJson()
+{
+    QString jsonStr = "{\"name\":\"zsj\",\"age\":12}";
+    QJsonDocument doc = QJsonDocument::fromJson(jsonStr.toLatin1());
+    if(!doc.isNull() && !doc.isEmpty())
+    {
+        QJsonObject obj = doc.object();
+        qDebug() << "name: " << obj.value("name").toString()
+                 << "age : " << obj.value("age").toInt();
+        qDebug() << doc.toJson().data();
+    }
+    else
+    {
+        qCritical() << "doc is null";
+    }
+}
+
+void Test::testChatMessageRecord()
+{
+    zsj::ChatMessageRecord chatMessageRecord(QDateTime::currentDateTime(), 111, 222, MessageBodyPtr(new TextMessageBody("hello world")));
+    qDebug() << chatMessageRecord.serializeToJson();
+
+    QString tempPath = "/record/temp/";
+    QString fileName = "record.txt";
+
+    QString currenPath = SystemUtil::getProcessPath();
+    QString path = currenPath + tempPath;
+    bool isOk = FileUtil::judgeAndMakeDir(path);
+    if(isOk)
+    {
+        qDebug() << __LINE__ <<  " create " << path << " success";
+    }
+    else
+    {
+        qCritical() << "create " << path << " failed!";
+        return;
+    }
+    QString filePath = path + fileName;
+    QFile file(filePath);
+    if(!file.open(QIODevice::Append | QIODevice::WriteOnly))
+    {
+        qCritical() << "open " << filePath << " failed!";
+        return;
+    }
+//    QTextStream out(&file);
+    file.write(chatMessageRecord.serializeToJson().toStdString().data());
+    file.write("\n");
+    file.close();
+}
+
+class Base
+{
+public:
+    virtual ~Base() {}
+    virtual void show()
+    {
+        qDebug() << "base";
+    }
+};
+
+class Derive : public Base
+{
+public:
+    void show()override
+    {
+        qDebug() << "Derive";
+    }
+};
+
+void Test::testQSharedPointer()
+{
+//    std::shared_ptr<>();
+//    QSharedPointer()
+
+    std::shared_ptr<Base> base(new Base);
+    qDebug() << "base";
+    std::shared_ptr<Derive> derive = std::dynamic_pointer_cast<Derive>(base);
+    qDebug() << "cast and assign success";
+    if(!derive)
+    {
+        derive->show();
+    }
+
+
+    //    std::dynamic_pointer_cast
+}
+
+void Test::testCode()
+{
+    //    Qt::Key_A
+}
+
+void Test::testSqlite()
+{
+//    QSqlDatabase database;
+//    database = QSqlDatabase::addDatabase("QSQLITE");
+//    database.setDatabaseName("./data/test.db");
+//    if (!database.open())
+//    {
+//        qDebug() << "Error: Failed to connect database." << database.lastError();
+//        return;
+//    }
+//    else
+//    {
+//        qDebug() << "Succeed to connect database." ;
+//    }
+//    QSqlQuery query(database);
+//    query.prepare("select * from login_info");
+////    bool ret = query.exec("select * from login_info");
+//    bool ret = query.exec();
+//    if(ret){
+//        while(query.next()){
+//            qDebug() << query.value(0).toInt();
+//            qDebug() << query.value(1).toString();
+//        }
+//    }
+//    else{
+//        qCritical() << query.lastError();
+//    }
+
+    testDao();
+}
+
+void Test::testDao()
+{
+//    zsj::LoginInfoDao dao;
+//    QVector<zsj::LoginInfo> infos = dao.listLoginInfo();
+//    for(const auto &item : infos)
+//    {
+//        qDebug() << item.toString();
+//    }
+//    qDebug() << infos.size();
+    zsj::LoginInfoDao dao;
+    LoginInfo info(0,"head","昵称",1235123,"zsj",false,false,123);
+    bool ret = dao.insertLoginInfo(info);
+    if(!ret){
+        qDebug() << "insert Data failed!";
+    }
+    else{
+        qDebug() << "isnert data success!";
+    }
 }
 
 

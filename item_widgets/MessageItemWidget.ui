@@ -100,7 +100,7 @@
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">color:rgb(208,207,209);
+    <string notr="true">color:rgb(178,178,178);
 </string>
    </property>
    <property name="text">

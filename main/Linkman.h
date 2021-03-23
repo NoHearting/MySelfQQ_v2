@@ -7,8 +7,8 @@
 #ifndef LINKMAN
 #define LINKMAN
 
-#include "item_widgets/LinkmanGroupItemWidget.h"
-#include "item_widgets/LinkmanGroupWidget.h"
-#include "item_widgets/LinkmanItemWidget.h"
+#include "item_widgets/LinkmanGroupItem.h"
+#include "item_widgets/LinkmanSection.h"
+#include "item_widgets/LinkmanUserItem.h"
 
 #endif // LINKMAN

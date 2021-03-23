@@ -68,14 +68,7 @@ SystemTray::SystemTray(QMenu *trayMenu, QPixmap *trayIcon, QObject *parent) : QO
 
 SystemTray::~SystemTray()
 {
-    if(systemTrayIcon)
-    {
-        delete systemTrayIcon;
-    }
-    if(systemTrayMenu)
-    {
-        delete systemTrayMenu;
-    }
+    deleteObjects();
 }
 
 void SystemTray::setSystemTrayMenu(QMenu *value)
@@ -109,6 +102,24 @@ void SystemTray::setSystemTrayIcon(QPixmap *value)
 void SystemTray::showSystemTray()
 {
     tray->show();
+}
+
+void SystemTray::closeTray()
+{
+    tray->hide();
+}
+
+void SystemTray::deleteObjects()
+{
+    if(systemTrayIcon){
+        delete systemTrayIcon;
+        systemTrayIcon = nullptr;
+    }
+    if(systemTrayMenu){
+        delete systemTrayMenu;
+        systemTrayMenu = nullptr;
+    }
+
 }
 
 void SystemTray::defaultOpenClicked()

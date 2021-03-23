@@ -15,7 +15,7 @@ MessageItemWidget::MessageItemWidget(QWidget *parent) :
 MessageItemWidget::MessageItemWidget(QPixmap &head, const QString &nickname,
                                      const QString &message, const QString &date,
                                      bool symbol, bool globalInform,
-                                     zsj::global::DataType type,QWidget *parent):
+                                     zsj::global::DataType type, QWidget *parent):
     QWidget(parent),
     ui(new Ui::MessageItemWidget)
 {
@@ -52,6 +52,30 @@ MessageItemWidget::MessageItemWidget(QPixmap &head, const QString &nickname,
 
 }
 
+MessageItemWidget::MessageItemWidget(const zsj::Data::ptr data, QWidget *parent) :
+    QWidget(parent),
+    ui(new Ui::MessageItemWidget),
+    data(data)
+{
+    ui->setupUi(this);
+    QPixmap head = data->getHead();
+    QPixmap round = zsj::adjustToHead(head, zsj::HeadSize::messageItemDiameter);
+    ui->labelHead->setPixmap(round);
+    ui->labelNickname->setText(data->getName());
+
+    // 默认提示全体消息、显示消息未读条数的QLabel隐藏
+    ui->labelSymbol->setVisible(false);
+    ui->labelHint->setVisible(false);
+
+    ui->labelDate->adjustSize();
+    ui->labelHint->adjustSize();
+    ui->labelMessage->adjustSize();
+    ui->labelNickname->adjustSize();
+    ui->labelSymbol->adjustSize();
+
+    initPosition();
+}
+
 MessageItemWidget::~MessageItemWidget()
 {
     delete ui;
@@ -62,6 +86,8 @@ void MessageItemWidget::resizeEvent(QResizeEvent *)
     updatePosition();
 }
 
+
+
 void MessageItemWidget::initPosition()
 {
     //设置日期label的位置
@@ -70,7 +96,8 @@ void MessageItemWidget::initPosition()
 
     //设置消息label的位置
     int offset = 0;
-    if(ui->labelHint->text().isEmpty()){
+    if(ui->labelHint->text().isEmpty())
+    {
         offset = ui->labelHint->width();
     }
     ui->labelMessage->setGeometry(ui->labelHint->pos().x() + ui->labelHint->width() - offset, ui->labelHint->pos().y(),
@@ -89,7 +116,8 @@ void MessageItemWidget::updatePosition()
 
     //设置消息label的位置
     int offset = 0;
-    if(ui->labelHint->text().isEmpty()){
+    if(ui->labelHint->text().isEmpty())
+    {
         offset = ui->labelHint->width();
     }
     ui->labelMessage->setGeometry(ui->labelHint->pos().x() + ui->labelHint->width() - offset, ui->labelHint->pos().y(),
@@ -98,6 +126,16 @@ void MessageItemWidget::updatePosition()
     //设置标签label的位置
     ui->labelSymbol->setGeometry(this->width() - ui->labelSymbol->width() - 9, ui->labelHint->pos().y(),
                                  ui->labelSymbol->width(), ui->labelSymbol->height());
+}
+
+zsj::Data::ptr MessageItemWidget::getData() const
+{
+    return data;
+}
+
+void MessageItemWidget::setData(const zsj::Data::ptr &value)
+{
+    data = value;
 }
 
 zsj::global::DataType MessageItemWidget::getType() const
@@ -113,4 +151,17 @@ void MessageItemWidget::setType(const zsj::global::DataType &value)
 QString MessageItemWidget::getNickname() const
 {
     return ui->labelNickname->text();
+}
+
+void MessageItemWidget::setMessage(const QString &msg)
+{
+    QString result = zsj::HtmlUtil::RemoveOriginTagStyle(msg,zsj::TagType::TAG_ALL);
+    ui->labelMessage->setText(result);
+    ui->labelMessage->adjustSize();
+}
+
+void MessageItemWidget::setDateTime(const QDateTime &dateTime)
+{
+    ui->labelDate->setText(dateTime.toString("MM-dd hh:mm"));
+    ui->labelDate->adjustSize();
 }

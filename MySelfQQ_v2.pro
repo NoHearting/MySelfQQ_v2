@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui sql
 CONFIG += C++11
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
@@ -12,6 +12,8 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = MySelfQQ_v2
 TEMPLATE = app
 
+VERSION = 1.0.0.0
+QMAKE_TAGGET_PRODUCT = MQ
 
 SOURCES += main.cpp \
     ChatWidget.cpp \
@@ -32,12 +34,8 @@ SOURCES += main.cpp \
     feature_widgets/WarnDialog.cpp \
     item_widgets/ChatMessageItem.cpp \
     item_widgets/ChatMessageItemObject.cpp \
-    item_widgets/ChatMessageItemSelf.cpp \
     item_widgets/ChatObjectItem.cpp \
     item_widgets/ComboBoxItemWidget.cpp \
-    item_widgets/LinkmanGroupItemWidget.cpp \
-    item_widgets/LinkmanGroupWidget.cpp \
-    item_widgets/LinkmanItemWidget.cpp \
     item_widgets/MessageItemWidget.cpp \
     main/ChatBubble.cpp \
     main/ChatMessageData.cpp \
@@ -58,9 +56,22 @@ SOURCES += main.cpp \
     main/EmojiInfo.cpp \
     main/StringUserData.cpp \
     feature_widgets/EmojiHotWidget.cpp \
-    item_widgets/ChatMessageImageItemSelf.cpp \
     main/CurrentWindow.cpp \
-    item_widgets/ChatMessageImageItemObject.cpp
+    item_widgets/ChatMessageImageItemObject.cpp \
+    main/ChatMessageRecord.cpp \
+    test/TestWidget.cpp \
+    item_widgets/ChatMessageFileItemObject.cpp \
+    customer_widgets/MyPushButton.cpp \
+    item_widgets/LinkmanSection.cpp \
+    item_widgets/LinkmanUserItem.cpp \
+    item_widgets/LinkmanGroupItem.cpp \
+    item_widgets/LinkmanItem.cpp \
+    main/ApplicationInfo.cpp \
+    dao/LoginInfoDao.cpp \
+    database/DataBase.cpp \
+    database/SQLiteDataBase.cpp \
+    main/LoginInfo.cpp \
+    feature_widgets/PopupWidget.cpp
 
 
 
@@ -82,12 +93,8 @@ HEADERS  += ChatWidget.h \
     feature_widgets/WarnDialog.h \
     item_widgets/ChatMessageItem.h \
     item_widgets/ChatMessageItemObject.h \
-    item_widgets/ChatMessageItemSelf.h \
     item_widgets/ChatObjectItem.h \
     item_widgets/ComboBoxItemWidget.h \
-    item_widgets/LinkmanGroupItemWidget.h \
-    item_widgets/LinkmanGroupWidget.h \
-    item_widgets/LinkmanItemWidget.h \
     item_widgets/MessageItemWidget.h \
     main/ChatBubble.h \
     main/ChatMessageData.h \
@@ -111,9 +118,22 @@ HEADERS  += ChatWidget.h \
     main/EmojiInfo.h \
     main/StringUserData.h \
     feature_widgets/EmojiHotWidget.h \
-    item_widgets/ChatMessageImageItemSelf.h \
+    item_widgets/ChatMessageImageItemObject.h \
+    main/ChatMessageRecord.h \
+    test/TestWidget.h \
+    item_widgets/ChatMessageFileItemObject.h \
+    customer_widgets/MyPushButton.h \
+    item_widgets/LinkmanSection.h \
+    item_widgets/LinkmanUserItem.h \
+    item_widgets/LinkmanGroupItem.h \
+    item_widgets/LinkmanItem.h \
     main/CurrentWindow.h \
-    item_widgets/ChatMessageImageItemObject.h
+    main/ApplicationInfo.h \
+    dao/LoginInfoDao.h \
+    database/DataBase.h \
+    database/SQLiteDataBase.h \
+    main/LoginInfo.h \
+    feature_widgets/PopupWidget.h
 
 
 FORMS    +=     LoginWidget.ui \
@@ -122,17 +142,18 @@ FORMS    +=     LoginWidget.ui \
     feature_widgets/ToolTipWidget.ui \
     feature_widgets/WarnDialog.ui \
     item_widgets/ComboBoxItemWidget.ui \
-    item_widgets/LinkmanItemWidget.ui \
-    item_widgets/LinkmanGroupWidget.ui \
-    item_widgets/LinkmanGroupItemWidget.ui \
     item_widgets/ChatObjectItem.ui \
     item_widgets/ChatMessageItemObject.ui \
-    item_widgets/ChatMessageItemSelf.ui \
     item_widgets/MessageItemWidget.ui \
     feature_widgets/EmojiWidget.ui \
     feature_widgets/EmojiHotWidget.ui \
-    item_widgets/ChatMessageImageItemSelf.ui \
-    item_widgets/ChatMessageImageItemObject.ui
+    item_widgets/ChatMessageImageItemObject.ui \
+    test/TestWidget.ui \
+    item_widgets/ChatMessageFileItemObject.ui \
+    item_widgets/LinkmanSection.ui \
+    item_widgets/LinkmanUserItem.ui \
+    item_widgets/LinkmanGroupItem.ui \
+    feature_widgets/PopupWidget.ui
 
 
 

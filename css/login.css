@@ -60,67 +60,23 @@
     background: url("://res/login/arrow-hover.png");
 }
 
-/*account input*/
-#comboBoxAccount:editable {
-    border: none;
+#pushButtonDropDown:checked{
+	background:url('://res/login/arrow-on.png');
 }
 
-#comboBoxAccount::drop-down {
-    image: url("://res/login/arrow.png");
+#pushButtonDropDown:unchecked{
+	background:url('://res/login/arrow.png');
 }
 
-/*delete，if not use #lineEditOuterInput,it can be enabled*/
-/*#comboBoxAccount:editable{
-    background: white;
-    padding:0px 16px 6px;
-    font-family: "微软雅黑";
-    font-size: 16px;
-    border:none;
-    border-bottom:1px solid rgb(229,229,229);
-    background:left top no-repeat url("://res/login/logo1.png") !important;
-}
 
-#comboBoxAccount::drop-down{
-    subcontrol-origin: padding;
-    subcontrol-position: top right;
-    width: 20px;
-    background: white;
-}
-
-#comboBoxAccount::down-arrow{
-    image:url("://res/login/arrow.png");
-}
-
-#comboBoxAccount::down-arrow:hover{
-    image:url("://res/login/arrow-hover.png");
-}
-
-#comboBoxAccount::down-arrow:on{
-    image:url("://res/login/arrow-on.png");
-}
-
-#comboBoxAccount:editable:focus,
-#comboBoxAccount:editable:on{
-    border-bottom:1px solid rgb(18,183,245);
-    background:left top no-repeat url("://res/login/logo2.png");
-}*/
-
-#comboBoxAccount QAbstractItemView {
-    outline: 0px;
-    height: 60px;
-    background-color: rgba(255, 255, 255, 0.9);
-    border: none;
-    selection-background-color: rgb(237, 237, 237);
-}
-
+/*
 QListView::item {
-    /*background-color: white;*/
     border: none;
 }
 
 QListView::item:hover {
     background-color: rgb(237, 237, 237);
-}
+}*/
 
 
 

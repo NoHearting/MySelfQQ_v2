@@ -39,7 +39,8 @@ void ChatObjectItem::resizeEvent(QResizeEvent *e)
     }
     else{
         ui->labelDate->show();
-//        ui->toolButtonClose->show();
+        ui->labelNickname->show();
+        ui->labelMessage->show();
         adjustLabelPostion();
     }
 
@@ -120,5 +121,18 @@ zsj::Data::ptr ChatObjectItem::getData() const
 QRect ChatObjectItem::getDeleteButtonPosition() const
 {
     return ui->toolButtonClose->geometry();
+}
+
+void ChatObjectItem::setDateTime(const QDateTime &dateTime)
+{
+    ui->labelDate->setText(dateTime.toString("MM-dd hh:mm"));
+    ui->labelDate->adjustSize();
+}
+
+void ChatObjectItem::setMessage(const QString &message)
+{
+    QString result = zsj::HtmlUtil::RemoveOriginTagStyle(message,zsj::TagType::TAG_ALL);
+    ui->labelMessage->setText(result);
+    ui->labelMessage->adjustSize();
 }
 

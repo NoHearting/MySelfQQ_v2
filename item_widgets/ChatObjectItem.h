@@ -11,6 +11,7 @@
 #include <QResizeEvent>
 #include <QPoint>
 #include <QRect>
+#include <QDateTime>
 
 #include "main/Data.h"
 
@@ -31,6 +32,10 @@ public:
     /// @return QRect
     QRect getDeleteButtonPosition() const;
 
+
+    void setDateTime(const QDateTime & dateTime = QDateTime::currentDateTime());
+    void setMessage(const QString  & message);
+
 protected:
 
     void resizeEvent(QResizeEvent *);
@@ -49,6 +54,8 @@ private:
 
     /// @brief 初始化样式
     void initStyleSheet();
+
+
 
 
 private:

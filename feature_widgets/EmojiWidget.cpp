@@ -18,6 +18,7 @@ EmojiWidget::EmojiWidget(QWidget *parent) :
 
 EmojiWidget::~EmojiWidget()
 {
+    qInfo() << "deconstruct EmojiWidget";
     delete ui;
 }
 

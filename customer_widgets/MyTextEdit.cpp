@@ -56,7 +56,7 @@ bool MyTextEdit::eventFilter(QObject *, QEvent *event)
             {
                 QString processPath = zsj::SystemUtil::getProcessPath();
 
-                QString screenShotPath = processPath + "/" + zsj::global::sScreenShotDirName + "/";
+                QString screenShotPath = processPath + "/" + zsj::global::ScreenShotDirName + "/";
                 QString fileName = zsj::GetCurrentDateTime("yyyy-MM-dd-HH-mm-ss") + ".jpg";
                 QPixmap pix = qvariant_cast<QPixmap>(mimeData->imageData());
 

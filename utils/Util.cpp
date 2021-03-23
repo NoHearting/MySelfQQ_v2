@@ -8,6 +8,10 @@
 #include <QGraphicsDropShadowEffect>
 #include <QThread>
 #include <QDir>
+#include <QRegExp>
+
+
+#include "main/ApplicationInfo.h"
 
 namespace zsj
 {
@@ -45,6 +49,13 @@ QString Util::PackageImageHtml(const QString &src, int width, int height)
     return QString("<img src='%1' width=%2 height=%3 />").arg(src).arg(width).arg(height);
 }
 
+QString Util::RemoveEnterReturn(const QString &origin)
+{
+    QString temp = origin;
+//    return temp.replace("[\r\n]","");
+    return temp.replace(QRegExp("[\r\n]"),"");
+}
+
 
 
 
@@ -73,6 +84,7 @@ QPixmap scaledPixmap(QPixmap &src, int width, int height)
 {
     return src.scaled(width, height, Qt::KeepAspectRatio, Qt::SmoothTransformation);
 }
+
 
 void openUrl(const QString &url)
 {
@@ -133,13 +145,15 @@ QString SystemUtil::getCurrentThreadId()
 
 QString SystemUtil::getProcessPath()
 {
-    return qApp->applicationDirPath();
+//    return qApp->applicationDirPath();
+    return zsj::ApplicationInfo::Instance()->getAppAbsoluteDir();
 }
 
 
 int SystemUtil::getCurrentProcessId()
 {
-    return qApp->applicationPid();
+//    return qApp->applicationPid();
+    return zsj::ApplicationInfo::Instance()->getAppPid();
 }
 
 QSize SystemUtil::getDesktopSize()
@@ -163,6 +177,7 @@ bool FileUtil::judgeAndMakeDir(const QString &dirPath)
     QDir dir(dirPath);
     if(dir.exists(dirPath))
     {
+        qDebug() << dirPath << " exist";
         return true;
     }
     QString parentDir = dirPath.mid(0, dirPath.lastIndexOf('/'));
@@ -170,7 +185,7 @@ bool FileUtil::judgeAndMakeDir(const QString &dirPath)
 #ifdef Q_OS_WIN
     // window下创建文件夹因为是绝对路径有磁盘标识，如D:,C:,所以需要判断一下
     // 防止无限递归
-    if(parentDir[parentDir.size() - 1] != ':')
+    if((!parentDir.isEmpty() && !parentDir.isNull()) && parentDir[parentDir.size() - 1] != ':')
     {
         judgeAndMakeDir(parentDir);
     }
@@ -182,17 +197,13 @@ bool FileUtil::judgeAndMakeDir(const QString &dirPath)
     if(!dirname.isEmpty())
     {
         bool isOk = parentPath.mkpath(dirname);
-        if(isOk)
-        {
-            return true;
-        }
-        else
+        if(!isOk)
         {
             qDebug() << "create dir failed";
             return false;
         }
     }
-    return false;
+    return true;
 }
 
 QString HtmlUtil::RemoveOriginTagStyle(const QString &originStr, TagType types)
@@ -235,6 +246,8 @@ void HtmlUtil::RemoveStyle(const QString &tag, QString &originStr)
     }
     while(index < originStr.size());
 }
+
+
 
 
 

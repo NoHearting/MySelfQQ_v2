@@ -7,6 +7,8 @@
 
 #include <QSharedPointer>
 
+#include "main/ChatMessageRecord.h"
+
 namespace zsj {
 
 class ChatMessageData
@@ -15,21 +17,13 @@ public:
     typedef QSharedPointer<ChatMessageData> ptr;
     ChatMessageData();
 
-    /**
-     * @brief 用于构建显示图片的item
-     * @param imagePath 图片路径
-     * @param head 头像
-     */
-    ChatMessageData(const QString &imagePath,QPixmap &head);
 
     /**
-     * @brief 用于构建显示消息的item
+     * @brief 组装用于item显示必须的数据
      * @param head 头像
-     * @param message 消息
-     * @param hasEmoji 消息中是否含有表情
+     * @param chatMessageRecord 聊天记录
      */
-    ChatMessageData(QPixmap &head, const QString &message,bool hasEmoji = false);
-
+    ChatMessageData(QPixmap & head,const zsj::ChatMessageRecord & chatMessageRecord);
 
     QPixmap getHead() const;
     void setHead(const QPixmap &value);
@@ -41,16 +35,28 @@ public:
     bool getHasEmoji() const;
     void setHasEmoji(bool value);
 
+
+
+
     QString getImagePath() const;
     void setImagePath(const QString &value);
 
+    zsj::ChatMessageRecord getChatMessageRecord() const;
+    void setChatMessageRecord(const zsj::ChatMessageRecord &value);
+
+
+    /// 文件类型消息记录
+    QString getFilePath()const;
+    QString getFileName()const;
+    int getFileSize()const;
+
 private:
     QPixmap head;
-    QString message;
-    QString imagePath;
 
     /// 当前聊天记录中是否有表情
     bool hasEmoji;
+
+    zsj::ChatMessageRecord chatMessageRecord;
 };
 
 }

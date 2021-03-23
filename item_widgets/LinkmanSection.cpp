@@ -1,17 +1,17 @@
-#include "LinkmanGroupWidget.h"
-#include "ui_LinkmanGroupWidget.h"
+#include "LinkmanSection.h"
+#include "ui_LinkmanSection.h"
 
-LinkmanGroupWidget::LinkmanGroupWidget(QWidget *parent) :
+LinkmanSection::LinkmanSection(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::LinkmanGroupWidget)
+    ui(new Ui::LinkmanSection)
 {
     ui->setupUi(this);
 }
 
-LinkmanGroupWidget::LinkmanGroupWidget(const QPixmap &icon, const QString &groupName,
+LinkmanSection::LinkmanSection(const QPixmap &icon, const QString &groupName,
                                        int active, int total, QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::LinkmanGroupWidget)
+    ui(new Ui::LinkmanSection)
 {
     ui->setupUi(this);
 
@@ -22,23 +22,23 @@ LinkmanGroupWidget::LinkmanGroupWidget(const QPixmap &icon, const QString &group
     this->groupName = groupName;
 }
 
-LinkmanGroupWidget::~LinkmanGroupWidget()
+LinkmanSection::~LinkmanSection()
 {
     delete ui;
 }
 
-void LinkmanGroupWidget::setIcon(const QPixmap &icon)
+void LinkmanSection::setIcon(const QPixmap &icon)
 {
     ui->labelIcon->setPixmap(icon);
 }
 
-void LinkmanGroupWidget::setIcon(const QString &iconPath)
+void LinkmanSection::setIcon(const QString &iconPath)
 {
     QPixmap icon(iconPath);
     ui->labelIcon->setPixmap(icon);
 }
 
-QString LinkmanGroupWidget::getGrouoName() const
+QString LinkmanSection::getGrouoName() const
 {
     return groupName;
 }

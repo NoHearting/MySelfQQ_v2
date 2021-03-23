@@ -1,6 +1,8 @@
 #ifndef TEST_H
 #define TEST_H
 
+#include "main/ChatMessageRecord.h"
+
 namespace zsj{
 
 class Test
@@ -37,6 +39,21 @@ private:
     void testReg();
 
     void testFontWidth();
+
+    void testJson();
+
+
+    void testChatMessageRecord();
+
+    void testQSharedPointer();
+
+    void testCode();
+
+
+    void testSqlite();
+
+    void testDao();
+
 };
 
 }

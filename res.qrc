@@ -26,6 +26,11 @@
         <file>res/test/head3.jpg</file>
         <file>res/test/head4.jpg</file>
         <file>res/test/chatBg.jpg</file>
+        <file>res/test/mq1.png</file>
+        <file>res/test/mq2.png</file>
+        <file>res/test/mq3.png</file>
+        <file>res/test/mq4.png</file>
+        <file>res/test/mq5.png</file>
     </qresource>
     <qresource prefix="/global">
         <file>res/global/water-tray.png</file>
@@ -81,6 +86,19 @@
         <file>res/emoji/setting1.png</file>
         <file>res/emoji/setting2.png</file>
         <file>res/emoji/symbol-emoji.png</file>
+        <file>res/chat/other.png</file>
+        <file>res/chat/txt.png</file>
+        <file>res/chat/md.png</file>
+        <file>res/chat/ppt.png</file>
+        <file>res/chat/pptx.png</file>
+        <file>res/chat/doc.png</file>
+        <file>res/chat/docx.png</file>
+        <file>res/chat/xls.png</file>
+        <file>res/chat/xlsx.png</file>
+        <file>res/chat/upload_success.png</file>
+        <file>res/chat/more.png</file>
+        <file>res/chat/video.png</file>
+        <file>res/chat/phone.png</file>
     </qresource>
     <qresource prefix="/normal">
         <file>res/emoji/normal/biq.png</file>
