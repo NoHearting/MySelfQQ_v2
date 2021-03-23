@@ -19,6 +19,7 @@
 #include "item_widgets/ComboBoxItemWidget.h"
 #include "feature_widgets/SystemTray.h"
 #include "feature_widgets/ToolTipWidget.h"
+#include "feature_widgets/PopupWidget.h"
 #include "main/Frameless.h"
 #include "main/Data.h"
 #include "dao/LoginInfoDao.h"
@@ -82,6 +83,9 @@ private:
 
     /// 当前登录用户的信息
     QVector<zsj::LoginInfo> infos;
+
+
+    PopupWidget * popupWidget;
 signals:
     /**
      * @brief 登录成功时发送信号

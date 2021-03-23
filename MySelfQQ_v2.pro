@@ -70,7 +70,8 @@ SOURCES += main.cpp \
     dao/LoginInfoDao.cpp \
     database/DataBase.cpp \
     database/SQLiteDataBase.cpp \
-    main/LoginInfo.cpp
+    main/LoginInfo.cpp \
+    feature_widgets/PopupWidget.cpp
 
 
 
@@ -131,7 +132,8 @@ HEADERS  += ChatWidget.h \
     dao/LoginInfoDao.h \
     database/DataBase.h \
     database/SQLiteDataBase.h \
-    main/LoginInfo.h
+    main/LoginInfo.h \
+    feature_widgets/PopupWidget.h
 
 
 FORMS    +=     LoginWidget.ui \
@@ -150,7 +152,8 @@ FORMS    +=     LoginWidget.ui \
     item_widgets/ChatMessageFileItemObject.ui \
     item_widgets/LinkmanSection.ui \
     item_widgets/LinkmanUserItem.ui \
-    item_widgets/LinkmanGroupItem.ui
+    item_widgets/LinkmanGroupItem.ui \
+    feature_widgets/PopupWidget.ui
 
 
 

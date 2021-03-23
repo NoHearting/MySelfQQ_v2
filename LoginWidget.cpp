@@ -58,6 +58,8 @@ void LoginWidget::initObjects()
 
     frameless = new zsj::Frameless(this);
     frameless->setResizeEnable(false);
+
+    popupWidget = new PopupWidget(ui->lineEditOuterInput);
 }
 
 void LoginWidget::deleteObjects()
@@ -172,13 +174,13 @@ void LoginWidget::initResourceAndForm()
 
     comboBoxListWidget->setFixedHeight(180);
     comboBoxListWidget->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
-    ui->comboBoxAccount->setModel(comboBoxListWidget->model());
-    ui->comboBoxAccount->setView(comboBoxListWidget);
-    ui->comboBoxAccount->setMaxVisibleItems(3);         //配合CSS显示下拉框正确高度
+//    ui->comboBoxAccount->setModel(comboBoxListWidget->model());
+//    ui->comboBoxAccount->setView(comboBoxListWidget);
+//    ui->comboBoxAccount->setMaxVisibleItems(3);         //配合CSS显示下拉框正确高度
 
-    // 将视图的父窗口设置为透明的，目的是让QComboBox的下拉框透明  需要配合css
-    ui->comboBoxAccount->view()->parentWidget()->setWindowFlags(/*Qt::Popup |*/ Qt::FramelessWindowHint);
-    ui->comboBoxAccount->view()->parentWidget()->setAttribute(Qt::WA_TranslucentBackground);
+//    // 将视图的父窗口设置为透明的，目的是让QComboBox的下拉框透明  需要配合css
+//    ui->comboBoxAccount->view()->parentWidget()->setWindowFlags(/*Qt::Popup |*/ Qt::FramelessWindowHint);
+//    ui->comboBoxAccount->view()->parentWidget()->setAttribute(Qt::WA_TranslucentBackground);
 
 
 //    for(int i = 0; i < 5; i++)
@@ -211,7 +213,11 @@ void LoginWidget::initSignalsAndSlots()
     connect(ui->toolButtonCloseLoginError, &QToolButton::clicked, this, &LoginWidget::slotCloseWindow);
     qInfo() << "connect toolButtonClose clicked to LoginWidget::slotCloseWindow";
 
+
     connect(ui->pushButtonDropDown, &QPushButton::clicked, this, &LoginWidget::slotShowComboBoxPopus);
+    connect(popupWidget,&PopupWidget::sigHide,this,[=](){
+        ui->pushButtonDropDown->setChecked(false);
+    });
     qInfo() << "connect QPushButton cliecked to LoginWidget::slotShowComboBoxPopus";
 
 //    connect(ui->comboBoxAccount, &MyComboBox::setLineEditCssOn, this, [ = ]()
@@ -283,7 +289,7 @@ void LoginWidget::slotSetAccountAndPassword(zsj::LoginInfo::ptr info)
     QPixmap head = zsj::adjustToHead(pix, zsj::HeadSize::loginItemDiameter);
     ui->labelHeadImage->setPixmap(head);
     ui->lineEditOuterInput->setText(QString::number(info->getAccount()));
-    ui->comboBoxAccount->setCurrentText(QString::number(info->getAccount()));
+//    ui->comboBoxAccount->setCurrentText(QString::number(info->getAccount()));
     ui->lineEditPwd->setText(info->getPassword());
     ui->checkBoxAutoLogin->setChecked(info->getAutoLogin());
     ui->checkBoxRememberPwd->setChecked(info->getSavePassword());
@@ -291,7 +297,15 @@ void LoginWidget::slotSetAccountAndPassword(zsj::LoginInfo::ptr info)
 
 void LoginWidget::slotShowComboBoxPopus()
 {
-    ui->comboBoxAccount->showPopup();
+//    ui->comboBoxAccount->showPopup();
+    if(!ui->pushButtonDropDown->isChecked()){
+        qDebug() << "unchecked";
+        popupWidget->hide();
+    }
+    else{
+        qDebug() << "checked";
+        popupWidget->showWindow();
+    }
 }
 
 void LoginWidget::slotLogin()
