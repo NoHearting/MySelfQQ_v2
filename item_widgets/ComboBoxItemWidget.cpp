@@ -44,6 +44,10 @@ void ComboBoxItemWidget::initResourceAndForm()
     ui->labelHead->setPixmap(result);
     ui->labelNickname->setText(info->getNickname());
     ui->labelAccount->setText(QString::number(info->getAccount()));
+    ui->toolButtonDelete->hide();
+
+
+    connect(ui->toolButtonDelete,&QToolButton::clicked,this,&ComboBoxItemWidget::slotDeleteItem);
 }
 
 zsj::LoginInfo::ptr ComboBoxItemWidget::getInfo() const
@@ -120,6 +124,25 @@ void ComboBoxItemWidget::mouseReleaseEvent(QMouseEvent *e)
 {
     emit sigClick(info);
     QWidget::mouseReleaseEvent(e);
+}
+
+void ComboBoxItemWidget::enterEvent(QEvent *event)
+{
+    ui->toolButtonDelete->show();
+    QWidget::enterEvent(event);
+}
+
+void ComboBoxItemWidget::leaveEvent(QEvent *event)
+{
+    ui->toolButtonDelete->hide();
+    QWidget::leaveEvent(event);
+}
+
+void ComboBoxItemWidget::slotDeleteItem()
+{
+    QPoint globalPos= this->mapToGlobal(ui->toolButtonDelete->pos());
+    emit sigDeleteItem(globalPos);
+
 }
 
 

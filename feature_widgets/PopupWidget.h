@@ -12,6 +12,7 @@
 
 #include "main/LoginInfo.h"
 
+#include "dao/LoginInfoDao.h"
 
 namespace Ui {
 class PopupWidget;
@@ -47,12 +48,19 @@ public:
 signals:
     void sigClick(zsj::LoginInfo::ptr info);
     void sigHide();
+private slots:
+    /**
+     * @brief 删除账号下拉框中的候选项
+     * @param pos 删除项的坐标
+     */
+    void slotDeleteItem(const QPoint & pos);
 
 protected:
     void closeEvent(QCloseEvent *event);
     void hideEvent(QHideEvent *event);
 
 private:
+    void initObjects();
     void initResourceAndForm();
     void initSignalsAndSlots();
 
@@ -71,6 +79,8 @@ private:
 
     /// 整个下拉框的最高高度
     const static int ListMaxHeight = 180;
+
+    zsj::LoginInfoDao * infoDao;
 };
 
 #endif // POPUPWIDGET_H

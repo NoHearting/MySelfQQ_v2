@@ -357,3 +357,4 @@ void LoginWidget::slotFindPassword()
 {
     zsj::openUrl();
 }
+

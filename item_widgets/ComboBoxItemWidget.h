@@ -55,11 +55,17 @@ protected:
     /// @brief 鼠标松开时发送点击信号
     void mouseReleaseEvent(QMouseEvent *);
 
+    void enterEvent(QEvent *event);
+    void leaveEvent(QEvent *event);
 
 signals:
     /// @brief 当鼠标点击然后松开之后发送此信号
     void sigClick(zsj::LoginInfo::ptr info);
 
+    /// 删除item时发送信号
+    void sigDeleteItem(const QPoint & pos);
+public slots:
+    void slotDeleteItem();
 private:
     /// @brief 初始化窗口资源和窗口布局
     void initResourceAndForm();

@@ -15,14 +15,15 @@ LoginInfoDao::LoginInfoDao()
     QString dbFile = "login_info.db";
     // 获取当前程序路径
     QString dbPath = zsj::ApplicationInfo::Instance()->getAppAbsoluteDir() +
-            zsj::global::LoginInfoDir ;
+                     zsj::global::LoginInfoDir;
     // 创建文件夹
     bool flag = zsj::FileUtil::judgeAndMakeDir(dbPath);
-    if(!flag){
+    if(!flag)
+    {
         qCritical() << "create database path failed!";
     }
     dbPath += "/" + dbFile;
-    db = SQLiteDataBase::Instance("QSQLITE",dbPath , DBDriverType::SQLITE);
+    db = SQLiteDataBase::Instance("QSQLITE", dbPath, DBDriverType::SQLITE);
 }
 
 LoginInfoDao::~LoginInfoDao()
@@ -87,7 +88,7 @@ bool LoginInfoDao::updateLoginInfo(const LoginInfo &info)
     query.bindValue(3, info.getPassword());
     query.bindValue(4, info.getAutoLogin());
     query.bindValue(5, info.getSavePassword());
-    query.bindValue(6,info.getLastUpdate());
+    query.bindValue(6, info.getLastUpdate());
     bool ret = db->updateQuery(query);
     if(ret)
     {
@@ -112,7 +113,7 @@ bool LoginInfoDao::insertLoginInfo(const LoginInfo &info)
     query.bindValue(3, info.getPassword());
     query.bindValue(4, info.getAutoLogin());
     query.bindValue(5, info.getSavePassword());
-    query.bindValue(6,info.getLastUpdate());
+    query.bindValue(6, info.getLastUpdate());
     bool ret = db->insertQuery(query);
     if(ret)
     {

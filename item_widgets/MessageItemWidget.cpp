@@ -86,6 +86,8 @@ void MessageItemWidget::resizeEvent(QResizeEvent *)
     updatePosition();
 }
 
+
+
 void MessageItemWidget::initPosition()
 {
     //设置日期label的位置
