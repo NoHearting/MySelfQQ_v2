@@ -49,6 +49,8 @@ public:
     quint64 getAccountNum() const;
     void setAccountNum(const quint64 &value);
 
+    zsj::LoginInfo::ptr getInfo() const;
+
 protected:
     /// @brief 鼠标松开时发送点击信号
     void mouseReleaseEvent(QMouseEvent *);

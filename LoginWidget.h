@@ -85,6 +85,7 @@ private:
     QVector<zsj::LoginInfo> infos;
 
 
+    /// 下拉框  账号输入框的下拉框
     PopupWidget * popupWidget;
 signals:
     /**

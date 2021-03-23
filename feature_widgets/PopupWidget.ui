@@ -48,10 +48,17 @@
     <number>0</number>
    </property>
    <item row="0" column="0">
-    <widget class="QListWidget" name="listWidget"/>
+    <widget class="MyListWidget" name="listWidget"/>
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>MyListWidget</class>
+   <extends>QListWidget</extends>
+   <header>customer_widgets/MyListWidget.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
