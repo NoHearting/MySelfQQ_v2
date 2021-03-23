@@ -35,7 +35,7 @@ SQLiteDataBase::SQLiteDataBase(const QString &driverName,
         qInfo() << "Success to connect databse.";
         connected = true;
         QSqlQuery query(database);
-        bool ret = query.exec(/*CreateTableCmd()*/);
+        bool ret = query.exec(CreateTableCmd());
         if(!ret)
         {
             qCritical() << query.lastError();

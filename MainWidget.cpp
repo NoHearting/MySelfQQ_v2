@@ -188,6 +188,7 @@ void MainWidget::initSignalsAndSlots()
     /// 有窗口发送消息
     connect(chatWidget, &ChatWidget::sigSendMessage, this, &MainWidget::slotChangeMessageListItemInfo);
 
+    qInfo()<< "connect all signals and slots";
 }
 
 void MainWidget::initManlinkFriend()

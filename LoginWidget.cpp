@@ -31,7 +31,7 @@ LoginWidget::LoginWidget(QWidget *parent) :
     initResourceAndForm();
     initSignalsAndSlots();
 
-//    loadAndSetLoginInfo();
+    loadAndSetLoginInfo();
 }
 
 LoginWidget::~LoginWidget()
@@ -46,7 +46,7 @@ LoginWidget::~LoginWidget()
 void LoginWidget::initObjects()
 {
     // 组合框
-    comboBoxListWidget = new QListWidget(this);
+    comboBoxListWidget = new QListWidget();
 
     infoDao = new zsj::LoginInfoDao;
 
@@ -89,18 +89,16 @@ void LoginWidget::loadAndSetLoginInfo()
             ui->checkBoxRememberPwd->setChecked(true);
             ui->lineEditPwd->setText(info.getPassword());
         }
-        for(int i = 1; i < infos.size(); i++)
+        for(int i = 0; i < infos.size(); i++)
         {
+            qDebug() << infos.at(i).toString();
             QPixmap pix(infos.at(i).getHead());
             QPixmap head = zsj::adjustToHead(pix, zsj::HeadSize::loginItemDiameter);
-            ComboBoxItemWidget *item = new  ComboBoxItemWidget(head,
-                    infos.at(i).getNickname(),
-                    infos.at(i).getAccount(),
-                    infos.at(i).getPassword(),
+            ComboBoxItemWidget *item = new  ComboBoxItemWidget(std::make_shared<zsj::LoginInfo>(infos.at(i)),
                     comboBoxListWidget);
             item->setFixedSize(235, 50);
             QListWidgetItem *widgetItem = new QListWidgetItem(comboBoxListWidget);
-            connect(item, &ComboBoxItemWidget::click, this, &LoginWidget::slotSetAccountAndPassword);
+            connect(item, &ComboBoxItemWidget::sigClick, this, &LoginWidget::slotSetAccountAndPassword);
             comboBoxListWidget->setItemWidget(widgetItem, item);
             widgetItem->setSizeHint(QSize(235, 50));
         }
@@ -179,7 +177,7 @@ void LoginWidget::initResourceAndForm()
     ui->comboBoxAccount->setMaxVisibleItems(3);         //配合CSS显示下拉框正确高度
 
     // 将视图的父窗口设置为透明的，目的是让QComboBox的下拉框透明  需要配合css
-    ui->comboBoxAccount->view()->parentWidget()->setWindowFlags(Qt::Popup | Qt::FramelessWindowHint);
+    ui->comboBoxAccount->view()->parentWidget()->setWindowFlags(/*Qt::Popup |*/ Qt::FramelessWindowHint);
     ui->comboBoxAccount->view()->parentWidget()->setAttribute(Qt::WA_TranslucentBackground);
 
 
@@ -216,26 +214,26 @@ void LoginWidget::initSignalsAndSlots()
     connect(ui->pushButtonDropDown, &QPushButton::clicked, this, &LoginWidget::slotShowComboBoxPopus);
     qInfo() << "connect QPushButton cliecked to LoginWidget::slotShowComboBoxPopus";
 
-    connect(ui->comboBoxAccount, &MyComboBox::setLineEditCssOn, this, [ = ]()
-    {
-        ui->lineEditOuterInput->setStyleSheet("#lineEditOuterInput{border-bottom:1px solid rgb(18,183,245);"
-                                              "background:left top no-repeat url('://res/login/logo2.png');}");
-        ui->pushButtonDropDown->setStyleSheet("background:url('://res/login/arrow-on.png');");
-    });
+//    connect(ui->comboBoxAccount, &MyComboBox::setLineEditCssOn, this, [ = ]()
+//    {
+//        ui->lineEditOuterInput->setStyleSheet("#lineEditOuterInput{border-bottom:1px solid rgb(18,183,245);"
+//                                              "background:left top no-repeat url('://res/login/logo2.png');}");
+//        ui->pushButtonDropDown->setStyleSheet("background:url('://res/login/arrow-on.png');");
+//    });
     qInfo() << "connect MyComboBox::setLineEditCssOn to lambda func to set css";
 
     /// 设置密码框的样式
-    connect(ui->comboBoxAccount, &MyComboBox::setLineEditCssOff, this, [ = ]()
-    {
-        ui->lineEditOuterInput->setStyleSheet("#lineEditOuterInput{border-bottom:1px solid rgb(229,229,229);"
-                                              "background:left top no-repeat url('://res/login/logo1.png');}"
-                                              "#lineEditOuterInput:hover{border-bottom:1px solid rgb(193,193,193);}"
-                                              "#lineEditOuterInput:focus{border-bottom:1px solid rgb(18,183,245);"
-                                              "background:left top no-repeat url('://res/login/logo2.png');}");
-        ui->pushButtonDropDown->setStyleSheet("#pushButtonDropDown{background:url('://res/login/arrow.png');}"
-                                              "#pushButtonDropDown:hover{background:url('://res/login/arrow-hover.png');}");
-        ui->comboBoxAccount->view()->verticalScrollBar()->setSliderPosition(0);  // 将滚动条复位
-    });
+//    connect(ui->comboBoxAccount, &MyComboBox::setLineEditCssOff, this, [ = ]()
+//    {
+//        ui->lineEditOuterInput->setStyleSheet("#lineEditOuterInput{border-bottom:1px solid rgb(229,229,229);"
+//                                              "background:left top no-repeat url('://res/login/logo1.png');}"
+//                                              "#lineEditOuterInput:hover{border-bottom:1px solid rgb(193,193,193);}"
+//                                              "#lineEditOuterInput:focus{border-bottom:1px solid rgb(18,183,245);"
+//                                              "background:left top no-repeat url('://res/login/logo2.png');}");
+//        ui->pushButtonDropDown->setStyleSheet("#pushButtonDropDown{background:url('://res/login/arrow.png');}"
+//                                              "#pushButtonDropDown:hover{background:url('://res/login/arrow-hover.png');}");
+//        ui->comboBoxAccount->view()->verticalScrollBar()->setSliderPosition(0);  // 将滚动条复位
+//    });
     qInfo() << "connect MyComboBox::setLineEditCssOff to lambda func to set css";
 
 
@@ -279,12 +277,16 @@ void LoginWidget::slotMinWindow()
     this->hide();
 }
 
-void LoginWidget::slotSetAccountAndPassword(const QPixmap &head, quint64 accountNum, const QString &password)
+void LoginWidget::slotSetAccountAndPassword(zsj::LoginInfo::ptr info)
 {
+    QPixmap pix(info->getHead());
+    QPixmap head = zsj::adjustToHead(pix, zsj::HeadSize::loginItemDiameter);
     ui->labelHeadImage->setPixmap(head);
-    ui->lineEditOuterInput->setText(QString::number(accountNum));
-    ui->comboBoxAccount->setCurrentText(password);
-    ui->lineEditPwd->setText(password);
+    ui->lineEditOuterInput->setText(QString::number(info->getAccount()));
+    ui->comboBoxAccount->setCurrentText(QString::number(info->getAccount()));
+    ui->lineEditPwd->setText(info->getPassword());
+    ui->checkBoxAutoLogin->setChecked(info->getAutoLogin());
+    ui->checkBoxRememberPwd->setChecked(info->getSavePassword());
 }
 
 void LoginWidget::slotShowComboBoxPopus()
@@ -330,12 +332,12 @@ void LoginWidget::slotLogin()
                 QString nickname = "无心";
                 zsj::Data::ptr data(new zsj::UserData(head, nickname, account.toInt(),
                                                       "得不到的永远在骚动", "备注", true, 64));
-                emit sigLoginSuccess(data);
                 zsj::LoginInfo info(0, headPath, nickname, account.toInt(), password,
                                     ui->checkBoxAutoLogin->isChecked(),
                                     ui->checkBoxRememberPwd->isChecked(),
                                     QDateTime::currentDateTime().toTime_t());
                 persistenceLoginInfo(info);
+                emit sigLoginSuccess(data);
             }
             else
             {

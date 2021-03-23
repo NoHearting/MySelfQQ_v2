@@ -272,7 +272,7 @@
           <bool>true</bool>
          </property>
         </widget>
-        <widget class="MyComboBox" name="comboBoxAccount">
+        <widget class="QComboBox" name="comboBoxAccount">
          <property name="geometry">
           <rect>
            <x>90</x>
@@ -706,11 +706,6 @@
    <extends>QWidget</extends>
    <header>feature_widgets/HeadShadowWidget.h</header>
    <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>MyComboBox</class>
-   <extends>QComboBox</extends>
-   <header>customer_widgets/MyComboBox.h</header>
   </customwidget>
  </customwidgets>
  <resources>

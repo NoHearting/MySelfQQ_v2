@@ -12,6 +12,8 @@
 #include <QDebug>
 #include <QTextStream>
 
+#include "main/LoginInfo.h"
+
 namespace Ui {
 class ComboBoxItemWidget;
 }
@@ -25,6 +27,7 @@ public:
     ComboBoxItemWidget(const QPixmap & head,const QString & nickname,
                        quint64 accountNum,const QString & password,
                        QWidget *parent = 0);
+    ComboBoxItemWidget(zsj::LoginInfo::ptr info,QWidget * parent = 0);
     ~ComboBoxItemWidget();
 
 
@@ -53,13 +56,15 @@ protected:
 
 signals:
     /// @brief 当鼠标点击然后松开之后发送此信号
-    void click(const QPixmap & head,quint64 accountNum,const QString & password);
+    void sigClick(zsj::LoginInfo::ptr info);
 
 private:
     /// @brief 初始化窗口资源和窗口布局
     void initResourceAndForm();
 private:
     Ui::ComboBoxItemWidget *ui;
+
+    zsj::LoginInfo::ptr info;
 
     QPixmap head;
     QString nickname;

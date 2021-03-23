@@ -8,6 +8,7 @@
 #define LOGININFO_H
 
 #include <QString>
+#include <memory>
 
 namespace zsj {
 
@@ -15,12 +16,15 @@ namespace zsj {
 class LoginInfo
 {
 public:
+    typedef std::shared_ptr<LoginInfo> ptr;
 
     LoginInfo(quint64 id,const QString & head,const QString & nickname,
               quint64 account,const QString & password,bool autoLogin,
               bool savePassword,quint64 lastUpdate);
 
     LoginInfo();
+
+    LoginInfo(const LoginInfo & info);
 
 
     QString toString()const;

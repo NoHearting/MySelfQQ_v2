@@ -27,13 +27,23 @@ ComboBoxItemWidget::ComboBoxItemWidget(const QPixmap &head, const QString &nickn
 
 }
 
+ComboBoxItemWidget::ComboBoxItemWidget(zsj::LoginInfo::ptr info, QWidget *parent) :
+    QWidget(parent),
+    ui(new Ui::ComboBoxItemWidget),
+    info(info)
+{
+    ui->setupUi(this);
+    initResourceAndForm();
+}
+
 
 void ComboBoxItemWidget::initResourceAndForm()
 {
-    QPixmap result = zsj::adjustToHead(head, zsj::HeadSize::loginItemDiameter);
+    QPixmap pix(info->getHead());
+    QPixmap result = zsj::adjustToHead(pix, zsj::HeadSize::loginItemDiameter);
     ui->labelHead->setPixmap(result);
-    ui->labelNickname->setText(nickname);
-    ui->labelAccount->setText(QString::number(accountNum));
+    ui->labelNickname->setText(info->getNickname());
+    ui->labelAccount->setText(QString::number(info->getAccount()));
 }
 
 quint64 ComboBoxItemWidget::getAccountNum() const
@@ -103,9 +113,7 @@ void ComboBoxItemWidget::setPassword(const QString &value)
 
 void ComboBoxItemWidget::mouseReleaseEvent(QMouseEvent *e)
 {
-    QPixmap origin = zsj::scaledPixmap(head, zsj::HeadSize::loginMainDiameter,
-                                       zsj::HeadSize::loginMainDiameter);
-    emit click(origin, accountNum, password);
+    emit sigClick(info);
     QWidget::mouseReleaseEvent(e);
 }
 

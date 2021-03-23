@@ -36,7 +36,6 @@ public:
     ~LoginWidget();
 
 
-
 private:
     /// @brief 初始化窗口资源和窗口布局
     void initResourceAndForm();
@@ -104,8 +103,7 @@ private slots:
     /// @param[in] head 头像
     /// @param[in] accountNum 账号
     /// @param[in] password 密码
-    void slotSetAccountAndPassword(const QPixmap &head,
-                               quint64 accountNum, const QString &password);
+    void slotSetAccountAndPassword(zsj::LoginInfo::ptr info);
 
 
     /// @brief 显示下拉框

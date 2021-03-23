@@ -3,12 +3,7 @@
 namespace zsj
 {
 
-LoginInfo::LoginInfo() :
-    id(0), head(""), nickname(""), account(-1), password(""),
-    autoLogin(false), savePassword(false),lastUpdate(0)
-{
 
-}
 
 
 
@@ -22,6 +17,22 @@ LoginInfo::LoginInfo(quint64 id, const QString &head,
     id(id), head(head), nickname(nickname), account(account),
     password(password), autoLogin(autoLogin), savePassword(savePassword),
     lastUpdate(lastUpdate)
+{
+
+}
+
+LoginInfo::LoginInfo(const LoginInfo &info) :
+    id(info.getId()),head(info.getHead()),nickname(info.getNickname()),
+    account(info.getAccount()),password(info.getPassword()),
+    autoLogin(info.getAutoLogin()),savePassword(info.getSavePassword()),
+    lastUpdate(info.getLastUpdate())
+{
+
+}
+
+LoginInfo::LoginInfo() :
+    id(0), head(""), nickname(""), account(-1), password(""),
+    autoLogin(false), savePassword(false),lastUpdate(0)
 {
 
 }
