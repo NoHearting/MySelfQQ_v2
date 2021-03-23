@@ -272,19 +272,6 @@
           <bool>true</bool>
          </property>
         </widget>
-        <widget class="QComboBox" name="comboBoxAccount">
-         <property name="geometry">
-          <rect>
-           <x>90</x>
-           <y>50</y>
-           <width>250</width>
-           <height>24</height>
-          </rect>
-         </property>
-         <property name="editable">
-          <bool>true</bool>
-         </property>
-        </widget>
         <widget class="QLineEdit" name="lineEditPwd">
          <property name="geometry">
           <rect>
@@ -344,6 +331,12 @@
          </property>
          <property name="text">
           <string/>
+         </property>
+         <property name="checkable">
+          <bool>false</bool>
+         </property>
+         <property name="checked">
+          <bool>false</bool>
          </property>
         </widget>
        </widget>

@@ -46,6 +46,11 @@ void ComboBoxItemWidget::initResourceAndForm()
     ui->labelAccount->setText(QString::number(info->getAccount()));
 }
 
+zsj::LoginInfo::ptr ComboBoxItemWidget::getInfo() const
+{
+    return info;
+}
+
 quint64 ComboBoxItemWidget::getAccountNum() const
 {
     return accountNum;
