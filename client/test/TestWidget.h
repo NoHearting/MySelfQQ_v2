@@ -23,6 +23,13 @@ private slots:
 
     void on_pushButton_2_clicked();
 
+
+    void on_pushButtonGet_clicked();
+
+    void on_pushButtonPost_clicked();
+
+    void on_pushButton_3_clicked();
+
 private:
     Ui::TestWidget *ui;
 

@@ -39,7 +39,7 @@ private:
     static App app;
 
     QString appName;            // 程序名称
-    QString appAbsoluteDir;     // 可执行程序所在目录
+    QString appAbsoluteDir;     // 可执行程序所在目录 末尾没有'/'
     QString appAbsolutePath;    // 可执行程序绝对路径
     quint64 appPid;             // 进程号
     QString appVersion;         // 程序版本
