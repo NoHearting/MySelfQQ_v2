@@ -22,9 +22,9 @@ ChatMessageFileItemObject::ChatMessageFileItemObject(bool isLeft, zsj::ChatMessa
         QWidget *parent) :
     QWidget(parent),
     ui(new Ui::ChatMessageFileItemObject),
-    chatMessageData(data),
+    isLeft(isLeft),
     item(item),
-    isLeft(isLeft)
+    chatMessageData(data)
 {
     ui->setupUi(this);
     initResourceAndForm();
@@ -48,7 +48,7 @@ void ChatMessageFileItemObject::initResourceAndForm()
     }
     else
     {
-        sizeStr = QString().asprintf("(%.2lfKB)",fileSize / 1024.0);
+        sizeStr = QString().asprintf("(%.2lfKB)", fileSize / 1024.0);
     }
     ui->labelName->setText(fileName);
     ui->labelSize->setText(sizeStr);

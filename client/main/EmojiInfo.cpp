@@ -3,7 +3,7 @@
 
 EmojiInfo::EmojiInfo(EmojiType type, const QString &prefix,
                      const QVector<QString> emojiVec) :
-    type(type),prefix(prefix),emojiVector(emojiVec),emojiCount(emojiVector.size())
+    prefix(prefix),emojiVector(emojiVec),emojiCount(emojiVector.size()),type(type)
 {
 
 }
