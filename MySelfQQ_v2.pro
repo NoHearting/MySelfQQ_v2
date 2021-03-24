@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui sql
+QT       += core gui sql network
 CONFIG += C++11
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
@@ -71,7 +71,8 @@ SOURCES += main.cpp \
     database/DataBase.cpp \
     database/SQLiteDataBase.cpp \
     main/LoginInfo.cpp \
-    feature_widgets/PopupWidget.cpp
+    feature_widgets/PopupWidget.cpp \
+    web/HttpSupport.cpp
 
 
 
@@ -133,7 +134,8 @@ HEADERS  += ChatWidget.h \
     database/DataBase.h \
     database/SQLiteDataBase.h \
     main/LoginInfo.h \
-    feature_widgets/PopupWidget.h
+    feature_widgets/PopupWidget.h \
+    web/HttpSupport.h
 
 
 FORMS    +=     LoginWidget.ui \

@@ -11,6 +11,9 @@
 #include <QDebug>
 #include <QCloseEvent>
 
+#include "web/HttpSupport.h"
+#include "main/ApplicationInfo.h"
+
 TestWidget::TestWidget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::TestWidget)
@@ -63,27 +66,42 @@ void outToFile()
     file.close();
 }
 
-class Base{
+class Base
+{
 public:
-    virtual ~Base(){qDebug() << "deconstruct Base";}
-    virtual void show(){qDebug() << "base func";}
+    virtual ~Base()
+    {
+        qDebug() << "deconstruct Base";
+    }
+    virtual void show()
+    {
+        qDebug() << "base func";
+    }
 
 };
 
-class Derive : public Base{
+class Derive : public Base
+{
 public:
-    void show()override{qDebug() <<"Derive func";}
-    ~Derive(){qDebug() << "deconstruct Derive";}
+    void show()override
+    {
+        qDebug() << "Derive func";
+    }
+    ~Derive()
+    {
+        qDebug() << "deconstruct Derive";
+    }
 };
 
-void testSharedPointerCast(){
+void testSharedPointerCast()
+{
     std::shared_ptr<Base> base(new Derive);
     qDebug() << "base";
     std::shared_ptr<Derive> derive = std::dynamic_pointer_cast<Derive>(base);
     qDebug() << "cast and assign success";
     if(derive)
     {
-            derive->show();
+        derive->show();
     }
 
 //    std::dynamic_pointer_cast
@@ -117,4 +135,53 @@ void TestWidget::on_pushButton_2_clicked()
         qDebug() << "json >>>> " << messgaeRecord.serializeToJson();
     }
     file.close();
+}
+
+void TestWidget::on_pushButtonGet_clicked()
+{
+    QString url = ui->lineEdit->text();
+    QByteArray data = zsj::HttpSupport::Instance()->syncGet(url);
+    QJsonDocument doc = QJsonDocument::fromJson(data);
+    ui->textEdit->setText(data);
+}
+
+void TestWidget::on_pushButtonPost_clicked()
+{
+    QString url = ui->lineEdit->text();
+    QMap<QString, QString> map;
+    map.insert("account", "123");
+    map.insert("password", "123");
+    QByteArray data = zsj::HttpSupport::Instance()->syncPost(url, map);
+    ui->textEdit->setText(data);
+}
+
+void TestWidget::on_pushButton_3_clicked()
+{
+    QString url = ui->lineEdit->text();
+//    QByteArray data = zsj::HttpSupport::Instance()->syncGet(url);
+//    if(!data.isEmpty()){
+//        QPixmap pic;
+//        pic.loadFromData(data);
+//        if(!pic.isNull()){
+//            ui->labelPix->setPixmap(pic);
+////            ui->labelPix->adjustSize();
+//            ui->labelPix->setScaledContents(true);
+//        }
+//        else{
+//            qCritical() << "load pic failed!";
+//        }
+//    }
+//    else{
+//        qCritical() << "data is empty";
+//    }
+    QString path = zsj::ApplicationInfo::Instance()->getAppAbsoluteDir();
+
+    QString imageDir = "/image/test/";
+    qDebug() << path;
+    QString actPath = zsj::HttpSupport::Instance()->downloadImage(url,path+imageDir);
+    QPixmap pix(actPath);
+    if(!pix.isNull()){
+        ui->labelPix->setPixmap(pix);
+        ui->labelPix->setScaledContents(true);
+    }
 }
