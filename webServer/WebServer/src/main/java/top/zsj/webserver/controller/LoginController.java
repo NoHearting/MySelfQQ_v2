@@ -23,7 +23,9 @@ public class LoginController {
     public ResponseResult login(Integer id, String password) {
         User user = loginService.login(id, password);
         ResponseResult result = new ResponseResult(ResultCode.SUCCESS, "user", user);
-        result.addData("test", 1111);
         return result;
     }
+
+
+
 }
