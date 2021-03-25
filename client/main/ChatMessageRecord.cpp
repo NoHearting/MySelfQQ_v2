@@ -311,7 +311,7 @@ QString FileMessageBody::getContent() const
     return QString();
 }
 
-void FileMessageBody::setContent(const QString &value)
+void FileMessageBody::setContent(const QString &)
 {
 
 }

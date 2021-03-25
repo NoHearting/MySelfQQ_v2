@@ -158,6 +158,7 @@ QString HttpSupport::downloadImage(const QString &url,
 
 bool HttpSupport::uploadImage(const QString &url, const QString &path)
 {
+
     return false;
 }
 

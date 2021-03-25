@@ -13,13 +13,13 @@ ChatMessageImageItemObject::ChatMessageImageItemObject(QWidget *parent) :
     initResourceAndForm();
 }
 
-ChatMessageImageItemObject::ChatMessageImageItemObject(bool isLeft,zsj::ChatMessageData::ptr data,
+ChatMessageImageItemObject::ChatMessageImageItemObject(bool isLeft, zsj::ChatMessageData::ptr data,
         QListWidgetItem *item,
         QWidget *parent):
     QWidget(parent),
     ui(new Ui::ChatMessageImageItemObject),
-    chatMessageData(data),
     item(item),
+    chatMessageData(data),
     isLeft(isLeft)
 {
     ui->setupUi(this);
@@ -44,9 +44,9 @@ void ChatMessageImageItemObject::initResourceAndForm()
     int fontSize = zsj::ChatBubble::Instance()->getBubbleFontSize();
 
     this->setStyleSheet(QString(
-                                "#labelHead{border-radius:16px;border:none;}"
-                                "#labelMessage{font-size:%1px;}"
-                                "#widget{border-radius:5px;border:1px solid green;}").arg(fontSize)
+                            "#labelHead{border-radius:16px;border:none;}"
+                            "#labelMessage{font-size:%1px;}"
+                            "#widget{border-radius:5px;border:1px solid green;}").arg(fontSize)
                        );
 }
 
@@ -55,12 +55,14 @@ void ChatMessageImageItemObject::adjustWidgetsPosition()
     QSize size = calculateMessageWidgetSize();
     qDebug() << "calculate size: " << size;
     int padding = zsj::ChatBubble::Instance()->getBubblePadding();
-    if(isLeft){
+    if(isLeft)
+    {
         ui->widget->setGeometry(QRect(50, 9, size.width(), size.height()));
     }
-    else{
-        ui->labelHead->setGeometry(this->width() - 41, 9, ui->labelHead->width(), ui->labelHead->height());
-        ui->widget->setGeometry(QRect(this->width() - size.width() - 50, 9,
+    else
+    {
+        ui->labelHead->setGeometry(this->width() - 41, padding, ui->labelHead->width(), ui->labelHead->height());
+        ui->widget->setGeometry(QRect(this->width() - size.width() - 50, padding,
                                       size.width(), size.height()));
     }
 }
@@ -126,7 +128,8 @@ QSize ChatMessageImageItemObject::currentEnableImageSize(QSize windowSize)
         }
         return QSize(width, height);
     }
-    else{
+    else
+    {
         qCritical() << chatMessageData->getImagePath() << " is null!";
         return QSize();
     }
@@ -134,14 +137,16 @@ QSize ChatMessageImageItemObject::currentEnableImageSize(QSize windowSize)
 
 QString ChatMessageImageItemObject::seprateImageSrc(const QString &imgTag)
 {
-    if(imgTag.contains("<img")){
+    if(imgTag.contains("<img"))
+    {
         int begin = imgTag.indexOf("src=\"");
-        int end = imgTag.indexOf("\"",begin+6);
-        QString path = imgTag.mid(begin + 5,end-begin - 5);
+        int end = imgTag.indexOf("\"", begin + 6);
+        QString path = imgTag.mid(begin + 5, end - begin - 5);
         chatMessageData->setImagePath(path);
         return path;
     }
-    else{
+    else
+    {
         return imgTag;
     }
 }
