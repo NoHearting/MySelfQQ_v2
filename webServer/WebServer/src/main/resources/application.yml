@@ -1,0 +1,80 @@
+spring:
+  datasource:
+    username: root
+    password: z1762861794
+    url: jdbc:mysql://127.0.0.1:3306/webserver?serverTimezone=UTC&useUnicode=true&charaterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true
+    initialization-mode: always
+    #    schema:
+    #    - classpath:sql/department.sql
+    #    - classpath:sql/employee.sql
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      initial-size: 5  # 初始化大小
+      min-idle: 5  # 最小
+      max-active: 100  # 最大
+      max-wait: 60000  # 配置获取连接等待超时的时间
+      time-between-eviction-runs-millis: 60000  # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      min-evictable-idle-time-millis: 300000  # 指定一个空闲连接最少空闲多久后可被清除，单位是毫秒
+      validationQuery: select 'x'
+      test-while-idle: false  # 当连接空闲时，是否执行连接测试
+      test-on-borrow: false  # 当从连接池借用连接时，是否测试该连接
+      test-on-return: true  # 在连接归还到连接池时是否测试该连接
+      filters: config,wall,stat  # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+      poolPreparedStatements: true # 打开PSCache，并且指定每个连接上PSCache的大小
+      maxPoolPreparedStatementPerConnectionSize: 20
+      maxOpenPreparedStatements: 20
+      # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
+      connectionProperties: druid.stat.slowSqlMillis=200;druid.stat.logSlowSql=true;config.decrypt=false
+      # 合并多个DruidDataSource的监控数据
+      #use-global-data-source-stat: true
+      #WebStatFilter配置，说明请参考Druid Wiki，配置_配置WebStatFilter
+      web-stat-filter:
+        enabled: true #是否启用StatFilter默认值true
+        url-pattern: /*
+        exclusions: /druid/*,*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico
+        session-stat-enable: true
+        session-stat-max-count: 10
+      #StatViewServlet配置，说明请参考Druid Wiki，配置_StatViewServlet配置
+      stat-view-servlet:
+        enabled: true #是否启用StatViewServlet默认值true
+        url-pattern: /druid/*
+        reset-enable: true
+        login-username: admin
+        login-password: admin
+  thymeleaf:
+    cache: false  # 关闭模板缓存
+
+
+fdfs:
+  # 连接Tracker服务器超时时间
+  connect-timeout: 10000
+  # storage服务器响应的超时时间
+  so-timeout: 3000
+  #  trakcer服务器的数量
+  tracker-list:
+  - 120.78.223.0:22122
+
+  pool:
+    # 连接池最大数量
+    max-total: 200
+    # 每个tracker地址的最大连接数
+    max-total-per-key: 50
+    # 连接耗尽时等待获取连接的最大毫秒数
+    max-wait-millis: 5000
+
+
+server:
+  port: 80  # 设置端口为12345
+  servlet:
+    context-path: "/server"
+
+#mybatis:
+#  mapper-locations: classpath:mapping/BlogSys/*.xml
+##  type-aliases-package: com.example.backgroundsystem.domain.blogsys
+#  config-location: classpath:mapper/mybatis-config.xml
+
+logging:
+  level:
+    top:
+      zsj:
+        mapper: debug
