@@ -9,6 +9,8 @@
 
 #include <QIcon>
 
+#define DEBUG 1
+
 namespace zsj {
 
 namespace global {
@@ -41,6 +43,24 @@ enum class MessageType{
     FILE,           /// 文件
     AUDIO,          /// 音频
     VIDEO           /// 视频
+};
+
+/**
+ * @brief client和server进行http交互的url
+ */
+struct BgUrl{
+
+#ifndef DEBUG
+    const constexpr static char * urlPrefix = "http://www.xl-zsj.top/";
+#else
+    const constexpr static char * urlPrefix = "http://localhost/";
+#endif
+
+    static QString loginUrl(){
+        return QString(urlPrefix) + "login";
+    }
+
+
 };
 
 
