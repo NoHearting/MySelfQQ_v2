@@ -8,7 +8,7 @@ import top.zsj.webserver.domain.User;
 
 public interface LoginMapper {
 
-    @Select("select * from t_user where u_id=#{id} and upassword=#{password};")
+    @Select("select * from t_user where u_id=#{id} and u_password=#{password};")
     @Results(id = "userMap",value = {
             @Result(property = "id",column = "u_id"),
             @Result(property = "nickname",column = "u_nickname"),
