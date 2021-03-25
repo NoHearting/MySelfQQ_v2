@@ -51,9 +51,9 @@ enum class MessageType{
 struct BgUrl{
 
 #ifndef DEBUG
-    const constexpr static char * urlPrefix = "http://www.xl-zsj.top/";
+    const constexpr static char * urlPrefix = "http://www.xl-zsj.top/server/";
 #else
-    const constexpr static char * urlPrefix = "http://localhost/";
+    const constexpr static char * urlPrefix = "http://localhost/server/";
 #endif
 
     static QString loginUrl(){
