@@ -23,6 +23,7 @@
 #include "main/Frameless.h"
 #include "main/Data.h"
 #include "dao/LoginInfoDao.h"
+#include  "service/web/LoginWebService.h"
 
 namespace Ui
 {
@@ -87,6 +88,12 @@ private:
 
     /// 下拉框  账号输入框的下拉框
     PopupWidget * popupWidget;
+
+    /// 进行http请求
+    zsj::LoginWebService * loginService;
+
+    /// 是否允许登录
+    bool cancelLogin = false;
 signals:
     /**
      * @brief 登录成功时发送信号

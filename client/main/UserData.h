@@ -32,14 +32,6 @@ public:
     QString getRemark()const{return remark;}
     quint8 getLevel()const{return level;}
 
-//    // setter
-//    void setHead(const QPixmap & head){this->head = head;}
-//    void setNickname(const QString & nickname){this->nickname = nickname;}
-//    void setAccount(const QString & account){this->account = account;}
-//    void setSignature(const QString & signature){this->signature = signature;}
-//    void setRemark(const QString & remark){this->remark = remark;}
-//    void setVip(bool vip){this->vip = vip;}
-//    void setLevel(quint8 level){this->level = level;}
 
 private:
 

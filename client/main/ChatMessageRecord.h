@@ -160,7 +160,7 @@ public:
     QJsonObject serializeToJsonObject()override;
 
     QString getContent() const override;
-    void setContent(const QString &value)override;
+    void setContent(const QString &)override;
     global::MessageType getType() const override;
     void setType(const global::MessageType &value) override;
 

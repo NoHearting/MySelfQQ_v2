@@ -72,7 +72,8 @@ SOURCES += main.cpp \
     database/SQLiteDataBase.cpp \
     main/LoginInfo.cpp \
     feature_widgets/PopupWidget.cpp \
-    web/HttpSupport.cpp
+    web/HttpSupport.cpp \
+    service/web/LoginWebService.cpp
 
 
 
@@ -135,7 +136,8 @@ HEADERS  += ChatWidget.h \
     database/SQLiteDataBase.h \
     main/LoginInfo.h \
     feature_widgets/PopupWidget.h \
-    web/HttpSupport.h
+    web/HttpSupport.h \
+    service/web/LoginWebService.h
 
 
 FORMS    +=     LoginWidget.ui \

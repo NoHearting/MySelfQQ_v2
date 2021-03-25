@@ -6,6 +6,7 @@
 #include "main/Frameless.h"
 #include "main/UserData.h"
 #include "main/LoginInfo.h"
+#include "main/ApplicationInfo.h"
 
 
 #include <QDebug>
@@ -60,6 +61,8 @@ void LoginWidget::initObjects()
     frameless->setResizeEnable(false);
 
     popupWidget = new PopupWidget(ui->lineEditOuterInput);
+
+    loginService = new zsj::LoginWebService;
 }
 
 void LoginWidget::deleteObjects()
@@ -78,6 +81,9 @@ void LoginWidget::deleteObjects()
 
     delete popupWidget;
     popupWidget = nullptr;
+
+    delete loginService;
+    loginService = nullptr;
 }
 
 void LoginWidget::loadAndSetLoginInfo()
@@ -254,6 +260,7 @@ void LoginWidget::initSignalsAndSlots()
     connect(ui->pushButtonFindPwd, &QPushButton::clicked, this, &LoginWidget::slotFindPassword);
     qInfo() << "connect QPushButton::clicked to LoginWidget::slotFindPassword";
 
+
 }
 
 
@@ -314,35 +321,79 @@ void LoginWidget::slotLogin()
 
     ui->stackedWidget->setCurrentIndex(1);
 
-    QTimer::singleShot(1000, this, [ = ]()
-    {
-        if(ui->stackedWidget->currentIndex() != 0)
-        {
-            ui->stackedWidget->setCurrentIndex(0);
 
-            /// 校验登录是否成功
-            if(account == "123")
-            {
-                qDebug() << "登录成功";
-                QString headPath = QString(":/test/res/test/head%1.jpg").arg(account.toInt() % 5 + 1);
-                QPixmap head(headPath);
 
-                QString nickname = "无心";
-                zsj::Data::ptr data(new zsj::UserData(head, nickname, account.toInt(),
-                                                      "得不到的永远在骚动", "备注", true, 64));
-                zsj::LoginInfo info(0, headPath, nickname, account.toInt(), password,
-                                    ui->checkBoxAutoLogin->isChecked(),
-                                    ui->checkBoxRememberPwd->isChecked(),
-                                    QDateTime::currentDateTime().toTime_t());
-                persistenceLoginInfo(info);
-                emit sigLoginSuccess(data);
-            }
-            else
-            {
-                ui->stackedWidget->setCurrentIndex(2);
-            }
+    QJsonObject result = loginService->login(account.toInt(),password);
+    if(!result.isEmpty()){
+        if(!cancelLogin){
+            cancelLogin = false;
         }
-    });
+        // 登录成功
+        if(result.value("status").toBool() == true){
+            QJsonObject data = result.value("data").toObject();
+            QJsonObject user = data.value("user").toObject();
+
+            QString actPath = zsj::ApplicationInfo::Instance()->getAppAbsoluteDir();
+            QString headDir = QString("/image/%1/").arg(user.value("id").toInt());
+            QString headPath = loginService->downloadHeadPicture(
+                        user.value("head").toString(),
+                        actPath + headDir);
+            QPixmap head(headPath);
+            QString  nickname = user.value("nickname").toString();
+            int id = user.value("id").toInt();
+            QString signature = user.value("signature").toString();
+            int level = user.value("level").toInt();
+            bool vip = user.value("vip").toBool();
+            QString pwd = user.value("password").toString();
+            zsj::Data::ptr userData(new zsj::UserData(head,nickname,id,signature,"",level,vip));
+
+            zsj::LoginInfo info(0,headPath,nickname,id,pwd,
+                                ui->checkBoxAutoLogin->isChecked(),
+                                ui->checkBoxRememberPwd->isChecked(),
+                                QDateTime::currentDateTime().toTime_t());
+            persistenceLoginInfo(info);
+            emit sigLoginSuccess(userData);
+        }
+        else{ // 登录失败
+            ui->stackedWidget->setCurrentIndex(2);
+        }
+    }
+    else{
+        // 这里应该是程序问题  不是登录错误
+        ui->stackedWidget->setCurrentIndex(2);
+        qCritical() << "出现未知错误!";
+    }
+
+
+//    QTimer::singleShot(1000, this, [ = ]()
+//    {
+//        if(ui->stackedWidget->currentIndex() != 0)
+//        {
+//            ui->stackedWidget->setCurrentIndex(0);
+
+//            /// 校验登录是否成功
+//            if(account == "123")
+//            {
+//                qDebug() << "登录成功";
+//                QString headPath = QString(":/test/res/test/head%1.jpg").arg(account.toInt() % 5 + 1);
+//                QPixmap head(headPath);
+
+//                QString nickname = "无心";
+//                zsj::Data::ptr data(new zsj::UserData(head, nickname, account.toInt(),
+//                                                      "得不到的永远在骚动", "备注", true, 64));
+//                zsj::LoginInfo info(0, headPath, nickname, account.toInt(), password,
+//                                    ui->checkBoxAutoLogin->isChecked(),
+//                                    ui->checkBoxRememberPwd->isChecked(),
+//                                    QDateTime::currentDateTime().toTime_t());
+//                persistenceLoginInfo(info);
+//                emit sigLoginSuccess(data);
+//            }
+//            else
+//            {
+//                ui->stackedWidget->setCurrentIndex(2);
+//            }
+//        }
+//    });
 }
 
 void LoginWidget::slotCancelLogin()
@@ -351,6 +402,7 @@ void LoginWidget::slotCancelLogin()
     {
         ui->stackedWidget->setCurrentIndex(0);
     }
+    cancelLogin = true;
 }
 
 void LoginWidget::slotFindPassword()
