@@ -8,9 +8,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class PageController {
 
     @RequestMapping("/updatePassword")
-    public String updatePasswod(Integer id,String password){
-        return "index.html";
+    public String updatePasswod(){
+        return "page/find-password.html";
     }
 
-    
+    @RequestMapping("/register")
+    public String register(){
+        return "page/register.html";
+    }
+
 }
