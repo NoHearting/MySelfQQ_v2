@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>注册成功</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+
+</head>
+<body>
+
+<div class="page-content">
+  <div class="card">
+    <div class="content">
+      <h2 class="title">注册成功</h2>
+      <p class="copy">昵称：[[${nickname}]]</p>
+      <p class="copy">账号：[[${id}]]</p>
+        <a th:href="@{/register}" style="text-decoration: none;" id="re-page" class="btn" >继续注册</a>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>

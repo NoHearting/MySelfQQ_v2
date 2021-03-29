@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>CodePen - Log In / Sign Up - pure css - #12</title>
+
+    <link rel='stylesheet' th:href='@{/css/bootstrap.min.css}'>
+
+    <!---图标库--->
+    <link rel='stylesheet' href='https://unicons.iconscout.com/release/v2.1.9/css/unicons.css'>
+
+        <!-- <link rel="stylesheet" href="https://unicons.iconscout.com/release/v3.0.6/css/solid.css"> -->
+    <link rel="stylesheet" th:href="@{/css/style.register.css}">
+    <link rel="stylesheet" th:href="@{/css/notiflix-1.3.0.min.css}">
+    <script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/notiflix-1.3.0.min.js}"></script>
+</head>
+<body>
+
+
+<div class="section">
+    <div class="container">
+        <div class="row full-height justify-content-center">
+            <div class="col-12 text-center align-self-center py-5">
+                <div class="section pb-5 pt-5 pt-sm-2 text-center">
+                    <h6 class="mb-0 pb-3"><span>注册</span><span>找回密码</span></h6>
+                    <input class="checkbox" type="checkbox" id="reg-log" name="reg-log"/>
+                    <label for="reg-log"></label>
+                    <div class="card-3d-wrap mx-auto">
+                        <div class="card-3d-wrapper">
+                            <div class="card-front">
+                                <div class="center-wrap">
+                                    <div class="section text-center">
+                                        <h4 class="mb-4 pb-3">注册</h4>
+                                        <form action="javascript:void(0);" method="post" onsubmit="checkFormData(1)">
+                                            <div class="form-group">
+                                                <input type="text" name="nickname" class="form-style" placeholder="昵称"
+                                                       id="nickname" autocomplete="off">
+                                                <i class="input-icon uil uil-user"></i>
+                                            </div>
+                                            <div class="form-group mt-2">
+                                                <input type="password" name="password" class="form-style"
+                                                       placeholder="密码" id="password" autocomplete="off">
+                                                <i class="input-icon uil uil-lock-alt"></i>
+                                            </div>
+                                            <button type="submit" href="#" class="btn mt-4">提交</button>
+                                            <!--  <p class="mb-0 mt-4 text-center"><a href="#0" class="link">忘记密码?</a></p> -->
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-back">
+                                <div class="center-wrap">
+                                    <div class="section text-center">
+                                        <h4 class="mb-4 pb-3">注册</h4>
+                                        <div class="form-group">
+                                            <input type="text" name="logname" class="form-style" placeholder="名称"
+                                                   id="logname" autocomplete="off">
+                                            <i class="input-icon uil uil-user"></i>
+                                        </div>
+                                        <div class="form-group mt-2">
+                                            <input type="email" name="logemail" class="form-style" placeholder="邮箱"
+                                                   id="logemail" autocomplete="off">
+                                            <i class="input-icon uil uil-home"></i>
+                                        </div>
+                                        <div class="form-group mt-2">
+                                            <input type="password" name="logpass" class="form-style" placeholder="密码"
+                                                   id="logpass" autocomplete="off">
+                                            <i class="input-icon uil uil-lock-alt"></i>
+                                        </div>
+                                        <a href="#" id="find-pwd" class="btn mt-4">提交</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    function initNotiflix() {
+        Notiflix.Notify.Init();
+        Notiflix.Report.Init();
+        Notiflix.Confirm.Init();
+        Notiflix.Loading.Init({
+            clickToClose:true
+        });
+    }
+
+
+    // 检查表单提交数据是否为空
+    function checkFormData(type) {
+        initNotiflix();
+
+        // 注册
+        if(type == 1){
+            var nickname = $("#nickname").val();
+            var password = $("#password").val();
+            if(nickname == "" || nickname == null){
+                $("#nickname").css("border","1px solid red");
+                Notiflix.Notify.Failure('请填写昵称');
+                return false;
+            }
+            else{
+                $("#nickname").css("border","1px solid green");
+            }
+            if(password == "" || password == null){
+                $("#password").css("border","1px solid red");
+                Notiflix.Notify.Failure('请输入密码');
+                return false;
+            }
+            else{
+                $("#password").css("border","1px solid green");
+            }
+            $.ajax({
+                url:"[[@{/registerLogic}]]",
+                type:"POST",
+                data:JSON.stringify({"nickname":nickname,"password":password}),
+                dataType:"json",
+                headers:{'Content-Type': 'application/json'},
+                success:function (result) {
+                    console.log(result);
+                    if(result["status"] == true){
+                        var hrefTarger = "[[@{/success}]]" + "?nickname=" + nickname + "&id=" + result["data"]["user"]["id"];
+                        location.href = hrefTarger;
+                    }
+                    else{
+                        Notiflix.Report.Failure( '注册失败', '"注册账号失败" <br><br>- xl-zsj.top', '确定' );
+                    }
+                }});
+
+            return true;
+        }
+
+    }
+
+</script>
+</html>

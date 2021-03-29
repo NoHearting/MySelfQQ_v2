@@ -54,7 +54,8 @@ public class ResponseResult {
         this.message = result.getMessage();
     }
 
-    public void addData(String  key,Object value){
+    public ResponseResult addData(String  key,Object value){
         data.put(key,value);
+        return this;
     }
 }

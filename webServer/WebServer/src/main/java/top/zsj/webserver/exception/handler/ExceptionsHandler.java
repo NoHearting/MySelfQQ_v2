@@ -33,6 +33,7 @@ public class ExceptionsHandler {
     /** 空指针异常 */
     @ExceptionHandler(NullPointerException.class)
     public ResponseResult nullPointerExceptionHandler(NullPointerException ex) {
+        ex.printStackTrace();
         String errorInfo = "空指针异常: " + ex.getMessage();
         log.error(errorInfo);
         return ResponseResult.exception(errorInfo);
@@ -42,7 +43,8 @@ public class ExceptionsHandler {
     @ExceptionHandler(ClassCastException.class)
     public ResponseResult classCastExceptionHandler(ClassCastException ex) {
         String errorInfo = "类型转换异常: " + ex.getMessage();
-        log.error(errorInfo);
+//        log.error(errorInfo);
+        ex.printStackTrace();
         return ResponseResult.exception(errorInfo);
     }
     /** 文件未找到异常 */
