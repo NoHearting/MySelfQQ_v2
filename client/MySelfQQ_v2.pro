@@ -73,7 +73,10 @@ SOURCES += main.cpp \
     main/LoginInfo.cpp \
     feature_widgets/PopupWidget.cpp \
     web/HttpSupport.cpp \
-    service/web/LoginWebService.cpp
+    service/web/LoginWebService.cpp \
+    service/web/MainWebService.cpp \
+    main/SectionData.cpp \
+    main/Section.cpp
 
 
 
@@ -137,7 +140,10 @@ HEADERS  += ChatWidget.h \
     main/LoginInfo.h \
     feature_widgets/PopupWidget.h \
     web/HttpSupport.h \
-    service/web/LoginWebService.h
+    service/web/LoginWebService.h \
+    service/web/MainWebService.h \
+    main/SectionData.h \
+    main/Section.h
 
 
 FORMS    +=     LoginWidget.ui \

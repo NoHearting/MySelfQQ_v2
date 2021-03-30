@@ -56,9 +56,9 @@ int main(int argc, char *argv[])
     qInstallMessageHandler(outputMessage);
 
     printAppInfo();
-    TestWidget testWidget;
-    testWidget.show();
-//    zsj::Test().test();
+//    TestWidget testWidget;
+//    testWidget.show();
+    zsj::Test().test();
     return a.exec();
 #else
     QApplication a(argc, argv);

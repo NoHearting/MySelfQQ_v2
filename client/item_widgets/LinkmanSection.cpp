@@ -9,7 +9,7 @@ LinkmanSection::LinkmanSection(QWidget *parent) :
 }
 
 LinkmanSection::LinkmanSection(const QPixmap &icon, const QString &groupName,
-                                       int active, int total, QWidget *parent) :
+                               int active, int total, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::LinkmanSection)
 {
@@ -20,6 +20,25 @@ LinkmanSection::LinkmanSection(const QPixmap &icon, const QString &groupName,
     ui->labelGroupName->setText(group);
 
     this->groupName = groupName;
+}
+
+LinkmanSection::LinkmanSection(const QPixmap &icon,
+                               zsj::Section::ptr section,
+                               QWidget *parent) :
+    QWidget(parent),
+    ui(new Ui::LinkmanSection),
+    section(section)
+{
+    ui->setupUi(this);
+//    QPixmap icon(":/main/res/main/arrow-right.png");
+    ui->labelIcon->setPixmap(icon);
+    QString group = QString("%1 [%2/%3]")
+                    .arg(section->getSectionName())
+                    .arg(0).arg(section->getSize());
+    ui->labelGroupName->setText(group);
+
+    // 兼容前面的代码
+    this->groupName = section->getSectionName();
 }
 
 LinkmanSection::~LinkmanSection()
@@ -41,4 +60,9 @@ void LinkmanSection::setIcon(const QString &iconPath)
 QString LinkmanSection::getGrouoName() const
 {
     return groupName;
+}
+
+QString LinkmanSection::getSectionName() const
+{
+    return section->getSectionName();
 }

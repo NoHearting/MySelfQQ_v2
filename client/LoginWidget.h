@@ -60,7 +60,7 @@ private:
     /**
      * @brief 持久化登录数据
      */
-    void persistenceLoginInfo(const zsj::LoginInfo & info);
+    void persistenceLoginInfo(zsj::LoginInfo & info);
 
 private:
     Ui::LoginWidget *ui;

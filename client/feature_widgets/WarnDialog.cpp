@@ -17,10 +17,10 @@ WarnDialog::WarnDialog(QWidget *parent) :
 
     ui->pushButtonSure->setFocus();
 
-    this->setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
+    this->setWindowFlags(Qt::FramelessWindowHint | Qt::Tool | Qt::WindowStaysOnTopHint);
     this->setAttribute(Qt::WA_TranslucentBackground);
 
-    zsj::WidgetUtil::setWidgetBoxShadow(this);
+    zsj::WidgetUtil::setWidgetBoxShadow(ui->widget);
 
     QString qss = zsj::ReadQStyleSheet::readQss("://css/dialog.css");
     this->setStyleSheet(qss);

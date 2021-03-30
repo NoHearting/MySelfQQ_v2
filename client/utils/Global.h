@@ -56,10 +56,64 @@ struct BgUrl{
     const constexpr static char * urlPrefix = "http://localhost/server/";
 #endif
 
-    static QString loginUrl(){
+    /**
+     * @brief 登录
+     * @return
+     */
+    static QString LoginUrl(){
         return QString(urlPrefix) + "login";
     }
 
+    /**
+     * @brief 找回密码
+     * @return
+     */
+    static QString FindPassword(){
+        return QString(urlPrefix) + "updatePassword";
+    }
+
+
+    /**
+     * @brief 注册页面
+     * @return
+     */
+    static QString Register(){
+        return QString(urlPrefix) + "register";
+    }
+
+
+    /**
+     * @brief 好友、群组数据
+     * @return
+     */
+    static QString FriendRelationship(){
+        return QString(urlPrefix) + "friendRelationship";
+    }
+
+    /**
+     * @brief 添加分组
+     * @return
+     */
+    static QString AddSection(){
+        return QString(urlPrefix) + "addSection";
+    }
+
+    /**
+     * @brief 删除分组
+     * @return
+     */
+    static QString DeleteSection(){
+        return QString(urlPrefix) + "deleteSection";
+    }
+
+
+    /**
+     * @brief 移动分组成员
+     * @return
+     */
+    static QString MoveSectionItem(){
+        return QString(urlPrefix) + "moveSectionItem";
+    }
 
 };
 

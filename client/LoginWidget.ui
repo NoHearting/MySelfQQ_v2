@@ -349,6 +349,10 @@
           <height>80</height>
          </rect>
         </property>
+        <property name="styleSheet">
+         <string notr="true">border-radius:40px;
+border:1px solid white;</string>
+        </property>
         <widget class="QLabel" name="labelHeadImage">
          <property name="geometry">
           <rect>
@@ -357,6 +361,10 @@
            <width>64</width>
            <height>64</height>
           </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border-radius:31px;
+border:1px solid white;</string>
          </property>
          <property name="text">
           <string/>

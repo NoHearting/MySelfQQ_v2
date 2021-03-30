@@ -80,15 +80,15 @@ bool LoginInfoDao::updateLoginInfo(const LoginInfo &info)
 {
     QSqlQuery query(db->getDatabase());
     query.prepare("update login_info set head=?, "
-                  "nickname=?,account=?,password=?,autoLogin=?, "
-                  "savePassword=?,last_update=? where id=? ");
+                  "nickname=?,password=?,auto_login=?, "
+                  "save_password=?,last_update=? where account=? ");
     query.bindValue(0, info.getHead());
     query.bindValue(1, info.getNickname());
-    query.bindValue(2, info.getAccount());
-    query.bindValue(3, info.getPassword());
-    query.bindValue(4, info.getAutoLogin());
-    query.bindValue(5, info.getSavePassword());
-    query.bindValue(6, info.getLastUpdate());
+    query.bindValue(2, info.getPassword());
+    query.bindValue(3, info.getAutoLogin());
+    query.bindValue(4, info.getSavePassword());
+    query.bindValue(5, info.getLastUpdate());
+    query.bindValue(6, info.getAccount());
     bool ret = db->updateQuery(query);
     if(ret)
     {

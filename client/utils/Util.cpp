@@ -9,6 +9,9 @@
 #include <QThread>
 #include <QDir>
 #include <QRegExp>
+#include <QImage>
+
+#include <algorithm>
 
 
 #include "main/ApplicationInfo.h"
@@ -98,7 +101,11 @@ QPixmap adjustToHead(QPixmap &src, int diameter)
     {
         qCritical() << "pixmap is null!";
     }
-    QPixmap scaled = scaledPixmap(src, diameter, diameter);
+    int cutLength = std::min(src.size().width(),src.size().height());
+    QImage image = src.toImage().copy(0,0,cutLength,cutLength);
+    QPixmap toAdjust = QPixmap::fromImage(image);
+
+    QPixmap scaled = scaledPixmap(toAdjust, diameter, diameter);
     return pixmapToRound(scaled, diameter / 2);
 }
 

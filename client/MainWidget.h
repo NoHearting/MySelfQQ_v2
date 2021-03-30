@@ -25,6 +25,7 @@
 #include "main/Data.h"
 #include "main/UserData.h"
 #include "main/GroupData.h"
+#include "service/web/MainWebService.h"
 
 namespace Ui
 {
@@ -37,7 +38,7 @@ class MainWidget : public QWidget
 
 public:
     typedef std::map<QTreeWidgetItem *, std::list<QTreeWidgetItem *>> mapTreeItem;
-    MainWidget(zsj::Data::ptr data,QWidget *parent = 0);
+    MainWidget(zsj::Data::ptr data, QWidget *parent = 0);
     ~MainWidget();
 
 protected:
@@ -71,12 +72,34 @@ private:
     /// @brief 初始化所有需要用到的菜单
     void initMenus();
 
+    /**
+     * @brief 初始化用户数据
+     */
+    void initSelfData();
+
+    /**
+     * @brief 初始化好友和群组数据
+     */
+    void initUserAndGroupData();
+
+    /**
+     * @brief 初始化用户分组数据
+     * @param userSections
+     */
+    void initUserSectionData(const QVector<zsj::SectionData> &userSections);
+
+    /**
+     * @brief 初始化群组分组数据
+     * @param groupSection
+     */
+    void initGroupSectionData(const QVector<zsj::SectionData> &groupSections);
 
 private:
     /// @brief 添加好友列表的根节点
     ///
     /// @param treeWidget 好友列表
     /// @param group 根节点
+    QTreeWidgetItem *addTreeWidgetRootNode(QTreeWidget *treeWidget, const zsj::SectionData &sectionData);
     QTreeWidgetItem *addTreeWidgetRootNode(QTreeWidget *treeWidget, LinkmanSection *group);
     QTreeWidgetItem *addTreeWidgetRootNode(QTreeWidget *treeWidget, const QString &groupName, int active, int total);
 
@@ -89,14 +112,14 @@ private:
     QTreeWidgetItem *addTreeWidgetChildNode(QTreeWidget *treeWidget, QTreeWidgetItem *rootNode,
                                             zsj::UserData::ptr userData);
     QTreeWidgetItem *addTreeWidgetChildNode(QTreeWidget *treeWidget, QTreeWidgetItem *rootNode,
-                                            zsj::GroupData::ptr groupData, const QString &date);
+                                            zsj::GroupData::ptr groupData, const QString &date = QDateTime::currentDateTime().toString("yyyy-MM-dd"));
 
 
 
 
-    void addMessageListItem(QListWidget * listWidget,zsj::Data::ptr data,
-                            const QString & message,
-                            const QDateTime & dateTime = QDateTime::currentDateTime());
+    void addMessageListItem(QListWidget *listWidget, zsj::Data::ptr data,
+                            const QString &message,
+                            const QDateTime &dateTime = QDateTime::currentDateTime());
 
     /// 设置头像
     void setHead(QPixmap &pixmap);
@@ -143,14 +166,14 @@ private:
                          std::map<QTreeWidgetItem *, std::list<QTreeWidgetItem *>> &data);
 
     /// @brief 添加子菜单
-    void updateSubMenu(QMenu * menu,QTreeWidget * treeWidget,
-                    std::map<QTreeWidgetItem *, std::list<QTreeWidgetItem *>> &data);
+    void updateSubMenu(QMenu *menu, QTreeWidget *treeWidget,
+                       std::map<QTreeWidgetItem *, std::list<QTreeWidgetItem *>> &data);
 
 
     /// @brief 切换页面，在更换TreeWidget的页面的时候
     /// @param[in] currentIndex 当前页面坐标
     /// @param[in] targetIndex 将要切换的页面的坐标
-    void changePage(int currentIndex,int targetIndex);
+    void changePage(int currentIndex, int targetIndex);
 
 private:
     Ui::MainWidget *ui;
@@ -171,7 +194,7 @@ private:
     QMenu *userMenu = nullptr;        /// 用户菜单
 
     QMenu *moveSubMenuFriend = nullptr;           /// “移动用户至（好友列表)”子菜单
-    QMenu * moveSubMenuGroup = nullptr;           /// “移动群组至（群组列表）子菜单”
+    QMenu *moveSubMenuGroup = nullptr;            /// “移动群组至（群组列表）子菜单”
 
 
     QMenu *sectionMenu = nullptr;     /// 分组菜单
@@ -199,10 +222,13 @@ private:
 
 
     /// 聊天窗口
-    ChatWidget * chatWidget;
+    ChatWidget *chatWidget;
 
     /// 自己的信息
     zsj::Data::ptr selfData;
+
+
+    zsj::MainWebService mainWebService;
 private slots:
 
     // ------- 最顶部功能按钮 ---------
@@ -261,7 +287,7 @@ private slots:
      * @param content
      * @param msgType
      */
-    void slotChangeMessageListItemInfo(zsj::Data::ptr data,quint64 fromId, quint64 toId,
+    void slotChangeMessageListItemInfo(zsj::Data::ptr data, quint64 fromId, quint64 toId,
                                        const QString &content, zsj::global::MessageType msgType);
 public slots:
     /// @brief 好友管理
@@ -271,7 +297,7 @@ public slots:
     void slotMessageRecord() {}
 
     /// @brief 移动联系人和群组
-    void slotMoveItem(QAction * action);
+    void slotMoveItem(QAction *action);
 
     // ========= userMenu槽函数 ==============
     /// @brief 发送即时消息

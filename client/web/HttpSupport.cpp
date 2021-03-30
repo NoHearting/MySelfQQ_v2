@@ -5,7 +5,7 @@
 #include <QMutexLocker>
 
 #include <QPixmap>
-
+#include <QFile>
 
 #include "utils/Util.h"
 
@@ -121,6 +121,18 @@ QString HttpSupport::downloadImage(const QString &url,
                                    const QString &path,
                                    const QString &imageName)
 {
+
+    int pos = url.lastIndexOf("/");
+    QString name = url.mid(pos + 1);
+    if(!imageName.isEmpty()){
+        name = imageName;
+    }
+    QString actPath = path + name;
+    QFile file(actPath);
+    if(file.exists()){
+        return actPath;
+    }
+
     QByteArray imageData = syncGet(url);
     if(!imageData.isEmpty()){
         QPixmap image;

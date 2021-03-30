@@ -9,6 +9,8 @@
 
 #include <QWidget>
 
+#include "main/Section.h"
+
 namespace Ui {
 class LinkmanSection;
 }
@@ -21,6 +23,7 @@ public:
     explicit LinkmanSection(QWidget *parent = 0);
 
     LinkmanSection(const QPixmap & icon,const QString & groupName,int active,int total,QWidget * parent = 0);
+    LinkmanSection(const QPixmap & icon,zsj::Section::ptr section,QWidget * parent = 0);
     ~LinkmanSection();
 
 
@@ -34,11 +37,17 @@ public:
 
 
     QString getGrouoName()const;
+
+    QString getSectionName()const;
+
+    quint64 getSectionId()const{return section->getId();}
 private:
     Ui::LinkmanSection *ui;
 
 
     QString groupName;
+
+    zsj::Section::ptr section;
 };
 
 #endif // LINKMANSECTION_H

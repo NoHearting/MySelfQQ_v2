@@ -11,10 +11,10 @@ LoginWebService::LoginWebService()
 
 QJsonObject LoginWebService::login(int id, QString password)
 {
-    QJsonObject  obj;
+    QJsonObject obj;
     obj.insert("id",id);
     obj.insert("password",password);
-    QByteArray data = httpSupport->syncPost(global::BgUrl::loginUrl(),obj);
+    QByteArray data = httpSupport->syncPost(global::BgUrl::LoginUrl(),obj);
     QJsonDocument doc = QJsonDocument::fromJson(data);
     if(!doc.isEmpty() && !doc.isNull()){
         return doc.object();

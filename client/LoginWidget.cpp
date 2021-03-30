@@ -92,6 +92,7 @@ void LoginWidget::loadAndSetLoginInfo()
     qDebug() << infos.size();
     if(!infos.empty())
     {
+        // 读取记录第一条并且设置
         zsj::LoginInfo info = infos[0];
         ui->lineEditOuterInput->setText(QString::number(info.getAccount()));
         ui->checkBoxAutoLogin->setChecked(info.getSavePassword());
@@ -100,18 +101,17 @@ void LoginWidget::loadAndSetLoginInfo()
             ui->checkBoxRememberPwd->setChecked(true);
             ui->lineEditPwd->setText(info.getPassword());
         }
+        QString headPath = info.getHead();
+        QPixmap pix(headPath);
+
+        QPixmap head = zsj::adjustToHead(pix,zsj::HeadSize::loginMainDiameter);
+//        QPixmap head = zsj::scaledPixmap(pix,zsj::HeadSize::loginMainDiameter,zsj::HeadSize::loginMainDiameter);
+        ui->labelHeadImage->setPixmap(head);
+        ui->labelHeadImageLogin->setPixmap(head);
+
+        // 设置后续的item
         for(int i = 0; i < infos.size(); i++)
         {
-//            qDebug() << infos.at(i).toString();
-//            QPixmap pix(infos.at(i).getHead());
-//            QPixmap head = zsj::adjustToHead(pix, zsj::HeadSize::loginItemDiameter);
-//            ComboBoxItemWidget *item = new  ComboBoxItemWidget(std::make_shared<zsj::LoginInfo>(infos.at(i)),
-//                    comboBoxListWidget);
-//            item->setFixedSize(235, 50);
-//            QListWidgetItem *widgetItem = new QListWidgetItem(comboBoxListWidget);
-//            connect(item, &ComboBoxItemWidget::sigClick, this, &LoginWidget::slotSetAccountAndPassword);
-//            comboBoxListWidget->setItemWidget(widgetItem, item);
-//            widgetItem->setSizeHint(QSize(235, 50));
             popupWidget->addItem(infos.at(i));
         }
     }
@@ -121,14 +121,14 @@ void LoginWidget::loadAndSetLoginInfo()
     }
 }
 
-void LoginWidget::persistenceLoginInfo(const zsj::LoginInfo &info)
+void LoginWidget::persistenceLoginInfo(zsj::LoginInfo &info)
 {
     for(auto &item : infos)
     {
         if(info.getAccount() == item.getAccount())
         {
-            item.setLastUpdate(QDateTime::currentDateTime().toTime_t());
-            bool ret = infoDao->updateLoginInfo(item);
+            info.setLastUpdate(QDateTime::currentDateTime().toTime_t());
+            bool ret = infoDao->updateLoginInfo(info);
             if(!ret)
             {
                 qCritical() << "persistence login info failed!";
@@ -184,65 +184,36 @@ void LoginWidget::initResourceAndForm()
 
     comboBoxListWidget->setFixedHeight(180);
     comboBoxListWidget->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
-//    ui->comboBoxAccount->setModel(comboBoxListWidget->model());
-//    ui->comboBoxAccount->setView(comboBoxListWidget);
-//    ui->comboBoxAccount->setMaxVisibleItems(3);         //配合CSS显示下拉框正确高度
-
-//    // 将视图的父窗口设置为透明的，目的是让QComboBox的下拉框透明  需要配合css
-//    ui->comboBoxAccount->view()->parentWidget()->setWindowFlags(/*Qt::Popup |*/ Qt::FramelessWindowHint);
-//    ui->comboBoxAccount->view()->parentWidget()->setAttribute(Qt::WA_TranslucentBackground);
-
-
-//    for(int i = 0; i < 5; i++)
-//    {
-//        QString head = QString(":/test/res/test/head%1.jpg").arg(i);
-//        QPixmap origin(head);
-//        QPixmap scaled = zsj::scaledPixmap(origin, 40, 40);
-//        QPixmap round = zsj::pixmapToRound(scaled, 20);
-//        ComboBoxItemWidget *item = new ComboBoxItemWidget(round,
-//                QString("无心-%1").arg(i),
-//                123512341,
-//                "asda123", this);
-
-//        item->setFixedSize(235, 50);
-//        QListWidgetItem *widgetItem = new QListWidgetItem(comboBoxListWidget);
-//        connect(item, &ComboBoxItemWidget::click, this, &LoginWidget::slotSetAccountAndPassword);
-//        qInfo() << "connect ComboBoxItemWidget click to LoginWidget::slotSetAccountAndPassword";
-//        comboBoxListWidget->setItemWidget(widgetItem, item);
-//        widgetItem->setSizeHint(QSize(235, 50));
-//    }
-
-//    ui->lineEditOuterInput->setText("123");
-//    ui->lineEditPwd->setText("123");
 }
 
 void LoginWidget::initSignalsAndSlots()
 {
+    /// 关闭窗口
     connect(ui->toolButtonClose, &QToolButton::clicked, this, &LoginWidget::slotCloseWindow);
     connect(ui->toolButtonCloseLogin, &QToolButton::clicked, this, &LoginWidget::slotCloseWindow);
     connect(ui->toolButtonCloseLoginError, &QToolButton::clicked, this, &LoginWidget::slotCloseWindow);
     qInfo() << "connect toolButtonClose clicked to LoginWidget::slotCloseWindow";
 
-
+    /// 展示账号下拉框
     connect(ui->pushButtonDropDown, &QPushButton::clicked, this, &LoginWidget::slotShowComboBoxPopus);
     connect(popupWidget, &PopupWidget::sigHide, this, [ = ]()
     {
         ui->pushButtonDropDown->setChecked(false);
     });
     qInfo() << "connect QPushButton cliecked to LoginWidget::slotShowComboBoxPopus";
-
     connect(popupWidget, &PopupWidget::sigClick, this, &LoginWidget::slotSetAccountAndPassword);
 
-    qInfo() << "connect MyComboBox::setLineEditCssOn to lambda func to set css";
+    /// 最小化窗口
     connect(ui->toolButtonMin, &QToolButton::clicked, this, &LoginWidget::slotMinWindow);
     connect(ui->toolButtonMinLogin, &QToolButton::clicked, this, &LoginWidget::slotMinWindow);
     connect(ui->toolButtonMinLoginError, &QToolButton::clicked, this, &LoginWidget::slotMinWindow);
     qInfo() << "connect QToolButton::clicked to LoginWidget::slotMinWindow";
 
+    /// 点击登录
     connect(ui->pushButtonLogin, &QPushButton::clicked, this, &LoginWidget::slotLogin);
     qInfo() << "connect QPushButton::clicked to LoginWidget::login";
 
-    // 系统托盘
+    /// 系统托盘
     connect(systemTray, &zsj::SystemTray::sigDefaultOpen, this, &LoginWidget::show);
     qInfo() << "connect zsj::SystemTray::sigDefaultOpen to LoginWidget::show";
     connect(systemTray, &zsj::SystemTray::sigDefaultQuit, qApp, &QApplication::quit);
@@ -250,15 +221,21 @@ void LoginWidget::initSignalsAndSlots()
     connect(systemTray, &zsj::SystemTray::sigOpenWindow, this, &LoginWidget::show);
     qInfo() << "connect zsj::SystemTray::sigOpenWindow to LoginWidget::show";
 
+    /// 取消登录
     connect(ui->pushButtonLoginCancel, &QPushButton::clicked, this, &LoginWidget::slotCancelLogin);
     connect(ui->pushButtonCancelLogin, &QPushButton::clicked, this, &LoginWidget::slotCancelLogin);
     qInfo() << "connect QPushButton::clicked to LoginWidget::cancelLogin";
 
 
+    /// 找回密码
     connect(ui->toolButtonFindPwd, &QToolButton::clicked, this, &LoginWidget::slotFindPassword);
     connect(ui->pushButtonFindPwd2, &QPushButton::clicked, this, &LoginWidget::slotFindPassword);
     connect(ui->pushButtonFindPwd, &QPushButton::clicked, this, &LoginWidget::slotFindPassword);
     qInfo() << "connect QPushButton::clicked to LoginWidget::slotFindPassword";
+
+    connect(ui->pushButtonRegister,&QPushButton::clicked,this,[this](){
+        zsj::openUrl(zsj::global::BgUrl::Register());
+    });
 
 
 }
@@ -324,17 +301,18 @@ void LoginWidget::slotLogin()
 
 
     QJsonObject result = loginService->login(account.toInt(),password);
+    if(cancelLogin){
+        cancelLogin = false;
+        return;
+    }
     if(!result.isEmpty()){
-        if(!cancelLogin){
-            cancelLogin = false;
-        }
         // 登录成功
         if(result.value("status").toBool() == true){
             QJsonObject data = result.value("data").toObject();
             QJsonObject user = data.value("user").toObject();
 
             QString actPath = zsj::ApplicationInfo::Instance()->getAppAbsoluteDir();
-            QString headDir = QString("/image/%1/").arg(user.value("id").toInt());
+            QString headDir = QString("/image/%1/headImage/").arg(user.value("id").toInt());
             QString headPath = loginService->downloadHeadPicture(
                         user.value("head").toString(),
                         actPath + headDir);
@@ -363,37 +341,6 @@ void LoginWidget::slotLogin()
         ui->stackedWidget->setCurrentIndex(2);
         qCritical() << "出现未知错误!";
     }
-
-
-//    QTimer::singleShot(1000, this, [ = ]()
-//    {
-//        if(ui->stackedWidget->currentIndex() != 0)
-//        {
-//            ui->stackedWidget->setCurrentIndex(0);
-
-//            /// 校验登录是否成功
-//            if(account == "123")
-//            {
-//                qDebug() << "登录成功";
-//                QString headPath = QString(":/test/res/test/head%1.jpg").arg(account.toInt() % 5 + 1);
-//                QPixmap head(headPath);
-
-//                QString nickname = "无心";
-//                zsj::Data::ptr data(new zsj::UserData(head, nickname, account.toInt(),
-//                                                      "得不到的永远在骚动", "备注", true, 64));
-//                zsj::LoginInfo info(0, headPath, nickname, account.toInt(), password,
-//                                    ui->checkBoxAutoLogin->isChecked(),
-//                                    ui->checkBoxRememberPwd->isChecked(),
-//                                    QDateTime::currentDateTime().toTime_t());
-//                persistenceLoginInfo(info);
-//                emit sigLoginSuccess(data);
-//            }
-//            else
-//            {
-//                ui->stackedWidget->setCurrentIndex(2);
-//            }
-//        }
-//    });
 }
 
 void LoginWidget::slotCancelLogin()
@@ -407,6 +354,6 @@ void LoginWidget::slotCancelLogin()
 
 void LoginWidget::slotFindPassword()
 {
-    zsj::openUrl();
+    zsj::openUrl(zsj::global::BgUrl::FindPassword());
 }
 

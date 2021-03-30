@@ -35,6 +35,8 @@
 #include "dao/LoginInfoDao.h"
 #include "main/LoginInfo.h"
 #include "main/ApplicationInfo.h"
+#include "service/web/MainWebService.h"
+#include "main/SectionData.h"
 
 #include <utils/Util.h>
 
@@ -64,7 +66,8 @@ void Test::test()
 //    testQSharedPointer();
 
 //    testCode();
-    testSqlite();
+//    testSqlite();
+    testGetFriendGroupData();
 }
 
 void Test::testQApplication()
@@ -339,14 +342,49 @@ void Test::testDao()
 //    }
 //    qDebug() << infos.size();
     zsj::LoginInfoDao dao;
-    LoginInfo info(0,"head","昵称",1235123,"zsj",false,false,123);
+    LoginInfo info(0, "head", "昵称", 1235123, "zsj", false, false, 123);
     bool ret = dao.insertLoginInfo(info);
-    if(!ret){
+    if(!ret)
+    {
         qDebug() << "insert Data failed!";
     }
-    else{
+    else
+    {
         qDebug() << "isnert data success!";
     }
+}
+
+void Test::testGetFriendGroupData()
+{
+    zsj::MainWebService mws;
+    QVector<QVector<SectionData> > data = mws.friendRelationship(1);
+
+    QVector<SectionData> itemUser = data[0];
+    qDebug() << " ----------- user -------------";
+    for(const SectionData &section : itemUser)
+    {
+        qDebug() << " ----------- user section " << section.getId() << " ------------ -";
+        qDebug() << "id : " << section.getId();
+        qDebug() << "sectionName : " << section.getSectionName();
+        qDebug() << "belong : " << section.getBelong();
+        qDebug() << "size : " << section.getSize();
+        qDebug() << "type : " << section.getType();
+        qDebug() << "items : " << section.getItems().size();
+    }
+
+    QVector <SectionData> itemGroup = data[1];
+    qDebug() << " ----------- group -------------";
+    for(const SectionData &section : itemGroup)
+    {
+        qDebug() << " ----------- group section " << section.getId() << " ------------ -";
+        qDebug() << "id : " << section.getId();
+        qDebug() << "sectionName : " << section.getSectionName();
+        qDebug() << "belong : " << section.getBelong();
+        qDebug() << "size : " << section.getSize();
+        qDebug() << "type : " << section.getType();
+        qDebug() << "items : " << section.getItems().size();
+    }
+
 }
 
 

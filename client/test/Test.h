@@ -54,6 +54,9 @@ private:
 
     void testDao();
 
+
+    void testGetFriendGroupData();
+
 };
 
 }

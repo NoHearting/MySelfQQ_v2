@@ -88,7 +88,7 @@ struct HeadSize
     static const quint8 loginMainDiameter = 64;
 
     /// 登了界面下拉框候选项头像
-    static const quint8 loginItemDiameter = 40;
+    static const quint8 loginItemDiameter = 36;
 
     /// 主页面头像
     static const quint8 mainDiamter = 54;
@@ -182,6 +182,9 @@ public:
      * @return 目录存在和创建成功返回true，否则返回false
      */
     static bool judgeAndMakeDir(const QString &dirPath);
+
+
+//    static bool JudgeFileExist(const QString & )
 };
 
 
