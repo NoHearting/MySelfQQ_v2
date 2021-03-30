@@ -114,4 +114,15 @@ public interface MainMapper {
     @Update("update r_section_group set s_id = #{newSectionId} where s_id = #{oldSectionId} and g_id = #{groupId};")
     void updateGroupBelongSection(@Param("groupId") Long groupId,
                                  @Param("oldSectionId") Long oldSectionId,@Param("newSectionId") Long newSectionId);
+
+
+    @Select("select s_id where t_section where s_belong=#{belong} and s_section_name=#{sectionName}")
+    Long findSectionByBelongAndName(@Param("belong")Long belong,@Param("sectionName")String sectionName);
+
+
+    @Update("update t_section set s_size = s_size + #{count} where s_id = #{sectionId};")
+    void increaseSectionSize(@Param("sectionId")Long sectionId,@Param("count")int count);
+
+    @Update("update t_section set s_size = s_size - #{count} where s_id = #{sectionId};")
+    void decreaseSectionSize(@Param("sectionId")Long sectionId,@Param("count")int count);
 }

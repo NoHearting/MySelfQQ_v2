@@ -60,6 +60,7 @@ public class MainServiceImpl implements MainService {
         if (null != groupSections) {
             for (Section section : groupSections) {
                 List<GroupData> sectionGroups = mainMapper.listSectionGroupMember(section.getId());
+//                section.setSize(sectionGroups.size());
                 sectionDataGroup.add(new SectionData(section, sectionGroups));
             }
         } else {
@@ -76,6 +77,7 @@ public class MainServiceImpl implements MainService {
             for (Section section : userSections) {
                 logger.warn(section);
                 List<UserData> sectionUsers = mainMapper.listSectionUserMember(section.getId());
+//                section.setSize(sectionUsers.size());
                 sectionData.add(new SectionData(section, sectionUsers));
             }
         } else {
@@ -101,25 +103,57 @@ public class MainServiceImpl implements MainService {
             for(BaseData baseData : data){
                 mainMapper.updateGroupBelongSection(baseData.getId(),deleteSectionId,toSectionId);
             }
+            mainMapper.increaseSectionSize(toSectionId,data.size());
         }
         else{ // 好友分组
             data = mainMapper.listSectionUserMember(deleteSectionId);
             for(BaseData baseData : data){
                 mainMapper.updateUserBelongSection(baseData.getId(),deleteSectionId,toSectionId);
             }
+            mainMapper.increaseSectionSize(toSectionId,data.size());
         }
         // 2. 删除分组
         mainMapper.deleteSection(deleteSectionId);
     }
 
 
+    /**
+     * 移动分组的item
+     * @param fromSectionId
+     * @param toSectionId
+     * @param objectId
+     * @param type
+     */
     @Override
     public void moveSectionItem(Long fromSectionId, Long toSectionId, Long objectId, Boolean type) {
         if(type){
             mainMapper.updateGroupBelongSection(objectId,fromSectionId,toSectionId);
+            mainMapper.increaseSectionSize(toSectionId,1);
         }
         else{
             mainMapper.updateUserBelongSection(objectId,fromSectionId,toSectionId);
+            mainMapper.decreaseSectionSize(toSectionId,1);
         }
     }
+
+    /**
+     * 添加好友
+     * @param fromId
+     * @param toId
+     */
+    @Override
+    @Transactional
+    public void addFriend(Long fromId, Long toId) {
+        // 查找出fromId的默认分组
+        Long defaultSectionId = mainMapper.findSectionByBelongAndName(fromId, "我的好友");
+        // 将好友添加到默认分组
+        mainMapper.insertUserSectionMember(defaultSectionId,toId);
+        // 将该分组size + 1
+        mainMapper.increaseSectionSize(defaultSectionId,1);
+
+        Long defaultSectionToId = mainMapper.findSectionByBelongAndName(toId,"我的好友");
+        mainMapper.insertUserSectionMember(defaultSectionToId,fromId);
+        mainMapper.increaseSectionSize(defaultSectionToId,1);
+    }
+
 }

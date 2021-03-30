@@ -87,7 +87,7 @@ class WebServerApplicationTests {
 	    sectionGroupList.clear();
 	    // 先添加分组
         Long id = 0L;
-        sectionUserList.add(new Section(id,"小学",belong,0,false));
+        sectionUserList.add(new Section(id,"我的好友",belong,0,false));
         sectionUserList.add(new Section(id,"初中",belong,0,false));
         sectionUserList.add(new Section(id,"高中",belong,0,false));
         sectionUserList.add(new Section(id,"大学",belong,0,false));
@@ -105,6 +105,7 @@ class WebServerApplicationTests {
                 mainMapper.insertUserSectionMember(sId,uId);
                 index++;
             }
+            mainMapper.increaseSectionSize(section.getId(),2);
         }
 
         sectionGroupList.add(new Section(id,"置顶群聊",belong,0,true));
@@ -136,6 +137,7 @@ class WebServerApplicationTests {
             loginMapper.insertGroup(group);
             mainMapper.insertGroupSectionMember(sectionGroupList.get(1).getId(),group.getId());
         }
+        mainMapper.increaseSectionSize(sectionGroupList.get(1).getId(),listGroup.size());
 	}
 
 

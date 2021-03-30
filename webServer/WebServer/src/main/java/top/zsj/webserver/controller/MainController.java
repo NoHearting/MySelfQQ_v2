@@ -73,7 +73,7 @@ public class MainController {
      * @return
      */
     @PostMapping("addFriendRequest")
-    public ResponseResult addFriend(@RequestBody String data){
+    public ResponseResult addFriendRequest(@RequestBody String data){
         // todo
         return ResponseResult.success("请求添加好友成功");
     }
@@ -86,6 +86,21 @@ public class MainController {
     @PostMapping("addFriendSure")
     public ResponseResult addFriendSure(@RequestBody String data){
         // todo
+        return ResponseResult.success("添加好友成功");
+    }
+
+    /**
+     * 添加好友
+     * @param data
+     * @return
+     * @note 目前功能不完善，使用此接口
+     */
+    @PostMapping("addFriend")
+    public ResponseResult addFriend(@RequestBody String data){
+        JSONObject jsonObject = JSONObject.parseObject(data);
+        Long fromId = jsonObject.getLong("fromId");
+        Long toId = jsonObject.getLong("toId");
+        mainService.addFriend(fromId,toId);
         return ResponseResult.success("添加好友成功");
     }
 

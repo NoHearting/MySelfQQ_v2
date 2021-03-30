@@ -21,4 +21,8 @@ public interface MainService {
     List<SectionData> getUserSectionData(Long id);
 
     void moveSectionItem(Long fromSectionId, Long toSectionId, Long objectId, Boolean type);
+
+
+    void addFriend(Long fromId,Long toId);
+
 }
